@@ -1,0 +1,10 @@
+void* io_read (
+    struct io* reader,
+    u64 amount
+)
+/**
+ * ### Description
+ *
+ * ### Return Value
+ *
+ */;

@@ -1,0 +1,50 @@
+test( binary_decode, array_minlength ) {
+
+  given("an example struct with an array type");
+    struct example {
+      struct array bytes;
+    } example;
+
+
+  when("it has an associated schema that enforces a minimum length")
+    struct reflect schema = {
+      type(STRUCT, { sizeof(struct example), 1 }) {
+        { field(bytes, struct example), type(ARRAY, { 4, 0 })
+          {{ type(BYTE) }}
+        },
+      }
+    };
+
+
+  when("some input data is ready to decode, and the max length is not satisfied");
+    byte input[] = {
+      0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       /* bytes length */
+      0x10,                                                 /* bytes.0 */
+      0x11,                                                 /* bytes.1 */
+      0x12,                                                 /* bytes.2 */
+    };
+
+
+  when("a protocol decoder is set up on this data");
+    struct memory allocator = memory_init(4096);
+    struct protocol decoder = {
+      .schema = &schema,
+      .allocator = &allocator,
+      .input = &io_reader(input, sizeof(input)),
+      .output = &io_writer(&example, sizeof(example)),
+      .error = &(struct failure) { 0 }
+    };
+
+
+  calling("binary_decode()");
+    binary_decode(&decoder);
+
+
+  must("fail to decode the input data and report the error properly");
+    verify(decoder.error->occurred == true);
+    verify(streq(decoder.error->message,
+      "[bytes] array required minimum length of 4 but found 3"));
+
+  success();
+    memory_release(&allocator);
+}

@@ -1,0 +1,9 @@
+**/tmp/
+**/exe/
+
+!/**/.gitkeep
+*.gz
+*.vim
+*.swp
+*.swo
+*.pdf

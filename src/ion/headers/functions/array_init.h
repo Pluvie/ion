@@ -1,0 +1,11 @@
+struct array array_init (
+    u64 typesize,
+    u64 initial_capacity,
+    struct memory* allocator
+)
+/**
+ * ### Description
+ *
+ * ### Return Value
+ *
+ */;

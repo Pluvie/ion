@@ -1,0 +1,4 @@
+#!/bin/bash
+bin/compile $1 -g3 &&
+  gdb --args exe/$1 ${@:2}
+echo
