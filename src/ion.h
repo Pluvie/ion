@@ -18,6 +18,7 @@
 #include <ion/headers/enums.h>
 #include <ion/headers/macros.h>
 #include <ion/headers/structs.h>
+#include <ion/headers/globals.h>
 
 #include <ion/headers/functions/array_get.h>
 #include <ion/headers/functions/array_init.h>
