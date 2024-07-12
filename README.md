@@ -5,8 +5,8 @@
 
 ## Introduction
 
-__Ion__ is a C substratum that aims to provide som standardization through syntax
-elegance and semantic cohesion.
+__Ion__ is a C substratum that aims to provide many useful features through *syntax
+elegance* and *semantic cohesion*.
 
 ## Features
 
