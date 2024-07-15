@@ -3,13 +3,20 @@ void* io_read (
     u64 amount
 )
 {
+  if (unlikely(amount == 0))
+    return NULL;
+
   if (unlikely((reader->flags & IO_READ) == 0))
     return NULL;
 
-  if (reader->cursor + amount > reader->length)
-    return NULL;
+  switch (reader->type) {
+  case IO_TYPE_MEM:
+    return io_read_memory(reader, amount);
+  case IO_TYPE_FILE:
+    return io_read_file(reader, amount);
+  case IO_TYPE_SOCK:
+    return io_read_socket(reader, amount);
+  }
 
-  void* data = reader->data + reader->cursor;
-  reader->cursor += amount;
-  return data;
+  return NULL;
 }

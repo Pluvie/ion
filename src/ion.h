@@ -37,6 +37,9 @@
 #include <ion/headers/functions/hexdump.h>
 #include <ion/headers/functions/io_peek.h>
 #include <ion/headers/functions/io_read.h>
+#include <ion/headers/functions/io_read_file.h>
+#include <ion/headers/functions/io_read_memory.h>
+#include <ion/headers/functions/io_read_socket.h>
 #include <ion/headers/functions/io_write.h>
 //#include <ion/headers/functions/json_decode.h>
 //#include <ion/headers/functions/json_decode_number.h>

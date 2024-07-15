@@ -9,6 +9,11 @@
 #include <test/binary_decode/pointer.c>
 #include <test/binary_decode/primitive.c>
 #include <test/binary_decode/sequence.c>
+#include <test/io_read_memory/invalid_cursor.c>
+#include <test/io_read_memory/valid_cursor.c>
+#include <test/io_read_socket/recv_failure.c>
+#include <test/io_read_socket/recv_partial.c>
+#include <test/io_read_socket/recv_success.c>
 //#include <test/json_decode_number/convert_error.c>
 //#include <test/json_decode_number/parse_error.c>
 //#include <test/json_decode_number/success.c>
@@ -94,6 +99,11 @@ void test_suite (
   test_run( binary_decode, pointer );
   test_run( binary_decode, primitive );
   test_run( binary_decode, sequence );
+  test_run( io_read_memory, invalid_cursor );
+  test_run( io_read_memory, valid_cursor );
+  test_run( io_read_socket, recv_failure );
+  test_run( io_read_socket, recv_partial );
+  test_run( io_read_socket, recv_success );
   //test_run( json_decode_number, convert_error );
   //test_run( json_decode_number, parse_error );
   //test_run( json_decode_number, success );

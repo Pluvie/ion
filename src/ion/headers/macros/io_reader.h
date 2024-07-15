@@ -4,4 +4,5 @@
 #define io_reader(data_var, length_var)       \
   (struct io) { .data = (byte*) data_var,     \
     .length = length_var,                     \
+    .type = IO_TYPE_MEM,                      \
     .flags = IO_READ }

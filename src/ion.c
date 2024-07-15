@@ -15,6 +15,9 @@
 #include <ion/functions/hexdump.c>
 #include <ion/functions/io_peek.c>
 #include <ion/functions/io_read.c>
+#include <ion/functions/io_read_file.c>
+#include <ion/functions/io_read_memory.c>
+#include <ion/functions/io_read_socket.c>
 #include <ion/functions/io_write.c>
 //#include <ion/functions/json_decode.c>
 //#include <ion/functions/json_decode_number.c>
