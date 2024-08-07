@@ -1,4 +1,6 @@
 #include "macros/approx_eq.h"
+#include "macros/array_each.h"
+#include "macros/array_each_with_index.h"
 #include "macros/arrayof.h"
 #include "macros/as.h"
 #include "macros/check_sizeof.h"
