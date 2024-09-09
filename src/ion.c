@@ -31,6 +31,7 @@
 #include <ion/functions/map_print.c>
 #include <ion/functions/map_rehash.c>
 #include <ion/functions/map_set.c>
+#include <ion/functions/map_set_rehash.c>
 #include <ion/functions/memory_alloc.c>
 #include <ion/functions/memory_alloc_zero.c>
 #include <ion/functions/memory_init.c>

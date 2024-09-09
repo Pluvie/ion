@@ -53,6 +53,7 @@
 #include <ion/headers/functions/map_print.h>
 #include <ion/headers/functions/map_rehash.h>
 #include <ion/headers/functions/map_set.h>
+#include <ion/headers/functions/map_set_rehash.h>
 #include <ion/headers/functions/memory_alloc.h>
 #include <ion/headers/functions/memory_alloc_zero.h>
 #include <ion/headers/functions/memory_init.h>

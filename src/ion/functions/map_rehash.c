@@ -3,6 +3,8 @@ static inline void map_rehash (
 )
 {
   u64 new_capacity = map->capacity * 2;
+
+rehash_begin:
   struct map rehashed_map = map_init(
     map->key_typesize, map->value_typesize, new_capacity, map->allocator);
 
@@ -17,7 +19,10 @@ static inline void map_rehash (
     key = map->keys + (i * map->key_typesize);
     value = map->values + (i * map->value_typesize);
 
-    map_set(&rehashed_map, key, value);
+    if (map_set_rehash(&rehashed_map, key, value, true) == NULL) {
+      new_capacity *= 2;
+      goto rehash_begin;
+    }
   }
 
   map->capacity = new_capacity;
