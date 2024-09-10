@@ -9,6 +9,8 @@ void* map_set (
    *
    * This function takes an additional boolean argument, which indicates whether the
    * `map_set` function is being called within a rehash. If so, the rehash is aborted,
-   * and a new one is reinitiated with double the capacity. */
+   * and a new one is reinitiated with double the capacity.
+   *
+   * See the `map_rehash` function for more details. */
   return map_set_rehash(map, key, value, false);
 }
