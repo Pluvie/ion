@@ -1,8 +1,9 @@
 void hexdump (
-    byte* data,
+    void* generic_data,
     u64 length
 )
 {
+  byte* data = (byte*) generic_data;
   byte hex = 0;
   char ascii = 0;
 

@@ -1,5 +1,5 @@
 void hexdump (
-    byte* data,
+    void* generic_data,
     u64 length
 )
 /**
