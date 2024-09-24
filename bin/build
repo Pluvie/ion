@@ -1,0 +1,15 @@
+#!/bin/bash
+mkdir -p exe
+gcc -fPIC                       \
+  -c src/lib.c                  \
+  -o exe/libion.o               \
+  -I ./src                      \
+  -mavx2                        \
+  -march=native                 \
+  -O3                           \
+  -Wall                         \
+  -Wno-unused-label             \
+  -Werror                   &&  \
+gcc -shared                     \
+  -o exe/libion.so              \
+  exe/libion.o

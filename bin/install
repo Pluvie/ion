@@ -1,0 +1,7 @@
+#!/bin/bash
+bin/build &&
+sudo mkdir -p /usr/include/ion          &&
+sudo cp -r src/ion/*  /usr/include/ion  &&
+sudo cp src/ion.h     /usr/include/ion  &&
+sudo cp src/ion.c     /usr/include/ion  &&
+sudo cp exe/libion.so /usr/lib
