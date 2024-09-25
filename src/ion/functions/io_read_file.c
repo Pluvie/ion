@@ -3,7 +3,6 @@ static inline void* io_read_file (
     u64 amount
 )
 {
-  fprintf(stderr, "not implemented: io read for type IO_TYPE_FILE\n");
-  abort();
+  fail("io: read from file not yet implemented");
   return NULL;
 }

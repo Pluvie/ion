@@ -3,35 +3,41 @@ static inline void* io_read_socket (
     u64 amount
 )
 {
-  if (unlikely(reader->allocator == NULL))
+  if (unlikely(reader->allocator == NULL)) {
+    fail("io: read from socket impossible due to missing allocator");
     return NULL;
+  }
 
-  reader->cursor = 0;
-  reader->data = memory_alloc(reader->allocator, amount);
-  u64 read_amount = 0;
+  assign_to(reader->cursor, 0);
+  assign_to(reader->data, memory_alloc(reader->allocator, amount));
+  initialize(read_amount, u64, 0);
 
   while (read_amount < amount) {
-    i32 recv_output = recv(
-      reader->descriptor,
-      reader->data + read_amount,
-      amount - read_amount,
-      0);
+    initialize(recv_output, i32,
+      call(recv,
+        reader->descriptor,
+        pointer_offset(reader->data, read_amount),
+        amount - read_amount,
+        0));
 
     if (likely(recv_output > 0)) {
-      read_amount += recv_output;
+      assign_to(read_amount, read_amount + recv_output);
       continue;
     }
 
     if (read_amount == 0) {
-      reader->data = NULL;
-      reader->length = 0;
+      fail("io: error while reading from socket: %s",
+        call(strerror, errno));
+
+      assign_to(reader->data, NULL);
+      assign_to(reader->length, 0);
       return NULL;
     }
 
     break;
   }
 
-  reader->length = read_amount;
-  reader->cursor = read_amount;
+  assign_to(reader->length, read_amount);
+  assign_to(reader->cursor, read_amount);
   return reader->data;
 }

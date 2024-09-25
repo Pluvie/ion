@@ -20,6 +20,8 @@ u32 type_sizes[] = {
   0,    /* SEQUENCE */
 };
 
+
+
 const char* type_names[] = {
   "U8",
   "U16",
@@ -40,3 +42,13 @@ const char* type_names[] = {
   "PTR",
   "SEQ",
 };
+
+
+
+__thread struct failure error = { 0 };
+
+
+
+struct memory program_allocator = { 0 };
+__thread struct memory fiber_allocator = { 0 };
+

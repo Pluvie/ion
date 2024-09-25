@@ -1,8 +1,6 @@
 #include <ion/ion.h>
 #include <time.h>
 
-__thread struct failure error = { 0 };
-
 procedure_arguments(example_procedure) {
   i32 value;
 };
@@ -11,9 +9,13 @@ procedure_result(example_procedure) {
   u32 example;
 };
 
-procedure(example_procedure);
+procedure(
+    example_procedure
+);
 
-procedure(example_procedure)
+procedure(
+    example_procedure
+)
 {
   result_initialize(example_procedure);
   print("The meaning of life is: %i.", args.value);
@@ -59,7 +61,7 @@ i32 main (
     if (error.occurred)
       break;
 
-    assign(result.example, number);
+    assign_to(number, result.example);
     print("The result %i has been returned.", number);
   }
 

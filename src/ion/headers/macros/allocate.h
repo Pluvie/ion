@@ -16,7 +16,7 @@
  *
  * The initialization follows the same principles also for struct types.
  *
- * The allocation is done by the `global_allocator`. */
+ * The allocation is done by the `program_allocator`. */
 #define allocate(pointer, type, ...)                                  \
-  type* pointer = memory_alloc_zero(global_allocator, sizeof(type));  \
+  type* pointer = memory_alloc_zero(program_allocator, sizeof(type));  \
   __VA_OPT__(*pointer = (type) __VA_ARGS__)

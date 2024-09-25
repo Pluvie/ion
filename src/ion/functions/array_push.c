@@ -8,17 +8,26 @@ grow_check:
     goto push;
 
 grow:
-  void* old_data = ary->data;
-  u64 old_capacity = ary->capacity;
+  initialize(old_data, void*, ary->data);
+  initialize(old_capacity, u64, ary->capacity);
 
-  ary->capacity *= 2;
-  ary->data = memory_alloc_zero(ary->allocator, ary->capacity * ary->typesize);
+  assign_to(ary->capacity, ary->capacity * 2);
+  assign_to(ary->data,
+    call(memory_alloc_zero,
+      ary->allocator, ary->capacity * ary->typesize));
 
-  memcpy(ary->data, old_data, old_capacity * ary->typesize);
+  call(memcpy,
+    ary->data, old_data, old_capacity * ary->typesize);
 
 push:
-  void* address = ary->data + (ary->length * ary->typesize);
-  memcpy(address, element, ary->typesize);
-  ary->length++;
+  initialize(address, void*,
+    pointer_offset(ary->data,
+      ary->length * ary->typesize));
+
+  call(memcpy,
+    address, element, ary->typesize);
+
+  increment(ary->length);
+
   return address;
 }

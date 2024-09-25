@@ -8,9 +8,14 @@ position_check:
     goto get;
 
 abort:
-  fprintf(stderr, "fatal: position %li out of bounds [%p]\n", position, ary);
+  call(fprintf,
+    stderr,
+    "fatal: position %li out of bounds [%p]\n",
+    position, ary);
+
   abort();
 
 get:
-  return ary->data + (position * ary->typesize);
+  return pointer_offset(ary->data,
+    position * ary->typesize);
 }

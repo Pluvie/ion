@@ -9,11 +9,19 @@ position_check:
     goto set;
 
 abort:
-  fprintf(stderr, "fatal: position %li out of bounds [%p]\n", position, ary);
+  call(fprintf,
+    stderr,
+    "fatal: position %li out of bounds [%p]\n",
+    position, ary);
+
   abort();
 
 set:
-  void* address = ary->data + (position * ary->typesize);
-  memcpy(address, element, ary->typesize);
+  initialize(address, void*,
+    pointer_offset(ary->data, position * ary->typesize));
+
+  call(memcpy,
+    address, element, ary->typesize);
+
   return address;
 }

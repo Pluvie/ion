@@ -17,23 +17,23 @@ void binary_decode (
   case BYTE:
   case CHAR:
   case BOOL:
-    binary_decode_primitive(decoder);
+    call(binary_decode_primitive, decoder);
     break;
 
   case STRUCT:
-    binary_decode_struct(decoder);
+    call(binary_decode_struct, decoder);
     break;
 
   case ARRAY:
-    binary_decode_array(decoder);
+    call(binary_decode_array, decoder);
     break;
 
   case POINTER:
-    binary_decode_pointer(decoder);
+    call(binary_decode_pointer, decoder);
     break;
 
   case SEQUENCE:
-    binary_decode_sequence(decoder);
+    call(binary_decode_sequence, decoder);
     break;
   }
 }

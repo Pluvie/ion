@@ -61,7 +61,7 @@ bool suite_passed = true;
 /**
  * Verifies a condition. */
 #define verify(condition)                                                               \
-  if (!(condition)) { fail(__FILE__, __LINE__, #condition ); }
+  if (!(condition)) { test_failed(__FILE__, __LINE__, #condition ); }
 
 
 /**
@@ -77,7 +77,7 @@ end_test:
 
 /**
  * The test has failed. */
-#define fail(location_name, line_num, message)                                          \
+#define test_failed(location_name, line_num, message)                                   \
   fprintf(original_stderr, "\r");                                                       \
   fprintf(original_stderr, PRINT_COLOR_RED);                                            \
   fprintf(original_stderr, "█ ");                                                       \
