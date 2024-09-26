@@ -8,10 +8,7 @@ static inline void* io_read_memory (
     return NULL;
   }
 
-  initialize(data, void*,
-    pointer_offset(reader->data, reader->cursor));
-
-  assign_to(reader->cursor, reader->cursor + amount);
-
+  void* data = reader->data + reader->cursor;
+  reader->cursor += amount;
   return data;
 }
