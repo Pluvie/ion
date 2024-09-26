@@ -12,6 +12,8 @@
 #include <ion/functions/binary_decode_sequence.c>
 #include <ion/functions/binary_decode_struct.c>
 //#include <ion/functions/binary_encode.c>
+#include <ion/functions/date.c>
+#include <ion/functions/date_to_string.c>
 #include <ion/functions/hexdump.c>
 #include <ion/functions/io_peek.c>
 #include <ion/functions/io_read.c>
@@ -40,3 +42,5 @@
 #include <ion/functions/protocol_path_print.c>
 #include <ion/functions/reflect_typesize.c>
 #include <ion/functions/sci_notation_convert.c>
+#include <ion/functions/time_now.c>
+#include <ion/functions/time_to_string.c>
