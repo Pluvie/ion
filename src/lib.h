@@ -29,6 +29,8 @@
 #include <ion/headers/functions/array_push.h>
 #include <ion/headers/functions/array_set.h>
 #include <ion/headers/functions/binary_decode.h>
+#include <ion/headers/functions/date.h>
+#include <ion/headers/functions/date_to_string.h>
 #include <ion/headers/functions/hexdump.h>
 #include <ion/headers/functions/io_peek.h>
 #include <ion/headers/functions/io_read.h>
@@ -42,3 +44,5 @@
 #include <ion/headers/functions/memory_init.h>
 #include <ion/headers/functions/memory_release.h>
 #include <ion/headers/functions/sci_notation_convert.h>
+#include <ion/headers/functions/time_now.h>
+#include <ion/headers/functions/time_to_string.h>
