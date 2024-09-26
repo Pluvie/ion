@@ -22,7 +22,7 @@ static inline void* io_read_socket (
     }
 
     if (read_amount == 0) {
-      fail("io: error while reading from socket: %s", strerror(errno);
+      fail("io: error while reading from socket: %s", strerror(errno));
       reader->data = NULL;
       reader->length = 0;
       return NULL;

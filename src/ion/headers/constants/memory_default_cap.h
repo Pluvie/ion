@@ -1,0 +1,1 @@
+#define MEMORY_DEFAULT_CAP    64

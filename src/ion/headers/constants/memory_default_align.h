@@ -1,0 +1,1 @@
+#define MEMORY_DEFAULT_ALIGN  64
