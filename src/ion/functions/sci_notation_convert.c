@@ -1,3 +1,7 @@
+#ifdef ION_INCLUDED
+static inline
+#endif
+
 bool sci_notation_convert (
     byte* result,
     enum types type,
