@@ -7,14 +7,12 @@ length_check:
     goto last;
 
 abort:
-  call(fprintf,
-    stderr,
+  fprintf(stderr,
     "fatal: getting last at 0 length [%p]\n",
     ary);
 
   abort();
 
 last:
-  return pointer_offset(ary->data,
-    (ary->length - 1) * ary->typesize);
+  return ary->data + ((ary->length - 1) * ary->typesize);
 }

@@ -12,7 +12,6 @@ mkdir -p exe
 gcc src/$SOURCE.c               \
   -o exe/$APP                   \
   -I ./src                      \
-  -mavx2                        \
   -Wall                         \
   -Wno-unused-label             \
   -Werror                       \

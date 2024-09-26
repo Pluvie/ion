@@ -2,15 +2,14 @@ static inline void binary_decode_array (
     struct protocol* decoder
 )
 {
-  initialize(input, struct io*, decoder->input);
-  initialize(output, struct io*, decoder->output);
-  initialize(schema, struct reflect*, decoder->schema);
-  initialize(element, struct reflect*, schema->child);
-  initialize(array_typesize, u64, call(reflect_typesize, element));
+  struct io* input = decoder->input;
+  struct io* output = decoder->output;
+  struct reflect* schema = decoder->schema;
+  struct reflect* element = schema->child;
+  u64 array_typesize = reflect_typesize(element);
 
 read_length:
-  initialize(array_length, u64*, io_read(input, sizeof(u64)));
-
+  u64* array_length = io_read(input, sizeof(u64));
   if (array_length == NULL)
     return protocol_failure(decoder, "unable to read array length from input "\
       "(%li bytes) : data length is %li bytes, but cursor already at %li",

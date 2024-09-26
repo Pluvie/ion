@@ -7,19 +7,14 @@ length_check:
     goto pop;
 
 abort:
-  call(fprintf,
-    stderr,
+  fprintf(stderr,
     "fatal: popping at 0 length [%p]\n",
     ary);
 
   abort();
 
 pop:
-  initialize(address, void*,
-    pointer_offset(ary->data,
-      ary->length * ary->typesize));
-
-  decrement(ary->length);
-
+  void* address = ary->data + (ary->length * ary->typesize);
+  ary->length--;
   return address;
 }

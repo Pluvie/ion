@@ -1,5 +1,5 @@
 #!/bin/bash
-bin/compile $1 -g &&
+bin/compile $1 -g3 &&
 valgrind                    \
   --track-origins=yes       \
   --leak-check=full         \
