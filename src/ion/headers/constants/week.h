@@ -1,0 +1,1 @@
+#define WEEK        WEEKS

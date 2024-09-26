@@ -1,6 +1,6 @@
 #!/bin/bash
 bin/build                                             &&
-sudo rm /usr/lib/libion.so                            &&
+sudo rm -rf /usr/lib/libion.so                        &&
 sudo rm -rf /usr/include/ion                          &&
 sudo mkdir -p /usr/include/ion                        &&
 sudo mkdir -p /usr/include/ion/test                   &&

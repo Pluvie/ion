@@ -1,3 +1,5 @@
+#include "globals/__date_string.h"
+#include "globals/__time_string.h"
 #include "globals/error.h"
 #include "globals/fiber_allocator.h"
 #include "globals/program_allocator.h"

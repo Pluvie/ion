@@ -35,6 +35,8 @@
 #include <ion/headers/functions/binary_decode_sequence.h>
 #include <ion/headers/functions/binary_decode_struct.h>
 //#include <ion/headers/functions/binary_encode.h>
+#include <ion/headers/functions/date.h>
+#include <ion/headers/functions/date_to_string.h>
 #include <ion/headers/functions/hexdump.h>
 #include <ion/headers/functions/io_peek.h>
 #include <ion/headers/functions/io_read.h>
@@ -63,3 +65,5 @@
 #include <ion/headers/functions/protocol_path_print.h>
 #include <ion/headers/functions/reflect_typesize.h>
 #include <ion/headers/functions/sci_notation_convert.h>
+#include <ion/headers/functions/time_now.h>
+#include <ion/headers/functions/time_to_string.h>
