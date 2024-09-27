@@ -21,6 +21,9 @@
 #include <ion/functions/io_read_memory.c>
 #include <ion/functions/io_read_socket.c>
 #include <ion/functions/io_write.c>
+#include <ion/functions/io_write_file.c>
+#include <ion/functions/io_write_memory.c>
+#include <ion/functions/io_write_socket.c>
 //#include <ion/functions/json_decode.c>
 //#include <ion/functions/json_decode_number.c>
 //#include <ion/functions/json_decode_spaces.c>

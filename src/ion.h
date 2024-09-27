@@ -46,6 +46,9 @@
 #include <ion/headers/functions/io_read_memory.h>
 #include <ion/headers/functions/io_read_socket.h>
 #include <ion/headers/functions/io_write.h>
+#include <ion/headers/functions/io_write_file.h>
+#include <ion/headers/functions/io_write_memory.h>
+#include <ion/headers/functions/io_write_socket.h>
 //#include <ion/headers/functions/json_decode.h>
 //#include <ion/headers/functions/json_decode_number.h>
 //#include <ion/headers/functions/json_decode_spaces.h>
