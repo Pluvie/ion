@@ -1,6 +1,6 @@
 /**
  * Initializes an allocator with capacity equal to `MEMORY_DEFAULT_CAP`. */
-#define allocator_init(capacity)      \
+#define allocator_init()              \
   (struct memory) {                   \
     .capacity = MEMORY_DEFAULT_CAP,   \
     .position = 0,                    \
