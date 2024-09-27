@@ -17,7 +17,7 @@ static inline void binary_decode_struct (
     binary_decode(decoder);
     field++;
 
-    if (decoder->error->occurred)
+    if (error.occurred)
       return;
   }
 

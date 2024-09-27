@@ -46,7 +46,6 @@ test( binary_decode, pointer ) {
       .allocator = &allocator,
       .input = &io_reader(input, sizeof(input)),
       .output = &io_writer(&example, sizeof(example)),
-      .error = &(struct failure) { 0 }
     };
 
 
@@ -55,7 +54,7 @@ test( binary_decode, pointer ) {
 
 
   must("decode the input data on the struct correctly");
-    verify(decoder.error->occurred == false);
+    verify(error.occurred == false);
     verify(io_exhausted(decoder.input) == true);
 
     verify(streq(example.name, "Triangle!!"));

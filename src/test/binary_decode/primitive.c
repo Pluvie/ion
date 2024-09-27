@@ -63,7 +63,6 @@ test( binary_decode, primitive ) {
       .allocator = &allocator,
       .input = &io_reader(input, sizeof(input)),
       .output = &io_writer(&example, sizeof(example)),
-      .error = &(struct failure) { 0 }
     };
 
 
@@ -72,7 +71,7 @@ test( binary_decode, primitive ) {
 
 
   must("decode the input data on the struct correctly");
-    verify(decoder.error->occurred == false);
+    verify(error.occurred == false);
     verify(io_exhausted(decoder.input) == true);
     verify(example.value_u8 == 1);
     verify(example.value_u16 == 2);

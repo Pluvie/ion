@@ -6,8 +6,7 @@ struct protocol {
   struct memory* allocator;
   struct io* input;
   struct io* output;
-  struct failure* error;
   void* support_data;
-  padding(16);
+  padding(24);
 };
 check_sizeof(struct protocol, 64);

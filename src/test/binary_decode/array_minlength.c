@@ -32,7 +32,6 @@ test( binary_decode, array_minlength ) {
       .allocator = &allocator,
       .input = &io_reader(input, sizeof(input)),
       .output = &io_writer(&example, sizeof(example)),
-      .error = &(struct failure) { 0 }
     };
 
 
@@ -41,10 +40,11 @@ test( binary_decode, array_minlength ) {
 
 
   must("fail to decode the input data and report the error properly");
-    verify(decoder.error->occurred == true);
-    verify(streq(decoder.error->message,
+    verify(error.occurred == true);
+    verify(streq(error.message,
       "[bytes] array required minimum length of 4 but found 3"));
 
   success();
+    error_reset();
     memory_release(&allocator);
 }

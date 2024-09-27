@@ -9,11 +9,8 @@ static inline void binary_decode_pointer (
 
 read_size:
   u64* ptr_size = io_read(input, sizeof(u64));
-  if (ptr_size == NULL)
-    return protocol_failure(decoder,
-      "unable to read pointer size from input (%li bytes): data length is %li bytes, "\
-        "but cursor already at %li",
-      sizeof(u64), input->length, input->cursor);
+  if (error.occurred)
+    return protocol_failure(decoder);
 
   u64 pointer_size = *ptr_size;
 
@@ -25,18 +22,20 @@ else
 check_type_size:
   u32 pointer_typesize = reflect_typesize(pointer);
 
-  if ((u64) pointer_typesize != pointer_size)
-    return protocol_failure(decoder,
-      "pointer required size of %i (%s) but found %li",
+  if ((u64) pointer_typesize != pointer_size) {
+    fail("pointer required size of %i (%s) but found %li",
       pointer_typesize, type_names[pointer->type], pointer_size);
+    return protocol_failure(decoder);
+  }
 
 check_string_size:
   u64 pointer_maxsize = schema->bounds[0];
 
-  if (pointer_maxsize > 0 && pointer_size > pointer_maxsize)
-    return protocol_failure(decoder,
-      "pointer required maximum string size of %li but found %li",
+  if (pointer_maxsize > 0 && pointer_size > pointer_maxsize) {
+    fail("pointer required maximum string size of %li but found %li",
       pointer_maxsize, pointer_size);
+    return protocol_failure(decoder);
+  }
 
 allocate_pointer:
   void* pointer_data = memory_alloc(decoder->allocator, pointer_size);
@@ -57,13 +56,13 @@ allocate_pointer:
   decoder->schema = schema;
   decoder->output = output;
 
+  if (error.occurred)
+    return;
+
 write_output:
   u64 pointer_address = (u64) pointer_data;
-  u64 written_bytes = io_write(output, &pointer_address, sizeof(u64));
+  io_write(output, &pointer_address, sizeof(u64));
 
-  if (written_bytes == 0)
-    return protocol_failure(decoder,
-      "unable to write %i bytes to output: data length is %li bytes, but cursor "\
-      "already at %li",
-      pointer_size, output->length, output->cursor);
+  if (error.occurred)
+    return protocol_failure(decoder);
 }

@@ -20,6 +20,7 @@
 #include "macros/emit.h"
 #include "macros/emit_c.h"
 #include "macros/error_occurred.h"
+#include "macros/error_reset.h"
 #include "macros/fail.h"
 #include "macros/failure.h"
 #include "macros/field.h"

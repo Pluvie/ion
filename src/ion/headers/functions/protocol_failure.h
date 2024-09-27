@@ -1,7 +1,5 @@
 static inline void protocol_failure (
-    struct protocol* p,
-    const char* format,
-    ...
+    struct protocol* p
 )
 /**
  * ### Description
