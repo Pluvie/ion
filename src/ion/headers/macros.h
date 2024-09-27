@@ -2,6 +2,7 @@
 #include "macros/allocate_on.h"
 #include "macros/allocator_create.h"
 #include "macros/allocator_destroy.h"
+#include "macros/allocator_init.h"
 #include "macros/allocator_release.h"
 #include "macros/approx_eq.h"
 #include "macros/array_allocate_on.h"
