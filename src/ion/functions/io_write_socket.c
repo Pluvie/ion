@@ -11,5 +11,6 @@ static inline u64 io_write_socket (
     return 0;
   }
 
+  writer->written_amount = written_amount;
   return written_amount;
 }

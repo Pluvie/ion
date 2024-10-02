@@ -33,5 +33,6 @@ static inline void* io_read_socket (
 
   reader->length = read_amount;
   reader->cursor = read_amount;
+  reader->read_amount = read_amount;
   return reader->data;
 }
