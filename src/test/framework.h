@@ -40,6 +40,7 @@ bool suite_passed = true;
  * Runs a test case. */
 #define test_run(test_function, test_case)                                              \
   fprintf(original_stderr, "  " #test_function " | " #test_case);                       \
+  error_reset();                                                                        \
   test_function ## __ ## test_case()
 
 
