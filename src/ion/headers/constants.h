@@ -28,6 +28,7 @@
 #include "constants/map_default_cap.h"
 #include "constants/memory_default_align.h"
 #include "constants/memory_default_cap.h"
+#include "constants/memory_min_regions.h"
 #include "constants/minute.h"
 #include "constants/minutes.h"
 #include "constants/print_color_blue.h"

@@ -28,12 +28,13 @@ grow_check:
   if (allocator->position + amount <= allocator->capacity)
     goto allocate;
 
-  struct { byte* address; u64 capacity; } region = {
-    .address = allocator->data,
-    .capacity = allocator->capacity
-  };
+  struct { byte* address; u64 capacity; } region =
+    { allocator->data, allocator->capacity };
 
   if (allocator->regions == NULL) {
+    if (allocator->regions_capacity < MEMORY_MIN_REGIONS)
+      allocator->regions_capacity = MEMORY_MIN_REGIONS;
+
     allocator->regions = malloc(allocator->regions_capacity * sizeof(region));
 
     if (unlikely(allocator->regions == NULL)) {
