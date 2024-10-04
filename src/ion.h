@@ -28,6 +28,7 @@
 #include <ion/headers/functions/array_last.h>
 #include <ion/headers/functions/array_pop.h>
 #include <ion/headers/functions/array_print.h>
+#include <ion/headers/functions/array_print_pretty.h>
 #include <ion/headers/functions/array_push.h>
 #include <ion/headers/functions/array_set.h>
 #include <ion/headers/functions/binary_decode.h>

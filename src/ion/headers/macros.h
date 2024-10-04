@@ -5,6 +5,7 @@
 #include "macros/allocator_init.h"
 #include "macros/allocator_release.h"
 #include "macros/approx_eq.h"
+#include "macros/array_allocate.h"
 #include "macros/array_allocate_on.h"
 #include "macros/array_each.h"
 #include "macros/array_each_with_index.h"

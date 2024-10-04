@@ -3,6 +3,7 @@
 #include <ion/functions/array_last.c>
 #include <ion/functions/array_pop.c>
 #include <ion/functions/array_print.c>
+#include <ion/functions/array_print_pretty.c>
 #include <ion/functions/array_push.c>
 #include <ion/functions/array_set.c>
 #include <ion/functions/binary_decode.c>

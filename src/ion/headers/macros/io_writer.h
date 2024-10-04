@@ -5,4 +5,4 @@
   (struct io) { .data = (byte*) data_var,     \
     .length = length_var,                     \
     .flags = IO_WRITE,                        \
-    __VA_OPT__(, .allocator = __VA_ARGS__) }
+    __VA_OPT__(.allocator = __VA_ARGS__) }
