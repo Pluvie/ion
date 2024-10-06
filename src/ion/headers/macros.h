@@ -39,6 +39,8 @@
 #include "macros/lvar.h"
 #include "macros/map_allocate_on.h"
 #include "macros/map_each.h"
+#include "macros/map_each_key.h"
+#include "macros/map_each_value.h"
 #include "macros/memeq.h"
 #include "macros/next_pow2.h"
 #include "macros/padding.h"
