@@ -7,12 +7,13 @@ test( binary_decode, pointer ) {
         i32 x;
         i32 y;
       } *vertex;
+      struct array* coordinates;
     } example;
 
 
   when("it has an associated schema that enforces a minimum length")
     struct reflect schema = {
-      type(STRUCT, { sizeof(struct example), 2 }) {
+      type(STRUCT, { sizeof(struct example), 3 }) {
         { field(name, struct example), type(POINTER, { 32 })
           {{ type(CHAR) }}
         },
@@ -22,6 +23,10 @@ test( binary_decode, pointer ) {
             { field(x, struct point), type(I32) },
             { field(y, struct point), type(I32) }, }
           }}
+        },
+
+        { field(coordinates, struct example), type(POINTER, { 0 })
+          {{ type(ARRAY, { 2, 2 }) {{ type(I32) }} }}
         },
       }
     };
@@ -36,6 +41,10 @@ test( binary_decode, pointer ) {
       0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       /* vertex size */
       0x04, 0x00, 0x00, 0x00,                               /* vertex->x */
       0x05, 0x00, 0x00, 0x00,                               /* vertex->y */
+
+      0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       /* coordinates length */
+      0x07, 0x00, 0x00, 0x00,                               /* coordinates.1 */
+      0x08, 0x00, 0x00, 0x00,                               /* coordinates.2 */
     };
 
 
@@ -65,7 +74,13 @@ test( binary_decode, pointer ) {
     verify(vertex->x == 4);
     verify(vertex->y == 5);
 
-    verify(allocator.allocations == 2);
+    struct array* coordinates = example.coordinates;
+    verify((void*) example.coordinates == (void*) (allocator.data + 11 + 8));
+    verify(as(i32, array_get(coordinates, 0)) == 7);
+    verify(as(i32, array_get(coordinates, 1)) == 8);
+
+    /* The total allocations must be: 3 (pointers) and 1 (array data). */
+    verify(allocator.allocations == 3 + 1);
 
   success();
     memory_release(&allocator);

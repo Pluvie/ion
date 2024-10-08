@@ -8,11 +8,19 @@ static inline void binary_decode_pointer (
   struct reflect* pointer = schema->child;
 
 read_size:
+  u64 pointer_size = 0;
+
+  if (pointer->type == ARRAY) {
+    /* Special case: a POINTER size of type ARRAY must be omitted. */
+    pointer_size = sizeof(struct array);
+    goto allocate_pointer;
+  }
+
   u64* ptr_size = io_read(input, sizeof(u64));
   if (error.occurred)
     return protocol_failure(decoder);
 
-  u64 pointer_size = *ptr_size;
+  pointer_size = *ptr_size;
 
 if (pointer->type == CHAR)
   goto check_string_size;
@@ -46,7 +54,7 @@ allocate_pointer:
   decoder->output = &pointer_output;
 
   if (pointer->type == CHAR) {
-    // Special case: a POINTER of type CHAR is intended to be a nul-terminated string.
+    /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
     for (u64 i = 0; i < pointer_size; i++)
       binary_decode(decoder);
   } else {
