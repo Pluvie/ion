@@ -69,6 +69,7 @@
 #include <ion/headers/functions/memory_release.h>
 #include <ion/headers/functions/protocol_failure.h>
 #include <ion/headers/functions/protocol_path_print.h>
+#include <ion/headers/functions/reflect_print_indentation.h>
 #include <ion/headers/functions/reflect_typesize.h>
 #include <ion/headers/functions/sci_notation_convert.h>
 #include <ion/headers/functions/time_now.h>

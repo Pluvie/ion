@@ -53,6 +53,7 @@
 #include "macros/procedure.h"
 #include "macros/procedure_arguments.h"
 #include "macros/procedure_result.h"
+#include "macros/reflect_print.h"
 #include "macros/result_initialize.h"
 #include "macros/s.h"
 #include "macros/schema.h"

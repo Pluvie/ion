@@ -42,6 +42,8 @@ decode_array:
   for (u64 i = 0; i < array.length; i++) {
     element->index = i;
     binary_decode(decoder);
+    if (error.occurred)
+      return;
   }
 
   decoder->schema = schema;

@@ -10,13 +10,11 @@ static inline void binary_decode_struct (
   u64 fields_count = schema->bounds[1];
   struct reflect* field = schema->child;
 
-  for (u64 i = 0; i < fields_count; i++) {
+  for (u64 i = 0; i < fields_count; i++, field++) {
     field->parent = schema;
     decoder->schema = field;
     output->cursor = output_initial_cursor + field->offset;
     binary_decode(decoder);
-    field++;
-
     if (error.occurred)
       return;
   }

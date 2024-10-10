@@ -55,17 +55,20 @@ allocate_pointer:
 
   if (pointer->type == CHAR) {
     /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
-    for (u64 i = 0; i < pointer_size; i++)
+    for (u64 i = 0; i < pointer_size; i++) {
       binary_decode(decoder);
+      if (error.occurred)
+        return;
+    }
+
   } else {
     binary_decode(decoder);
+    if (error.occurred)
+      return;
   }
 
   decoder->schema = schema;
   decoder->output = output;
-
-  if (error.occurred)
-    return;
 
 write_output:
   u64 pointer_address = (u64) pointer_data;
