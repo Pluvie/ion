@@ -7,36 +7,20 @@ static inline void binary_decode_pointer (
   struct reflect* schema = decoder->schema;
   struct reflect* pointer = schema->child;
 
-read_size:
-  u64 pointer_size = 0;
+  u64 pointer_size = reflect_typesize(schema->child);
 
-  if (pointer->type == ARRAY) {
-    /* Special case: a POINTER size of type ARRAY must be omitted. */
-    pointer_size = sizeof(struct array);
+  /* Special case: a POINTER size of type CHAR must be explicitly sent, as its
+   * length is not fixed and not known a priori. */
+  if (pointer->type == CHAR)
+    goto check_string_size;
+  else
     goto allocate_pointer;
-  }
 
-  u64* ptr_size = io_read(input, sizeof(u64));
+check_string_size:
+  u64* string_size = io_read(input, sizeof(u64));
   if (error.occurred)
     return protocol_failure(decoder);
 
-  pointer_size = *ptr_size;
-
-if (pointer->type == CHAR)
-  goto check_string_size;
-else
-  goto check_type_size;
-
-check_type_size:
-  u32 pointer_typesize = reflect_typesize(pointer);
-
-  if ((u64) pointer_typesize != pointer_size) {
-    fail("pointer required size of %i (%s) but found %li",
-      pointer_typesize, type_names[pointer->type], pointer_size);
-    return protocol_failure(decoder);
-  }
-
-check_string_size:
   u64 pointer_maxsize = schema->bounds[0];
 
   if (pointer_maxsize > 0 && pointer_size > pointer_maxsize) {
@@ -44,6 +28,8 @@ check_string_size:
       pointer_maxsize, pointer_size);
     return protocol_failure(decoder);
   }
+
+  pointer_size = *string_size;
 
 allocate_pointer:
   void* pointer_data = memory_alloc(decoder->allocator, pointer_size);
