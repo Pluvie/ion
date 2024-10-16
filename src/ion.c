@@ -1,3 +1,4 @@
+#include <ion/functions/array_allocate.c>
 #include <ion/functions/array_get.c>
 #include <ion/functions/array_init.c>
 #include <ion/functions/array_last.c>
@@ -31,6 +32,7 @@
 //#include <ion/functions/json_decode_struct.c>
 //#include <ion/functions/json_parse_number.c>
 //#include <ion/functions/json_parse_string.c>
+#include <ion/functions/map_allocate.c>
 #include <ion/functions/map_get.c>
 #include <ion/functions/map_hash.c>
 #include <ion/functions/map_init.c>

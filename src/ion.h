@@ -23,6 +23,7 @@
 #include <ion/headers/structs.h>
 #include <ion/headers/globals.h>
 
+#include <ion/headers/functions/array_allocate.h>
 #include <ion/headers/functions/array_get.h>
 #include <ion/headers/functions/array_init.h>
 #include <ion/headers/functions/array_last.h>
@@ -56,6 +57,7 @@
 //#include <ion/headers/functions/json_decode_struct.h>
 //#include <ion/headers/functions/json_parse_number.h>
 //#include <ion/headers/functions/json_parse_string.h>
+#include <ion/headers/functions/map_allocate.h>
 #include <ion/headers/functions/map_get.h>
 #include <ion/headers/functions/map_hash.h>
 #include <ion/headers/functions/map_init.h>

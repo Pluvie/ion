@@ -1,0 +1,77 @@
+# Data types.
+
+# Primitives:
+#
+# u8, u16, u32, u64 -> unsigned integers
+# i8, i16, i32, i64 -> signed integers
+# d32, d64, d128 -> decimals
+# bool -> boolean
+# char -> ascii char
+# byte -> generic byte value
+# string -> sequence of unicode points
+
+enum user_type
+  READER
+  WRITER
+  ADMIN
+end
+
+flags user_privileges
+  CAN_VIEW
+  CAN_CREATE
+  CAN_UPDATE
+  CAN_DELETE
+end
+
+struct user
+  name        : string
+  age         : u32
+  type        : user_type
+  privileges  : user_privileges
+end
+
+# Prebuilt data structures:
+
+users_array   : [user]        # Array
+users_map     : {user, u32}   # Map
+users_set     : {user}        # Set
+users_vector  : <user>        # Vector
+user_pointer  : *user         # Pointer
+
+# No Macros.
+# No Preprocessor.
+
+# Executables.
+
+method set_writer
+of user : user
+begin
+  user.privileges |= WRITER
+end
+
+function create_user
+returns user : user
+arguments
+  name  : string
+  age   : u32
+begin
+  initialize user with
+    .name = name
+    .age  = age
+
+  call user->set_writer
+end
+
+function print_users
+arguments
+  users : [users]
+begin
+  initialize message : string with "hello!"
+  interop fprintf with stderr, "-> %s", message.pointer
+
+  for each user : *user in users
+  with user_index : u64 do
+    interop fprintf with stderr, "[%li] { %s, %i }",
+      user_index, user.name.pointer, user.age
+  end
+end
