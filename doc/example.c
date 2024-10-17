@@ -1,6 +1,61 @@
 #include <src/ion.h>
 #include <src/ion.c>
 
+struct example {
+  i32 number;
+  u32 ages[4];
+  struct array* values;
+  struct {
+    i32 value;
+  } inner;
+  struct pointed {
+    i32 test;
+    i32 abc;
+  }* pointed;
+};
+
+
+struct new_reflect {
+  char* name;
+  u32 offset;
+  u32 index;
+  u32 bounds[2];
+  enum types type;
+  struct new_reflect* parent;
+  struct vector* child;
+  padding(16);
+};
+check_sizeof(struct new_reflect, 64);
+
+#define new_type(type_name, ...) .type = type_name __VA_OPT__(, .bounds = { __VA_ARGS__ })
+#define new_fields(...) .child = &vector_of(struct new_reflect, __VA_ARGS__)
+#define new_field(struct_name, member_name) .offset = offsetof(struct_name, member_name), .name = #member_name
+#define of(...) .child = &vector_of(struct new_reflect, { __VA_ARGS__ })
+
+struct new_reflect example_schema = {
+  new_type(STRUCT), new_fields({
+    { new_field(struct example, number), new_type(I32) },
+    { new_field(struct example, inner), new_type(STRUCT), new_fields({
+      { new_field(struct example, inner.value), new_type(I32) } })
+    },
+    { new_field(struct example, ages), new_type(SEQUENCE, 4), of({ new_type(U32) }) },
+    { new_field(struct example, values), new_type(ARRAY, 1, 3), of({
+        new_type(ARRAY), of({ new_type(BYTE) })
+      })
+    },
+    { new_field(struct example, pointed), new_type(POINTER), of({
+        new_type(STRUCT), new_fields({
+          { new_field(struct pointed, test), new_type(I32) },
+          { new_field(struct pointed, abc), new_type(I32) },
+        })
+      })
+    }
+  })
+};
+
+
+
+
 
 void binary_encode (
     struct reflect* schema,
