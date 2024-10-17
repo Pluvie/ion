@@ -9,6 +9,9 @@
 #include <test/binary_decode/pointer.c>
 #include <test/binary_decode/primitive.c>
 #include <test/binary_decode/sequence.c>
+#include <test/binary_decode/vector.c>
+#include <test/binary_decode/vector_maxlength.c>
+#include <test/binary_decode/vector_minlength.c>
 #include <test/io_read_memory/invalid_cursor.c>
 #include <test/io_read_memory/valid_cursor.c>
 #include <test/io_read_socket/recv_failure.c>
@@ -100,6 +103,9 @@ void test_suite (
   test_run( binary_decode, pointer );
   test_run( binary_decode, primitive );
   test_run( binary_decode, sequence );
+  test_run( binary_decode, vector );
+  test_run( binary_decode, vector_maxlength );
+  test_run( binary_decode, vector_minlength );
   test_run( io_read_memory, invalid_cursor );
   test_run( io_read_memory, valid_cursor );
   test_run( io_read_socket, recv_failure );
