@@ -19,10 +19,10 @@ dimensions_check:
 position_check:
   for vector_each_with_index(positions, index, u64*, position) {
     u64 dimension_length = as(u64, vector_get(tensor->dimensions, index));
-    if (unlikely(position >= dimension_length)) {
+    if (unlikely(*position >= dimension_length)) {
       fprintf(stderr,
         "fatal: position %li out of dimension %li bounds [%p]\n",
-        position, index, tensor);
+        *position, index, tensor);
 
       abort();
     }
@@ -30,9 +30,10 @@ position_check:
 
 at:
   u64 position_offset = 0;
-  for vector_each_with_index(positions, index, u64*, position) {
-    u64 offset = as(u64, vector_get(tensor->offsets, index));
-    position_offset += position * offset;
+  for vector_each_with_index(
+      tensor->dimensions, dimension_index, struct tensor_dimension*, dimension) {
+    u64 position = as(u64, vector_get(positions, dimension_index));
+    position_offset += position * dimension->offset;
   }
 
   return tensor->data + (position_offset * tensor->typesize);
