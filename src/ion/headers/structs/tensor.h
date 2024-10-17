@@ -4,8 +4,15 @@ struct tensor {
   u64 typesize;
   void* data;
   struct vector* dimensions;
-  struct vector* offsets;
-  struct memory* allocator;
-  padding(16);
 };
-check_sizeof(struct tensor, 64);
+check_sizeof(struct tensor, 32);
+
+
+
+
+struct tensor_dimension;
+struct tensor_dimension {
+  u64 length;
+  u64 offset;
+};
+check_sizeof(struct tensor_dimension, 16);

@@ -84,6 +84,9 @@
 #include <test/sci_notation_convert/unsigned_8.c>
 #include <test/sci_notation_convert/unsigned_8_overflow.c>
 #include <test/sci_notation_convert/unsigned_consistency.c>
+#include <test/tensor_init/correct_dimensions.c>
+#include <test/tensor_init/correct_length.c>
+#include <test/tensor_init/correct_offsets.c>
 #include <test/vector_get/element_at_position.c>
 #include <test/vector_get/position_out_of_bounds.c>
 #include <test/vector_init/correct_length.c>
@@ -178,6 +181,9 @@ void test_suite (
   test_run( sci_notation_convert, unsigned_8 );
   test_run( sci_notation_convert, unsigned_8_overflow );
   test_run( sci_notation_convert, unsigned_consistency );
+  test_run( tensor_init, correct_dimensions );
+  test_run( tensor_init, correct_length );
+  test_run( tensor_init, correct_offsets );
   test_run( vector_get, element_at_position );
   test_run( vector_get, position_out_of_bounds );
   test_run( vector_init, correct_length );
