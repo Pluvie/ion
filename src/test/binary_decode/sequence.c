@@ -12,18 +12,17 @@ test( binary_decode, sequence ) {
 
   when("it has an associated schema")
     struct reflect schema = {
-      type(STRUCT, { sizeof(struct example), 2 }) {
-        { field(struct example, name), type(SEQUENCE, { 32 })
-          {{ type(CHAR) }}
-        },
+      type(STRUCT, sizeof(struct example)), fields({
+        { field(struct example, name), type(SEQUENCE, 32), of({ type(CHAR) }) },
 
-        { field(struct example, vertexes), type(SEQUENCE, { 3 })
-          {{ type(STRUCT, { sizeof(struct point), 2 }) {
-            { field(struct point, x), type(I32) },
-            { field(struct point, y), type(I32) }, }
-          }}
+        { field(struct example, vertexes), type(SEQUENCE, 3), of({
+            type(STRUCT, sizeof(struct point)), fields({
+              { field(struct point, x), type(I32) },
+              { field(struct point, y), type(I32) },
+            })
+          })
         },
-      }
+      })
     };
 
 

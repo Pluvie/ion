@@ -4,11 +4,11 @@
 #include <test/array_init/immediate_allocation.c>
 #include <test/array_init/power_2_capacity.c>
 #include <test/binary_decode/array.c>
-//#include <test/binary_decode/array_maxlength.c>
-//#include <test/binary_decode/array_minlength.c>
-//#include <test/binary_decode/pointer.c>
-//#include <test/binary_decode/primitive.c>
-//#include <test/binary_decode/sequence.c>
+#include <test/binary_decode/array_maxlength.c>
+#include <test/binary_decode/array_minlength.c>
+#include <test/binary_decode/pointer.c>
+#include <test/binary_decode/primitive.c>
+#include <test/binary_decode/sequence.c>
 #include <test/io_read_memory/invalid_cursor.c>
 #include <test/io_read_memory/valid_cursor.c>
 #include <test/io_read_socket/recv_failure.c>
@@ -51,11 +51,9 @@
 #include <test/memory_init/default_capacity.c>
 #include <test/memory_init/no_immediate_allocation.c>
 #include <test/memory_init/power_2_capacity.c>
-//#include <test/protocol_failure/with_path.c>
-//#include <test/protocol_failure/without_path.c>
-//#include <test/protocol_path_print/dot_separated.c>
-//#include <test/protocol_path_print/empty.c>
-//#include <test/protocol_path_print/index.c>
+#include <test/protocol_path_print/dot_separated.c>
+#include <test/protocol_path_print/empty.c>
+#include <test/protocol_path_print/index.c>
 #include <test/sci_notation_convert/decimal_128.c>
 #include <test/sci_notation_convert/decimal_32.c>
 #include <test/sci_notation_convert/decimal_64.c>
@@ -97,11 +95,11 @@ void test_suite (
   test_run( array_init, immediate_allocation );
   test_run( array_init, power_2_capacity );
   test_run( binary_decode, array );
-  //test_run( binary_decode, array_maxlength );
-  //test_run( binary_decode, array_minlength );
-  //test_run( binary_decode, pointer );
-  //test_run( binary_decode, primitive );
-  //test_run( binary_decode, sequence );
+  test_run( binary_decode, array_maxlength );
+  test_run( binary_decode, array_minlength );
+  test_run( binary_decode, pointer );
+  test_run( binary_decode, primitive );
+  test_run( binary_decode, sequence );
   test_run( io_read_memory, invalid_cursor );
   test_run( io_read_memory, valid_cursor );
   test_run( io_read_socket, recv_failure );
@@ -144,11 +142,9 @@ void test_suite (
   test_run( memory_init, default_capacity );
   test_run( memory_init, no_immediate_allocation );
   test_run( memory_init, power_2_capacity );
-  //test_run( protocol_failure, with_path );
-  //test_run( protocol_failure, without_path );
-  //test_run( protocol_path_print, dot_separated );
-  //test_run( protocol_path_print, empty );
-  //test_run( protocol_path_print, index );
+  test_run( protocol_path_print, dot_separated );
+  test_run( protocol_path_print, empty );
+  test_run( protocol_path_print, index );
   test_run( sci_notation_convert, decimal_128 );
   test_run( sci_notation_convert, decimal_32 );
   test_run( sci_notation_convert, decimal_64 );

@@ -11,7 +11,7 @@ test( binary_decode, primitive ) {
 
   when("it has an associated schema")
     struct reflect schema = {
-      type(STRUCT, { sizeof(struct example), 14 }) {
+      type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, value_u8), type(U8) },
         { field(struct example, value_u16), type(U16) },
         { field(struct example, value_u32), type(U32) },
@@ -26,7 +26,7 @@ test( binary_decode, primitive ) {
         { field(struct example, value_byte), type(BYTE) },
         { field(struct example, value_char), type(CHAR) },
         { field(struct example, value_bool), type(BOOL) },
-      }
+      })
     };
 
 

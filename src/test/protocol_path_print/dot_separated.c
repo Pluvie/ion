@@ -10,23 +10,29 @@ test( protocol_path_print, dot_separated ) {
     };
 
     struct reflect schema = {
-      type(STRUCT, { sizeof(struct example), 2 }) {
+      type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, index), type(U64) },
         { field(struct example, value), type(U64) },
-        { field(struct example, inner), type(STRUCT, { sizeof(struct example_inner), 1 }) {
-          { field(struct example_inner, value_inner), type(I32) }
-        } },
-      }
+        { field(struct example, inner),
+            type(STRUCT, sizeof(struct example_inner)), fields({
+              { field(struct example_inner, value_inner), type(I32) }
+            })
+        },
+      })
     };
 
 
   when("a protocol is initialized on that schema");
-    struct reflect* schema_inner = schema.child + 2;
+    struct reflect* schema_inner = vector_get(schema.child, 2);
     schema_inner->parent = &schema;
-    schema_inner->child->parent = schema_inner;
+    struct reflect* schema_inner_value_inner = vector_get(schema_inner->child, 0);
+    schema_inner_value_inner->parent = schema_inner;
 
     struct memory allocator = memory_init(4096);
-    struct protocol proto = { .schema = schema_inner->child, .allocator = &allocator };
+    struct protocol proto = {
+      .schema = vector_get(schema_inner->child, 0),
+      .allocator = &allocator
+    };
 
 
   calling("protocol_path_print()");

@@ -10,34 +10,36 @@ test( protocol_path_print, index ) {
     };
 
     struct reflect schema_inner = {
-      type(STRUCT, { sizeof(struct example_inner), 1 }) {
+      type(STRUCT, sizeof(struct example_inner)), fields({
         { field(struct example_inner, value_inner), type(I32) }
-      }
+      })
     };
 
     struct reflect schema = {
-      type(STRUCT, { sizeof(struct example), 3 }) {
+      type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, index), type(U64) },
         { field(struct example, value), type(U64) },
-        { field(struct example, inner), type(SEQUENCE, 3)
-          {{ schema(&schema_inner) }},
+        { field(struct example, inner), type(SEQUENCE, 3), of({
+            type(STRUCT), schema(&schema_inner)
+          })
         },
-      }
+      })
     };
 
 
   when("a protocol is initialized on that schema");
-    struct reflect* schema_sequence = schema.child + 2;
+    struct reflect* schema_sequence = vector_get(schema.child, 2);
     schema_sequence->parent = &schema;
-    struct reflect* schema_sequence_inner = schema_sequence->child;
+    struct reflect* schema_sequence_inner = vector_get(schema_sequence->child, 0);
     schema_sequence_inner->index = 2;
     schema_sequence_inner->parent = schema_sequence;
-    schema_sequence_inner->child->parent = schema_sequence_inner;
+    struct reflect* schema_sequence_inner_value_inner = vector_get(schema_sequence_inner->child, 0);
+    schema_sequence_inner_value_inner->parent = schema_sequence_inner;
 
 
     struct memory allocator = memory_init(4096);
     struct protocol proto = {
-      .schema = schema_sequence_inner->child,
+      .schema = vector_get(schema_sequence_inner->child, 0),
       .allocator = &allocator
     };
 

@@ -8,11 +8,9 @@ test( binary_decode, array_minlength ) {
 
   when("it has an associated schema that enforces a minimum length")
     struct reflect schema = {
-      type(STRUCT, { sizeof(struct example), 1 }) {
-        { field(struct example, bytes), type(ARRAY, { 4, 0 })
-          {{ type(BYTE) }}
-        },
-      }
+      type(STRUCT, sizeof(struct example)), fields({
+        { field(struct example, bytes), type(ARRAY, 4, 0), of({ type(BYTE) }) },
+      })
     };
 
 
