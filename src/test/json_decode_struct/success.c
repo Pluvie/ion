@@ -9,7 +9,7 @@ test( json_decode_struct, success ) {
 
     struct reflect schema = {
       type(STRUCT, { sizeof(struct example), 1 }) {
-        { field(value_u8, struct example), type(U8) },
+        { field(struct example, value_u8), type(U8) },
       }
     };
 

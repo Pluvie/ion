@@ -76,3 +76,7 @@
 #include <ion/headers/functions/sci_notation_convert.h>
 #include <ion/headers/functions/time_now.h>
 #include <ion/headers/functions/time_to_string.h>
+#include <ion/headers/functions/vector_allocate.h>
+#include <ion/headers/functions/vector_get.h>
+#include <ion/headers/functions/vector_init.h>
+#include <ion/headers/functions/vector_set.h>

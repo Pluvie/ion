@@ -16,25 +16,25 @@ test( binary_decode, array ) {
   when("it has an associated schema")
     struct reflect element_schema = {
       type(STRUCT, { sizeof(struct element), 2 }) {
-        { field(a, struct element), type(I32) },
-        { field(b, struct element), type(I32) },
+        { field(struct element, a), type(I32) },
+        { field(struct element, b), type(I32) },
       }
     };
 
     struct reflect schema = {
       type(STRUCT, { sizeof(struct example), 3 }) {
 
-        { field(one_dim, struct example), type(ARRAY, { 0, 0 })
+        { field(struct example, one_dim), type(ARRAY, { 0, 0 })
           {{ schema(&element_schema) }}
         },
 
-        { field(two_dim, struct example), type(ARRAY, { 0, 0 })
+        { field(struct example, two_dim), type(ARRAY, { 0, 0 })
           {{ type(ARRAY, { 0, 0 })
             {{ schema(&element_schema) }}
           }}
         },
 
-        { field(three_dim, struct example), type(ARRAY, { 0, 0 })
+        { field(struct example, three_dim), type(ARRAY, { 0, 0 })
           {{ type(ARRAY, { 0, 0 })
             {{ type(ARRAY, { 0, 0 })
               {{ type(U8) }}

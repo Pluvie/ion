@@ -14,18 +14,18 @@ test( binary_decode, pointer ) {
   when("it has an associated schema that enforces a minimum length")
     struct reflect schema = {
       type(STRUCT, { sizeof(struct example), 3 }) {
-        { field(name, struct example), type(POINTER, { 32 })
+        { field(struct example, name), type(POINTER, { 32 })
           {{ type(CHAR) }}
         },
 
-        { field(vertex, struct example), type(POINTER, { 0 })
+        { field(struct example, vertex), type(POINTER, { 0 })
           {{ type(STRUCT, { sizeof(struct point), 2 }) {
-            { field(x, struct point), type(I32) },
-            { field(y, struct point), type(I32) }, }
+            { field(struct point, x), type(I32) },
+            { field(struct point, y), type(I32) }, }
           }}
         },
 
-        { field(coordinates, struct example), type(POINTER, { 0 })
+        { field(struct example, coordinates), type(POINTER, { 0 })
           {{ type(ARRAY, { 2, 2 }) {{ type(I32) }} }}
         },
       }

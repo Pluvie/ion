@@ -11,15 +11,15 @@ test( protocol_path_print, index ) {
 
     struct reflect schema_inner = {
       type(STRUCT, { sizeof(struct example_inner), 1 }) {
-        { field(value_inner, struct example_inner), type(I32) }
+        { field(struct example_inner, value_inner), type(I32) }
       }
     };
 
     struct reflect schema = {
       type(STRUCT, { sizeof(struct example), 3 }) {
-        { field(index, struct example), type(U64) },
-        { field(value, struct example), type(U64) },
-        { field(inner, struct example), type(SEQUENCE, 3)
+        { field(struct example, index), type(U64) },
+        { field(struct example, value), type(U64) },
+        { field(struct example, inner), type(SEQUENCE, 3)
           {{ schema(&schema_inner) }},
         },
       }

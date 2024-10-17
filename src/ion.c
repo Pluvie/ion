@@ -51,3 +51,7 @@
 #include <ion/functions/sci_notation_convert.c>
 #include <ion/functions/time_now.c>
 #include <ion/functions/time_to_string.c>
+#include <ion/functions/vector_allocate.c>
+#include <ion/functions/vector_get.c>
+#include <ion/functions/vector_init.c>
+#include <ion/functions/vector_set.c>

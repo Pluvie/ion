@@ -12,20 +12,20 @@ test( json_decode, primitive ) {
 
     struct reflect schema = {
       type(STRUCT, { sizeof(struct example), 14 }) {
-        { field(value_u8, struct example), type(U8) },
-        { field(value_u16, struct example), type(U16) },
-        { field(value_u32, struct example), type(U32) },
-        { field(value_u64, struct example), type(U64) },
-        { field(value_i8, struct example), type(I8) },
-        { field(value_i16, struct example), type(I16) },
-        { field(value_i32, struct example), type(I32) },
-        { field(value_i64, struct example), type(I64) },
-        { field(value_d32, struct example), type(D32) },
-        { field(value_d64, struct example), type(D64) },
-        { field(value_d128, struct example), type(D128) },
-        { field(value_byte, struct example), type(BYTE) },
-        { field(value_char, struct example), type(CHAR) },
-        { field(value_bool, struct example), type(BOOL) },
+        { field(struct example, value_u8), type(U8) },
+        { field(struct example, value_u16), type(U16) },
+        { field(struct example, value_u32), type(U32) },
+        { field(struct example, value_u64), type(U64) },
+        { field(struct example, value_i8), type(I8) },
+        { field(struct example, value_i16), type(I16) },
+        { field(struct example, value_i32), type(I32) },
+        { field(struct example, value_i64), type(I64) },
+        { field(struct example, value_d32), type(D32) },
+        { field(struct example, value_d64), type(D64) },
+        { field(struct example, value_d128), type(D128) },
+        { field(struct example, value_byte), type(BYTE) },
+        { field(struct example, value_char), type(CHAR) },
+        { field(struct example, value_bool), type(BOOL) },
       }
     };
 

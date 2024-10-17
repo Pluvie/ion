@@ -7,3 +7,5 @@
 #include "structs/protocol.h"
 #include "structs/reflect.h"
 #include "structs/sci_notation.h"
+#include "structs/tensor.h"
+#include "structs/vector.h"

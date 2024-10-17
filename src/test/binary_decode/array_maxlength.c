@@ -9,7 +9,7 @@ test( binary_decode, array_maxlength ) {
   when("it has an associated schema that enforces a maximum length")
     struct reflect schema = {
       type(STRUCT, { sizeof(struct example), 1 }) {
-        { field(bytes, struct example), type(ARRAY, { 0, 2 })
+        { field(struct example, bytes), type(ARRAY, { 0, 2 })
           {{ type(BYTE) }}
         },
       }
