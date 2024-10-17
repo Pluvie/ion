@@ -15,9 +15,10 @@ u32 type_sizes[] = {
   1,    /* BYTE */
   1,    /* CHAR */
   1,    /* BOOL */
-  /* ARRAY, STRUCT, POINTER and SEQUENCE do not have a size known a priori. */
-  0,    /* ARRAY */
+  /* STRUCT, POINTER, SEQUENCE, ARRAY, and VECTOR do not have a size known a priori. */
   0,    /* STRUCT */
   0,    /* POINTER */
   0,    /* SEQUENCE */
+  0,    /* ARRAY */
+  0,    /* VECTOR */
 };

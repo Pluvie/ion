@@ -7,12 +7,13 @@
 #include <ion/functions/array_print_pretty.c>
 #include <ion/functions/array_push.c>
 #include <ion/functions/array_set.c>
-//#include <ion/functions/binary_decode.c>
-//#include <ion/functions/binary_decode_array.c>
-//#include <ion/functions/binary_decode_pointer.c>
-//#include <ion/functions/binary_decode_primitive.c>
-//#include <ion/functions/binary_decode_sequence.c>
-//#include <ion/functions/binary_decode_struct.c>
+#include <ion/functions/binary_decode.c>
+#include <ion/functions/binary_decode_array.c>
+#include <ion/functions/binary_decode_pointer.c>
+#include <ion/functions/binary_decode_primitive.c>
+#include <ion/functions/binary_decode_sequence.c>
+#include <ion/functions/binary_decode_struct.c>
+#include <ion/functions/binary_decode_vector.c>
 //#include <ion/functions/binary_encode.c>
 #include <ion/functions/date.c>
 #include <ion/functions/date_to_string.c>
@@ -46,6 +47,7 @@
 #include <ion/functions/memory_release.c>
 #include <ion/functions/protocol_failure.c>
 #include <ion/functions/protocol_path_print.c>
+#include <ion/functions/reflect_print.c>
 #include <ion/functions/reflect_print_indentation.c>
 #include <ion/functions/reflect_typesize.c>
 #include <ion/functions/sci_notation_convert.c>

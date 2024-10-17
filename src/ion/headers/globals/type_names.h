@@ -15,8 +15,9 @@ const char* type_names[] = {
   "BYTE",
   "CHAR",
   "BOOL",
-  "ARY",
   "STRU",
   "PTR",
   "SEQ",
+  "ARY",
+  "VEC",
 };

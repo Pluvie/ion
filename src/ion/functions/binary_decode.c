@@ -28,16 +28,20 @@ void binary_decode (
     binary_decode_struct(decoder);
     break;
 
-  case ARRAY:
-    binary_decode_array(decoder);
-    break;
-
   case POINTER:
     binary_decode_pointer(decoder);
     break;
 
   case SEQUENCE:
     binary_decode_sequence(decoder);
+    break;
+
+  case ARRAY:
+    binary_decode_array(decoder);
+    break;
+
+  case VECTOR:
+    binary_decode_vector(decoder);
     break;
   }
 }

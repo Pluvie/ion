@@ -5,9 +5,8 @@ static inline void binary_decode_pointer (
   struct io* input = decoder->input;
   struct io* output = decoder->output;
   struct reflect* schema = decoder->schema;
-  struct reflect* pointer = schema->child;
-
-  u64 pointer_size = reflect_typesize(schema->child);
+  struct reflect* pointer = vector_get(schema->child, 0);
+  u64 pointer_size = reflect_typesize(pointer);
 
   /* Special case: a POINTER size of type CHAR must be explicitly sent, as its
    * length is not fixed and not known a priori. */
@@ -17,15 +16,14 @@ static inline void binary_decode_pointer (
     goto allocate_pointer;
 
 check_string_size:
+  u64 string_max_size = schema->bounds[0];
   u64* string_size = io_read(input, sizeof(u64));
   if (error.occurred)
     return protocol_failure(decoder);
 
-  u64 pointer_maxsize = schema->bounds[0];
-
-  if (pointer_maxsize > 0 && pointer_size > pointer_maxsize) {
+  if (string_max_size > 0 && *string_size > string_max_size) {
     fail("pointer required maximum string size of %li but found %li",
-      pointer_maxsize, pointer_size);
+      string_max_size, pointer_size);
     return protocol_failure(decoder);
   }
 
@@ -59,7 +57,6 @@ allocate_pointer:
 write_output:
   u64 pointer_address = (u64) pointer_data;
   io_write(output, &pointer_address, sizeof(u64));
-
   if (error.occurred)
     return protocol_failure(decoder);
 }

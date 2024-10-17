@@ -40,9 +40,9 @@ loop_nodes:
       (node->parent->type == ARRAY || node->parent->type == SEQUENCE)) {
 
     if (node_index == 0)
-      printed_bytes = snprintf(result, length - print_cursor, "%li", node->index);
+      printed_bytes = snprintf(result, length - print_cursor, "%i", node->index);
     else
-      printed_bytes = snprintf(result, length - print_cursor, "%li.", node->index);
+      printed_bytes = snprintf(result, length - print_cursor, "%i.", node->index);
 
     goto previous_node;
   }

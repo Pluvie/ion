@@ -5,7 +5,7 @@ static inline void binary_decode_array (
   struct io* input = decoder->input;
   struct io* output = decoder->output;
   struct reflect* schema = decoder->schema;
-  struct reflect* element = schema->child;
+  struct reflect* element = vector_get(schema->child, 0);
   u64 array_typesize = reflect_typesize(element);
 
 read_length:
@@ -51,7 +51,6 @@ decode_array:
 
 write_output:
   io_write(output, &array, sizeof(struct array));
-
   if (error.occurred)
     return protocol_failure(decoder);
 }

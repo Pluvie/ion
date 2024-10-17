@@ -32,12 +32,13 @@
 #include <ion/headers/functions/array_print_pretty.h>
 #include <ion/headers/functions/array_push.h>
 #include <ion/headers/functions/array_set.h>
-//#include <ion/headers/functions/binary_decode.h>
-//#include <ion/headers/functions/binary_decode_array.h>
-//#include <ion/headers/functions/binary_decode_pointer.h>
-//#include <ion/headers/functions/binary_decode_primitive.h>
-//#include <ion/headers/functions/binary_decode_sequence.h>
-//#include <ion/headers/functions/binary_decode_struct.h>
+#include <ion/headers/functions/binary_decode.h>
+#include <ion/headers/functions/binary_decode_array.h>
+#include <ion/headers/functions/binary_decode_pointer.h>
+#include <ion/headers/functions/binary_decode_primitive.h>
+#include <ion/headers/functions/binary_decode_sequence.h>
+#include <ion/headers/functions/binary_decode_struct.h>
+#include <ion/headers/functions/binary_decode_vector.h>
 //#include <ion/headers/functions/binary_encode.h>
 #include <ion/headers/functions/date.h>
 #include <ion/headers/functions/date_to_string.h>
@@ -71,6 +72,7 @@
 #include <ion/headers/functions/memory_release.h>
 #include <ion/headers/functions/protocol_failure.h>
 #include <ion/headers/functions/protocol_path_print.h>
+#include <ion/headers/functions/reflect_print.h>
 #include <ion/headers/functions/reflect_print_indentation.h>
 #include <ion/headers/functions/reflect_typesize.h>
 #include <ion/headers/functions/sci_notation_convert.h>

@@ -26,24 +26,28 @@ void reflect_print_indentation (
 
   case STRUCT:
     print("%s : struct", schema->name);
-    for (u32 i = 0; i < schema->bounds[1]; i++)
-      reflect_print_indentation(schema->child + i, indentation + 2);
-
-    break;
-
-  case ARRAY:
-    print("%s : array", schema->name);
-    reflect_print_indentation(schema->child, indentation + 2);
+    for vector_each(schema->child, struct reflect*, field)
+      reflect_print_indentation(field, indentation + 2);
     break;
 
   case POINTER:
     print("%s : pointer", schema->name);
-    reflect_print_indentation(schema->child, indentation + 2);
+    reflect_print_indentation(vector_get(schema->child, 0), indentation + 2);
     break;
 
   case SEQUENCE:
     print("%s : sequence", schema->name);
-    reflect_print_indentation(schema->child, indentation + 2);
+    reflect_print_indentation(vector_get(schema->child, 0), indentation + 2);
+    break;
+
+  case ARRAY:
+    print("%s : array", schema->name);
+    reflect_print_indentation(vector_get(schema->child, 0), indentation + 2);
+    break;
+
+  case VECTOR:
+    print("%s : vector", schema->name);
+    reflect_print_indentation(vector_get(schema->child, 0), indentation + 2);
     break;
   }
 }

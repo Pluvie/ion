@@ -8,7 +8,6 @@ static inline void binary_decode_primitive (
 
   u32 type_size = type_sizes[schema->type];
   void* primitive_value = io_read(input, type_size);
-
   if (error.occurred)
     return protocol_failure(decoder);
 
@@ -18,6 +17,7 @@ static inline void binary_decode_primitive (
       io_write(output, &(bool){ false }, type_size);
     else
       io_write(output, &(bool){ true }, type_size);
+
   } else {
     io_write(output, primitive_value, type_size);
   }

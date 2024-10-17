@@ -16,8 +16,9 @@ enum types {
   BYTE,       /* hex byte         : 1 byte. */
   CHAR,       /* ascii char       : 1 byte. */
   BOOL,       /* boolean          : 1 byte. */
-  ARRAY,      /* array            : n byte. */
   STRUCT,     /* struct           : n byte. */
   POINTER,    /* pointer          : n bytes. */
   SEQUENCE,   /* sequence         : n bytes. */
+  ARRAY,      /* array            : n byte. */
+  VECTOR,     /* vectors          : n byte. */
 };

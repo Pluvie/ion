@@ -17,7 +17,7 @@ struct reflect;
  * };
  * 
  * struct reflect example_schema = {
- *   type(STRUCT), fields({
+ *   type(STRUCT, sizeof(struct example)), fields({
  *     { field(struct example, number), type(I32) },
  *     { field(struct example, inner), type(STRUCT), fields({
  *       { field(struct example, inner.value), type(I32) } })

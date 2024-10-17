@@ -7,11 +7,18 @@ fi
 
 APP=$1
 SOURCE=$1
+FOCUS=
+
+if [ "$APP" = "test_focus" ]; then
+  SOURCE="test"
+  FOCUS="-D FOCUSED_SUITE"
+fi
 
 mkdir -p exe
 gcc src/$SOURCE.c               \
   -o exe/$APP                   \
   -I ./src                      \
+  $FOCUS                        \
   -Wall                         \
   -Wno-unused-label             \
   -Werror                       \

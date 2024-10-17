@@ -31,6 +31,7 @@
 #include "macros/map_each_value.h"
 #include "macros/memeq.h"
 #include "macros/next_pow2.h"
+#include "macros/of.h"
 #include "macros/padding.h"
 #include "macros/print.h"
 #include "macros/print_c.h"
