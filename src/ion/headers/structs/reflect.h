@@ -2,30 +2,51 @@ struct reflect;
 /**
  * Explain what reflection is and how it's useful for serialization.
  *
- * Limitations:
- *
- * - unions are not supported.
- * - structs **must** have a tag or be typedef'd: this is because the #field macro
- *   needs an identifiable struct type to calculate the field offset. Example:
- *
  * ```c
  * struct example {
- *   i32 a;
- *   struct {   // This struct won't work, because it's tagless: therefore it's not 
- *     i32 b;   // possible to calculate the offsets of its fields at compile time,
- *     i32 c;   // because the `offsetof` macro requires an identifiable tag.
- *   } d;
+ *   i32 number;
+ *   u32 ages[4];
+ *   struct array* values;
+ *   struct {
+ *     i32 value;
+ *   } inner;
+ *   struct pointed {
+ *     i32 test;
+ *     i32 abc;
+ *   }* pointed;
+ * };
+ * 
+ * struct reflect example_schema = {
+ *   type(STRUCT), fields({
+ *     { field(struct example, number), type(I32) },
+ *     { field(struct example, inner), type(STRUCT), fields({
+ *       { field(struct example, inner.value), type(I32) } })
+ *     },
+ *     { field(struct example, ages), type(SEQUENCE, 4), of({ type(U32) }) },
+ *     { field(struct example, values), type(ARRAY, 1, 3), of({
+ *         type(ARRAY), of({ type(BYTE) })
+ *       })
+ *     },
+ *     { field(struct example, pointed), type(POINTER), of({
+ *         type(STRUCT), fields({
+ *           { field(struct pointed, test), type(I32) },
+ *           { field(struct pointed, abc), type(I32) },
+ *         })
+ *       })
+ *     }
+ *   })
  * };
  * ```
  *
  * */
 struct reflect {
-  u64 offset;
-  u64 bounds[2];
-  u64 index;
   char* name;
+  u32 offset;
+  u32 index;
+  u32 bounds[2];
   enum types type;
   struct reflect* parent;
-  struct reflect* child;
+  struct vector* child;
+  padding(16);
 };
 check_sizeof(struct reflect, 64);
