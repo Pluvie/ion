@@ -5,4 +5,4 @@
  * https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html) which are fast and efficient
  * operation on CPU registers. */
 #define log2(number) \
-  (number > 1 ? 64 - __builtin_clzl((u64) number - 1) : 0)
+  (number > 1 ? 64 - __builtin_clzll((u64) number - 1) : 0)
