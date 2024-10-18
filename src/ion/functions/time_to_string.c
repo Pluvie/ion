@@ -10,7 +10,7 @@ char* time_to_string (
   i64 milliseconds = time - ((i64) time_in_seconds * 1000);
   struct tm time_calendar;
 
-  bzero(__time_string, sizeof(__time_string));
+  memzero(__time_string, sizeof(__time_string));
   if (gmtime_r(&time_in_seconds, &time_calendar) == NULL)
     return NULL;
 

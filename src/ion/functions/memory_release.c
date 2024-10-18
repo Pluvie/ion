@@ -13,5 +13,5 @@ void memory_release (
 
   free(allocator->regions);
 
-  bzero(allocator, sizeof(struct memory));
+  memzero(allocator, sizeof(struct memory));
 }

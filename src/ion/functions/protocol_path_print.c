@@ -61,6 +61,6 @@ previous_node:
   goto loop_nodes;
 
 print_error:
-  bzero(result, length);
+  memzero(result, length);
   return printed_bytes;
 }

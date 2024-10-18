@@ -9,7 +9,7 @@ char* date_to_string (
   time_t time_in_seconds = time / 1000;
   struct tm time_calendar;
 
-  bzero(__date_string, sizeof(__date_string));
+  memzero(__date_string, sizeof(__date_string));
   if (gmtime_r(&time_in_seconds, &time_calendar) == NULL)
     return NULL;
 
