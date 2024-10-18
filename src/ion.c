@@ -51,6 +51,7 @@
 #include <ion/functions/reflect_print_indentation.c>
 #include <ion/functions/reflect_typesize.c>
 #include <ion/functions/sci_notation_convert.c>
+#include <ion/functions/tensor_allocate.c>
 #include <ion/functions/tensor_at.c>
 #include <ion/functions/tensor_init.c>
 #include <ion/functions/tensor_iterate.c>

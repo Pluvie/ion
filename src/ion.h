@@ -76,6 +76,7 @@
 #include <ion/headers/functions/reflect_print_indentation.h>
 #include <ion/headers/functions/reflect_typesize.h>
 #include <ion/headers/functions/sci_notation_convert.h>
+#include <ion/headers/functions/tensor_allocate.h>
 #include <ion/headers/functions/tensor_at.h>
 #include <ion/headers/functions/tensor_init.h>
 #include <ion/headers/functions/tensor_iterate.h>
