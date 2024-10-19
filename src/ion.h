@@ -42,6 +42,7 @@
 //#include <ion/headers/functions/binary_encode.h>
 #include <ion/headers/functions/date.h>
 #include <ion/headers/functions/date_to_string.h>
+#include <ion/headers/functions/date_today.h>
 #include <ion/headers/functions/hexdump.h>
 #include <ion/headers/functions/io_peek.h>
 #include <ion/headers/functions/io_read.h>
