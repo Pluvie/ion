@@ -2,22 +2,22 @@
 static inline
 #endif
 
-void* tensor_iterate (
+void* tensor_iterate_ranges (
     struct tensor* tensor,
-    struct vector* positions,
+    struct vector* ranges,
     struct vector* current
 )
 {
 consistency_checks:
-  if (unlikely(positions->length != tensor->dimensions->length))
+  if (unlikely(ranges->length != tensor->dimensions->length))
     return NULL;
 
-  if (unlikely(positions->length != current->length))
+  if (unlikely(ranges->length != current->length))
     return NULL;
 
 iterate_positions:
-  for (i32 i = positions->length - 1; i >= 0; i--) {
-    struct tensor_range* range = vector_get(positions, i);
+  for (i32 i = ranges->length - 1; i >= 0; i--) {
+    struct tensor_range* range = vector_get(ranges, i);
     u64 position = as(u64, vector_get(current, i));
 
     if (position < range->max) {
