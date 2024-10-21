@@ -2,16 +2,16 @@
 static inline
 #endif
 
-void* tensor_at (
+void* tensor_at_ranges (
     struct tensor* tensor,
-    struct vector* positions
+    struct vector* ranges
 )
 {
   u64 position_offset = 0;
   for vector_each_with_index(
       tensor->dimensions, dimension_index, struct tensor_dimension*, dimension) {
-    u64 position = as(u64, vector_get(positions, dimension_index));
-    position_offset += position * dimension->offset;
+    struct range* range = vector_get(ranges, dimension_index);
+    position_offset += range->current * dimension->offset;
   }
 
   return tensor->data + (position_offset * tensor->typesize);

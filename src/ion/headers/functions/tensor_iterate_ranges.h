@@ -2,10 +2,9 @@
 static inline
 #endif
 
-void* tensor_iterate (
+bool tensor_iterate_ranges (
     struct tensor* tensor,
-    struct vector* positions,
-    struct vector* current
+    struct vector* ranges
 )
 /**
  * ### Description

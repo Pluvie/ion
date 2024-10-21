@@ -3,7 +3,7 @@ test( vector_get, position_out_of_bounds ) {
   given("a struct vector");
     struct vector vector;
     struct memory allocator = memory_init(0);
-    vector = vector_init(sizeof(u64), 8, &allocator);
+    vector = vector_init(sizeof(u64), 3, &allocator);
 
 
   when("the vector has some elements in it");
@@ -17,13 +17,13 @@ test( vector_get, position_out_of_bounds ) {
 
 
   calling("vector_get()");
-    signal(SIGABRT, sigabrt_catch);
-    sigabrt_caught = false;
-    vector_get(&vector, position);
+    void* address = vector_get(&vector, position);
 
 
   must("abort the program");
-    verify(sigabrt_caught = true);
+    verify(error.occurred == true);
+    verify(address == NULL);
+    verify(streq(error.message, "position 5 out of bounds."));
 
 
   success();

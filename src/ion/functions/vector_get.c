@@ -7,17 +7,10 @@ void* vector_get (
     u64 position
 )
 {
-position_check:
-  if (likely(position < vec->length))
-    goto get;
+  if (unlikely(position >= vec->length)) {
+    fail("position %li out of bounds.", position);
+    return NULL;
+  }
 
-abort:
-  fprintf(stderr,
-    "fatal: position %li out of bounds [%p]\n",
-    position, vec);
-
-  abort();
-
-get:
   return vec->data + (position * vec->typesize);
 }

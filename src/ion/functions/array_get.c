@@ -7,17 +7,10 @@ void* array_get (
     u64 position
 )
 {
-position_check:
-  if (likely(position < ary->length))
-    goto get;
+  if (unlikely(position >= ary->length)) {
+    fail("position %li out of bounds.", position);
+    return NULL;
+  }
 
-abort:
-  fprintf(stderr,
-    "fatal: position %li out of bounds [%p]\n",
-    position, ary);
-
-  abort();
-
-get:
   return ary->data + (position * ary->typesize);
 }

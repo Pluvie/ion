@@ -79,8 +79,11 @@
 #include <ion/headers/functions/sci_notation_convert.h>
 #include <ion/headers/functions/tensor_allocate.h>
 #include <ion/headers/functions/tensor_at.h>
+#include <ion/headers/functions/tensor_at_ranges.h>
+#include <ion/headers/functions/tensor_at_sequences.h>
 #include <ion/headers/functions/tensor_init.h>
-#include <ion/headers/functions/tensor_iterate.h>
+#include <ion/headers/functions/tensor_iterate_ranges.h>
+#include <ion/headers/functions/tensor_iterate_sequences.h>
 #include <ion/headers/functions/time_now.h>
 #include <ion/headers/functions/time_to_string.h>
 #include <ion/headers/functions/vector_allocate.h>

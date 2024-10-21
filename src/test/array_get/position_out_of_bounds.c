@@ -18,13 +18,14 @@ test( array_get, position_out_of_bounds ) {
 
 
   calling("array_get()");
-    signal(SIGABRT, sigabrt_catch);
-    sigabrt_caught = false;
-    array_get(&array, position);
+    void* address = array_get(&array, position);
 
 
   must("abort the program");
-    verify(sigabrt_caught = true);
+    verify(error.occurred == true);
+    verify(address == NULL);
+    print(">>>> %s", error.message);
+    verify(streq(error.message, "position 5 out of bounds."));
 
 
   success();

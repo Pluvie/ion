@@ -8,18 +8,11 @@ void* vector_set (
     void* element
 )
 {
-position_check:
-  if (likely(position < vec->length))
-    goto set;
+  if (unlikely(position >= vec->length)) {
+    fail("position %li out of bounds.", position);
+    return NULL;
+  }
 
-abort:
-  fprintf(stderr,
-    "fatal: position %li out of bounds [%p]\n",
-    position, vec);
-
-  abort();
-
-set:
   void* address = vec->data + (position * vec->typesize);
   memcpy(address, element, vec->typesize);
   return address;

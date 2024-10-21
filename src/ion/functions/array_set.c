@@ -8,18 +8,11 @@ void* array_set (
     void* element
 )
 {
-position_check:
-  if (likely(position < ary->length))
-    goto set;
+  if (unlikely(position < ary->length)) {
+    fail("position %li out of bounds.", position);
+    return NULL;
+  }
 
-abort:
-  fprintf(stderr,
-    "fatal: position %li out of bounds [%p]\n",
-    position, ary);
-
-  abort();
-
-set:
   void* address = ary->data + (position * ary->typesize);
   memcpy(address, element, ary->typesize);
   return address;
