@@ -1,12 +1,7 @@
 test( vector_get, element_at_position ) {
 
   given("a struct vector");
-    struct vector vector = vector_static(u64, 8);
-
-
-  when("the vector has some elements in it");
-    for (u64 index = 0; index < 4; index++)
-      vector_set(&vector, index, &index);
+    struct vector vector = vector_of(u64, { 0, 1, 2, 3, 4 });
 
 
   when("an element is requested at a specific position");

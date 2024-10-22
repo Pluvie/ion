@@ -48,4 +48,3 @@
 #include "macros/vector_each.h"
 #include "macros/vector_each_with_index.h"
 #include "macros/vector_of.h"
-#include "macros/vector_static.h"
