@@ -1,9 +1,7 @@
 test( vector_get, element_at_position ) {
 
   given("a struct vector");
-    struct vector vector;
-    struct memory allocator = memory_init(0);
-    vector = vector_init(sizeof(u64), 8, &allocator);
+    struct vector vector = vector_static(u64, 8);
 
 
   when("the vector has some elements in it");
@@ -24,5 +22,4 @@ test( vector_get, element_at_position ) {
 
 
   success();
-    memory_release(&allocator);
 }
