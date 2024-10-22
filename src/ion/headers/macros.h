@@ -2,6 +2,7 @@
 #include "macros/approx_eq.h"
 #include "macros/array_each.h"
 #include "macros/array_each_with_index.h"
+#include "macros/array_from_vector.h"
 #include "macros/array_of.h"
 #include "macros/as.h"
 #include "macros/check_sizeof.h"
@@ -47,4 +48,5 @@
 #include "macros/unlikely.h"
 #include "macros/vector_each.h"
 #include "macros/vector_each_with_index.h"
+#include "macros/vector_from_array.h"
 #include "macros/vector_of.h"
