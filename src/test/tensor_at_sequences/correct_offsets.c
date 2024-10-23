@@ -8,10 +8,10 @@ test( tensor_at_sequences, correct_offsets ) {
 
   when("providing a vector with sequences");
     struct vector sequences = vector_of(struct sequence, {
-      { .values = &vector_of(u64, { 0 }),           .current = 0, }, 
-      { .values = &vector_of(u64, { 0, 1 }),        .current = 1, },
-      { .values = &vector_of(u64, { 1, 2 }),        .current = 2, },
-      { .values = &vector_of(u64, { 0, 1, 2, 3 }),  .current = 2, },
+      { .values = &vector_of(u64, { 0 }),           .current = 0, .index = 0 }, 
+      { .values = &vector_of(u64, { 0, 1 }),        .current = 1, .index = 0 },
+      { .values = &vector_of(u64, { 1, 2 }),        .current = 2, .index = 1 },
+      { .values = &vector_of(u64, { 0, 1, 2, 3 }),  .current = 2, .index = 2 },
     });
 
 

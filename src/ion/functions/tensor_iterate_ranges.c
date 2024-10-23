@@ -11,12 +11,12 @@ iterate_positions:
   for (i32 i = ranges->length - 1; i >= 0; i--) {
     struct range* range = vector_get(ranges, i);
 
-    if (range->current < range->max) {
-      range->current++;
+    if (range->at < range->max) {
+      range->at++;
       return true;
     }
 
-    range->current = range->min;
+    range->at = range->min;
   }
 
 positions_exhausted:

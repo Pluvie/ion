@@ -28,6 +28,7 @@ initialize_length_and_dimensions:
     struct tensor_dimension dimension = {
       .length = *input_dimension_length,
       .offset = 0,
+      .cursor = 0,
     };
 
     /* Last dimension has always offset equal to 0. */

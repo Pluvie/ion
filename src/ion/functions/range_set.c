@@ -10,5 +10,5 @@ void range_set (
 {
   range->min = min;
   range->max = max;
-  range->current = min;
+  range->at = min;
 }

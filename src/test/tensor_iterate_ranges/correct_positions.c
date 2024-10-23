@@ -8,10 +8,10 @@ test( tensor_iterate_ranges, correct_positions ) {
 
   when("providing a vector with ranges");
     struct vector ranges = vector_of(struct range, {
-      { .min = 0, .max = 0, .current = 0, }, 
-      { .min = 0, .max = 1, .current = 0, },
-      { .min = 1, .max = 2, .current = 1, },
-      { .min = 0, .max = 3, .current = 0, },
+      { .min = 0, .max = 0, .at = 0, }, 
+      { .min = 0, .max = 1, .at = 0, },
+      { .min = 1, .max = 2, .at = 1, },
+      { .min = 0, .max = 3, .at = 0, },
     });
 
 
@@ -21,108 +21,108 @@ test( tensor_iterate_ranges, correct_positions ) {
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 1);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 1);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 2);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 2);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 3);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 3);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 2);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 0);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 2);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 0);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 2);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 1);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 2);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 1);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 2);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 2);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 2);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 2);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 2);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 3);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 2);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 3);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 0);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 0);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 1);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 1);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 2);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 2);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 3);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 3);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 2);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 0);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 2);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 0);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 2);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 1);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 2);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 1);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 2);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 2);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 2);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 2);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == true);
-    verify(((struct range*) vector_get(&ranges, 0))->current == 0);
-    verify(((struct range*) vector_get(&ranges, 1))->current == 1);
-    verify(((struct range*) vector_get(&ranges, 2))->current == 2);
-    verify(((struct range*) vector_get(&ranges, 3))->current == 3);
+    verify(((struct range*) vector_get(&ranges, 0))->at == 0);
+    verify(((struct range*) vector_get(&ranges, 1))->at == 1);
+    verify(((struct range*) vector_get(&ranges, 2))->at == 2);
+    verify(((struct range*) vector_get(&ranges, 3))->at == 3);
 
     next_iteration = tensor_iterate_ranges(&tensor, &ranges);
     verify(next_iteration == false);
