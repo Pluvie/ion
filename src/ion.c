@@ -66,4 +66,6 @@
 #include <ion/functions/vector_equal.c>
 #include <ion/functions/vector_get.c>
 #include <ion/functions/vector_init.c>
+#include <ion/functions/vector_print.c>
+#include <ion/functions/vector_print_pretty.c>
 #include <ion/functions/vector_set.c>

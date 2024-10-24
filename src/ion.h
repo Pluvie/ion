@@ -91,4 +91,6 @@
 #include <ion/headers/functions/vector_equal.h>
 #include <ion/headers/functions/vector_get.h>
 #include <ion/headers/functions/vector_init.h>
+#include <ion/headers/functions/vector_print.h>
+#include <ion/headers/functions/vector_print_pretty.h>
 #include <ion/headers/functions/vector_set.h>
