@@ -85,6 +85,7 @@
 #include <test/sci_notation_convert/unsigned_8_overflow.c>
 #include <test/sci_notation_convert/unsigned_consistency.c>
 #include <test/tensor_at/correct_offsets.c>
+#include <test/tensor_at_ranges/correct_offsets.c>
 #include <test/tensor_at_sequences/correct_offsets.c>
 #include <test/tensor_init/correct_dimensions.c>
 #include <test/tensor_init/correct_length.c>
@@ -186,6 +187,7 @@ void test_suite (
   test_run( sci_notation_convert, unsigned_8_overflow );
   test_run( sci_notation_convert, unsigned_consistency );
   test_run( tensor_at, correct_offsets );
+  test_run( tensor_at_ranges, correct_offsets );
   test_run( tensor_at_sequences, correct_offsets );
   test_run( tensor_init, correct_dimensions );
   test_run( tensor_init, correct_length );

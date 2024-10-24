@@ -20,10 +20,19 @@ test( tensor_at, correct_offsets ) {
       ((struct tensor_dimension*) vector_get(tensor.dimensions, 2))->offset,
       ((struct tensor_dimension*) vector_get(tensor.dimensions, 3))->offset,
     };
-    
+    u64 offsets_multiplicators[4] = {
+      offsets[0] == 0 ? 1 : offsets[0],
+      offsets[1] == 0 ? 1 : offsets[1],
+      offsets[2] == 0 ? 1 : offsets[2],
+      offsets[3] == 0 ? 1 : offsets[3],
+    };
+
     verify(position != NULL);
     verify((position - tensor.data) / sizeof(i32) ==
-      0*offsets[0] + 1*offsets[1] + 2*offsets[2] + 2*offsets[3]);
+      0 * offsets_multiplicators[0] +
+      1 * offsets_multiplicators[1] +
+      2 * offsets_multiplicators[2] +
+      2 * offsets_multiplicators[3]);
 
   success();
     memory_release(&allocator);

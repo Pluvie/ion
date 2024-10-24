@@ -10,8 +10,14 @@ void* tensor_at_sequences (
   u64 position_offset = 0;
   for vector_each_with_index(
       tensor->dimensions, dimension_index, struct tensor_dimension*, dimension) {
+
     struct sequence* sequence = vector_get(sequences, dimension_index);
-    position_offset += sequence->current * dimension->offset;
+
+    u64 dimension_offset_multiplicator = dimension->offset;
+    if (dimension_offset_multiplicator == 0)
+      dimension_offset_multiplicator= 1;
+
+    position_offset += sequence->current * dimension_offset_multiplicator;
   }
 
   return tensor->data + (position_offset * tensor->typesize);

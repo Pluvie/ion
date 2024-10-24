@@ -8,10 +8,10 @@ test( tensor_iterate_ranges, correct_positions ) {
 
   when("providing a vector with ranges");
     struct vector ranges = vector_of(struct range, {
-      { .min = 0, .max = 0, .at = 0, }, 
-      { .min = 0, .max = 1, .at = 0, },
-      { .min = 1, .max = 2, .at = 1, },
-      { .min = 0, .max = 3, .at = 0, },
+      { .min = 0, .max = 1, .at = 0, }, 
+      { .min = 0, .max = 2, .at = 0, },
+      { .min = 1, .max = 3, .at = 1, },
+      { .min = 0, .max = 4, .at = 0, },
     });
 
 

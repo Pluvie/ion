@@ -47,6 +47,8 @@
 #include "macros/type.h"
 #include "macros/unlikely.h"
 #include "macros/vector_each.h"
+#include "macros/vector_each_reverse.h"
+#include "macros/vector_each_reverse_with_index.h"
 #include "macros/vector_each_with_index.h"
 #include "macros/vector_from_array.h"
 #include "macros/vector_of.h"
