@@ -11,6 +11,10 @@ static inline void binary_decode_primitive (
   if (error.occurred)
     return protocol_failure(decoder);
 
+  reflect_validate(schema, primitive_value);
+  if (error.occurred)
+    return protocol_failure(decoder);
+
   if (schema->type == BOOL) {
     // Special case for booleans: any value other than 0 is considered as `true`.
     if (*(u8*) primitive_value == 0)

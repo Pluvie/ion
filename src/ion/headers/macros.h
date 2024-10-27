@@ -46,6 +46,7 @@
 #include "macros/strneq.h"
 #include "macros/type.h"
 #include "macros/unlikely.h"
+#include "macros/valid_if.h"
 #include "macros/vector_each.h"
 #include "macros/vector_each_reverse.h"
 #include "macros/vector_each_reverse_with_index.h"
