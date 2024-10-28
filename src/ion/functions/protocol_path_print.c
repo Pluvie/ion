@@ -31,6 +31,7 @@ reverse_print:
 
 loop_nodes:
   node = array_get(&nodes, node_index);
+  printed_bytes = 0;
 
   if (node->name != NULL) {
     if (node_index == 0)
