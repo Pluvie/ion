@@ -10,8 +10,12 @@ static inline u64 io_write_memory (
       return 0;
     }
 
-    u64 new_length = writer->length == 0 ? amount : writer->length * 2;
+    u64 new_length = writer->length * 2;
+    if (new_length < amount)
+      new_length = amount;
+
     void* new_data = memory_alloc_zero(writer->allocator, new_length);
+
     memcpy(new_data, writer->data, writer->length);
     writer->length = new_length;
     writer->data = new_data;
