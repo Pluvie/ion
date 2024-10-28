@@ -12,6 +12,11 @@ static inline i32 protocol_path_print (
   struct array nodes = array_init(sizeof(struct reflect), 8, p->allocator);
 
 climb_schema:
+  if (node->parent != NULL && node->parent->type == POINTER) {
+    node->name = node->parent->name;
+    node->parent->name = NULL;
+  }
+
   array_push(&nodes, node);
 
   if (node->parent != NULL) {
@@ -37,7 +42,9 @@ loop_nodes:
   }
 
   if (node->parent != NULL &&
-      (node->parent->type == ARRAY || node->parent->type == SEQUENCE)) {
+      (node->parent->type == ARRAY ||
+       node->parent->type == SEQUENCE ||
+       node->parent->type == VECTOR)) {
 
     if (node_index == 0)
       printed_bytes = snprintf(result, length - print_cursor, "%i", node->index);
