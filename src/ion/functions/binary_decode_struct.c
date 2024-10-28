@@ -19,4 +19,8 @@ static inline void binary_decode_struct (
 
   output->cursor = output_initial_cursor + struct_typesize;
   decoder->schema = schema;
+
+  reflect_validate(schema, output->data + output_initial_cursor);
+  if (error.occurred)
+    return protocol_failure(decoder);
 }

@@ -6,5 +6,5 @@ static inline bool reflect_validate (
   if (schema->validator == NULL)
     return true;
 
-  return schema->validator(value);
+  return schema->validator(value, schema);
 }

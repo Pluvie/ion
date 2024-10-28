@@ -47,7 +47,7 @@ struct reflect {
   enum types type;
   struct reflect* parent;
   struct vector* child;
-  bool (*validator)(void*);
+  bool (*validator)(void*, struct reflect*);
   padding(8);
 };
 check_sizeof(struct reflect, 64);

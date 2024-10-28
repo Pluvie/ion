@@ -49,6 +49,11 @@ decode_array:
   decoder->schema = schema;
   decoder->output = output;
 
+validate_array:
+  reflect_validate(schema, &array);
+  if (error.occurred)
+    return protocol_failure(decoder);
+
 write_output:
   io_write(output, &array, sizeof(struct array));
   if (error.occurred)

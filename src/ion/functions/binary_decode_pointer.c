@@ -54,6 +54,11 @@ allocate_pointer:
   decoder->schema = schema;
   decoder->output = output;
 
+validate_pointer:
+  reflect_validate(schema, pointer_data);
+  if (error.occurred)
+    return protocol_failure(decoder);
+
 write_output:
   u64 pointer_address = (u64) pointer_data;
   io_write(output, &pointer_address, sizeof(u64));

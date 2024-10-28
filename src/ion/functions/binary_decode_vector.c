@@ -48,6 +48,11 @@ decode_vector:
   decoder->schema = schema;
   decoder->output = output;
 
+validate_vector:
+  reflect_validate(schema, &vector);
+  if (error.occurred)
+    return protocol_failure(decoder);
+
 write_output:
   io_write(output, &vector, sizeof(struct vector));
   if (error.occurred)
