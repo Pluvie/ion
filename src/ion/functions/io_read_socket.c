@@ -13,16 +13,17 @@ static inline void* io_read_socket (
   u64 read_amount = 0;
 
   while (read_amount < amount) {
-    //i32 recv_avail;
-    //ioctl(reader->descriptor, FIONREAD, &recv_avail);
-    //if (recv_avail <= 0)
-    //  break;
-
     i32 recv_output = recv(
       reader->descriptor, reader->data + read_amount, amount - read_amount, 0);
 
     if (likely(recv_output > 0)) {
       read_amount += recv_output;
+
+      i32 recv_avail;
+      ioctl(reader->descriptor, FIONREAD, &recv_avail);
+      if (recv_avail <= 0)
+        break;
+
       continue;
     }
 
