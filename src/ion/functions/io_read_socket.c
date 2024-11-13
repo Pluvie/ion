@@ -12,6 +12,9 @@ static inline void* io_read_socket (
   reader->data = memory_alloc(reader->allocator, amount);
   u64 read_amount = 0;
 
+  fd_set ready;
+  struct timeval timeout = { 0, 0 };
+
   while (read_amount < amount) {
     i32 recv_output = recv(
       reader->descriptor, reader->data + read_amount, amount - read_amount, 0);
@@ -19,12 +22,12 @@ static inline void* io_read_socket (
     if (likely(recv_output > 0)) {
       read_amount += recv_output;
 
-      i32 recv_avail;
-      ioctl(reader->descriptor, FIONREAD, &recv_avail);
-      if (recv_avail <= 0)
-        break;
+      FD_ZERO(&ready);
+      FD_SET(reader->descriptor, &ready);
+      if (select(reader->descriptor + 1, &ready, NULL, NULL, &timeout) > 0)
+        continue;
 
-      continue;
+      break;
     }
 
     if (read_amount == 0) {
