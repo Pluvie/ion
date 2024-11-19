@@ -7,6 +7,7 @@
 #include "macros/as.h"
 #include "macros/check_sizeof.h"
 #include "macros/compile_concat.h"
+#include "macros/compile_stringize.h"
 #include "macros/compile_time_check.h"
 #include "macros/countof.h"
 #include "macros/cvar.h"
