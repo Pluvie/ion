@@ -10,38 +10,19 @@ static inline void* io_read_socket (
 
   reader->cursor = 0;
   reader->data = memory_alloc(reader->allocator, amount);
-  u64 read_amount = 0;
 
-  fd_set ready;
-  struct timeval timeout = { 0, 0 };
+  i32 recv_output = recv(reader->descriptor, reader->data, amount, 0);
 
-  while (read_amount < amount) {
-    i32 recv_output = recv(
-      reader->descriptor, reader->data + read_amount, amount - read_amount, 0);
-
-    if (likely(recv_output > 0)) {
-      read_amount += recv_output;
-
-      FD_ZERO(&ready);
-      FD_SET(reader->descriptor, &ready);
-      if (select(reader->descriptor + 1, &ready, NULL, NULL, &timeout) > 0)
-        continue;
-
-      break;
-    }
-
-    if (read_amount == 0) {
-      fail("io: error while reading from socket: %s", strerror(errno));
-      reader->data = NULL;
-      reader->length = 0;
-      return NULL;
-    }
-
-    break;
+  if (unlikely(recv_output) < 0) {
+    fail("io: error while reading from socket: %s", strerror(errno));
+    reader->data = NULL;
+    reader->length = 0;
+    return NULL;
   }
 
-  reader->length = read_amount;
-  reader->cursor = read_amount;
-  reader->read_amount = read_amount;
+  reader->read_amount = recv_output;
+  reader->length = recv_output;
+  reader->cursor = recv_output;
+
   return reader->data;
 }
