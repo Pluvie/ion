@@ -7,13 +7,10 @@ static inline u64 map_hash (
  * (http://www.cse.yorku.ca/~oz/hash.html). */
 {
   u64 hash = 5381;
-  byte key_byte = 0;
-  byte* key_bytes = (byte*) key;
+  byte* key_byte = (byte*) key;
 
-  for (u64 i = 0; i < key_typesize; i++) {
-    key_byte = key_bytes[i];
-    hash = ((hash << 5) + hash) + key_byte; /* hash * 33 + character */
-  }
+  for (u64 i = 0; i < key_typesize; i++)
+    hash = ((hash << 5) + hash) + *(key_byte + i); /* hash * 33 + key_byte */
 
   return hash;
 }
