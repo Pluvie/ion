@@ -13,7 +13,7 @@ static inline void* io_read_socket (
 
   i32 recv_output = recv(reader->descriptor, reader->data, amount, 0);
 
-  if (unlikely(recv_output) < 0) {
+  if (unlikely(recv_output < 0)) {
     fail("io: error while reading from socket: %s", strerror(errno));
     reader->data = NULL;
     reader->length = 0;
