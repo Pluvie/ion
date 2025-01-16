@@ -2,3 +2,7 @@
 	path = prf/abseil/abseil-cpp
 	url = https://github.com/abseil/abseil-cpp.git
 	branch = lts_2024_07_22
+[submodule "prf/map/abseil-cpp"]
+	path = prf/map/abseil-cpp
+	url = https://github.com/abseil/abseil-cpp.git
+	branch = lts_2024_07_22
