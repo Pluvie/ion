@@ -1,0 +1,4 @@
+[submodule "prf/abseil/abseil-cpp"]
+	path = prf/abseil/abseil-cpp
+	url = https://github.com/abseil/abseil-cpp.git
+	branch = lts_2024_07_22
