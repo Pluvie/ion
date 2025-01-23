@@ -3,6 +3,7 @@
 
 prf/map/abseil/build
 prf/map/abseil/abseil
+prf/map/skarupke/flat_hash_map
 prf/map/go/go
 prf/map/ion/ion
 
