@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ "$1" = "recompile" ]; then
+  cd ion
+  ./compile
+  cd ..
+  
+  cd go
+  ./compile
+  cd ..
+  
+  cd abseil
+  ./compile
+  cd ..
+fi
+
+hyperfine --warmup 5 ion/ion go/go abseil/abseil

@@ -1,6 +1,10 @@
 **/tmp/
 **/exe/
+
 prf/map/abseil/build
+prf/map/abseil/abseil
+prf/map/go/go
+prf/map/ion/ion
 
 !/**/.gitkeep
 *.gz

@@ -8,8 +8,8 @@ void insert (
   struct memory allocator = memory_init(0);
   struct map* map = map_allocate(sizeof(i32), sizeof(i32), 0, &allocator);
 
-  for (int i = 0; i < 10000; i++) {
-    for (int j = 0; j < 1000; j++) {
+  for (int i = 0; i < 1000; i++) {
+    for (int j = 0; j < 10000; j++) {
       map_set(map, &j, &i);
     }
   }

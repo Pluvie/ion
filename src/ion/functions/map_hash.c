@@ -6,6 +6,9 @@ static inline u64 map_hash (
  * This function returns a generic hash value based on [djb2 algorithm]
  * (http://www.cse.yorku.ca/~oz/hash.html). */
 {
+  if (key_typesize <= sizeof(u64))
+    return *(u64*) key;
+
   u64 hash = 5381;
   byte* key_byte = (byte*) key;
 

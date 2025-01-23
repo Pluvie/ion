@@ -7,8 +7,8 @@ import (
 func insert() {
   m := make(map[int]int)
 
-  for i := 0; i < 10000; i++ {
-    for j := 0; j < 1000; j++ {
+  for i := 0; i < 1000; i++ {
+    for j := 0; j < 10000; j++ {
       m[j] = i;
     }
   }
