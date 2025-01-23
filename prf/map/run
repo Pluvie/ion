@@ -2,15 +2,15 @@
 
 if [ "$1" = "recompile" ]; then
   cd ion
-  ./compile
+  ./compile > /dev/null 2>&1
   cd ..
   
   cd go
-  ./compile
+  ./compile > /dev/null 2>&1
   cd ..
   
   cd abseil
-  ./compile
+  ./compile > /dev/null 2>&1
   cd ..
 fi
 
