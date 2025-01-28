@@ -8,10 +8,15 @@ if [ "$1" = "recompile" ]; then
   cd go
   ./compile > /dev/null 2>&1
   cd ..
-  
-  cd abseil
+
+  cd skarupke
   ./compile > /dev/null 2>&1
   cd ..
+  
+  #cd abseil
+  #./compile > /dev/null 2>&1
+  #cd ..
 fi
 
-hyperfine --warmup 5 ion/ion go/go abseil/abseil
+#hyperfine --warmup 5 ion/ion go/go skarupke/flat_hash_map abseil/abseil
+hyperfine --warmup 5 ion/ion go/go skarupke/flat_hash_map
