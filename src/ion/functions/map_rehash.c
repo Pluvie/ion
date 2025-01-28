@@ -13,7 +13,7 @@ rehash_begin:
   u64 probed_capacity = map->capacity + log2(map->capacity);
 
   for (u64 i = 0; i < probed_capacity; i++) {
-    if (*(map->hashes + i) == -1)
+    if (*(map->hashes + i) == MAP_EMPTY_SPOT)
       continue;
 
     key = map->keys + (i * map->key_typesize);

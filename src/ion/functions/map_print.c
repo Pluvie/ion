@@ -17,7 +17,7 @@ void map_print (
     byte* value = (byte*) map->values + (index * map->value_typesize);
     u64 hash = map->hashes[index];
 
-    if (hash == -1) {
+    if (hash == MAP_EMPTY_SPOT) {
       fprintf(stderr, "         --\n");
       continue;
     }

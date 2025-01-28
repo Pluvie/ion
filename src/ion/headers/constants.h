@@ -26,6 +26,7 @@
 #include "constants/i8_min.h"
 #include "constants/i8_min_abs.h"
 #include "constants/map_default_cap.h"
+#include "constants/map_empty_spot.h"
 #include "constants/memory_default_align.h"
 #include "constants/memory_default_cap.h"
 #include "constants/memory_min_regions.h"
