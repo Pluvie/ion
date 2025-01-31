@@ -3,9 +3,7 @@ static inline
 #endif
 
 void binary_encode (
-    struct io* input,
-    struct io* output,
-    struct protocol* binary
+    struct protocol* encoder
 )
 /**
  * ### Description

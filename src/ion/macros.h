@@ -5,6 +5,7 @@
 #include "macros/array_from_vector.h"
 #include "macros/array_of.h"
 #include "macros/as.h"
+#include "macros/call.h"
 #include "macros/check_sizeof.h"
 #include "macros/compile_concat.h"
 #include "macros/compile_stringize.h"
