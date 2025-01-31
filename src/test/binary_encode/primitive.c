@@ -43,22 +43,20 @@ test( binary_encode, primitive ) {
     input.value_i16 = -2;
     input.value_i32 = -3;
     input.value_i64 = -4;
-    input.value_d32 = ((d32) 3 / 256);
-    input.value_d64 = ((d64) 3 / 256);
-    input.value_d128 = ((d128) 3 / 256);
+    input.value_d32 = (3.0f / 256.0);
+    input.value_d64 = (3.0 / 256.0);
+    input.value_d128 = (3.0 / 256.0);
     input.value_byte = 0xff;
     input.value_char = 'F';
     input.value_bool = true;
 
 
   when("a protocol encoder is set up on this data");
-    struct memory allocator = memory_init(0);
-    byte* output = memory_alloc_zero(&allocator, 4096);
+    byte output[sizeof(struct example)] = { 0 };
     struct protocol encoder = {
       .schema = &schema,
-      .allocator = &allocator,
       .input = &io_reader(&input, sizeof(input)),
-      .output = &io_writer(output, 4096, &allocator),
+      .output = &io_writer(output, sizeof(output)),
     };
 
 
@@ -97,5 +95,4 @@ test( binary_encode, primitive ) {
 
 
   success();
-    memory_release(&allocator);
 }

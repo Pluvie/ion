@@ -14,6 +14,7 @@
 #include <test/binary_decode/vector_maxlength.c>
 #include <test/binary_decode/vector_minlength.c>
 #include <test/binary_encode/primitive.c>
+#include <test/binary_protocol/round_trip.c>
 #include <test/io_read_memory/invalid_cursor.c>
 #include <test/io_read_memory/valid_cursor.c>
 #include <test/io_read_socket/recv_failure.c>
@@ -118,6 +119,7 @@ void test_suite (
   test_run( binary_decode, vector_maxlength );
   test_run( binary_decode, vector_minlength );
   test_run( binary_encode, primitive );
+  test_run( binary_protocol, round_trip );
   test_run( io_read_memory, invalid_cursor );
   test_run( io_read_memory, valid_cursor );
   test_run( io_read_socket, recv_failure );
