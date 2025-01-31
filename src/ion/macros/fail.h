@@ -7,4 +7,6 @@
     message, sizeof(message),                       \
     format __VA_OPT__(, __VA_ARGS__));              \
   memcpy(error.message, message, sizeof(message));  \
+  error.file = __FILE__;                            \
+  error.line = __LINE__;                            \
 }

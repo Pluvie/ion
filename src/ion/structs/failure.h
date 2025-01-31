@@ -4,6 +4,8 @@ struct failure;
 struct failure {
   bool occurred;
   u32 length;
-  char message[248];
+  char* file;
+  u64 line;
+  char message[488];
 };
-check_sizeof(struct failure, 256);
+check_sizeof(struct failure, 512);

@@ -14,5 +14,6 @@ static inline void protocol_failure (
   fail("[%.*s] %.*s",
     path_length, path_string,
     error.length, error_message);
+
   return;
 }

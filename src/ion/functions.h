@@ -15,6 +15,7 @@
 #include <ion/functions/binary_decode_struct.h>
 #include <ion/functions/binary_decode_vector.h>
 #include <ion/functions/binary_encode.h>
+#include <ion/functions/binary_encode_array.h>
 #include <ion/functions/binary_encode_primitive.h>
 #include <ion/functions/binary_encode_struct.h>
 #include <ion/functions/date.h>

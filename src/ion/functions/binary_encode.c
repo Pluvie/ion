@@ -37,7 +37,7 @@ void binary_encode (
     break;
 
   case ARRAY:
-    //binary_encode_array(encoder);
+    binary_encode_array(encoder);
     break;
 
   case VECTOR:
