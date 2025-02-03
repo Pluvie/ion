@@ -11,7 +11,11 @@ static inline void* io_read_socket (
   reader->cursor = 0;
   reader->data = memory_alloc(reader->allocator, amount);
 
-  i32 recv_output = recv(reader->descriptor, reader->data, amount, MSG_WAITALL);
+  i32 recv_flags = 0;
+  if (reader->flags & IO_NO_BUFFERED)
+    recv_flags |= MSG_WAITALL;
+
+  i32 recv_output = recv(reader->descriptor, reader->data, amount, recv_flags);
 
   if (unlikely(recv_output < 0)) {
     fail("io: error while reading from socket: %s", strerror(errno));
