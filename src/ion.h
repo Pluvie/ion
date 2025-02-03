@@ -1,7 +1,6 @@
 #include <ctype.h>
 #include <errno.h>
 #include <float.h>
-#include <immintrin.h>
 #include <limits.h>
 #include <math.h>
 #include <stdarg.h>
@@ -16,6 +15,12 @@
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
+
+#ifdef __x86_64__
+#include <immintrin.h>
+#elif __arm__
+#include <arm_neon.h>
+#endif
 
 #include <ion/typedefs.h>
 #include <ion/constants.h>
