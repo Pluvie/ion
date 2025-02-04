@@ -32,19 +32,19 @@ void binary_decode (
     break;
 
   case POINTER:
-    //binary_decode_pointer(source, target);
+    binary_decode_pointer(source, target);
     break;
 
   case SEQUENCE:
-    //binary_decode_sequence(source, target);
+    binary_decode_sequence(source, target);
     break;
 
   case ARRAY:
-    //binary_decode_array(source, target);
+    binary_decode_array(source, target);
     break;
 
   case VECTOR:
-    //binary_decode_vector(source, target);
+    binary_decode_vector(source, target);
     break;
   }
 }

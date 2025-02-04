@@ -49,23 +49,16 @@ test( binary_decode, pointer ) {
     };
 
 
-  when("a protocol decoder is set up on this data");
-    struct memory allocator = memory_init(4096);
-    struct protocol decoder = {
-      .schema = &schema,
-      .allocator = &allocator,
-      .input = &io_reader(input, sizeof(input)),
-      .output = &io_writer(&example, sizeof(example)),
-    };
-
-
   calling("binary_decode()");
-    binary_decode(&decoder);
+    struct memory allocator = memory_init(4096);
+    struct io source = io_reader(input, sizeof(input));
+    struct object target = object(example, &schema, &allocator);
+    binary_decode(&source, &target);
 
 
   must("decode the input data on the struct correctly");
     verify(error.occurred == false);
-    verify(io_exhausted(decoder.input) == true);
+    verify(io_exhausted(&source) == true);
 
     verify(streq(example.name, "Triangle!!"));
     verify((void*) example.name == (void*) allocator.data);

@@ -1,5 +1,6 @@
 static inline void binary_decode_sequence (
-    struct protocol* decoder
+    struct io* source,
+    struct object* target
 )
 /**
  * ### Description

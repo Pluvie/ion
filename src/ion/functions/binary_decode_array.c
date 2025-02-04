@@ -1,61 +1,54 @@
 static inline void binary_decode_array (
-    struct protocol* decoder
+    struct io* source,
+    struct object* target
 )
 {
-  struct io* input = decoder->input;
-  struct io* output = decoder->output;
-  struct reflect* schema = decoder->schema;
-  struct reflect* element = vector_get(schema->child, 0);
-  u64 array_typesize = reflect_typesize(element);
-
 read_length:
-  u64* array_length = io_read(input, sizeof(u64));
+  u64* array_length = io_read(source, sizeof(u64));
   if (error.occurred)
-    return protocol_failure(decoder);
+    return reflect_failure(target->schema);
 
 check_minlength:
-  u64 array_minlength = schema->bounds[0];
+  u64 array_minlength = target->schema->bounds[0];
   if (array_minlength > 0 && *array_length < array_minlength) {
     fail("array required minimum length of %li but found %li",
       array_minlength, *array_length);
-    return protocol_failure(decoder);
+    return reflect_failure(target->schema);
   }
 
 check_maxlength:
-  u64 array_maxlength = schema->bounds[1];
+  u64 array_maxlength = target->schema->bounds[1];
   if (array_maxlength > 0 && *array_length > array_maxlength) {
     fail("array required maximum length of %li but found %li",
       array_maxlength, *array_length);
-    return protocol_failure(decoder);
+    return reflect_failure(target->schema);
   }
 
 allocate_array:
-  struct array array = array_init(array_typesize, *array_length, decoder->allocator);
+  struct reflect* element = vector_get(target->schema->child, 0);
+  u64 array_typesize = reflect_typesize(element);
+
+  struct array array = array_init(array_typesize, *array_length, target->allocator);
   array.length = *array_length;
 
 decode_array:
-  struct io array_output = io_writer(array.data, array.typesize * array.capacity);
-  element->parent = schema;
-  decoder->schema = element;
-  decoder->output = &array_output;
-
   for (u64 i = 0; i < array.length; i++) {
     element->index = i;
-    binary_decode(decoder);
+    struct object element_object = {
+      .schema = element,
+      .address = array.data + (i * array_typesize),
+      .allocator = target->allocator
+    };
+    binary_decode(source, &element_object);
     if (error.occurred)
       return;
   }
 
-  decoder->schema = schema;
-  decoder->output = output;
-
 validate_array:
-  reflect_validate(schema, &array);
+  reflect_validate(target->schema, &array);
   if (error.occurred)
-    return protocol_failure(decoder);
+    return reflect_failure(target->schema);
 
-write_output:
-  io_write(output, &array, sizeof(struct array));
-  if (error.occurred)
-    return protocol_failure(decoder);
+write_target:
+  memcpy(target->address, &array, sizeof(struct array));
 }

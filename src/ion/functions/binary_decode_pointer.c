@@ -1,11 +1,9 @@
 static inline void binary_decode_pointer (
-    struct protocol* decoder
+    struct io* source,
+    struct object* target
 )
 {
-  struct io* input = decoder->input;
-  struct io* output = decoder->output;
-  struct reflect* schema = decoder->schema;
-  struct reflect* pointer = vector_get(schema->child, 0);
+  struct reflect* pointer = vector_get(target->schema->child, 0);
   u64 pointer_size = reflect_typesize(pointer);
 
   /* Special case: a POINTER size of type CHAR must be explicitly sent, as its
@@ -16,52 +14,54 @@ static inline void binary_decode_pointer (
     goto allocate_pointer;
 
 check_string_size:
-  u64 string_max_size = schema->bounds[0];
-  u64* string_size = io_read(input, sizeof(u64));
+  u64 string_max_size = target->schema->bounds[0];
+  u64* string_size = io_read(source, sizeof(u64));
   if (error.occurred)
-    return protocol_failure(decoder);
+    return reflect_failure(target->schema);
 
   if (string_max_size > 0 && *string_size > string_max_size) {
     fail("pointer required maximum string size of %li but found %li",
       string_max_size, pointer_size);
-    return protocol_failure(decoder);
+    return reflect_failure(target->schema);
   }
 
   pointer_size = *string_size;
 
 allocate_pointer:
-  void* pointer_data = memory_alloc(decoder->allocator, pointer_size);
-  struct io pointer_output = io_writer(pointer_data, pointer_size);
+  void* pointer_data = memory_alloc(target->allocator, pointer_size);
 
-  pointer->parent = schema;
-  decoder->schema = pointer;
-  decoder->output = &pointer_output;
+  if (pointer->type == CHAR)
+    goto pointer_type_char;
+  else
+    goto pointer_type_other;
 
-  if (pointer->type == CHAR) {
-    /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
-    for (u64 i = 0; i < pointer_size; i++) {
-      binary_decode(decoder);
-      if (error.occurred)
-        return;
-    }
+pointer_type_char:
+  /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
+  char* string = io_read(source, pointer_size);
+  if (error.occurred)
+    return;
 
-  } else {
-    binary_decode(decoder);
-    if (error.occurred)
-      return;
-  }
+  memcpy(pointer_data, string, pointer_size);
+  goto validate_pointer;
 
-  decoder->schema = schema;
-  decoder->output = output;
+pointer_type_other:
+  struct object pointer_object = {
+    .name = target->name,
+    .address = pointer_data,
+    .schema = pointer,
+    .allocator = target->allocator,
+  };
+
+  binary_decode(source, &pointer_object);
+  if (error.occurred)
+    return;
 
 validate_pointer:
-  reflect_validate(schema, pointer_data);
+  reflect_validate(target->schema, pointer_data);
   if (error.occurred)
-    return protocol_failure(decoder);
+    return reflect_failure(target->schema);
 
-write_output:
+write_target:
   u64 pointer_address = (u64) pointer_data;
-  io_write(output, &pointer_address, sizeof(u64));
-  if (error.occurred)
-    return protocol_failure(decoder);
+  memcpy(target->address, &pointer_address, sizeof(u64));
 }

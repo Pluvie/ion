@@ -1,27 +1,25 @@
 static inline void binary_decode_sequence (
-    struct protocol* decoder
+    struct io* source,
+    struct object* target
 )
 {
-  struct io* output = decoder->output;
-  struct reflect* schema = decoder->schema;
-
-  u64 output_initial_cursor = output->cursor;
-  u64 sequence_length = schema->bounds[0];
-
-  struct reflect* sequence = vector_get(schema->child, 0);
-  sequence->parent = schema;
-  decoder->schema = sequence;
+  struct reflect* element = vector_get(target->schema->child, 0);
+  u64 sequence_length = target->schema->bounds[0];
+  u64 sequence_typesize = reflect_typesize(element);
 
   for (u64 i = 0; i < sequence_length; i++) {
-    sequence->index = i;
-    binary_decode(decoder);
+    element->index = i;
+    struct object element_object = {
+      .schema = element,
+      .address = target->address + (i * sequence_typesize),
+      .allocator = target->allocator
+    };
+    binary_decode(source, &element_object);
     if (error.occurred)
       return;
   }
 
-  decoder->schema = schema;
-
-  reflect_validate(schema, output->data + output_initial_cursor);
+  reflect_validate(target->schema, target->address);
   if (error.occurred)
-    return protocol_failure(decoder);
+    return reflect_failure(target->schema);
 }

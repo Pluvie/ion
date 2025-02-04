@@ -8,12 +8,12 @@
 #include <ion/functions/array_push.h>
 #include <ion/functions/array_set.h>
 #include <ion/functions/binary_decode.h>
-//#include <ion/functions/binary_decode_array.h>
-//#include <ion/functions/binary_decode_pointer.h>
+#include <ion/functions/binary_decode_array.h>
+#include <ion/functions/binary_decode_pointer.h>
 #include <ion/functions/binary_decode_primitive.h>
-//#include <ion/functions/binary_decode_sequence.h>
+#include <ion/functions/binary_decode_sequence.h>
 #include <ion/functions/binary_decode_struct.h>
-//#include <ion/functions/binary_decode_vector.h>
+#include <ion/functions/binary_decode_vector.h>
 //#include <ion/functions/binary_encode.h>
 //#include <ion/functions/binary_encode_array.h>
 //#include <ion/functions/binary_encode_primitive.h>

@@ -20,7 +20,7 @@ test( binary_decode, validator ) {
 
 
   when("some input data is ready to decode");
-    byte invalid_input_age[] = {
+    byte invalid_age_input[] = {
       0x03, 0x00,                                           /* example.age */
       0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       /* numbers length */
       0x10, 0x00, 0x00, 0x00,                               /* numbers.0 */
@@ -28,7 +28,7 @@ test( binary_decode, validator ) {
       0x12, 0x00, 0x00, 0x00,                               /* numbers.2 */
     };
 
-    byte invalid_input_numbers[] = {
+    byte invalid_numbers_input[] = {
       0x30, 0x00,                                           /* example.age */
       0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       /* numbers length */
       0x20, 0x00, 0x00, 0x00,                               /* numbers.0 */
@@ -43,44 +43,29 @@ test( binary_decode, validator ) {
       0x11, 0x00, 0x00, 0x00,                               /* numbers.1 */
     };
 
-
-  when("a protocol decoder is set up on valid data");
     struct memory allocator = memory_init(4096);
+    struct object target = object(example, &schema, &allocator);
 
-    struct protocol valid_decoder = {
-      .schema = &schema,
-      .allocator = &allocator,
-      .input = &io_reader(valid_input, sizeof(valid_input)),
-      .output = &io_writer(&example, sizeof(example)),
-    };
-
-    struct protocol invalid_decoder_age = {
-      .schema = &schema,
-      .allocator = &allocator,
-      .input = &io_reader(invalid_input_age, sizeof(invalid_input_age)),
-      .output = &io_writer(&example, sizeof(example)),
-    };
-
-    struct protocol invalid_decoder_numbers = {
-      .schema = &schema,
-      .allocator = &allocator,
-      .input = &io_reader(invalid_input_numbers, sizeof(invalid_input_numbers)),
-      .output = &io_writer(&example, sizeof(example)),
-    };
+    struct io valid_source = io_reader(
+      valid_input, sizeof(valid_input));
+    struct io invalid_age_source = io_reader(
+      invalid_age_input, sizeof(invalid_age_input));
+    struct io invalid_numbers_source = io_reader(
+      invalid_numbers_input, sizeof(invalid_numbers_input));
 
 
   calling("binary_decode()");
   must("decode the input data based on the validator");
-    binary_decode(&valid_decoder);
+    binary_decode(&valid_source, &target);
     verify(error.occurred == false);
 
-    binary_decode(&invalid_decoder_age);
+    binary_decode(&invalid_age_source, &target);
     verify(error.occurred == true);
     verify(streq(error.message,
       "[age] must be greater or equal than 18"));
     error_reset();
 
-    binary_decode(&invalid_decoder_numbers);
+    binary_decode(&invalid_numbers_source, &target);
     verify(error.occurred == true);
     verify(streq(error.message,
       "[numbers] all numbers must be greater than 0"));

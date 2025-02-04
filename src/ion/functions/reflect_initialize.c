@@ -5,7 +5,6 @@ static inline void reflect_initialize (
   if (likely(schema->initialized))
     return;
 
-  print("init: %s", schema->name);
   for vector_each(schema->child, struct reflect*, child) {
     child->parent = schema;
     reflect_initialize(child);
