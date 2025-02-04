@@ -1,4 +1,5 @@
 #include "structs/memory.h"
+#include "structs/buffer.h"
 #include "structs/string.h"
 #include "structs/array.h"
 #include "structs/failure.h"

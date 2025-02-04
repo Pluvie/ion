@@ -18,6 +18,11 @@
 #include <ion/functions/binary_encode_array.c>
 #include <ion/functions/binary_encode_primitive.c>
 #include <ion/functions/binary_encode_struct.c>
+#include <ion/functions/buffer_alloc.c>
+#include <ion/functions/buffer_alloc_zero.c>
+#include <ion/functions/buffer_data.c>
+#include <ion/functions/buffer_init.c>
+#include <ion/functions/buffer_release.c>
 #include <ion/functions/date.c>
 #include <ion/functions/date_to_string.c>
 #include <ion/functions/date_today.c>

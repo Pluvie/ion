@@ -16,6 +16,15 @@
 #include <test/binary_encode/array.c>
 #include <test/binary_encode/primitive.c>
 #include <test/binary_protocol/round_trip.c>
+#include <test/buffer_alloc/address_unreliability.c>
+#include <test/buffer_alloc/data_consistency.c>
+#include <test/buffer_alloc/dynamic_grow_double_cap.c>
+#include <test/buffer_alloc/dynamic_grow_next_pow_2.c>
+#include <test/buffer_alloc/first_alloc_aligned.c>
+#include <test/buffer_alloc/increment_position.c>
+#include <test/buffer_init/default_capacity.c>
+#include <test/buffer_init/no_immediate_allocation.c>
+#include <test/buffer_init/power_2_capacity.c>
 #include <test/io_read_memory/invalid_cursor.c>
 #include <test/io_read_memory/valid_cursor.c>
 #include <test/io_read_socket/recv_failure.c>
@@ -122,6 +131,15 @@ void test_suite (
   test_run( binary_encode, primitive );
   test_run( binary_encode, array );
   test_run( binary_protocol, round_trip );
+  test_run( buffer_alloc, address_unreliability );
+  test_run( buffer_alloc, data_consistency );
+  test_run( buffer_alloc, dynamic_grow_double_cap );
+  test_run( buffer_alloc, dynamic_grow_next_pow_2 );
+  test_run( buffer_alloc, first_alloc_aligned );
+  test_run( buffer_alloc, increment_position );
+  test_run( buffer_init, default_capacity );
+  test_run( buffer_init, no_immediate_allocation );
+  test_run( buffer_init, power_2_capacity );
   test_run( io_read_memory, invalid_cursor );
   test_run( io_read_memory, valid_cursor );
   test_run( io_read_socket, recv_failure );
