@@ -1,5 +1,5 @@
-static inline i32 protocol_path_print (
-    struct protocol* p,
+static inline i32 reflect_path_print (
+    struct reflect* schema,
     char* result,
     u64 length
 )

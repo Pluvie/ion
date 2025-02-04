@@ -1,5 +1,6 @@
 static inline void binary_decode_primitive (
-    struct protocol* decoder
+    struct io* source,
+    struct object* target
 )
 /**
  * ### Description

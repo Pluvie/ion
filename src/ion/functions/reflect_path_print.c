@@ -1,15 +1,15 @@
-static inline i32 protocol_path_print (
-    struct protocol* p,
+static inline i32 reflect_path_print (
+    struct reflect* schema,
     char* result,
     u64 length
 )
 {
-  struct reflect* node = p->schema;
-
-  if (node == NULL)
+  if (schema == NULL)
     return 0;
 
-  struct array nodes = array_init(sizeof(struct reflect), 8, p->allocator);
+  struct reflect* node = schema;
+  struct reflect* nodes[32] = { 0 };
+  u64 nodes_count = 0;
 
 climb_schema:
   if (node->parent != NULL && node->parent->type == POINTER) {
@@ -17,7 +17,11 @@ climb_schema:
     node->parent->name = NULL;
   }
 
-  array_push(&nodes, node);
+  nodes[nodes_count] = node;
+  nodes_count++;
+
+  if (nodes_count >= countof(nodes))
+    goto reverse_print;
 
   if (node->parent != NULL) {
     node = node->parent;
@@ -27,10 +31,10 @@ climb_schema:
 reverse_print:
   i32 printed_bytes = 0;
   u32 print_cursor = 0;
-  i32 node_index = nodes.length - 1;
+  i32 node_index = nodes_count - 1;
 
 loop_nodes:
-  node = array_get(&nodes, node_index);
+  node = nodes[node_index];
   printed_bytes = 0;
 
   if (node->name != NULL) {

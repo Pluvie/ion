@@ -3,7 +3,8 @@ static inline
 #endif
 
 void binary_decode (
-    struct protocol* decoder
+    struct io* source,
+    struct object* target
 )
 /**
  * ### Description

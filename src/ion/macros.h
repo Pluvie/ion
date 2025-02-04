@@ -36,6 +36,7 @@
 #include "macros/memeq.h"
 #include "macros/memzero.h"
 #include "macros/next_pow2.h"
+#include "macros/object.h"
 #include "macros/of.h"
 #include "macros/padding.h"
 #include "macros/print.h"

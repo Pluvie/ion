@@ -5,6 +5,7 @@
 #include "structs/failure.h"
 #include "structs/io.h"
 #include "structs/map.h"
+#include "structs/object.h"
 #include "structs/protocol.h"
 #include "structs/range.h"
 #include "structs/reflect.h"

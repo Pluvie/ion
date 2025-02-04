@@ -1,9 +1,9 @@
-static inline void protocol_failure (
-    struct protocol* p
+static inline void reflect_failure (
+    struct reflect* schema
 )
 {
   char path_string[256] = { 0 };
-  i32 path_length = protocol_path_print(p, path_string, sizeof(path_string));
+  i32 path_length = reflect_path_print(schema, path_string, sizeof(path_string));
 
   if (path_length <= 0)
     return;

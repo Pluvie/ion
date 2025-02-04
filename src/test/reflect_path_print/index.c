@@ -1,4 +1,4 @@
-test( protocol_path_print, index ) {
+test( reflect_path_print, index ) {
 
   given("a schema with named and indexed fields");
     struct example {
@@ -27,26 +27,18 @@ test( protocol_path_print, index ) {
     };
 
 
-  when("a protocol is initialized on that schema");
+  when("the schema is initialized");
+    reflect_initialize(&schema);
     struct reflect* schema_sequence = vector_get(schema.child, 2);
-    schema_sequence->parent = &schema;
     struct reflect* schema_sequence_inner = vector_get(schema_sequence->child, 0);
     schema_sequence_inner->index = 2;
-    schema_sequence_inner->parent = schema_sequence;
     struct reflect* schema_sequence_inner_value_inner = vector_get(schema_sequence_inner->child, 0);
-    schema_sequence_inner_value_inner->parent = schema_sequence_inner;
 
 
-    struct memory allocator = memory_init(4096);
-    struct protocol proto = {
-      .schema = vector_get(schema_sequence_inner->child, 0),
-      .allocator = &allocator
-    };
-
-
-  calling("protocol_path_print()");
+  calling("reflect_path_print()");
     char result[128] = { 0 };
-    i32 printed_bytes = protocol_path_print(&proto, result, sizeof(result));
+    i32 printed_bytes = reflect_path_print(
+      schema_sequence_inner_value_inner, result, sizeof(result));
 
 
   must("print a dot separated path with names and indexes");
@@ -55,5 +47,4 @@ test( protocol_path_print, index ) {
 
 
   success();
-    memory_release(&allocator);
 }

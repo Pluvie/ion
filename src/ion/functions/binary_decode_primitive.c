@@ -1,31 +1,30 @@
 static inline void binary_decode_primitive (
-    struct protocol* decoder
+    struct io* source,
+    struct object* target
 )
 {
-  struct io* input = decoder->input;
-  struct io* output = decoder->output;
-  struct reflect* schema = decoder->schema;
+  enum types primitive_type = target->schema->type;
+  u32 primitive_type_size = type_sizes[primitive_type];
 
-  u32 type_size = type_sizes[schema->type];
-  void* primitive_value = io_read(input, type_size);
+  void* primitive_value = io_read(source, primitive_type_size);
   if (error.occurred)
-    return protocol_failure(decoder);
+    return reflect_failure(target->schema);
 
-  reflect_validate(schema, primitive_value);
+  reflect_validate(target->schema, primitive_value);
   if (error.occurred)
-    return protocol_failure(decoder);
+    return reflect_failure(target->schema);
 
-  if (schema->type == BOOL) {
-    // Special case for booleans: any value other than 0 is considered as `true`.
+  if (primitive_type == BOOL) {
+    /* Special case for booleans: any value other than 0 is considered as `true`. */
     if (*(u8*) primitive_value == 0)
-      io_write(output, &(bool){ false }, type_size);
+      memcpy(target->address, &(bool) { false }, primitive_type_size);
     else
-      io_write(output, &(bool){ true }, type_size);
+      memcpy(target->address, &(bool) { true }, primitive_type_size);
 
   } else {
-    io_write(output, primitive_value, type_size);
+    memcpy(target->address, primitive_value, primitive_type_size);
   }
 
   if (error.occurred)
-    return protocol_failure(decoder);
+    return reflect_failure(target->schema);
 }

@@ -1,4 +1,4 @@
-test( protocol_path_print, dot_separated ) {
+test( reflect_path_print, dot_separated ) {
 
   given("a schema with named fields");
     struct example {
@@ -22,22 +22,16 @@ test( protocol_path_print, dot_separated ) {
     };
 
 
-  when("a protocol is initialized on that schema");
+  when("the schema is initialized");
+    reflect_initialize(&schema);
     struct reflect* schema_inner = vector_get(schema.child, 2);
-    schema_inner->parent = &schema;
     struct reflect* schema_inner_value_inner = vector_get(schema_inner->child, 0);
-    schema_inner_value_inner->parent = schema_inner;
-
-    struct memory allocator = memory_init(4096);
-    struct protocol proto = {
-      .schema = vector_get(schema_inner->child, 0),
-      .allocator = &allocator
-    };
 
 
-  calling("protocol_path_print()");
+  calling("reflect_path_print()");
     char result[128] = { 0 };
-    i32 printed_bytes = protocol_path_print(&proto, result, sizeof(result));
+    i32 printed_bytes = reflect_path_print(
+      schema_inner_value_inner, result, sizeof(result));
 
 
   must("print a dot separated path");
@@ -46,5 +40,4 @@ test( protocol_path_print, dot_separated ) {
 
 
   success();
-    memory_release(&allocator);
 }
