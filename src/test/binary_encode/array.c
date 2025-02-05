@@ -82,19 +82,11 @@ test( binary_encode, array ) {
     });
 
 
-  when("a protocol encoder is set up on this data");
-    struct memory allocator = memory_init(4096);
-    byte output[sizeof(struct example)] = { 0 };
-    struct protocol encoder = {
-      .schema = &schema,
-      .allocator = &allocator,
-      .input = &io_reader(&input, sizeof(input)),
-      .output = &io_writer(output, sizeof(output)),
-    };
-
-
   calling("binary_encode()");
-    binary_encode(&encoder);
+    byte output[1024] = { 0 };
+    struct object source = object(input, &schema);
+    struct io target = io_writer(output, sizeof(output));
+    binary_encode(&source, &target);
 
 
   must("encode the input data correctly");
@@ -149,7 +141,6 @@ test( binary_encode, array ) {
     };
 
     verify(error.occurred == false);
-    verify(io_exhausted(encoder.input) == true);
     verify(memeq(output, expected_output, sizeof(expected_output)) == true);
 
   success();

@@ -1,22 +1,15 @@
 static inline void binary_encode_struct (
-    struct protocol* encoder
+    struct object* source,
+    struct io* target
 )
 {
-  struct io* input = encoder->input;
-  struct reflect* schema = encoder->schema;
-
-  u64 input_initial_cursor = input->cursor;
-  u32 struct_typesize = schema->bounds[0];
-
-  for vector_each(schema->child, struct reflect*, field) {
-    field->parent = schema;
-    encoder->schema = field;
-    input->cursor = input_initial_cursor + field->offset;
-    binary_encode(encoder);
+  for vector_each(source->schema->child, struct reflect*, field) {
+    struct object field_object = {
+      .schema = field,
+      .address = source->address + field->offset
+    };
+    binary_encode(&field_object, target);
     if (error.occurred)
       return;
   }
-
-  input->cursor = input_initial_cursor + struct_typesize;
-  encoder->schema = schema;
 }

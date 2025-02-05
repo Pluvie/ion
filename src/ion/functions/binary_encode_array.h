@@ -1,5 +1,6 @@
 static inline void binary_encode_array (
-    struct protocol* encoder
+    struct object* source,
+    struct io* target
 )
 /**
  * ### Description

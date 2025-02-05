@@ -3,10 +3,13 @@ static inline
 #endif
 
 void binary_encode (
-    struct protocol* encoder
+    struct object* source,
+    struct io* target
 )
 {
-  switch (encoder->schema->type) {
+  reflect_initialize(source->schema);
+
+  switch (source->schema->type) {
   case U8:
   case U16:
   case U32:
@@ -21,27 +24,27 @@ void binary_encode (
   case BYTE:
   case CHAR:
   case BOOL:
-    binary_encode_primitive(encoder);
+    binary_encode_primitive(source, target);
     break;
 
   case STRUCT:
-    binary_encode_struct(encoder);
+    binary_encode_struct(source, target);
     break;
 
   case POINTER:
-    //binary_encode_pointer(encoder);
+    //binary_encode_pointer(source, target);
     break;
 
   case SEQUENCE:
-    //binary_encode_sequence(encoder);
+    //binary_encode_sequence(source, target);
     break;
 
   case ARRAY:
-    binary_encode_array(encoder);
+    binary_encode_array(source, target);
     break;
 
   case VECTOR:
-    //binary_encode_vector(encoder);
+    //binary_encode_vector(source, target);
     break;
   }
 }

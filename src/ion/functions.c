@@ -14,10 +14,10 @@
 #include <ion/functions/binary_decode_sequence.c>
 #include <ion/functions/binary_decode_struct.c>
 #include <ion/functions/binary_decode_vector.c>
-//#include <ion/functions/binary_encode.c>
-//#include <ion/functions/binary_encode_array.c>
-//#include <ion/functions/binary_encode_primitive.c>
-//#include <ion/functions/binary_encode_struct.c>
+#include <ion/functions/binary_encode.c>
+#include <ion/functions/binary_encode_array.c>
+#include <ion/functions/binary_encode_primitive.c>
+#include <ion/functions/binary_encode_struct.c>
 #include <ion/functions/buffer_alloc.c>
 #include <ion/functions/buffer_alloc_zero.c>
 #include <ion/functions/buffer_data.c>
