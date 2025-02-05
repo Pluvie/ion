@@ -13,9 +13,9 @@
 #include <test/binary_decode/vector.c>
 #include <test/binary_decode/vector_maxlength.c>
 #include <test/binary_decode/vector_minlength.c>
-//#include <test/binary_encode/array.c>
+#include <test/binary_encode/array.c>
 #include <test/binary_encode/primitive.c>
-//#include <test/binary_protocol/round_trip.c>
+#include <test/binary_protocol/round_trip.c>
 #include <test/buffer_alloc/address_unreliability.c>
 #include <test/buffer_alloc/data_consistency.c>
 #include <test/buffer_alloc/dynamic_grow_double_cap.c>
@@ -129,8 +129,8 @@ void test_suite (
   test_run( binary_decode, vector_maxlength );
   test_run( binary_decode, vector_minlength );
   test_run( binary_encode, primitive );
-  //test_run( binary_encode, array );
-  //test_run( binary_protocol, round_trip );
+  test_run( binary_encode, array );
+  test_run( binary_protocol, round_trip );
   test_run( buffer_alloc, address_unreliability );
   test_run( buffer_alloc, data_consistency );
   test_run( buffer_alloc, dynamic_grow_double_cap );

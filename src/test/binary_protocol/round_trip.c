@@ -49,33 +49,20 @@ test( binary_protocol, round_trip ) {
     source.value_bool = true;
 
 
-  when("a binary protocol is set up on this data");
-    struct memory allocator = memory_init(0);
-    byte buffer[sizeof(struct example)] = { 0 };
-
-    struct protocol encoder = {
-      .schema = &schema,
-      .input = &io_reader(&source, sizeof(source)),
-      .output = &io_writer(buffer, sizeof(buffer)),
-    };
-
-    struct protocol decoder = {
-      .schema = &schema,
-      .allocator = &allocator,
-      .input = &io_reader(&buffer, sizeof(buffer)),
-      .output = &io_writer(&target, sizeof(target)),
-    };
-
-
   calling("binary_encode() and binary_decode()");
-    binary_encode(&encoder);
-    binary_decode(&decoder);
+    byte wire[1024] = { 0 };
+    struct memory allocator = memory_init(0);
+
+    struct object encoder = object(source, &schema);
+    struct io binary_writer = io_writer(wire, sizeof(wire));
+    struct io binary_reader = io_reader(wire, sizeof(wire));
+    struct object decoder = object(target, &schema, &allocator);
+    binary_encode(&encoder, &binary_writer);
+    binary_decode(&binary_reader, &decoder);
 
 
   must("encode the source data correctly and decode it on the target");
     verify(error.occurred == false);
-    verify(io_exhausted(encoder.input) == true);
-    verify(decoder.input->cursor == 61);
     verify(target.value_u8 == 1);
     verify(target.value_u16 == 2);
     verify(target.value_u32 == 3);

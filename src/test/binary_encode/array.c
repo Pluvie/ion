@@ -144,5 +144,4 @@ test( binary_encode, array ) {
     verify(memeq(output, expected_output, sizeof(expected_output)) == true);
 
   success();
-    memory_release(&allocator);
 }
