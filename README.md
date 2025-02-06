@@ -12,14 +12,14 @@ elegance* and *semantic cohesion*.
 
 Ion shall provide efficient language constructs to:
 
-  - [doc/serialization](serialize) to / from many data formats like JSON, XML, CSV, etc.
+  - [serialize](doc/serialization.md) to / from many data formats like JSON, XML, CSV, etc.
     and provide an easy way to create your serialization in any other new format.
-  - [doc/data-types.md](standardize data types): integers, decimals, strings, etc.
-  - offer ready to use data structures like [doc/array.md](arrays), [doc/map.md](maps)
-    and [doc/set.md](sets).
+  - [standardize data types](doc/data-types.md): integers, decimals, strings, etc.
+  - offer ready to use data structures like [arrays](doc/array.md), [maps](doc/map.md)
+    and [sets](doc/set.md).
   - enable the introspection of any C language struct through
-    [doc/reflection.md](reflection).
-  - normalize [doc/io.md](io operations) on files, sockets, and memory objects.
+    [reflection](doc/reflection.md).
+  - normalize [io operations](doc/io.md) on files, sockets, and memory objects.
 
 and many other minor improvements.
 

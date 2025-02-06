@@ -15,7 +15,7 @@ new serialization format: the main reason of this is the introduction of the
 [reflection](reflection.md) capability that is usually not available in C programs.
 
 To know more on how to target a new format and create its serialization protocol,
-refer to the [#custom-formats](guide) at the bottom.
+refer to the [guide](#custom-formats) at the bottom.
 
 ### Binary
 
@@ -74,7 +74,7 @@ All these functions share the same arguments which are:
   - `struct io* source, struct object* target` for the `_decode` family.
   - `struct object* source, struct io* target` for the `_encode` family.
 
-The `struct io` is explained in the [io.md](io documentation). Suffice to say, for the
+The `struct io` is explained in the [io documentation](io.md). Suffice to say, for the
 purpose of this guide, that it is a generic interface for reading / writing data -- be
 it on a network, file or memory.
 

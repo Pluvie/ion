@@ -6,7 +6,7 @@
 ## Map
 
 A `map` is an unordered collection of *values* identified by an unique *key*. Contrary
-to the [array.md](array) or [vector.md](vector) data structure, the map values can be
+to the [array](array.md) or [vector](vector.md) data structure, the map values can be
 retrieved in constant time. This is achieved with the use of a hash function, which is
 why this data structure is also referred to as __hash map__.
 
