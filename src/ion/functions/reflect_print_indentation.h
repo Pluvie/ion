@@ -1,5 +1,5 @@
 void reflect_print_indentation (
-    struct reflect* schema,
+    struct reflect* reflection,
     u32 indentation
 )
 /**

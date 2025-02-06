@@ -1,6 +1,6 @@
 bool is_adult (
     void* age_ptr,
-    struct reflect* schema
+    struct reflect* reflection
 )
 {
   u16 age = *(u16*) age_ptr;
@@ -15,7 +15,7 @@ bool is_adult (
 
 bool all_numbers_greater_than_zero (
     void* numbers_ptr,
-    struct reflect* schema
+    struct reflect* reflection
 )
 {
   struct array* numbers = (struct array*) numbers_ptr;

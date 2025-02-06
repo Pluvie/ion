@@ -1,5 +1,5 @@
 static inline bool reflect_validate (
-    struct reflect* schema,
+    struct reflect* reflection,
     void* value
 )
 /**

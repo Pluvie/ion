@@ -11,8 +11,8 @@ test( binary_decode, pointer ) {
     } example;
 
 
-  when("it has an associated schema that enforces a minimum length")
-    struct reflect schema = {
+  when("it has an associated reflection that enforces a minimum length")
+    struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, name), type(POINTER, 32), of({ type(CHAR) }) },
 
@@ -52,7 +52,7 @@ test( binary_decode, pointer ) {
   calling("binary_decode()");
     struct memory allocator = memory_init(4096);
     struct io source = io_reader(input, sizeof(input));
-    struct object target = object(example, &schema, &allocator);
+    struct object target = object(example, &reflection, &allocator);
     binary_decode(&source, &target);
 
 
@@ -75,6 +75,7 @@ test( binary_decode, pointer ) {
 
     /* The total allocations must be: 3 (pointers) and 1 (array data). */
     verify(allocator.allocations == 3 + 1);
+
 
   success();
     memory_release(&allocator);

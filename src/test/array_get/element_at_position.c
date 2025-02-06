@@ -1,6 +1,6 @@
 test( array_get, element_at_position ) {
 
-  given("a struct array");
+  given("an array");
     struct array array;
     struct memory allocator = memory_init(0);
     array = array_init(sizeof(u64), 8, &allocator);

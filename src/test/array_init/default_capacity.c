@@ -1,11 +1,11 @@
 test( array_init, default_capacity ) {
 
-  given("a struct array");
+  given("an array");
     struct array array;
     struct memory allocator = memory_init(0);
 
 
-  when("providing a capacity inferior to the default");
+  when("the array is provided a capacity inferior to the default");
     u64 capacity = 3;
 
 

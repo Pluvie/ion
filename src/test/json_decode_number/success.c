@@ -1,17 +1,17 @@
 test( json_decode_number, success ) {
 
-  given("a json protocol and a schema with a number type");
+  given("a json protocol and a reflection with a number type");
     struct protocol json = { 0 };
 
     u64 example;
 
-    struct reflect schema = {
+    struct reflect reflection = {
       type(U64), .name = "example"
     };
 
     struct memory allocator = memory_init(4096);
     json.allocator = &allocator;
-    json.schema = &schema;
+    json.reflection = &schema;
 
 
   when("some input data is ready to decode");

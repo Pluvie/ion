@@ -1,11 +1,11 @@
 test( array_init, power_2_capacity ) {
 
-  given("a struct array");
+  given("an array");
     struct array array;
     struct memory allocator = memory_init(0);
 
 
-  when("providing a capacity which is not a power of 2");
+  when("the array is provided a capacity which is not a power of 2");
     u64 capacity = 77;
 
 

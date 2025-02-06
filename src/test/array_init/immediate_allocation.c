@@ -1,6 +1,6 @@
 test( array_init, immediate_allocation ) {
 
-  given("a struct array");
+  given("an array");
     struct array array;
     struct memory allocator = memory_init(0);
 

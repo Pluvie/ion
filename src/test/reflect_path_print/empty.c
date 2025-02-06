@@ -1,16 +1,16 @@
 test( reflect_path_print, empty ) {
 
-  given("an empty schema");
-    struct reflect schema = { 0 };
+  given("an empty reflection");
+    struct reflect reflection = { 0 };
 
 
-  when("the schema is initialized");
-    reflect_initialize(&schema)
+  when("the reflection is initialized");
+    reflect_initialize(&reflection)
 
 
   calling("reflect_path_print()");
     char result[128] = { 0 };
-    i32 printed_bytes = reflect_path_print(&schema, result, sizeof(result));
+    i32 printed_bytes = reflect_path_print(&reflection, result, sizeof(result));
 
 
   must("print an empty path");

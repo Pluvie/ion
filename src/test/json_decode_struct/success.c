@@ -1,13 +1,13 @@
 test( json_decode_struct, success ) {
 
-  given("a json protocol and a schema with a struct type");
+  given("a json protocol and a reflection with a struct type");
     struct protocol json = { 0 };
 
     struct example {
       u8 value_u8;
     } example;
 
-    struct reflect schema = {
+    struct reflect reflection = {
       type(STRUCT, { sizeof(struct example), 1 }) {
         { field(struct example, value_u8), type(U8) },
       }
@@ -15,7 +15,7 @@ test( json_decode_struct, success ) {
 
     struct memory allocator = memory_init(4096);
     json.allocator = &allocator;
-    json.schema = &schema;
+    json.reflection = &schema;
 
 
   when("some input data is ready to decode");

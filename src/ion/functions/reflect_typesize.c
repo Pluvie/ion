@@ -1,8 +1,8 @@
 static inline u32 reflect_typesize (
-    struct reflect* schema
+    struct reflect* reflection
 )
 {
-  switch (schema->type) {
+  switch (reflection->type) {
   case U8:
   case U16:
   case U32:
@@ -17,13 +17,13 @@ static inline u32 reflect_typesize (
   case BYTE:
   case CHAR:
   case BOOL:
-    return type_sizes[schema->type];
+    return type_sizes[reflection->type];
   case STRUCT:
-    return schema->bounds[0];
+    return reflection->bounds[0];
   case POINTER:
     return sizeof(void*);
   case SEQUENCE:
-    return schema->bounds[0] * reflect_typesize(vector_get(schema->child, 0));
+    return reflection->bounds[0] * reflect_typesize(vector_get(reflection->child, 0));
   case ARRAY:
     return sizeof(struct array);
   case VECTOR:

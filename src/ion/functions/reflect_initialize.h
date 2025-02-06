@@ -1,5 +1,5 @@
 static inline void reflect_initialize (
-    struct reflect* schema
+    struct reflect* reflection
 )
 /**
  * ### Description

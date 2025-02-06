@@ -9,8 +9,8 @@ test( binary_decode, primitive ) {
     } example;
 
 
-  when("it has an associated schema")
-    struct reflect schema = {
+  when("it has an associated reflection")
+    struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, value_u8), type(U8) },
         { field(struct example, value_u16), type(U16) },
@@ -59,7 +59,7 @@ test( binary_decode, primitive ) {
   calling("binary_decode()");
     struct memory allocator = memory_init(4096);
     struct io source = io_reader(input, sizeof(input));
-    struct object target = object(example, &schema, &allocator);
+    struct object target = object(example, &reflection, &allocator);
     binary_decode(&source, &target);
 
 

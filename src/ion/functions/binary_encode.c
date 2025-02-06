@@ -7,9 +7,9 @@ void binary_encode (
     struct io* target
 )
 {
-  reflect_initialize(source->schema);
+  reflect_initialize(source->reflection);
 
-  switch (source->schema->type) {
+  switch (source->reflection->type) {
   case U8:
   case U16:
   case U32:

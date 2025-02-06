@@ -1,10 +1,10 @@
 static inline bool reflect_validate (
-    struct reflect* schema,
+    struct reflect* reflection,
     void* value
 )
 {
-  if (schema->validator == NULL)
+  if (reflection->validator == NULL)
     return true;
 
-  return schema->validator(value, schema);
+  return reflection->validator(value, reflection);
 }

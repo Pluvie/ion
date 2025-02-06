@@ -7,9 +7,9 @@ void binary_decode (
     struct object* target
 )
 {
-  reflect_initialize(target->schema);
+  reflect_initialize(target->reflection);
 
-  switch (target->schema->type) {
+  switch (target->reflection->type) {
   case U8:
   case U16:
   case U32:

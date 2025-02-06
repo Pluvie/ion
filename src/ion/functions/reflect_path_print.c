@@ -1,17 +1,17 @@
 static inline i32 reflect_path_print (
-    struct reflect* schema,
+    struct reflect* reflection,
     char* result,
     u64 length
 )
 {
-  if (schema == NULL)
+  if (reflection == NULL)
     return 0;
 
-  struct reflect* node = schema;
+  struct reflect* node = reflection;
   struct reflect* nodes[32] = { 0 };
   u64 nodes_count = 0;
 
-climb_schema:
+climb_reflection:
   if (node->parent != NULL && node->parent->type == POINTER) {
     node->name = node->parent->name;
     node->parent->name = NULL;
@@ -25,7 +25,7 @@ climb_schema:
 
   if (node->parent != NULL) {
     node = node->parent;
-    goto climb_schema;
+    goto climb_reflection;
   }
 
 reverse_print:

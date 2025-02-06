@@ -9,8 +9,8 @@ test( binary_encode, primitive ) {
     };
 
 
-  when("it has an associated schema")
-    struct reflect schema = {
+  when("it has an associated reflection")
+    struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, value_u8), type(U8) },
         { field(struct example, value_u16), type(U16) },
@@ -53,7 +53,7 @@ test( binary_encode, primitive ) {
 
   calling("binary_encode()");
     byte output[1024] = { 0 };
-    struct object source = object(input, &schema);
+    struct object source = object(input, &reflection);
     struct io target = io_writer(output, sizeof(output));
     binary_encode(&source, &target);
 

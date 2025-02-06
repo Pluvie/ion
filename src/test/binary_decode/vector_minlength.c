@@ -6,8 +6,8 @@ test( binary_decode, vector_minlength ) {
     } example;
 
 
-  when("it has an associated schema that enforces a minimum length")
-    struct reflect schema = {
+  when("it has an associated reflection that enforces a minimum length")
+    struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, bytes), type(VECTOR, 4, 0), of({ type(BYTE) }) },
       })
@@ -26,7 +26,7 @@ test( binary_decode, vector_minlength ) {
   calling("binary_decode()");
     struct memory allocator = memory_init(4096);
     struct io source = io_reader(input, sizeof(input));
-    struct object target = object(example, &schema, &allocator);
+    struct object target = object(example, &reflection, &allocator);
     binary_decode(&source, &target);
 
 
@@ -34,6 +34,7 @@ test( binary_decode, vector_minlength ) {
     verify(error.occurred == true);
     verify(streq(error.message,
       "[bytes] vector required minimum length of 4 but found 3"));
+
 
   success();
     error_reset();

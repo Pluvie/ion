@@ -1,5 +1,5 @@
 static inline i32 reflect_path_print (
-    struct reflect* schema,
+    struct reflect* reflection,
     char* result,
     u64 length
 )

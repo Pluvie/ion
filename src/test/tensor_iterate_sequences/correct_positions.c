@@ -127,6 +127,7 @@ test( tensor_iterate_sequences, correct_positions ) {
     next_iteration = tensor_iterate_sequences(&tensor, &sequences);
     verify(next_iteration == false);
 
+
   success();
     memory_release(&allocator);
 }

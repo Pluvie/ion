@@ -3,20 +3,20 @@ static inline void binary_decode_struct (
     struct object* target
 )
 {
-  for vector_each(target->schema->child, struct reflect*, field) {
-    struct object field_object = {
-      .name = field->name,
-      .schema = field,
-      .address = target->address + field->offset,
+  for vector_each(target->reflection->child, struct reflect*, field_reflection) {
+    struct object field = {
+      .name = field_reflection->name,
+      .reflection = field_reflection,
+      .address = target->address + field_reflection->offset,
       .allocator = target->allocator
     };
 
-    binary_decode(source, &field_object);
+    binary_decode(source, &field);
     if (error.occurred)
       return;
   }
 
-  reflect_validate(target->schema, target->address);
+  reflect_validate(target->reflection, target->address);
   if (error.occurred)
-    return reflect_failure(target->schema);
+    return reflect_failure(target->reflection);
 }

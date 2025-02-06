@@ -13,25 +13,25 @@ test( binary_encode, array ) {
     };
 
 
-  when("it has an associated schema")
-    struct reflect element_schema = {
+  when("it has an associated reflection")
+    struct reflect element_reflection = {
       type(STRUCT, sizeof(struct element)), fields({
         { field(struct element, a), type(I32) },
         { field(struct element, b), type(I32) },
       })
     };
 
-    struct reflect schema = {
+    struct reflect example_reflection = {
       type(STRUCT, sizeof(struct example)), fields({
 
         { field(struct example, one_dim), type(ARRAY), of({
-            type(STRUCT), schema(&element_schema)
+            type(STRUCT), reflect(&element_reflection)
           })
         },
 
         { field(struct example, two_dim), type(ARRAY), of({
             type(ARRAY), of({
-              type(STRUCT), schema(&element_schema)
+              type(STRUCT), reflect(&element_reflection)
             })
           })
         },
@@ -84,7 +84,7 @@ test( binary_encode, array ) {
 
   calling("binary_encode()");
     byte output[1024] = { 0 };
-    struct object source = object(input, &schema);
+    struct object source = object(input, &example_reflection);
     struct io target = io_writer(output, sizeof(output));
     binary_encode(&source, &target);
 
@@ -142,6 +142,7 @@ test( binary_encode, array ) {
 
     verify(error.occurred == false);
     verify(memeq(output, expected_output, sizeof(expected_output)) == true);
+
 
   success();
 }

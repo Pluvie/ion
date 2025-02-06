@@ -1,15 +1,15 @@
 static inline void reflect_initialize (
-    struct reflect* schema
+    struct reflect* reflection
 )
 {
-  if (likely(schema->initialized))
+  if (likely(reflection->initialized))
     return;
 
-  for vector_each(schema->child, struct reflect*, child) {
-    child->parent = schema;
+  for vector_each(reflection->child, struct reflect*, child) {
+    child->parent = reflection;
     reflect_initialize(child);
   }
 
-  schema->initialized = true;
+  reflection->initialized = true;
   return;
 }

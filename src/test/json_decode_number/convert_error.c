@@ -1,17 +1,17 @@
 test( json_decode_number, convert_error ) {
 
-  given("a json protocol and a schema with a number type");
+  given("a json protocol and a reflection with a number type");
     struct protocol json = { 0 };
 
     u16 example;
 
-    struct reflect schema = {
+    struct reflect reflection = {
       type(U16), .name = "example"
     };
 
     struct memory allocator = memory_init(4096);
     json.allocator = &allocator;
-    json.schema = &schema;
+    json.reflection = &schema;
 
 
   when("some input data is valid to parse but fails to convert");

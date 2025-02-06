@@ -3,26 +3,26 @@ static inline void binary_decode_pointer (
     struct object* target
 )
 {
-  struct reflect* pointer = vector_get(target->schema->child, 0);
-  u64 pointer_size = reflect_typesize(pointer);
+  struct reflect* pointer_reflection = vector_get(target->reflection->child, 0);
+  u64 pointer_size = reflect_typesize(pointer_reflection);
 
   /* Special case: a POINTER size of type CHAR must be explicitly sent, as its
    * length is not fixed and not known a priori. */
-  if (pointer->type == CHAR)
+  if (pointer_reflection->type == CHAR)
     goto check_string_size;
   else
     goto allocate_pointer;
 
 check_string_size:
-  u64 string_max_size = target->schema->bounds[0];
+  u64 string_max_size = target->reflection->bounds[0];
   u64* string_size = io_read(source, sizeof(u64));
   if (error.occurred)
-    return reflect_failure(target->schema);
+    return reflect_failure(target->reflection);
 
   if (string_max_size > 0 && *string_size > string_max_size) {
     fail("pointer required maximum string size of %li but found %li",
       string_max_size, pointer_size);
-    return reflect_failure(target->schema);
+    return reflect_failure(target->reflection);
   }
 
   pointer_size = *string_size;
@@ -30,7 +30,7 @@ check_string_size:
 allocate_pointer:
   void* pointer_data = memory_alloc(target->allocator, pointer_size);
 
-  if (pointer->type == CHAR)
+  if (pointer_reflection->type == CHAR)
     goto pointer_type_char;
   else
     goto pointer_type_other;
@@ -45,21 +45,21 @@ pointer_type_char:
   goto validate_pointer;
 
 pointer_type_other:
-  struct object pointer_object = {
+  struct object pointer = {
     .name = target->name,
     .address = pointer_data,
-    .schema = pointer,
+    .reflection = pointer_reflection,
     .allocator = target->allocator,
   };
 
-  binary_decode(source, &pointer_object);
+  binary_decode(source, &pointer);
   if (error.occurred)
     return;
 
 validate_pointer:
-  reflect_validate(target->schema, pointer_data);
+  reflect_validate(target->reflection, pointer_data);
   if (error.occurred)
-    return reflect_failure(target->schema);
+    return reflect_failure(target->reflection);
 
 write_target:
   u64 pointer_address = (u64) pointer_data;

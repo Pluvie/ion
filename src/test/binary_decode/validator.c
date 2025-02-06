@@ -9,8 +9,8 @@ test( binary_decode, validator ) {
     } example;
 
 
-  when("it has an associated schema")
-    struct reflect schema = {
+  when("it has an associated reflection")
+    struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, age), type(U16), valid_if(is_adult) },
         { field(struct example, numbers), type(ARRAY), of({ type(I32) }),
@@ -44,7 +44,7 @@ test( binary_decode, validator ) {
     };
 
     struct memory allocator = memory_init(4096);
-    struct object target = object(example, &schema, &allocator);
+    struct object target = object(example, &reflection, &allocator);
 
     struct io valid_source = io_reader(
       valid_input, sizeof(valid_input));
@@ -70,6 +70,7 @@ test( binary_decode, validator ) {
     verify(streq(error.message,
       "[numbers] all numbers must be greater than 0"));
     error_reset();
+
 
   success();
     memory_release(&allocator);

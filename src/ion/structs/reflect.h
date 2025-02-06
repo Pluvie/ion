@@ -1,6 +1,7 @@
 struct reflect;
 /**
- * Explain what reflection is and how it's useful for serialization.
+ * Explain what reflection is and how it's useful for object inspection and
+ * serialization.
  *
  * ```c
  * struct example {
@@ -16,7 +17,7 @@ struct reflect;
  *   }* pointed;
  * };
  * 
- * struct reflect example_schema = {
+ * struct reflect example_reflection = {
  *   type(STRUCT, sizeof(struct example)), fields({
  *     { field(struct example, number), type(I32) },
  *     { field(struct example, inner), type(STRUCT), fields({

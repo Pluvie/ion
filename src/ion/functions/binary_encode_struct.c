@@ -3,12 +3,12 @@ static inline void binary_encode_struct (
     struct io* target
 )
 {
-  for vector_each(source->schema->child, struct reflect*, field) {
-    struct object field_object = {
-      .schema = field,
-      .address = source->address + field->offset
+  for vector_each(source->reflection->child, struct reflect*, field_reflection) {
+    struct object field = {
+      .reflection = field_reflection,
+      .address = source->address + field_reflection->offset
     };
-    binary_encode(&field_object, target);
+    binary_encode(&field, target);
     if (error.occurred)
       return;
   }

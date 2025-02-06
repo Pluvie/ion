@@ -1,6 +1,6 @@
 test( reflect_path_print, dot_separated ) {
 
-  given("a schema with named fields");
+  given("a reflection with named fields");
     struct example {
       u64 index;
       u64 value;
@@ -9,7 +9,7 @@ test( reflect_path_print, dot_separated ) {
       } inner;
     };
 
-    struct reflect schema = {
+    struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, index), type(U64) },
         { field(struct example, value), type(U64) },
@@ -22,16 +22,21 @@ test( reflect_path_print, dot_separated ) {
     };
 
 
-  when("the schema is initialized");
-    reflect_initialize(&schema);
-    struct reflect* schema_inner = vector_get(schema.child, 2);
-    struct reflect* schema_inner_value_inner = vector_get(schema_inner->child, 0);
+  when("the reflection is initialized");
+    reflect_initialize(&reflection);
+
+
+  when("a supposed error is found in an inner element");
+    struct reflect* reflection_inner =
+      vector_get(reflection.child, 2);
+    struct reflect* reflection_inner_value_inner =
+      vector_get(reflection_inner->child, 0);
 
 
   calling("reflect_path_print()");
     char result[128] = { 0 };
     i32 printed_bytes = reflect_path_print(
-      schema_inner_value_inner, result, sizeof(result));
+      reflection_inner_value_inner, result, sizeof(result));
 
 
   must("print a dot separated path");

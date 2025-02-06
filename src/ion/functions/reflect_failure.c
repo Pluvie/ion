@@ -1,9 +1,9 @@
 static inline void reflect_failure (
-    struct reflect* schema
+    struct reflect* reflection
 )
 {
   char path_string[256] = { 0 };
-  i32 path_length = reflect_path_print(schema, path_string, sizeof(path_string));
+  i32 path_length = reflect_path_print(reflection, path_string, sizeof(path_string));
 
   if (path_length <= 0)
     return;

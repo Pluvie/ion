@@ -11,8 +11,8 @@ test( binary_protocol, round_trip ) {
     struct example target = { 0 };
 
 
-  when("it has an associated schema")
-    struct reflect schema = {
+  when("it has an associated reflection")
+    struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, value_u8), type(U8) },
         { field(struct example, value_u16), type(U16) },
@@ -53,10 +53,10 @@ test( binary_protocol, round_trip ) {
     byte wire[1024] = { 0 };
     struct memory allocator = memory_init(0);
 
-    struct object encoder = object(source, &schema);
+    struct object encoder = object(source, &reflection);
     struct io binary_writer = io_writer(wire, sizeof(wire));
     struct io binary_reader = io_reader(wire, sizeof(wire));
-    struct object decoder = object(target, &schema, &allocator);
+    struct object decoder = object(target, &reflection, &allocator);
     binary_encode(&encoder, &binary_writer);
     binary_decode(&binary_reader, &decoder);
 

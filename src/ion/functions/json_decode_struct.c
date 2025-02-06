@@ -4,10 +4,10 @@ static inline void json_decode_struct (
     struct protocol* json
 )
 {
-  struct reflect* schema = json->schema;
+  struct reflect* reflection = json->schema;
   u64 output_initial_cursor = output->cursor;
-  u64 struct_typesize = schema->bounds[0];
-  u64 fields_count = schema->bounds[1];
+  u64 struct_typesize = reflection->bounds[0];
+  u64 fields_count = reflection->bounds[1];
 
   char* curly_open;
   char* curly_close;
@@ -15,7 +15,7 @@ static inline void json_decode_struct (
   char* comma;
 
   struct string field_name;
-  struct reflect* field = schema->nodes;
+  struct reflect* field = reflection->nodes;
 
 object_begin:
   json_decode_spaces(input, output, json);
@@ -23,7 +23,7 @@ object_begin:
   curly_open = io_read(input, sizeof(char));
   if (curly_open == NULL || *curly_open != '{') {
     failure(&(json->error), "[%s] expected `{` to begin object",
-      schema->name);
+      reflection->name);
     return;
   }
 
@@ -34,7 +34,7 @@ next_field:
   if (field_name.length == 0)
     goto object_end;
 
-  field = schema->nodes;
+  field = reflection->nodes;
   for (u64 i = 0; i < fields_count; i++) {
     /* Field name equality must be done removing the `"` surrounding `field_name`.*/
     if (strneq(field->name, field_name.content + 1, field_name.length - 2))
@@ -44,7 +44,7 @@ next_field:
   }
 
   failure(&(json->error), "[%s] unrecognized field `%.*s`",
-    schema->name, (i32) field_name.length, field_name.content);
+    reflection->name, (i32) field_name.length, field_name.content);
   return;
 
 check_semicolon:
@@ -52,13 +52,13 @@ check_semicolon:
   semicolon = io_peek(input, sizeof(char));
   if (semicolon == NULL || *semicolon != ':') {
     failure(&(json->error), "[%s] expected a `:` after the field name",
-      schema->name);
+      reflection->name);
     return;
   }
   io_read(input, sizeof(char));
 
 decode_field:
-  json->schema = field;
+  json->reflection = field;
   output->cursor = output_initial_cursor + field->offset;
   json_decode(input, output, json);
 
@@ -70,7 +70,7 @@ comma_separator:
   comma = io_peek(input, sizeof(char));
   if (comma == NULL) {
     failure(&(json->error), "[%s] expected a `,` after the field value but found EOF",
-      schema->name);
+      reflection->name);
     return;
   }
 
@@ -83,10 +83,10 @@ object_end:
   curly_close = io_read(input, sizeof(char));
   if (curly_close == NULL || *curly_close != '}') {
     failure(&(json->error), "[%s] expected a field or `}` to end object",
-      schema->name);
+      reflection->name);
     return;
   }
 
-  json->schema = schema;
+  json->reflection = schema;
   output->cursor = output_initial_cursor + struct_typesize;
 }

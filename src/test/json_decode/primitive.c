@@ -1,6 +1,6 @@
 test( json_decode, primitive ) {
 
-  given("a json protocol and a schema with primitive types");
+  given("a json protocol and a reflection with primitive types");
     struct protocol json;
 
     struct example {
@@ -10,7 +10,7 @@ test( json_decode, primitive ) {
       byte value_byte;  char value_char;  bool value_bool;
     } example;
 
-    struct reflect schema = {
+    struct reflect reflection = {
       type(STRUCT, { sizeof(struct example), 14 }) {
         { field(struct example, value_u8), type(U8) },
         { field(struct example, value_u16), type(U16) },
@@ -31,7 +31,7 @@ test( json_decode, primitive ) {
 
     struct memory allocator = memory_init(4096);
     json.allocator = &allocator;
-    json.schema = &schema;
+    json.reflection = &schema;
 
 
   when("some input data is ready to decode");

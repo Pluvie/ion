@@ -3,16 +3,16 @@ static inline void binary_decode_primitive (
     struct object* target
 )
 {
-  enum types primitive_type = target->schema->type;
+  enum types primitive_type = target->reflection->type;
   u32 primitive_type_size = type_sizes[primitive_type];
 
   void* primitive_value = io_read(source, primitive_type_size);
   if (error.occurred)
-    return reflect_failure(target->schema);
+    return reflect_failure(target->reflection);
 
-  reflect_validate(target->schema, primitive_value);
+  reflect_validate(target->reflection, primitive_value);
   if (error.occurred)
-    return reflect_failure(target->schema);
+    return reflect_failure(target->reflection);
 
   if (primitive_type == BOOL) {
     /* Special case for booleans: any value other than 0 is considered as `true`. */
@@ -26,5 +26,5 @@ static inline void binary_decode_primitive (
   }
 
   if (error.occurred)
-    return reflect_failure(target->schema);
+    return reflect_failure(target->reflection);
 }

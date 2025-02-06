@@ -1,6 +1,6 @@
 test( binary_decode, sequence ) {
 
-  given("a binary protocol and a schema with a sequence type");
+  given("a binary protocol and a reflection with a sequence type");
     struct example {
       char name[32];
       struct point {
@@ -10,8 +10,8 @@ test( binary_decode, sequence ) {
     } example;
 
 
-  when("it has an associated schema")
-    struct reflect schema = {
+  when("it has an associated reflection")
+    struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, name), type(SEQUENCE, 32), of({ type(CHAR) }) },
 
@@ -45,7 +45,7 @@ test( binary_decode, sequence ) {
   calling("binary_decode()");
     struct memory allocator = memory_init(4096);
     struct io source = io_reader(input, sizeof(input));
-    struct object target = object(example, &schema, &allocator);
+    struct object target = object(example, &reflection, &allocator);
     binary_decode(&source, &target);
 
 
@@ -65,6 +65,7 @@ test( binary_decode, sequence ) {
     p = example.vertexes[2];
     verify(p.x == 7);
     verify(p.y == 9);
+
 
   success();
     memory_release(&allocator);

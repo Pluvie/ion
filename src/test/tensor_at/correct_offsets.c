@@ -13,6 +13,7 @@ test( tensor_at, correct_offsets ) {
   calling("tensor_at()");
     void* position = tensor_at(&tensor, &positions);
 
+
   must("correctly retrieve the tensor position determined by the positions");
     u64 offsets[4] = {
       ((struct tensor_dimension*) vector_get(tensor.dimensions, 0))->offset,
@@ -33,6 +34,7 @@ test( tensor_at, correct_offsets ) {
       1 * offsets_multiplicators[1] +
       2 * offsets_multiplicators[2] +
       2 * offsets_multiplicators[3]);
+
 
   success();
     memory_release(&allocator);

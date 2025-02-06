@@ -4,7 +4,7 @@ struct object;
 struct object {
   char* name;
   void* address;
-  struct reflect* schema;
+  struct reflect* reflection;
   struct memory* allocator;
 };
 check_sizeof(struct object, 32);

@@ -3,9 +3,9 @@ static inline void binary_encode_primitive (
     struct io* target
 )
 {
-  u32 type_size = type_sizes[source->schema->type];
+  u32 type_size = type_sizes[source->reflection->type];
 
   io_write(target, source->address, type_size);
   if (error.occurred)
-    return reflect_failure(source->schema);
+    return reflect_failure(source->reflection);
 }

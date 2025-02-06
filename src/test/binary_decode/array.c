@@ -13,25 +13,25 @@ test( binary_decode, array ) {
     };
 
 
-  when("it has an associated schema")
-    struct reflect element_schema = {
+  when("it has an associated reflection")
+    struct reflect element_reflection = {
       type(STRUCT, sizeof(struct element)), fields({
         { field(struct element, a), type(I32) },
         { field(struct element, b), type(I32) },
       })
     };
 
-    struct reflect schema = {
+    struct reflect example_reflection = {
       type(STRUCT, sizeof(struct example)), fields({
 
         { field(struct example, one_dim), type(ARRAY), of({
-            type(STRUCT), schema(&element_schema)
+            type(STRUCT), reflect(&element_reflection)
           })
         },
 
         { field(struct example, two_dim), type(ARRAY), of({
             type(ARRAY), of({
-              type(STRUCT), schema(&element_schema)
+              type(STRUCT), reflect(&element_reflection)
             })
           })
         },
@@ -103,7 +103,7 @@ test( binary_decode, array ) {
   calling("binary_decode()");
     struct memory allocator = memory_init(4096);
     struct io source = io_reader(input, sizeof(input));
-    struct object target = object(example, &schema, &allocator);
+    struct object target = object(example, &example_reflection, &allocator);
     binary_decode(&source, &target);
 
 
@@ -170,6 +170,7 @@ test( binary_decode, array ) {
             array_get(three_dim, 2), 1), 0);
     verify(v[0] == 80);
     verify(v[1] == 81);
+
 
   success();
     memory_release(&allocator);

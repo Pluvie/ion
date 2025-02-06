@@ -11,7 +11,7 @@ void json_decode (
   if (json->debug)
     protocol_debug_pre(input, output, json);
 
-  switch (json->schema->type) {
+  switch (json->reflection->type) {
   case U8:
   case U16:
   case U32:

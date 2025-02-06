@@ -1,5 +1,5 @@
 void reflect_print (
-    struct reflect* schema,
+    struct reflect* reflection,
     char* name
 )
 /**
