@@ -12,17 +12,17 @@ void* io_read (
     return NULL;
   }
 
-  if (unlikely((reader->flags & IO_READ) == 0)) {
-    fail("io: not flagged for reading");
+  if (unlikely((reader->mode & IO_READ) == 0)) {
+    fail("io: mode not enabled for reading");
     return NULL;
   }
 
-  switch (reader->type) {
-  case IO_TYPE_MEM:
+  switch (reader->channel) {
+  case IO_CHANNEL_MEM:
     return io_read_memory(reader, amount);
-  case IO_TYPE_FILE:
+  case IO_CHANNEL_FILE:
     return io_read_file(reader, amount);
-  case IO_TYPE_SOCK:
+  case IO_CHANNEL_SOCK:
     return io_read_socket(reader, amount);
   }
 

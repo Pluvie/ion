@@ -8,8 +8,9 @@ static inline void* io_read_socket (
     return NULL;
   }
 
-  reader->cursor = 0;
-  reader->data = memory_alloc(reader->allocator, amount);
+  /* if (reader->allocator->position */
+  u64 position = buffer_alloc(reader->allocator, amount);
+  reader->data = buffer_data(reader->allocator, position);
 
   i32 recv_flags = 0;
   if (reader->flags & IO_NO_BUFFERED)
@@ -25,8 +26,8 @@ static inline void* io_read_socket (
   }
 
   reader->read_amount = recv_output;
-  reader->length = recv_output;
-  reader->cursor = recv_output;
+  reader->length += recv_output;
+  reader->cursor += recv_output;
 
   return reader->data;
 }

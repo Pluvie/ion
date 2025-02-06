@@ -7,7 +7,7 @@ void* io_peek (
     u64 amount
 )
 {
-  if (unlikely((reader->flags & IO_READ) == 0))
+  if (unlikely((reader->mode & IO_READ) == 0))
     return NULL;
 
   if (reader->cursor + amount > reader->length)
