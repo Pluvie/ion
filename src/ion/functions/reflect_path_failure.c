@@ -1,5 +1,7 @@
-static inline void reflect_failure (
-    struct reflect* reflection
+static inline void reflect_path_failure (
+    struct reflect* reflection,
+    char* file,
+    u64 line
 )
 {
   char path_string[256] = { 0 };
@@ -14,6 +16,8 @@ static inline void reflect_failure (
   fail("[%.*s] %.*s",
     path_length, path_string,
     error.length, error_message);
+  error.trace[error.trace_count - 1].file = file;
+  error.trace[error.trace_count - 1].line = line;
 
   return;
 }

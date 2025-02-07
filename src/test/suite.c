@@ -67,6 +67,7 @@
 #include <test/memory_init/default_capacity.c>
 #include <test/memory_init/no_immediate_allocation.c>
 #include <test/memory_init/power_2_capacity.c>
+#include <test/reflect_failure/preserve_trace.c>
 #include <test/reflect_path_print/dot_separated.c>
 #include <test/reflect_path_print/empty.c>
 #include <test/reflect_path_print/index.c>
@@ -182,6 +183,7 @@ void test_suite (
   test_run( memory_init, default_capacity );
   test_run( memory_init, no_immediate_allocation );
   test_run( memory_init, power_2_capacity );
+  test_run( reflect_failure, preserve_trace );
   test_run( reflect_path_print, dot_separated );
   test_run( reflect_path_print, empty );
   test_run( reflect_path_print, index );

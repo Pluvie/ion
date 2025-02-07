@@ -4,5 +4,6 @@
 #define io_reader_socket(socket, memory, ...)     \
   (struct io) { .descriptor = socket,             \
     .allocator = memory,                          \
-    .type = IO_TYPE_SOCK,                         \
-    .flags = IO_READ __VA_OPT__(| __VA_ARGS__) }
+    .channel = IO_CHANNEL_SOCK,                   \
+    .mode = IO_MODE_READ,                         \
+    __VA_OPT__(.flags = __VA_ARGS__) }
