@@ -20,7 +20,6 @@
 #include "macros/failure.h"
 #include "macros/field.h"
 #include "macros/fields.h"
-#include "macros/io_exhausted.h"
 #include "macros/io_reader.h"
 #include "macros/io_reader_socket.h"
 #include "macros/io_writer.h"

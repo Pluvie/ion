@@ -12,7 +12,7 @@ void* io_read (
     return NULL;
   }
 
-  if (unlikely((reader->mode & IO_READ) == 0)) {
+  if (unlikely((reader->mode & IO_MODE_READ) == 0)) {
     fail("io: mode not enabled for reading");
     return NULL;
   }
@@ -26,6 +26,6 @@ void* io_read (
     return io_read_socket(reader, amount);
   }
 
-  fail("io: unsupported type");
+  fail("io: unsupported channel");
   return NULL;
 }

@@ -27,7 +27,7 @@
 #include <ion/functions/date_to_string.h>
 #include <ion/functions/date_today.h>
 #include <ion/functions/hexdump.h>
-#include <ion/functions/io_peek.h>
+#include <ion/functions/io_exhausted.h>
 #include <ion/functions/io_read.h>
 #include <ion/functions/io_read_file.h>
 #include <ion/functions/io_read_memory.h>

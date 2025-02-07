@@ -2,13 +2,13 @@ test( io_read_socket, recv_success ) {
 
   given("a struct io");
     struct io reader = {
-      .type = IO_TYPE_SOCK,
-      .flags = IO_READ,
+      .channel = IO_CHANNEL_SOCK,
+      .mode = IO_MODE_READ,
     };
 
 
   when("the reader has an allocator");
-    struct memory allocator = memory_init(0);
+    struct buffer allocator = buffer_init(0);
     reader.allocator = &allocator;
 
 
@@ -32,5 +32,5 @@ test( io_read_socket, recv_success ) {
 
 
   success();
-    memory_release(&allocator);
+    buffer_release(&allocator);
 }

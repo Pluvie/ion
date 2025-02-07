@@ -8,12 +8,14 @@ static inline void* io_read_socket (
     return NULL;
   }
 
-  /* if (reader->allocator->position */
+allocate_buffer:
+  u64 allocator_initial_position = reader->allocator->position;
   u64 position = buffer_alloc(reader->allocator, amount);
   reader->data = buffer_data(reader->allocator, position);
 
+perform_read:
   i32 recv_flags = 0;
-  if (reader->flags & IO_NO_BUFFERED)
+  if (reader->flags & IO_FLAGS_NO_BUFFERED)
     recv_flags |= MSG_WAITALL;
 
   i32 recv_output = recv(reader->descriptor, reader->data, amount, recv_flags);
@@ -25,9 +27,17 @@ static inline void* io_read_socket (
     return NULL;
   }
 
-  reader->read_amount = recv_output;
-  reader->length += recv_output;
-  reader->cursor += recv_output;
+adjust_amount:
+  u64 amount_effectively_read = recv_output;
+  if (amount_effectively_read < amount) {
+    amount = amount_effectively_read;
+    reader->allocator->position = allocator_initial_position + amount;
+  }
+
+update_positions:
+  reader->read_amount = amount;
+  reader->length += amount;
+  reader->cursor += amount;
 
   return reader->data;
 }

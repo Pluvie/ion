@@ -4,7 +4,7 @@ static inline void* io_read_memory (
 )
 {
   if ((reader->cursor + amount) > reader->length) {
-    if (!(reader->flags & IO_NO_OVERFLOW_ERROR))
+    if (!(reader->flags & IO_FLAGS_NO_OVERFLOW_ERROR))
       fail("io: unable to read %li bytes, cursor would overflow", amount);
     reader->read_amount = reader->length - reader->cursor;
     return NULL;

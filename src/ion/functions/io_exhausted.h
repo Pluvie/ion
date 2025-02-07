@@ -2,9 +2,8 @@
 static inline
 #endif
 
-void* io_peek (
-    struct io* reader,
-    u64 amount
+bool io_exhausted (
+    struct io* io
 )
 /**
  * ### Description

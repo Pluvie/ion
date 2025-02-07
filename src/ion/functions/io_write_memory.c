@@ -14,7 +14,8 @@ static inline u64 io_write_memory (
     if (new_length < amount)
       new_length = amount;
 
-    void* new_data = memory_alloc_zero(writer->allocator, new_length);
+    u64 new_position = buffer_alloc_zero(writer->allocator, new_length);
+    void* new_data = buffer_data(writer->allocator, new_position);
 
     memcpy(new_data, writer->data, writer->length);
     writer->length = new_length;
