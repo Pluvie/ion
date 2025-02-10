@@ -25,10 +25,10 @@
 #include <arm_neon.h>
 #endif
 
-#include "./ion/typedefs.h"
-#include "./ion/constants.h"
-#include "./ion/enums.h"
-#include "./ion/macros.h"
-#include "./ion/structs.h"
-#include "./ion/globals.h"
-#include "./ion/functions.h"
+#include "ion/typedefs.h"
+#include "ion/constants.h"
+#include "ion/enums.h"
+#include "ion/macros.h"
+#include "ion/structs.h"
+#include "ion/globals.h"
+#include "ion/functions.h"

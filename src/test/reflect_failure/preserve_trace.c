@@ -1,4 +1,4 @@
-#include "./preserve_trace_failing_function.c"
+#include "preserve_trace_failing_function.c"
 
 test( reflect_failure, preserve_trace ) {
 
@@ -31,7 +31,7 @@ test( reflect_failure, preserve_trace ) {
       "./src/ion/functions/io_write.c"));
     verify(error.trace[0].line == 17);
     verify(streq(error.trace[1].file,
-      "./src/test/reflect_failure/./preserve_trace_failing_function.c"));
+      "./src/test/reflect_failure/preserve_trace_failing_function.c"));
     verify(error.trace[1].line == 9);
 
 

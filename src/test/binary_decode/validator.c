@@ -1,4 +1,4 @@
-#include "./validator_functions.c"
+#include "validator_functions.c"
 
 test( binary_decode, validator ) {
 
