@@ -89,5 +89,6 @@ void tcp_server_start (
 
   if (server->descriptor > 0)
     close(server->descriptor);
+
   return;
 }
