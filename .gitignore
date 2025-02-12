@@ -6,6 +6,8 @@ prf/map/abseil/abseil
 prf/map/skarupke/flat_hash_map
 prf/map/go/go
 prf/map/ion/ion
+doc/examples/tcp_server_chat
+doc/examples/tcp_client_chat
 
 !/**/.gitkeep
 *.gz

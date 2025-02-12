@@ -87,6 +87,7 @@ void tcp_server_start (
 
   } while(infinite_connections || server->connections_limit > 0);
 
-  close(server->descriptor);
+  if (server->descriptor > 0)
+    close(server->descriptor);
   return;
 }

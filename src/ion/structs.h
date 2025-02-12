@@ -10,6 +10,7 @@
 #include "structs/reflect.h"
 #include "structs/sci_notation.h"
 #include "structs/sequence.h"
+#include "structs/tcp_client.h"
 #include "structs/tcp_server.h"
 #include "structs/tensor.h"
 #include "structs/vector.h"
