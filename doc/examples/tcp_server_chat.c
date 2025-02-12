@@ -46,7 +46,7 @@ void chat_responder (
    * A buffer simplifies memory management: there is no need to `malloc` and `free`
    * every message from the client, as seen in many C tutorials. The buffer shall
    * create the required space, and then free it all at once when requested. */
-  struct buffer allocator;
+  struct buffer allocator = buffer_init(0);
 
   /* The io abstraction is a common interface to execute input / output operations
    * on various devices. In this case, a network socket. */
