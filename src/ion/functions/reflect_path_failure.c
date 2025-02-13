@@ -18,6 +18,7 @@ static inline void reflect_path_failure (
     error.length, error_message);
   error.trace[error.trace_count - 1].file = file;
   error.trace[error.trace_count - 1].line = line;
+  error.trace_count--;
 
   return;
 }
