@@ -5,6 +5,7 @@ static inline void binary_encode_struct (
 {
   for vector_each(source->reflection->child, struct reflect*, field_reflection) {
     struct object field = {
+      .name = field_reflection->name,
       .reflection = field_reflection,
       .address = source->address + field_reflection->offset
     };

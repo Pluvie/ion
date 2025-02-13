@@ -1,4 +1,4 @@
-focus_test( binary_encode, pointer ) {
+test( binary_encode, pointer ) {
 
   given("an example struct with a pointer type");
     struct example {
@@ -36,7 +36,7 @@ focus_test( binary_encode, pointer ) {
 
   when("some input data is ready to encode");
     struct example input = {
-      .name = "Triangle!",
+      .name = "Triangle!!",
       .vertex = &(struct point) {
         .x = 4,
         .y = 5,
@@ -66,11 +66,7 @@ focus_test( binary_encode, pointer ) {
       0x08, 0x00, 0x00, 0x00,                               /* coordinates.2 */
     };
 
-    print("");
-    error_print();
     verify(error.occurred == false);
-    print("");
-    hexdump(output, sizeof(expected_output));
     verify(memeq(output, expected_output, sizeof(expected_output)) == true);
 
 
