@@ -32,7 +32,7 @@ void binary_encode (
     break;
 
   case POINTER:
-    //binary_encode_pointer(source, target);
+    binary_encode_pointer(source, target);
     break;
 
   case SEQUENCE:

@@ -1,4 +1,4 @@
-test( binary_decode, pointer ) {
+focus_test( binary_encode, pointer ) {
 
   given("an example struct with a pointer type");
     struct example {
@@ -8,7 +8,7 @@ test( binary_decode, pointer ) {
         i32 y;
       } *vertex;
       struct array* coordinates;
-    } example;
+    };
 
 
   when("it has an associated reflection")
@@ -34,8 +34,26 @@ test( binary_decode, pointer ) {
     };
 
 
-  when("some input data is ready to decode");
-    byte input[] = {
+  when("some input data is ready to encode");
+    struct example input = {
+      .name = "Triangle!",
+      .vertex = &(struct point) {
+        .x = 4,
+        .y = 5,
+      },
+      .coordinates = &array_of(i32, { 7, 8 })
+    };
+
+
+  calling("binary_encode()");
+    byte output[1024] = { 0 };
+    struct object source = object(input, &reflection);
+    struct io target = io_writer(output, sizeof(output));
+    binary_encode(&source, &target);
+
+
+  must("encode the input data on the struct correctly");
+    byte expected_output[] = {
       0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       /* name size */
       0x54, 0x72, 0x69, 0x61, 0x6e, 0x67, 0x6c, 0x65,       /* name */
       0x21, 0x21, 0x00,
@@ -48,35 +66,13 @@ test( binary_decode, pointer ) {
       0x08, 0x00, 0x00, 0x00,                               /* coordinates.2 */
     };
 
-
-  calling("binary_decode()");
-    struct memory allocator = memory_init(4096);
-    struct io source = io_reader(input, sizeof(input));
-    struct object target = object(example, &reflection, &allocator);
-    binary_decode(&source, &target);
-
-
-  must("decode the input data on the struct correctly");
+    print("");
+    error_print();
     verify(error.occurred == false);
-    verify(io_exhausted(&source) == true);
-
-    verify(streq(example.name, "Triangle!!"));
-    verify((void*) example.name == (void*) allocator.data);
-
-    struct point* vertex = example.vertex;
-    verify((void*) example.vertex == (void*) (allocator.data + 11));
-    verify(vertex->x == 4);
-    verify(vertex->y == 5);
-
-    struct array* coordinates = example.coordinates;
-    verify((void*) example.coordinates == (void*) (allocator.data + 11 + 8));
-    verify(as(i32, array_get(coordinates, 0)) == 7);
-    verify(as(i32, array_get(coordinates, 1)) == 8);
-
-    /* The total allocations must be: 3 (pointers) and 1 (array data). */
-    verify(allocator.allocations == 3 + 1);
+    print("");
+    hexdump(output, sizeof(expected_output));
+    verify(memeq(output, expected_output, sizeof(expected_output)) == true);
 
 
   success();
-    memory_release(&allocator);
 }

@@ -16,6 +16,7 @@
 #include "functions/binary_decode_vector.h"
 #include "functions/binary_encode.h"
 #include "functions/binary_encode_array.h"
+#include "functions/binary_encode_pointer.h"
 #include "functions/binary_encode_primitive.h"
 #include "functions/binary_encode_struct.h"
 #include "functions/buffer_alloc.h"
