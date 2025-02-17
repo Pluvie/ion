@@ -1,13 +1,12 @@
 static inline struct string json_parse_string (
-    struct io* input,
-    struct failure* error
+    struct io* input
 )
 {
   char* current;
   struct string result = { 0 };
 
   if (io_exhausted(input)) {
-    failure(error, "expected '\"' but found EOF");
+    fail("expected '\"' but found EOF");
     goto parse_error;
   }
 
@@ -15,7 +14,7 @@ initial_double_quote:
   current = io_peek(input, sizeof(char));
 
   if (*current != '"') {
-    failure(error, "not a string: missing initial '\"'");
+    fail("not a string: missing initial '\"'");
     goto parse_error;
   }
 
@@ -26,7 +25,7 @@ string_content:
   current = io_read(input, sizeof(char));
 
   if (io_exhausted(input)) {
-    failure(error, "unterminated string: missing final '\"'");
+    fail("unterminated string: missing final '\"'");
     goto parse_error;
   }
 
