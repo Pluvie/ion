@@ -16,6 +16,8 @@
 #include "test/binary_encode/array.c"
 #include "test/binary_encode/pointer.c"
 #include "test/binary_encode/primitive.c"
+#include "test/binary_encode/sequence.c"
+#include "test/binary_encode/vector.c"
 #include "test/binary_protocol/round_trip.c"
 #include "test/buffer_alloc/address_unreliability.c"
 #include "test/buffer_alloc/data_consistency.c"
@@ -130,9 +132,11 @@ void test_suite (
   test_run( binary_decode, vector );
   test_run( binary_decode, vector_maxlength );
   test_run( binary_decode, vector_minlength );
+  test_run( binary_encode, array );
   test_run( binary_encode, pointer );
   test_run( binary_encode, primitive );
-  test_run( binary_encode, array );
+  test_run( binary_encode, sequence );
+  test_run( binary_encode, vector );
   test_run( binary_protocol, round_trip );
   test_run( buffer_alloc, address_unreliability );
   test_run( buffer_alloc, data_consistency );

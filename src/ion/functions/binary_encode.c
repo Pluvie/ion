@@ -36,7 +36,7 @@ void binary_encode (
     break;
 
   case SEQUENCE:
-    //binary_encode_sequence(source, target);
+    binary_encode_sequence(source, target);
     break;
 
   case ARRAY:
@@ -44,7 +44,7 @@ void binary_encode (
     break;
 
   case VECTOR:
-    //binary_encode_vector(source, target);
+    binary_encode_vector(source, target);
     break;
   }
 }
