@@ -10,8 +10,8 @@ test( sci_notation_convert, signed_32 ) {
 
   when("the number is a signed integer");
     number.negative = true;
-    number.integer.content = "77777";
-    number.integer.length = 5;
+    number.integral.content = "77777";
+    number.integral.length = 5;
 
 
   calling("sci_notation_convert()");

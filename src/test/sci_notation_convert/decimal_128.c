@@ -10,10 +10,10 @@ test( sci_notation_convert, decimal_128 ) {
 
   when("the number is a decimal");
     number.negative = true;
-    number.integer.content = "77";
-    number.integer.length = 2;
-    number.mantissa.content = "55";
-    number.mantissa.length = 2;
+    number.integral.content = "77";
+    number.integral.length = 2;
+    number.fractional.content = "55";
+    number.fractional.length = 2;
 
 
   calling("sci_notation_convert()");

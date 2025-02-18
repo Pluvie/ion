@@ -1,10 +1,10 @@
-test( json_parse_number, error_mantissa ) {
+test( json_parse_number, error_fractional ) {
 
   given("a json number");
     char* json;
 
 
-  when("the number has an invalid mantissa");
+  when("the number has an invalid fractional");
     json = "123.XX";
 
 
@@ -15,7 +15,7 @@ test( json_parse_number, error_mantissa ) {
 
   must("fail to parse the number with a specific error");
     verify(error.occurred == true);
-    verify(streq(error.message, "expected a mantissa"));
+    verify(streq(error.message, "expected a fractional"));
 
 
   success();

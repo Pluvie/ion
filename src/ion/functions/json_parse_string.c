@@ -3,6 +3,7 @@ static inline struct string json_parse_string (
 )
 {
   struct string result = { 0 };
+
   char* parse_error;
   char* character;
 
@@ -37,7 +38,9 @@ string_content:
   if (*character != '"')
     goto string_content;
 
-  goto finalize_result;
+  result.content = (char*) (input->data + input->cursor - result.length);
+  result.length--;
+  return result;
 
 escape_character:
   character = io_read(input, sizeof(char));
@@ -53,22 +56,6 @@ escape_character:
   result.length++;
 
   goto string_content;
-
-finalize_result:
-  switch(input->channel) {
-  case IO_CHANNEL_MEM:
-  case IO_CHANNEL_FILE:
-    result.content = (char*)
-      (input->data + input->cursor - result.length);
-    break;
-  case IO_CHANNEL_SOCK:
-    result.content = (char*)
-      buffer_data(input->allocator, input->allocator->position - result.length);
-    break;
-  }
-
-  result.length--;
-  return result;
 
 error:
   fail("%s", parse_error);

@@ -1,10 +1,10 @@
-test( json_parse_number, error_mantissa_eof ) {
+test( json_parse_number, error_fractional_eof ) {
 
   given("a json number");
     char* json;
 
 
-  when("the number is missing a mantissa");
+  when("the number is missing the fractional part");
     json = "123.";
 
 
@@ -15,7 +15,7 @@ test( json_parse_number, error_mantissa_eof ) {
 
   must("fail to parse the number with a specific error");
     verify(error.occurred == true);
-    verify(streq(error.message, "expected a mantissa but found EOF"));
+    verify(streq(error.message, "expected the fractional part but found EOF"));
 
 
   success();

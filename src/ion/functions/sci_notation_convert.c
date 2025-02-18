@@ -13,14 +13,14 @@ bool sci_notation_convert (
   bool signed_type    = type >= I8  && type <= I64;
   bool decimal_type   = type >= D32 && type <= D128;
 
-  u32 number_length = number->integer.length +
-    number->mantissa.length +
+  u32 number_length = number->integral.length +
+    number->fractional.length +
     number->exponent.length;
   if (!unsigned_type)
     number_length++;
   if (number->negative_exponent)
     number_length++;
-  if (number->mantissa.length > 0)
+  if (number->fractional.length > 0)
     number_length++;
   if (number->exponent.length > 0)
     number_length++;
@@ -32,8 +32,8 @@ consistency_checks:
     return false;
   }
 
-  if (!decimal_type && number->mantissa.length > 0) {
-    failure(error, "cannot convert to (%s): number has a mantissa", type_names[type]);
+  if (!decimal_type && number->fractional.length > 0) {
+    failure(error, "cannot convert to (%s): number is fractional", type_names[type]);
     return false;
   }
 
@@ -51,7 +51,7 @@ consistency_checks:
 
 unsigned_conversion:
   snprintf(number_string, number_length + 1, "%.*s",
-    (i32) number->integer.length, number->integer.content);
+    (i32) number->integral.length, number->integral.content);
 
   errno = 0;
   u64 unsigned_value = strtoull(number_string, NULL, 10);
@@ -93,7 +93,7 @@ unsigned_conversion:
 signed_conversion:
   snprintf(number_string, number_length + 1, "%c%.*s",
     number->negative ? '-' : '+',
-    (i32) number->integer.length, number->integer.content);
+    (i32) number->integral.length, number->integral.content);
 
   errno = 0;
   i64 signed_value = strtoll(number_string, NULL, 10);
@@ -136,15 +136,15 @@ decimal_conversion:
   if (number->exponent.length > 0)
     snprintf(number_string, number_length + 1, "%c%.*s.%.*se%c%.*s",
       number->negative ? '-' : '+',
-      (i32) number->integer.length, number->integer.content,
-      (i32) number->mantissa.length, number->mantissa.content,
+      (i32) number->integral.length, number->integral.content,
+      (i32) number->fractional.length, number->fractional.content,
       number->negative_exponent ? '-' : '+',
       (i32) number->exponent.length, number->exponent.content);
   else
     snprintf(number_string, number_length + 1, "%c%.*s.%.*s",
       number->negative ? '-' : '+',
-      (i32) number->integer.length, number->integer.content,
-      (i32) number->mantissa.length, number->mantissa.content);
+      (i32) number->integral.length, number->integral.content,
+      (i32) number->fractional.length, number->fractional.content);
 
   errno = 0;
   d128 decimal_value = strtold(number_string, NULL);

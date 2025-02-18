@@ -9,8 +9,8 @@ test( sci_notation_convert, unsigned_16 ) {
 
 
   when("the number is an integer");
-    number.integer.content = "1234";
-    number.integer.length = 4;
+    number.integral.content = "1234";
+    number.integral.length = 4;
 
 
   calling("sci_notation_convert()");

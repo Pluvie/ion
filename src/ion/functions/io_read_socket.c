@@ -9,7 +9,6 @@ static inline void* io_read_socket (
   }
 
 allocate_buffer:
-  u64 allocator_initial_position = reader->allocator->position;
   u64 position = buffer_alloc(reader->allocator, amount);
   reader->data = buffer_data(reader->allocator, position);
 
@@ -31,13 +30,14 @@ adjust_amount:
   u64 amount_effectively_read = recv_output;
   if (amount_effectively_read < amount) {
     amount = amount_effectively_read;
-    reader->allocator->position = allocator_initial_position + amount;
+    reader->allocator->position = position + amount;
   }
 
 update_positions:
+  reader->data = buffer_data(reader->allocator, 0);
   reader->read_amount = amount;
   reader->length += amount;
   reader->cursor += amount;
 
-  return reader->data;
+  return buffer_data(reader->allocator, position);
 }

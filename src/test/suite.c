@@ -52,15 +52,15 @@ void test_suite (
   //test_run( json_parse_number, error_exponent );
   //test_run( json_parse_number, error_exponent_eof );
   //test_run( json_parse_number, error_hex );
-  //test_run( json_parse_number, error_mantissa );
-  //test_run( json_parse_number, error_mantissa_eof );
+  //test_run( json_parse_number, error_fractional );
+  //test_run( json_parse_number, error_fractional_eof );
   //test_run( json_parse_number, error_oct );
   //test_run( json_parse_number, exponent );
   //test_run( json_parse_number, exponent_negative );
   //test_run( json_parse_number, integer );
   //test_run( json_parse_number, integer_negative );
-  //test_run( json_parse_number, mantissa );
-  //test_run( json_parse_number, mantissa_negative );
+  //test_run( json_parse_number, fractional );
+  //test_run( json_parse_number, fractional_negative );
   test_run( json_parse_string, correct );
   test_run( json_parse_string, escaped_double_quote );
   test_run( json_parse_string, escaped_other );
@@ -89,7 +89,7 @@ void test_suite (
   test_run( sci_notation_convert, decimal_32 );
   test_run( sci_notation_convert, decimal_64 );
   test_run( sci_notation_convert, integer_consistency_exponent );
-  test_run( sci_notation_convert, integer_consistency_mantissa );
+  test_run( sci_notation_convert, integer_consistency_fractional );
   test_run( sci_notation_convert, signed_16 );
   test_run( sci_notation_convert, signed_16_overflow );
   test_run( sci_notation_convert, signed_16_underflow );

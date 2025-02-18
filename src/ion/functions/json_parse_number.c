@@ -7,34 +7,29 @@ static inline struct sci_notation json_parse_number (
   char* sign;
   char* digit;
   char* after_zero;
+  char* after_integer;
 
   char* parse_error;
 
 check_sign:
-  number.integer.content = (char*) input->data + input->cursor;
-
   sign = io_read(input, sizeof(char));
   if (error.occurred) {
     parse_error = "unable to read number sign";
     goto error;
   }
 
-  if (sign == NULL) {
-    parse_error = "expected a number but found EOF";
-    goto error;
+  if (*sign == '0') {
+    number.integer.length = 1;
+    goto check_after_zero;
+  }
+
+  if (isdigit(*sign)) {
+    number.integer.length = 1;
+    goto integer_part;
   }
 
   if (*sign == '-') {
     number.negative = true;
-    number.integer.content++;
-    goto integer_part;
-  }
-
-  if (*sign == '0')
-    goto check_after_zero;
-
-  if (isdigit(*sign)) {
-    number.integer.length = 1;
     goto integer_part;
   }
 
@@ -42,66 +37,86 @@ check_sign:
   goto error;
 
 check_after_zero:
-  after_zero = io_read(input, sizeof(char));
+  after_zero = io_peek(input, sizeof(char));
   if (error.occurred) {
     parse_error = "unable to check number after zero";
     goto error;
   }
 
-  if (*after_zero == '.') {
-    number.mantissa.content = (char*) input->data + input->cursor;
-    goto mantissa_part;
-  }
+  switch(*after_zero) {
+  case '.':
+  case 'E':
+  case 'e':
+    goto check_after_integer;
 
-  if (*after_zero == 'E' || *after_zero == 'e') {
-    number.exponent.content = (char*) input->data + input->cursor;
-    goto check_exponent_sign;
-  }
-
-  if (*after_zero == 'x') {
+  case 'x':
     parse_error = "hexadecimal numbers are not valid JSON";
     goto error;
-  }
 
-  if (isdigit(*after_zero)) {
-    parse_error = "octal numbers are not valid JSON";
-    goto error;
-  }
-
-  return number;
-
-integer_part:
-  digit = io_read(input, sizeof(char));
-  if (error.occurred) {
-    parse_error = "unable to read the integer part";
-    goto error;
-  }
-
-  if (digit == NULL) {
-    if (number.integer.length == 0) {
-      parse_error = "expected a number but found EOF";
+  default:
+    if (isdigit(*after_zero)) {
+      parse_error = "octal numbers are not valid JSON";
       goto error;
     }
 
+    number.integer.content = (char*)
+      (input->data + input->cursor - number.integer.length);
     return number;
+  }
+
+integer_part:
+  digit = io_peek(input, sizeof(char));
+  if (error.occurred) {
+    if (io_exhausted(input))
+      parse_error = "expected a number but found EOF";
+    else
+      parse_error = "unable to read the integer part";
+
+    goto error;
   }
 
   if (isdigit(*digit)) {
     number.integer.length++;
+
+    digit = io_read(input, sizeof(char));
+    if (error.occurred) {
+      parse_error = "unable to read the integer part";
+      goto error;
+    }
+
     goto integer_part;
   }
 
-  if (*digit == '.') {
-    number.mantissa.content = (char*) input->data + input->cursor;
+  switch(*digit) {
+  case '.':
+  case 'E':
+  case 'e':
+    goto check_after_integer;
+
+  default:
+    number.integer.content = (char*)
+      (input->data + input->cursor - number.integer.length);
+    return number;
+  }
+
+check_after_integer:
+  after_integer = io_read(input, sizeof(char) * 2);
+
+  if (error.occurred) {
+    parse_error = "unable to check after integer";
+    goto error;
+  }
+
+  if (!isdigit(after_integer[1])) {
+    if (after_integer[0] == '.')
+    parse_error = "expected number after decimal";
+    goto error;
+  }
+
+  if (after_integer[0] == '.')
     goto mantissa_part;
-  }
-
-  if (*digit == 'E' || *digit == 'e') {
-    number.exponent.content = (char*) input->data + input->cursor;
+  else
     goto check_exponent_sign;
-  }
-
-  return number;
 
 mantissa_part:
   digit = io_read(input, sizeof(char));
@@ -185,6 +200,10 @@ exponent_part:
   return number;
 
 error:
-  fail("%s", parse_error);
+  if (error.occurred)
+    fail("%s: %s", parse_error, error.message);
+  else
+    fail("%s", parse_error);
+
   return number;
 }

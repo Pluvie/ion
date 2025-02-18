@@ -1,4 +1,4 @@
-test( json_parse_number, mantissa_negative ) {
+test( json_parse_number, fractional_negative ) {
 
   given("a json number");
     char* json;
@@ -16,8 +16,8 @@ test( json_parse_number, mantissa_negative ) {
   must("parse the number correctly");
     verify(error.occurred == false);
     verify(number.negative == true);
-    verify(strneq(number.integer.content, "1245", 4));
-    verify(strneq(number.mantissa.content, "678", 3));
+    verify(strneq(number.integral.content, "1245", 4));
+    verify(strneq(number.fractional.content, "678", 3));
 
 
   success();

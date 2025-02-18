@@ -10,8 +10,8 @@ test( sci_notation_convert, signed_8_underflow ) {
 
   when("the number is an integer lesser than I8_MIN");
     number.negative = true;
-    number.integer.content = "300";
-    number.integer.length = 3;
+    number.integral.content = "300";
+    number.integral.length = 3;
 
 
   calling("sci_notation_convert()");

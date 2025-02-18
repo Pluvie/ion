@@ -1,4 +1,4 @@
-test( sci_notation_convert, integer_consistency_mantissa ) {
+test( sci_notation_convert, integer_consistency_fractional ) {
 
   given("a scientific notation number");
     struct sci_notation number = { 0 };
@@ -8,12 +8,12 @@ test( sci_notation_convert, integer_consistency_mantissa ) {
     enum types type = I64;
 
 
-  when("the number has a mantissa");
+  when("the number has a fractional part");
     number.negative = true;
-    number.integer.content = "100";
-    number.integer.length = 3;
-    number.mantissa.content = "001";
-    number.mantissa.length = 3;
+    number.integral.content = "100";
+    number.integral.length = 3;
+    number.fractional.content = "001";
+    number.fractional.length = 3;
 
 
   calling("sci_notation_convert()");
@@ -24,7 +24,7 @@ test( sci_notation_convert, integer_consistency_mantissa ) {
 
   must("fail to convert the number with a specific error");
     verify(error.occurred == true);
-    verify(streq(error.message, "cannot convert to (I64): number has a mantissa"));
+    verify(streq(error.message, "cannot convert to (I64): number is fractional"));
 
 
   success();

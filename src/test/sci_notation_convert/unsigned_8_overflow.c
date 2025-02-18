@@ -9,8 +9,8 @@ test( sci_notation_convert, unsigned_8_overflow ) {
 
 
   when("the number is an integer greater than U8_MAX");
-    number.integer.content = "300";
-    number.integer.length = 3;
+    number.integral.content = "300";
+    number.integral.length = 3;
 
 
   calling("sci_notation_convert()");

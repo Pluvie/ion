@@ -9,8 +9,8 @@ test( sci_notation_convert, unsigned_32 ) {
 
 
   when("the number is an integer");
-    number.integer.content = "77777";
-    number.integer.length = 5;
+    number.integral.content = "77777";
+    number.integral.length = 5;
 
 
   calling("sci_notation_convert()");

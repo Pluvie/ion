@@ -4,8 +4,8 @@ struct sci_notation;
 struct sci_notation {
   bool negative;
   bool negative_exponent;
-  struct string integer;
-  struct string mantissa;
+  struct string integral;
+  struct string fractional;
   struct string exponent;
   padding(8);
 };

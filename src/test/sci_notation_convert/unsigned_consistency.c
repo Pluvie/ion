@@ -10,8 +10,8 @@ test( sci_notation_convert, unsigned_consistency ) {
 
   when("the number is a negative integer");
     number.negative = true;
-    number.integer.content = "100";
-    number.integer.length = 3;
+    number.integral.content = "100";
+    number.integral.length = 3;
 
 
   calling("sci_notation_convert()");

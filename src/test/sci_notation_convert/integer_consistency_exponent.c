@@ -10,8 +10,8 @@ test( sci_notation_convert, integer_consistency_exponent ) {
 
   when("the number has a exponent");
     number.negative = true;
-    number.integer.content = "100";
-    number.integer.length = 3;
+    number.integral.content = "100";
+    number.integral.length = 3;
     number.exponent.content = "33";
     number.exponent.length = 2;
 

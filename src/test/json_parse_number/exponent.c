@@ -18,8 +18,8 @@ test( json_parse_number, exponent ) {
     verify(error.occurred == false);
     verify(number.negative == false);
     verify(number.negative_exponent == false);
-    verify(strneq(number.integer.content, "1245", 4));
-    verify(strneq(number.mantissa.content, "678", 3));
+    verify(strneq(number.integral.content, "1245", 4));
+    verify(strneq(number.fractional.content, "678", 3));
     verify(strneq(number.exponent.content, "90", 3));
 
 

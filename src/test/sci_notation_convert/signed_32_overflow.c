@@ -9,8 +9,8 @@ test( sci_notation_convert, signed_32_overflow ) {
 
 
   when("the number is an integer greater than I32_MAX");
-    number.integer.content = "77777777777";
-    number.integer.length = 11;
+    number.integral.content = "77777777777";
+    number.integral.length = 11;
 
 
   calling("sci_notation_convert()");

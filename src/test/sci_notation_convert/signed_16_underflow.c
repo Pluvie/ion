@@ -10,8 +10,8 @@ test( sci_notation_convert, signed_16_underflow ) {
 
   when("the number is an integer lesser than I16_MIN");
     number.negative = true;
-    number.integer.content = "77777";
-    number.integer.length = 5;
+    number.integral.content = "77777";
+    number.integral.length = 5;
 
 
   calling("sci_notation_convert()");

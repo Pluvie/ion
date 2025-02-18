@@ -9,8 +9,8 @@ test( sci_notation_convert, unsigned_8 ) {
 
 
   when("the number is an integer");
-    number.integer.content = "123";
-    number.integer.length = 3;
+    number.integral.content = "123";
+    number.integral.length = 3;
 
 
   calling("sci_notation_convert()");

@@ -9,8 +9,8 @@ test( sci_notation_convert, type_not_numeric ) {
 
 
   when("the number is an integer");
-    number.integer.content = "100";
-    number.integer.length = 3;
+    number.integral.content = "100";
+    number.integral.length = 3;
 
 
   calling("sci_notation_convert()");

@@ -10,8 +10,8 @@ test( sci_notation_convert, signed_64_underflow ) {
 
   when("the number is an integer lesser than I64_MIN");
     number.negative = true;
-    number.integer.content = "77777777777777777777777";
-    number.integer.length = 23;
+    number.integral.content = "77777777777777777777777";
+    number.integral.length = 23;
 
 
   calling("sci_notation_convert()");
