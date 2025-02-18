@@ -10,8 +10,7 @@ test( json_parse_number, mantissa ) {
 
   calling("json_parse_number()");
     struct io input = io_reader(json, strlen(json));
-    struct failure error = { 0 };
-    struct sci_notation number = json_parse_number(&input, &error);
+    struct sci_notation number = json_parse_number(&input);
 
 
   must("parse the number correctly");

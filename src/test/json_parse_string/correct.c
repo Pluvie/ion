@@ -15,7 +15,7 @@ test( json_parse_string, correct ) {
 
   must("parse the string correctly");
     verify(error.occurred == false);
-    verify(strneq(result.content, "\"exam ple\"", result.length));
+    verify(strneq(result.content, "exam ple", result.length));
 
 
   success();

@@ -15,7 +15,7 @@ test( json_parse_string, escaped_other ) {
 
   must("parse the string correctly");
     verify(error.occurred == false);
-    verify(strneq(result.content, "\"exam\tple\"", result.length));
+    verify(strneq(result.content, "exam\tple", result.length));
 
 
   success();

@@ -1,6 +1,5 @@
 static inline struct sci_notation json_parse_number (
-    struct io* input,
-    struct failure* error
+    struct io* input
 )
 {
   struct sci_notation number = { 0 };
@@ -15,6 +14,11 @@ check_sign:
   number.integer.content = (char*) input->data + input->cursor;
 
   sign = io_read(input, sizeof(char));
+  if (error.occurred) {
+    parse_error = "unable to read number sign";
+    goto error;
+  }
+
   if (sign == NULL) {
     parse_error = "expected a number but found EOF";
     goto error;
@@ -39,6 +43,10 @@ check_sign:
 
 check_after_zero:
   after_zero = io_read(input, sizeof(char));
+  if (error.occurred) {
+    parse_error = "unable to check number after zero";
+    goto error;
+  }
 
   if (*after_zero == '.') {
     number.mantissa.content = (char*) input->data + input->cursor;
@@ -64,6 +72,10 @@ check_after_zero:
 
 integer_part:
   digit = io_read(input, sizeof(char));
+  if (error.occurred) {
+    parse_error = "unable to read the integer part";
+    goto error;
+  }
 
   if (digit == NULL) {
     if (number.integer.length == 0) {
@@ -93,6 +105,10 @@ integer_part:
 
 mantissa_part:
   digit = io_read(input, sizeof(char));
+  if (error.occurred) {
+    parse_error = "unable to read the mantissa part";
+    goto error;
+  }
 
   if (digit == NULL) {
     if (number.mantissa.length == 0) {
@@ -122,6 +138,10 @@ mantissa_part:
 
 check_exponent_sign:
   sign = io_read(input, sizeof(char));
+  if (error.occurred) {
+    parse_error = "unable to check the exponent sign";
+    goto error;
+  }
 
   if (sign == NULL) {
     parse_error = "expected an exponent but found EOF";
@@ -149,6 +169,10 @@ check_exponent_sign:
 
 exponent_part:
   digit = io_read(input, sizeof(char));
+  if (error.occurred) {
+    parse_error = "unable to read the exponent part";
+    goto error;
+  }
 
   if (digit == NULL)
     return number;
@@ -161,8 +185,6 @@ exponent_part:
   return number;
 
 error:
-  if (error != NULL)
-    failure(error, "%s", parse_error);
-
+  fail("%s", parse_error);
   return number;
 }

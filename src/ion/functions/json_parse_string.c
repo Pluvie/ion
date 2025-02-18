@@ -2,59 +2,76 @@ static inline struct string json_parse_string (
     struct io* input
 )
 {
-  char* current;
   struct string result = { 0 };
-
-  if (io_exhausted(input)) {
-    fail("expected '\"' but found EOF");
-    goto parse_error;
-  }
+  char* parse_error;
+  char* character;
 
 initial_double_quote:
-  current = io_peek(input, sizeof(char));
-
-  if (*current != '"') {
-    fail("not a string: missing initial '\"'");
-    goto parse_error;
+  character = io_read(input, sizeof(char));
+  if (error.occurred) {
+    parse_error = "unable to read first double quote";
+    goto error;
   }
 
-  result.content = current;
+  if (*character != '"') {
+    parse_error = "not a string: missing initial '\"'";
+    goto error;
+  }
 
 string_content:
-  result.length++;
-  current = io_read(input, sizeof(char));
+  character = io_read(input, sizeof(char));
+  if (error.occurred) {
+    if (io_exhausted(input))
+      parse_error = "unterminated string: missing final '\"'";
+    else
+      parse_error = "unable to read content";
 
-  if (io_exhausted(input)) {
-    fail("unterminated string: missing final '\"'");
-    goto parse_error;
+    goto error;
   }
 
-  current = io_peek(input, sizeof(char));
+  result.length++;
 
-  if (*current == 92)
-    goto escape;
+  if (*character == 92)
+    goto escape_character;
 
-  if (*current != '"')
+  if (*character != '"')
     goto string_content;
 
-final_double_quote:
-  io_read(input, sizeof(char));
+  goto finalize_result;
+
+escape_character:
+  character = io_read(input, sizeof(char));
+  if (error.occurred) {
+    if (io_exhausted(input))
+      parse_error = "unterminated string: missing final '\"'";
+    else
+      parse_error = "unable to read escaped character";
+
+    goto error;
+  }
+
   result.length++;
-  return result;
 
-escape:
-  io_read(input, sizeof(char));
-  current = io_peek(input, sizeof(char));
-
-  if (*current != '"')
-    goto string_content;
-
-  io_read(input, sizeof(char));
-  result.length++;
   goto string_content;
 
+finalize_result:
+  switch(input->channel) {
+  case IO_CHANNEL_MEM:
+  case IO_CHANNEL_FILE:
+    result.content = (char*)
+      (input->data + input->cursor - result.length);
+    break;
+  case IO_CHANNEL_SOCK:
+    result.content = (char*)
+      buffer_data(input->allocator, input->allocator->position - result.length);
+    break;
+  }
 
-parse_error:
+  result.length--;
+  return result;
+
+error:
+  fail("%s", parse_error);
   result.content = NULL;
   result.length = 0;
   return result;
