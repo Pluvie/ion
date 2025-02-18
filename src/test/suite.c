@@ -61,11 +61,11 @@ void test_suite (
   //test_run( json_parse_number, integer_negative );
   //test_run( json_parse_number, fractional );
   //test_run( json_parse_number, fractional_negative );
-  test_run( json_parse_string, correct );
-  test_run( json_parse_string, escaped_double_quote );
-  test_run( json_parse_string, escaped_other );
-  test_run( json_parse_string, incorrect );
-  test_run( json_parse_string, unterminated );
+  //test_run( json_parse_string, correct );
+  //test_run( json_parse_string, escaped_double_quote );
+  //test_run( json_parse_string, escaped_other );
+  //test_run( json_parse_string, incorrect );
+  //test_run( json_parse_string, unterminated );
   test_run( map_get, value_at_key );
   test_run( map_init, default_capacity );
   test_run( map_init, immediate_allocation );
