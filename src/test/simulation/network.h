@@ -61,7 +61,10 @@ i64 recv_simulated (
   if (length > remainder)
     length = remainder;
 
-  memcpy(output, io_read(recv_simulated_data, length), length);
+  io_read(recv_simulated_data, output, length);
+  if (error.occurred)
+    return -1;
+
   return length;
 }
 
@@ -95,5 +98,8 @@ i64 send_simulated (
     length = remainder;
 
   io_write(send_simulated_data, (void*) data, length);
+  if (error.occurred)
+    return -1;
+
   return length;
 }

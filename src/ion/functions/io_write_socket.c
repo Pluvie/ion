@@ -4,7 +4,7 @@ static inline u64 io_write_socket (
     u64 amount
 )
 {
-  i32 written_amount = send(writer->descriptor, data, amount, 0);
+  i32 written_amount = send(writer->socket, data, amount, 0);
 
   if (unlikely(written_amount < 0)) {
     fail("io: error while writing to socket: %s", strerror(errno));
@@ -12,5 +12,7 @@ static inline u64 io_write_socket (
   }
 
   writer->written_amount = written_amount;
+  writer->cursor += written_amount;
+  writer->length += written_amount;
   return written_amount;
 }

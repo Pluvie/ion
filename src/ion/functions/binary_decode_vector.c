@@ -4,23 +4,23 @@ static inline void binary_decode_vector (
 )
 {
 read_length:
-  u64* vector_length = io_read(source, sizeof(u64));
+  u64 vector_length; io_read(source, &vector_length, sizeof(u64));
   if (error.occurred)
     return reflect_failure(target->reflection);
 
 check_minlength:
   u64 vector_minlength = target->reflection->bounds[0];
-  if (vector_minlength > 0 && *vector_length < vector_minlength) {
+  if (vector_minlength > 0 && vector_length < vector_minlength) {
     fail("vector required minimum length of %li but found %li",
-      vector_minlength, *vector_length);
+      vector_minlength, vector_length);
     return reflect_failure(target->reflection);
   }
 
 check_maxlength:
   u64 vector_maxlength = target->reflection->bounds[1];
-  if (vector_maxlength > 0 && *vector_length > vector_maxlength) {
+  if (vector_maxlength > 0 && vector_length > vector_maxlength) {
     fail("vector required maximum length of %li but found %li",
-      vector_maxlength, *vector_length);
+      vector_maxlength, vector_length);
     return reflect_failure(target->reflection);
   }
 
@@ -28,8 +28,8 @@ allocate_vector:
   struct reflect* element_reflection = vector_get(target->reflection->child, 0);
   u64 vector_typesize = reflect_typesize(element_reflection);
 
-  struct vector vector = vector_init(vector_typesize, *vector_length, target->allocator);
-  vector.length = *vector_length;
+  struct vector vector = vector_init(vector_typesize, vector_length, target->allocator);
+  vector.length = vector_length;
 
 decode_vector:
   for (u64 i = 0; i < vector.length; i++) {

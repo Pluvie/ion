@@ -15,17 +15,17 @@ static inline void binary_decode_pointer (
 
 check_string_size:
   u64 string_max_size = target->reflection->bounds[0];
-  u64* string_size = io_read(source, sizeof(u64));
+  u64 string_size; io_read(source, &string_size, sizeof(u64));
   if (error.occurred)
     return reflect_failure(target->reflection);
 
-  if (string_max_size > 0 && *string_size > string_max_size) {
+  if (string_max_size > 0 && string_size > string_max_size) {
     fail("pointer required maximum string size of %li but found %li",
       string_max_size, pointer_size);
     return reflect_failure(target->reflection);
   }
 
-  pointer_size = *string_size;
+  pointer_size = string_size;
 
 allocate_pointer:
   void* pointer_data = memory_alloc(target->allocator, pointer_size);
@@ -37,11 +37,10 @@ allocate_pointer:
 
 pointer_type_char:
   /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
-  char* string = io_read(source, pointer_size);
+  io_read(source, pointer_data, pointer_size);
   if (error.occurred)
     return;
 
-  memcpy(pointer_data, string, pointer_size);
   goto validate_pointer;
 
 pointer_type_other:

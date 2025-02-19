@@ -4,6 +4,7 @@ static inline
 
 void* io_peek (
     struct io* reader,
+    void* result,
     u64 amount
 )
 {
@@ -19,11 +20,11 @@ void* io_peek (
 
   switch (reader->channel) {
   case IO_CHANNEL_MEM:
-    return io_peek_memory(reader, amount);
+    return io_peek_memory(reader, result, amount);
   case IO_CHANNEL_FILE:
-    return io_peek_file(reader, amount);
+    return io_peek_file(reader, result, amount);
   case IO_CHANNEL_SOCK:
-    return io_peek_socket(reader, amount);
+    return io_peek_socket(reader, result, amount);
   }
 
   fail("io: unsupported channel");

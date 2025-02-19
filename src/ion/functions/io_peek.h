@@ -4,6 +4,7 @@ static inline
 
 void* io_peek (
     struct io* reader,
+    void* result,
     u64 amount
 )
 /**

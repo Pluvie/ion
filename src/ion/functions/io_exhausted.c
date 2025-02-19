@@ -19,7 +19,7 @@ bool io_exhausted (
       return false;
     }
 
-    i32 recv_output = recv(io->descriptor, NULL, 1, MSG_PEEK);
+    i32 recv_output = recv(io->socket, NULL, 1, MSG_PEEK);
     if (unlikely(recv_output < 0)) {
       fail("io: error while reading from socket: %s", strerror(errno));
       return false;

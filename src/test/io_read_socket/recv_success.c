@@ -7,22 +7,18 @@ test( io_read_socket, recv_success ) {
     };
 
 
-  when("the reader has an allocator");
-    struct buffer allocator = buffer_init(0);
-    reader.allocator = &allocator;
-
-
   when("the recv call succeeds");
     byte request[4] = { 'a', 'b', 'c', 'd' };
     recv_simulated_data = &io_reader(request, sizeof(request));
 
 
   calling("io_read()");
-    byte* value = io_read(&reader, 4);
+    byte value[4];
+    void* result = io_read(&reader, value, sizeof(value));
 
 
   must("successfully read the io");
-    verify(value != NULL);
+    verify(result != NULL);
     verify(value[0] == 'a');
     verify(value[1] == 'b');
     verify(value[2] == 'c');
@@ -32,5 +28,4 @@ test( io_read_socket, recv_success ) {
 
 
   success();
-    buffer_release(&allocator);
 }

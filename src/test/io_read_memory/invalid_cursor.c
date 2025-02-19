@@ -4,7 +4,7 @@ test( io_read_memory, invalid_cursor ) {
     struct io reader = {
       .channel = IO_CHANNEL_MEM,
       .mode = IO_MODE_READ,
-      .data = (byte[]) { 0x00, 0x01, 0x02 },
+      .memory = (byte[]) { 0x00, 0x01, 0x02 },
       .length = 3,
     };
 
@@ -14,11 +14,12 @@ test( io_read_memory, invalid_cursor ) {
 
 
   calling("io_read()");
-    byte* value = io_read(&reader, 1);
+    byte value;
+    void* result = io_read(&reader, &value, 1);
 
 
   must("not read the io");
-    verify(value == NULL);
+    verify(result == NULL);
     verify(reader.cursor == 5);
 
 

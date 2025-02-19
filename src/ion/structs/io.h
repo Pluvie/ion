@@ -2,10 +2,10 @@ struct io;
 /**
  * Explain the io abstraction. */
 struct io {
-  byte* data;
   union {
-    i32 descriptor;
-    void* stream;
+    void* memory;
+    void* file;
+    i32 socket;
   };
   u64 length;
   u64 cursor;
@@ -16,6 +16,6 @@ struct io {
   enum io_channels channel;
   enum io_modes mode;
   enum io_flags flags;
-  struct buffer* allocator;
+  padding(16);
 };
 check_sizeof(struct io, 64);

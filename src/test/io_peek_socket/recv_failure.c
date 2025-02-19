@@ -7,25 +7,20 @@ test( io_peek_socket, recv_failure ) {
     };
 
 
-  when("the reader has an allocator");
-    struct buffer allocator = buffer_init(0);
-    reader.allocator = &allocator;
-
-
   when("the recv call fails");
     recv_simulated_data = NULL;
 
 
   calling("io_peek()");
-    byte* value = io_peek(&reader, 4);
+    byte value[4];
+    void* result = io_read(&reader, value, sizeof(value));
 
 
-  must("successfully read the io");
-    verify(value == NULL);
+  must("not read the io");
+    verify(result == NULL);
     verify(reader.cursor == 0);
     verify(reader.length == 0);
 
 
   success();
-    buffer_release(&allocator);
 }
