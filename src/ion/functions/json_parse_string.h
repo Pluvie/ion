@@ -1,4 +1,4 @@
-static inline struct string json_parse_string (
+static inline u64 json_parse_string (
     struct io* input
 )
 /**

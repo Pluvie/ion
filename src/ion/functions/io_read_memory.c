@@ -8,7 +8,7 @@ static inline void* io_read_memory (
     goto check_overflow;
 
 read_data:
-  if (reader->flags & IO_FLAGS_NO_COPY_ON_READ)
+  if (result == NULL)
     result = reader->memory + reader->cursor;
   else
     memcpy(result, reader->memory + reader->cursor, amount);

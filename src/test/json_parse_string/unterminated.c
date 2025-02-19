@@ -10,14 +10,13 @@ test( json_parse_string, unterminated ) {
 
   calling("json_parse_string()");
     struct io input = io_reader(json, strlen(json));
-    struct string result = json_parse_string(&input);
+    u64 string_length = json_parse_string(&input);
 
 
   must("fail to parse the string with a specific error");
     verify(error.occurred == true);
-    verify(streq(error.message, "unterminated string: missing final '\"'"));
-    verify(result.content == NULL);
-    verify(result.length == 0);
+    verify(streq(error.message, "expected '\"' but found EOF"));
+    verify(string_length == 0);
 
 
   success();

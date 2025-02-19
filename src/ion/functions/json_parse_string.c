@@ -1,65 +1,100 @@
-static inline struct string json_parse_string (
+static inline u64 json_parse_string (
     struct io* input
 )
 {
-  struct string result = { 0 };
+  char* string = NULL;
+  char* parse_error = NULL;
+  u64 position = 0;
+  u64 max_position = U64_MAX;
 
-  char* parse_error;
-  char* character;
+  bool escaped = false;
+  char character;
 
-initial_double_quote:
-  character = io_read(input, sizeof(char));
-  if (error.occurred) {
-    parse_error = "unable to read first double quote";
+  u64 peek_size = 256;
+  struct buffer buffer = { 0 };
+
+first_double_quote_check:
+  io_peek(input, &character, sizeof(char));
+  if (error.occurred)
     goto error;
-  }
 
-  if (*character != '"') {
+  if (unlikely(character != '"')) {
     parse_error = "not a string: missing initial '\"'";
     goto error;
   }
 
-string_content:
-  character = io_read(input, sizeof(char));
-  if (error.occurred) {
-    if (io_exhausted(input))
-      parse_error = "unterminated string: missing final '\"'";
-    else
-      parse_error = "unable to read content";
+initialize:
+  switch (input->channel) {
+  case IO_CHANNEL_MEM:
+    max_position = input->length - input->cursor;
 
+    string = io_peek(input, NULL, max_position);
+    if (error.occurred)
+      goto error;
+
+    break;
+
+  case IO_CHANNEL_FILE:
+  case IO_CHANNEL_SOCK:
+    buffer_release(&buffer);
+    buffer = buffer_init(peek_size);
+    buffer_alloc(&buffer, peek_size);
+    string = buffer_data(&buffer, 0);
+
+    io_peek(input, string, peek_size);
+    if (error.occurred)
+      goto error;
+
+    if (input->read_amount < peek_size)
+      max_position = input->read_amount;
+
+    break;
+  }
+
+read_character:
+  character = string[position];
+
+  if (escaped) {
+    escaped = false;
+    goto next_character;
+  }
+
+  if (character == 92) {
+    escaped = true;
+    goto next_character;
+  }
+
+  if (character == '"' && position > 0) {
+    position++;
+    return position;
+  }
+
+next_character:
+  position++;
+  if (position >= max_position) {
+    parse_error = "expected '\"' but found EOF";
     goto error;
   }
 
-  result.length++;
+  switch (input->channel) {
+  case IO_CHANNEL_MEM:
+    goto read_character;
 
-  if (*character == 92)
-    goto escape_character;
+  case IO_CHANNEL_FILE:
+  case IO_CHANNEL_SOCK:
+    if (position < peek_size)
+      goto read_character;
 
-  if (*character != '"')
-    goto string_content;
-
-  result.content = (char*) (input->data + input->cursor - result.length);
-  result.length--;
-  return result;
-
-escape_character:
-  character = io_read(input, sizeof(char));
-  if (error.occurred) {
-    if (io_exhausted(input))
-      parse_error = "unterminated string: missing final '\"'";
-    else
-      parse_error = "unable to read escaped character";
-
-    goto error;
+    peek_size *= 2;
+    goto initialize;
   }
-
-  result.length++;
-
-  goto string_content;
 
 error:
-  fail("%s", parse_error);
-  result.content = NULL;
-  result.length = 0;
-  return result;
+  if (error.occurred) {
+    fail("%s: %s", parse_error, error.message);
+  } else {
+    fail("%s", parse_error);
+  }
+
+  return 0;
 }
