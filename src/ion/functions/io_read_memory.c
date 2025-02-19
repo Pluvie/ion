@@ -4,8 +4,16 @@ static inline void* io_read_memory (
     u64 amount
 )
 {
-  if (unlikely((reader->cursor + amount) > reader->length))
-    goto check_overflow;
+adjust_amount:
+  u64 amount_remaining = reader->length - reader->cursor;
+
+  if (amount_remaining == 0) {
+    fail("io: end of input reached");
+    return NULL;
+  }
+
+  if (amount > amount_remaining)
+    amount = amount_remaining;
 
 read_data:
   if (result == NULL)
@@ -13,18 +21,10 @@ read_data:
   else
     memcpy(result, reader->memory + reader->cursor, amount);
 
+update_positions:
   reader->cursor += amount;
   reader->read_amount = amount;
   reader->reads_count++;
 
   return result;
-
-check_overflow:
-  if (reader->flags & IO_FLAGS_NO_OVERFLOW_ERROR) {
-    amount = reader->length - reader->cursor;
-    goto read_data;
-  }
-
-  fail("io: unable to read %li bytes, cursor would overflow", amount);
-  return NULL;
 }

@@ -1,225 +1,190 @@
-static inline struct sci_notation json_parse_number (
-    struct io* input
+static inline void json_parse_number (
+    struct io* input,
+    enum types type,
+    void* result
 )
 {
   struct sci_notation number = { 0 };
 
-  char* sign;
-  char* digit;
-  char* after_zero;
-  char* after_integral;
-  char* after_decimal;
+  char buffer[256] = { 0 };
+  u64 position = 0;
 
-  char* parse_error;
+  char sign;
+  char digit;
+  char after_zero;
 
-check_sign:
-  sign = io_read(input, sizeof(char));
+  struct { char content[128]; u64 begin; u64 length; } integral = { 0 };
+  struct { char content[128]; u64 begin; u64 length; } fractional = { 0 };
+  struct { char content[32];  u64 begin; u64 length; } exponent = { 0 };
+
+initialize:
+  io_peek(input, buffer, sizeof(buffer));
   if (error.occurred) {
-    parse_error = "unable to read number sign";
-    goto error;
+    fail("error while parsing number: %s", error.message);
+    return;
   }
 
-  if (*sign == '0') {
-    number.integral.length = 1;
+check_sign:
+  sign = buffer[0];
+  position++;
+
+  if (sign == '-') {
+    number.negative = true;
+    integral.begin = 1;
+    goto integral_part;
+  }
+
+  if (sign == '0') {
+    integral.begin = 0;
+    integral.length = 1;
     goto check_after_zero;
   }
 
-  if (isdigit(*sign)) {
-    number.integral.length = 1;
+  if (isdigit(sign)) {
+    integral.begin = 0;
+    integral.length = 1;
     goto integral_part;
   }
 
-  if (*sign == '-') {
-    number.negative = true;
-    goto integral_part;
-  }
-
-  parse_error = "expected a number";
-  goto error;
+  fail("expected a number");
+  return;
 
 check_after_zero:
-  after_zero = io_peek(input, sizeof(char));
-  if (error.occurred) {
-    parse_error = "unable to check number after zero";
-    goto error;
-  }
+  after_zero = buffer[1];
+  position++;
 
-  switch(*after_zero) {
+  switch(after_zero) {
   case '.':
   case 'E':
   case 'e':
-    goto check_after_integral;
+    if (after_zero == '.')
+      goto fractional_part;
+    else
+      goto exponent_part;
 
   case 'x':
-    parse_error = "hexadecimal numbers are not valid JSON";
-    goto error;
+    fail("hexadecimal numbers are not valid JSON");
+    return;
+
+  case '0':
+  case '1':
+  case '2':
+  case '3':
+  case '4':
+  case '5':
+  case '6':
+  case '7':
+  case '8':
+  case '9':
+    fail("octal numbers are not valid JSON");
+    return;
 
   default:
-    if (isdigit(*after_zero)) {
-      parse_error = "octal numbers are not valid JSON";
-      goto error;
-    }
-
-    number.integral.content = (char*)
-      (input->data + input->cursor - number.integral.length);
-    return number;
+    goto terminate;
   }
 
 integral_part:
-  digit = io_peek(input, sizeof(char));
-  if (error.occurred) {
-    if (io_exhausted(input))
-      parse_error = "expected a number but found EOF";
-    else
-      parse_error = "unable to read the integral part";
-
-    goto error;
+  if (position >= sizeof(buffer)) {
+    fail("number too big");
+    return;
   }
 
-  if (isdigit(*digit)) {
-    number.integral.length++;
+  digit = buffer[position];
+  position++;
 
-    digit = io_read(input, sizeof(char));
-    if (error.occurred) {
-      parse_error = "unable to read the integral part";
-      goto error;
-    }
-
+  if (isdigit(digit)) {
+    integral.length++;
     goto integral_part;
   }
 
-after_integral_part:
-  switch(*digit) {
-  case '.':
-    after_integral = io_read(input, sizeof(char) * 2);
-
-    if (error.occurred) {
-      parse_error = "unable to read the fractional part";
-      goto error;
-    }
-
-    if (isdigit(after_integral[1])) {
-      number.fractional.length = 1;
-      goto fractional_part;
-    }
-
-    parse_error = "expected number after decimal separator";
-    goto error;
-
-  case 'E':
-  case 'e':
-    after_integral = io_read(input, sizeof(char));
-
-    if (error.occurred) {
-      parse_error = "unable to read the exponent letter";
-      goto error;
-    }
-
-    goto check_exponent_sign;
-
-  default:
-    number.integral.content = (char*)
-      (input->data + input->cursor - number.integral.length);
-    return number;
-  }
-
-fractional_part:
-  digit = io_peek(input, sizeof(char));
-  if (error.occurred) {
-    if (io_exhausted(input))
-      parse_error = "expected a number but found EOF";
-    else
-      parse_error = "unable to read the fractional part";
-
-    goto error;
-  }
-
-  if (isdigit(*digit)) {
-    number.fractional.length++;
-
-    digit = io_read(input, sizeof(char));
-    if (error.occurred) {
-      parse_error = "unable to read the fractional part";
-      goto error;
-    }
-
+  if (digit == '.') {
+    fractional.begin = position;
     goto fractional_part;
   }
 
-after_fractional_part:
-  switch(*digit) {
-  case 'E':
-  case 'e':
-    after_fractional = io_read(input, sizeof(char));
+  if (digit == 'e' || digit == 'E') {
+    exponent.begin = position;
+    goto exponent_sign;
+  }
 
-    if (error.occurred) {
-      parse_error = "unable to read the exponent letter";
-      goto error;
+  goto terminate;
+
+fractional_part:
+  if (position >= sizeof(buffer)) {
+    fail("number too big");
+    return;
+  }
+
+  digit = buffer[position];
+  position++;
+
+  if (isdigit(digit)) {
+    fractional.length++;
+    goto fractional_part;
+  }
+
+  if (digit == 'e' || digit == 'E') {
+    exponent.begin = position;
+    goto exponent_sign;
+  }
+
+  goto terminate;
+
+exponent_sign:
+  sign = buffer[position];
+  position++;
+
+  switch (sign) {
+  case '-':
+    number.negative_exponent = true;
+    exponent.begin = position;
+    goto exponent_part;
+  case '+':
+    exponent.begin = position;
+    goto exponent_part;
+  default:
+    if (isdigit(sign)) {
+      exponent.begin = position - 1;
+      goto exponent_part;
     }
 
-    goto check_exponent_sign;
-
-  default:
-    number.fractional.content = (char*)
-      (input->data + input->cursor - number.fractional.length);
-    return number;
+    fail("expected sign or digit after exponent");
+    return;
   }
-
-check_exponent_sign:
-  sign = io_read(input, sizeof(char));
-  if (error.occurred) {
-    parse_error = "unable to check the exponent sign";
-    goto error;
-  }
-
-  if (*sign == '+')
-    goto exponent_part;
-
-  if (*sign == '-') {
-    number.negative_exponent = true;
-    goto exponent_part;
-  }
-
-  if (isdigit(*sign)) {
-    number.exponent.length = 1;
-    goto exponent_part;
-  }
-
-  parse_error = "expected an exponent";
-  goto error;
 
 exponent_part:
-  digit = io_peek(input, sizeof(char));
-  if (error.occurred) {
-    if (io_exhausted(input))
-      parse_error = "expected a number but found EOF";
-    else
-      parse_error = "unable to read the exponent part";
-
-    goto error;
+  if (position >= sizeof(buffer)) {
+    fail("number too big");
+    return;
   }
 
-  if (isdigit(*digit)) {
-    number.exponent.length++;
+  digit = buffer[position];
+  position++;
 
-    digit = io_read(input, sizeof(char));
-    if (error.occurred) {
-      parse_error = "unable to read the exponent part";
-      goto error;
-    }
-
+  if (isdigit(digit)) {
+    exponent.length++;
     goto exponent_part;
   }
 
-  number.exponent.content = (char*)
-    (input->data + input->cursor - number.exponent.length);
-  return number;
+  goto terminate;
 
-error:
-  if (error.occurred)
-    fail("%s: %s", parse_error, error.message);
-  else
-    fail("%s", parse_error);
+terminate:
+  memcpy(integral.content, buffer + integral.begin, integral.length);
+  if (fractional.length > 0)
+    memcpy(fractional.content, buffer + fractional.begin, fractional.length);
+  if (exponent.length > 0)
+    memcpy(exponent.content, buffer + exponent.begin, exponent.length);
 
-  return number;
+  number.integral.length = integral.length;
+  number.integral.content = integral.content;
+  number.fractional.length = fractional.length;
+  number.fractional.content = fractional.content;
+  number.exponent.length = exponent.length;
+  number.exponent.content = exponent.content;
+
+  sci_notation_convert(&number, type, result);
+  if (error.occurred) {
+    fail("unable to convert number: %s", error.message);
+    return;
+  }
 }

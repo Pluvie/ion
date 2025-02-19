@@ -55,12 +55,12 @@ void test_suite (
   //test_run( json_parse_number, error_fractional );
   //test_run( json_parse_number, error_fractional_eof );
   //test_run( json_parse_number, error_oct );
-  //test_run( json_parse_number, exponent );
-  //test_run( json_parse_number, exponent_negative );
-  //test_run( json_parse_number, integer );
-  //test_run( json_parse_number, integer_negative );
-  //test_run( json_parse_number, fractional );
-  //test_run( json_parse_number, fractional_negative );
+  test_run( json_parse_number, exponent );
+  test_run( json_parse_number, exponent_negative );
+  test_run( json_parse_number, integer );
+  test_run( json_parse_number, integer_negative );
+  test_run( json_parse_number, fractional );
+  test_run( json_parse_number, fractional_negative );
   test_run( json_parse_string, buffer_optimization );
   test_run( json_parse_string, buffer_optimization_huge );
   test_run( json_parse_string, correct );

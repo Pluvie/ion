@@ -10,13 +10,13 @@ test( json_parse_number, integer ) {
 
   calling("json_parse_number()");
     struct io input = io_reader(json, strlen(json));
-    struct sci_notation number = json_parse_number(&input);
+    i32 number;
+    json_parse_number(&input, I32, &number);
 
 
   must("parse the number correctly");
     verify(error.occurred == false);
-    verify(number.negative == false);
-    verify(strneq(number.integer.content, "1245", 4));
+    verify(number == 1245);
 
 
   success();

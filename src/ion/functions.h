@@ -48,7 +48,7 @@
 //#include "functions/json_decode_number.h"
 //#include "functions/json_decode_spaces.h"
 //#include "functions/json_decode_struct.h"
-//#include "functions/json_parse_number.h"
+#include "functions/json_parse_number.h"
 #include "functions/json_parse_string.h"
 #include "functions/map_allocate.h"
 #include "functions/map_get.h"

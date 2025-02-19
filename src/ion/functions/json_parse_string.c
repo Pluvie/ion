@@ -3,7 +3,7 @@ static inline u64 json_parse_string (
 )
 {
   char* string = NULL;
-  char* parse_error = NULL;
+
   u64 position = 0;
   u64 max_position = U64_MAX;
 
@@ -19,8 +19,10 @@ initialize:
     max_position = input->length - input->cursor;
 
     string = io_peek(input, NULL, max_position);
-    if (error.occurred)
-      goto error;
+    if (error.occurred) {
+      fail("unable to parse string: %s", error.message);
+      return 0;
+    }
 
     break;
 
@@ -32,8 +34,10 @@ initialize:
     string = buffer_data(&buffer, 0);
 
     io_peek(input, string, peek_size);
-    if (error.occurred)
-      goto error;
+    if (error.occurred) {
+      fail("unable to parse string: %s", error.message);
+      return 0;
+    }
 
     if (input->read_amount < peek_size)
       max_position = input->read_amount;
@@ -61,15 +65,15 @@ read_character:
   }
 
   if (unlikely(character != '"' && position == 0)) {
-    parse_error = "not a string: missing initial '\"'";
-    goto error;
+    fail("not a string: missing initial '\"'");
+    return 0;
   }
 
 next_character:
   position++;
   if (position >= max_position) {
-    parse_error = "expected '\"' but found EOF";
-    goto error;
+    fail("expected '\"' but found EOF");
+    return 0;
   }
 
   switch (input->channel) {
@@ -85,12 +89,5 @@ next_character:
     goto initialize;
   }
 
-error:
-  if (error.occurred) {
-    fail("%s: %s", parse_error, error.message);
-  } else {
-    fail("%s", parse_error);
-  }
-
-  return 0;
+  return position;
 }

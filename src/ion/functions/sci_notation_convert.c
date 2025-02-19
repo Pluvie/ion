@@ -17,12 +17,10 @@ void sci_notation_convert (
     number->exponent.length;
   if (!unsigned_type)
     number_length++;
-  if (number->negative_exponent)
-    number_length++;
   if (number->fractional.length > 0)
     number_length++;
   if (number->exponent.length > 0)
-    number_length++;
+    number_length += 2;
   char number_string[number_length + 1];
 
 consistency_checks:
