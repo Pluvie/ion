@@ -1,22 +1,18 @@
 test( sci_notation_convert, type_not_numeric ) {
 
-  given("a scientific notation number");
-    struct sci_notation number = { 0 };
-
-
-  when("the conversion type is not numeric");
+  given("a scientific notation conversion to a not numeric type");
     enum types type = CHAR;
 
 
   when("the number is an integer");
-    number.integral.content = "100";
-    number.integral.length = 3;
+    struct sci_notation number = {
+      .integral = s("100"),
+    };
 
 
   calling("sci_notation_convert()");
-    byte result[16] = { 0 };
-    struct failure error = { 0 };
-    sci_notation_convert(result, type, &number, &error);
+    byte result[sizeof(char)] = { 0 };
+    sci_notation_convert(&number, type, result);
 
 
   must("fail to convert the number with a specific error");

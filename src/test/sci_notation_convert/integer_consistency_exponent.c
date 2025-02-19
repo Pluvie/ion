@@ -1,25 +1,20 @@
 test( sci_notation_convert, integer_consistency_exponent ) {
 
-  given("a scientific notation number");
-    struct sci_notation number = { 0 };
-
-
-  when("the conversion type is integer");
+  given("a scientific notation conversion to I64");
     enum types type = I64;
 
 
   when("the number has a exponent");
-    number.negative = true;
-    number.integral.content = "100";
-    number.integral.length = 3;
-    number.exponent.content = "33";
-    number.exponent.length = 2;
+    struct sci_notation number = {
+      .negative = true,
+      .integral = s("100"),
+      .exponent = s("33"),
+    };
 
 
   calling("sci_notation_convert()");
-    byte result[16] = { 0 };
-    struct failure error = { 0 };
-    sci_notation_convert(result, type, &number, &error);
+    byte result[sizeof(i64)] = { 0 };
+    sci_notation_convert(&number, type, result);
 
 
   must("fail to convert the number with a specific error");

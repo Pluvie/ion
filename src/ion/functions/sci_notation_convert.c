@@ -2,11 +2,10 @@
 static inline
 #endif
 
-bool sci_notation_convert (
-    byte* result,
-    enum types type,
+void sci_notation_convert (
     struct sci_notation* number,
-    struct failure* error
+    enum types type,
+    void* result
 )
 {
   bool unsigned_type  = type >= U8  && type <= U64;
@@ -28,26 +27,26 @@ bool sci_notation_convert (
 
 consistency_checks:
   if (unsigned_type && number->negative) {
-    failure(error, "cannot convert to (%s): number is negative", type_names[type]);
-    return false;
+    fail("cannot convert to (%s): number is negative", type_names[type]);
+    return;
   }
 
   if (!decimal_type && number->fractional.length > 0) {
-    failure(error, "cannot convert to (%s): number is fractional", type_names[type]);
-    return false;
+    fail("cannot convert to (%s): number is fractional", type_names[type]);
+    return;
   }
 
   if (!decimal_type && number->exponent.length > 0) {
-    failure(error, "cannot convert to (%s): number has an exponent", type_names[type]);
-    return false;
+    fail("cannot convert to (%s): number has an exponent", type_names[type]);
+    return;
   }
 
   if (unsigned_type)  goto unsigned_conversion;
   if (signed_type)    goto signed_conversion;
   if (decimal_type)   goto decimal_conversion;
 
-  failure(error, "cannot convert to (%s): type is not numeric", type_names[type]);
-  return false;
+  fail("cannot convert to (%s): type is not numeric", type_names[type]);
+  return;
 
 unsigned_conversion:
   snprintf(number_string, number_length + 1, "%.*s",
@@ -57,21 +56,21 @@ unsigned_conversion:
   u64 unsigned_value = strtoull(number_string, NULL, 10);
 
   if (errno == ERANGE) {
-    failure(error, "cannot convert %s to (%s): value overflow",
+    fail("cannot convert %s to (%s): value overflow",
       number_string, type_names[type]);
-    return false;
+    return;
   } else if (type == U8 && unsigned_value > U8_MAX) {
-    failure(error, "cannot convert %s to (%s): value overflow",
+    fail("cannot convert %s to (%s): value overflow",
       number_string, type_names[type]);
-    return false;
+    return;
   } else if (type == U16 && unsigned_value > U16_MAX) {
-    failure(error, "cannot convert %s to (%s): value overflow",
+    fail("cannot convert %s to (%s): value overflow",
       number_string, type_names[type]);
-    return false;
+    return;
   } else if (type == U32 && unsigned_value > U32_MAX) {
-    failure(error, "cannot convert %s to (%s): value overflow",
+    fail("cannot convert %s to (%s): value overflow",
       number_string, type_names[type]);
-    return false;
+    return;
   }
 
   if (type == U8) {
@@ -88,7 +87,7 @@ unsigned_conversion:
     memcpy(result, &unsigned_value_u64, sizeof(u64));
   }
 
-  return true;
+  return;
 
 signed_conversion:
   snprintf(number_string, number_length + 1, "%c%.*s",
@@ -99,21 +98,21 @@ signed_conversion:
   i64 signed_value = strtoll(number_string, NULL, 10);
 
   if (errno == ERANGE) {
-    failure(error, "cannot convert %s to (%s): value overflow",
+    fail("cannot convert %s to (%s): value overflow",
       number_string, type_names[type]);
-    return false;
+    return;
   } else if (type == I8 && (signed_value > I8_MAX || signed_value < I8_MIN)) {
-    failure(error, "cannot convert %s to (%s): value overflow",
+    fail("cannot convert %s to (%s): value overflow",
       number_string, type_names[type]);
-    return false;
+    return;
   } else if (type == I16 && (signed_value > I16_MAX || signed_value < I16_MIN)) {
-    failure(error, "cannot convert %s to (%s): value overflow",
+    fail("cannot convert %s to (%s): value overflow",
       number_string, type_names[type]);
-    return false;
+    return;
   } else if (type == I32 && (signed_value > I32_MAX || signed_value < I32_MIN)) {
-    failure(error, "cannot convert %s to (%s): value overflow",
+    fail("cannot convert %s to (%s): value overflow",
       number_string, type_names[type]);
-    return false;
+    return;
   }
 
   if (type == I8) {
@@ -130,7 +129,7 @@ signed_conversion:
     memcpy(result, &signed_value_i64, sizeof(i64));
   }
 
-  return true;
+  return;
 
 decimal_conversion:
   if (number->exponent.length > 0)
@@ -150,17 +149,17 @@ decimal_conversion:
   d128 decimal_value = strtold(number_string, NULL);
 
   if (errno == ERANGE) {
-    failure(error, "cannot convert %s to (%s): value overflow",
+    fail("cannot convert %s to (%s): value overflow",
       number_string, type_names[type]);
-    return false;
+    return;
   } else if (type == D32 && (decimal_value > D32_MAX || decimal_value < D32_MIN)) {
-    failure(error, "cannot convert %s to (%s): value overflow",
+    fail("cannot convert %s to (%s): value overflow",
       number_string, type_names[type]);
-    return false;
+    return;
   } else if (type == D64 && (decimal_value > D64_MAX || decimal_value < D64_MIN)) {
-    failure(error, "cannot convert %s to (%s): value overflow",
+    fail("cannot convert %s to (%s): value overflow",
       number_string, type_names[type]);
-    return false;
+    return;
   }
 
   if (type == D32) {
@@ -173,6 +172,4 @@ decimal_conversion:
     d128 decimal_value_d128 = (d128) decimal_value;
     memcpy(result, &decimal_value_d128, sizeof(d128));
   }
-
-  return true;
 }

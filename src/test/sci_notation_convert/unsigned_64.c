@@ -1,22 +1,18 @@
 test( sci_notation_convert, unsigned_64 ) {
 
-  given("a scientific notation number");
-    struct sci_notation number = { 0 };
-
-
-  when("the conversion type is U64");
+  given("a scientific notation conversion to U64");
     enum types type = U64;
 
 
   when("the number is an integer");
-    number.integral.content = "77777777777";
-    number.integral.length = 11;
+    struct sci_notation number = {
+      .integral = s("77777777777"),
+    };
 
 
   calling("sci_notation_convert()");
-    byte result[16] = { 0 };
-    struct failure error = { 0 };
-    sci_notation_convert(result, type, &number, &error);
+    byte result[sizeof(u64)] = { 0 };
+    sci_notation_convert(&number, type, result);
 
 
   must("convert the number correctly");

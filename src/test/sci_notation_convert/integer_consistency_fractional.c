@@ -1,25 +1,20 @@
 test( sci_notation_convert, integer_consistency_fractional ) {
 
-  given("a scientific notation number");
-    struct sci_notation number = { 0 };
-
-
-  when("the conversion type is integer");
+  given("a scientific notation conversion to I64");
     enum types type = I64;
 
 
-  when("the number has a fractional part");
-    number.negative = true;
-    number.integral.content = "100";
-    number.integral.length = 3;
-    number.fractional.content = "001";
-    number.fractional.length = 3;
+  when("the number has a exponent");
+    struct sci_notation number = {
+      .negative = true,
+      .integral = s("100"),
+      .fractional = s("001"),
+    };
 
 
   calling("sci_notation_convert()");
-    byte result[16] = { 0 };
-    struct failure error = { 0 };
-    sci_notation_convert(result, type, &number, &error);
+    byte result[sizeof(i64)] = { 0 };
+    sci_notation_convert(&number, type, result);
 
 
   must("fail to convert the number with a specific error");

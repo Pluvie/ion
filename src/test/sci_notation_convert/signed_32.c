@@ -1,23 +1,19 @@
 test( sci_notation_convert, signed_32 ) {
 
-  given("a scientific notation number");
-    struct sci_notation number = { 0 };
-
-
-  when("the conversion type is I32");
+  given("a scientific notation conversion to I32");
     enum types type = I32;
 
 
   when("the number is a signed integer");
-    number.negative = true;
-    number.integral.content = "77777";
-    number.integral.length = 5;
+    struct sci_notation number = {
+      .negative = true,
+      .integral = s("77777"),
+    };
 
 
   calling("sci_notation_convert()");
-    byte result[16] = { 0 };
-    struct failure error = { 0 };
-    sci_notation_convert(result, type, &number, &error);
+    byte result[sizeof(i32)] = { 0 };
+    sci_notation_convert(&number, type, result);
 
 
   must("convert the number correctly");

@@ -1,25 +1,20 @@
 test( sci_notation_convert, decimal_64 ) {
 
-  given("a scientific notation number");
-    struct sci_notation number = { 0 };
-
-
-  when("the conversion type is D64");
+  given("a scientific notation conversion to D64");
     enum types type = D64;
 
 
   when("the number is a decimal");
-    number.negative = true;
-    number.integral.content = "77";
-    number.integral.length = 2;
-    number.fractional.content = "55";
-    number.fractional.length = 2;
+    struct sci_notation number = {
+      .negative = true,
+      .integral = s("77"),
+      .fractional = s("55"),
+    };
 
 
   calling("sci_notation_convert()");
-    byte result[16] = { 0 };
-    struct failure error = { 0 };
-    sci_notation_convert(result, type, &number, &error);
+    byte result[sizeof(d64)] = { 0 };
+    sci_notation_convert(&number, type, result);
 
 
   must("convert the number correctly");

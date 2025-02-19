@@ -2,11 +2,10 @@
 static inline
 #endif
 
-bool sci_notation_convert (
-    byte* result,
-    enum types type,
+void sci_notation_convert (
     struct sci_notation* number,
-    struct failure* error
+    enum types type,
+    void* result
 )
 /**
  * ### Description

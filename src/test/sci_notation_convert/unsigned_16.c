@@ -1,22 +1,18 @@
 test( sci_notation_convert, unsigned_16 ) {
 
-  given("a scientific notation number");
-    struct sci_notation number = { 0 };
-
-
-  when("the conversion type is U16");
+  given("a scientific notation conversion to U16");
     enum types type = U16;
 
 
   when("the number is an integer");
-    number.integral.content = "1234";
-    number.integral.length = 4;
+    struct sci_notation number = {
+      .integral = s("1234"),
+    };
 
 
   calling("sci_notation_convert()");
-    byte result[16] = { 0 };
-    struct failure error = { 0 };
-    sci_notation_convert(result, type, &number, &error);
+    byte result[sizeof(u16)] = { 0 };
+    sci_notation_convert(&number, type, result);
 
 
   must("convert the number correctly");

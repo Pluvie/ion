@@ -1,23 +1,19 @@
 test( sci_notation_convert, unsigned_consistency ) {
 
-  given("a scientific notation number");
-    struct sci_notation number = { 0 };
-
-
-  when("the conversion type is unsigned");
+  given("a scientific notation conversion to an unsigned type");
     enum types type = U64;
 
 
   when("the number is a negative integer");
-    number.negative = true;
-    number.integral.content = "100";
-    number.integral.length = 3;
+    struct sci_notation number = {
+      .negative = true,
+      .integral = s("100"),
+    };
 
 
   calling("sci_notation_convert()");
-    byte result[16] = { 0 };
-    struct failure error = { 0 };
-    sci_notation_convert(result, type, &number, &error);
+    byte result[sizeof(u64)] = { 0 };
+    sci_notation_convert(&number, type, result);
 
 
   must("fail to convert the number with a specific error");
