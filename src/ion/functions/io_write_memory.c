@@ -10,7 +10,10 @@ static inline u64 io_write_memory (
   }
 
   memcpy(writer->memory + writer->cursor, data, amount);
+
   writer->cursor += amount;
   writer->written_amount = amount;
+  writer->writes_count++;
+
   return amount;
 }

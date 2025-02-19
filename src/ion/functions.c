@@ -29,6 +29,7 @@
 #include "functions/date.c"
 #include "functions/date_to_string.c"
 #include "functions/date_today.c"
+#include "functions/file_size.c"
 #include "functions/hexdump.c"
 #include "functions/io_exhausted.c"
 #include "functions/io_peek.c"

@@ -13,16 +13,6 @@ static inline u64 json_parse_string (
   u64 peek_size = 256;
   struct buffer buffer = { 0 };
 
-first_double_quote_check:
-  io_peek(input, &character, sizeof(char));
-  if (error.occurred)
-    goto error;
-
-  if (unlikely(character != '"')) {
-    parse_error = "not a string: missing initial '\"'";
-    goto error;
-  }
-
 initialize:
   switch (input->channel) {
   case IO_CHANNEL_MEM:
@@ -66,7 +56,13 @@ read_character:
 
   if (character == '"' && position > 0) {
     position++;
+    buffer_release(&buffer);
     return position;
+  }
+
+  if (unlikely(character != '"' && position == 0)) {
+    parse_error = "not a string: missing initial '\"'";
+    goto error;
   }
 
 next_character:

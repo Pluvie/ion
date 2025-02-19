@@ -55,6 +55,8 @@
 //#include "test/json_parse_number/integer_negative.c"
 //#include "test/json_parse_number/fractional.c"
 //#include "test/json_parse_number/fractional_negative.c"
+#include "test/json_parse_string/buffer_optimization.c"
+#include "test/json_parse_string/buffer_optimization_huge.c"
 #include "test/json_parse_string/correct.c"
 #include "test/json_parse_string/escaped_double_quote.c"
 #include "test/json_parse_string/escaped_other.c"

@@ -61,6 +61,8 @@ void test_suite (
   //test_run( json_parse_number, integer_negative );
   //test_run( json_parse_number, fractional );
   //test_run( json_parse_number, fractional_negative );
+  test_run( json_parse_string, buffer_optimization );
+  test_run( json_parse_string, buffer_optimization_huge );
   test_run( json_parse_string, correct );
   test_run( json_parse_string, escaped_double_quote );
   test_run( json_parse_string, escaped_other );

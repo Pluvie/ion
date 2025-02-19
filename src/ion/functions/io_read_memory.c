@@ -15,6 +15,8 @@ read_data:
 
   reader->cursor += amount;
   reader->read_amount = amount;
+  reader->reads_count++;
+
   return result;
 
 check_overflow:

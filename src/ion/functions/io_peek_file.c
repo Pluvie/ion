@@ -4,6 +4,9 @@ static inline void* io_peek_file (
     u64 amount
 )
 {
-  fail("io: peek from file not yet implemented");
-  return NULL;
+  result = io_read_file(reader, result, amount);
+  fseek(reader->file, -(i64) reader->read_amount, SEEK_CUR);
+  reader->cursor -= reader->read_amount;
+
+  return result;
 }

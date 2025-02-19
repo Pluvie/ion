@@ -23,9 +23,10 @@ adjust_amount:
     amount = amount_effectively_read;
 
 update_positions:
-  reader->read_amount = amount;
   reader->length += amount;
   reader->cursor += amount;
+  reader->read_amount = amount;
+  reader->reads_count++;
 
   return result;
 }

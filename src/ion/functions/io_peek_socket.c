@@ -24,6 +24,7 @@ adjust_amount:
 
 update_positions:
   reader->read_amount = amount;
+  reader->reads_count++;
 
   return result;
 }

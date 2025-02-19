@@ -10,12 +10,16 @@ struct io {
   u64 length;
   u64 cursor;
   union {
-    u64 written_amount;
     u64 read_amount;
+    u64 written_amount;
+  };
+  union {
+    u64 reads_count;
+    u64 writes_count;
   };
   enum io_channels channel;
   enum io_modes mode;
   enum io_flags flags;
-  padding(16);
+  padding(8);
 };
 check_sizeof(struct io, 64);

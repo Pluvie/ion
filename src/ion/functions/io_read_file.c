@@ -4,6 +4,23 @@ static inline void* io_read_file (
     u64 amount
 )
 {
-  fail("io: read from file not yet implemented");
-  return NULL;
+adjust_amount:
+  u64 amount_remaining = reader->length - reader->cursor;
+  if (amount > amount_remaining)
+    amount = amount_remaining;
+
+read_data:
+  i32 fread_output = fread(result, amount, 1, reader->file);
+
+  if (unlikely(fread_output != 1)) {
+    fail("io: error while reading from file: %s", strerror(errno));
+    return NULL;
+  }
+
+update_positions:
+  reader->cursor += amount;
+  reader->read_amount = amount;
+  reader->reads_count++;
+
+  return result;
 }

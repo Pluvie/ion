@@ -30,6 +30,7 @@
 #include "functions/date_to_string.h"
 #include "functions/date_today.h"
 #include "functions/hexdump.h"
+#include "functions/file_size.h"
 #include "functions/io_exhausted.h"
 #include "functions/io_peek.h"
 #include "functions/io_peek_file.h"
