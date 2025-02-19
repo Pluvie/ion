@@ -22,7 +22,7 @@ test( json_parse_string, buffer_optimization_huge ) {
     u64 string_length = json_parse_string(&input);
 
 
-  must("parse the string correctly and optimizing the number of reads");
+  must("parse the string correctly and optimize the number of reads");
     verify(error.occurred == false);
     verify(string_length == strlen(json));
     verify(input.reads_count == 3);
