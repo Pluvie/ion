@@ -1,3 +1,4 @@
+
 test( json_decode_struct, success ) {
 
   given("a json protocol and a reflection with a struct type");

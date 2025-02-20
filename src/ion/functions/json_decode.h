@@ -3,9 +3,8 @@ static inline
 #endif
 
 void json_decode (
-    struct io* input,
-    struct io* output,
-    struct protocol* json
+    struct io* source,
+    struct object* target
 )
 /**
  * ### Description

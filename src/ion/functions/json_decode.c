@@ -3,15 +3,13 @@ static inline
 #endif
 
 void json_decode (
-    struct io* input,
-    struct io* output,
-    struct protocol* json
+    struct io* source,
+    struct object* target
 )
 {
-  if (json->debug)
-    protocol_debug_pre(input, output, json);
+  reflect_initialize(source->reflection);
 
-  switch (json->reflection->type) {
+  switch (source->reflection->type) {
   case U8:
   case U16:
   case U32:
@@ -23,33 +21,30 @@ void json_decode (
   case D32:
   case D64:
   case D128:
-    json_decode_number(input, output, json);
-    break;
   case BYTE:
   case CHAR:
-    //json_decode_primitive_char(input, output, json);
-    break;
   case BOOL:
-    //json_decode_primitive_boolean(input, output, json);
+    json_decode_primitive(source, target);
     break;
 
   case STRUCT:
-    json_decode_struct(input, output, json);
-    break;
-
-  case ARRAY:
-    //json_decode_array(input, output, json);
+    json_decode_struct(source, target);
     break;
 
   case POINTER:
-    //json_decode_pointer(input, output, json);
+    //json_decode_pointer(source, target);
     break;
 
   case SEQUENCE:
-    //json_decode_sequence(input, output, json);
+    //json_decode_sequence(source, target);
+    break;
+
+  case ARRAY:
+    //json_decode_array(source, target);
+    break;
+
+  case VECTOR:
+    //json_decode_vector(source, target);
     break;
   }
-
-  if (json->debug)
-    protocol_debug_post(input, output, json);
 }

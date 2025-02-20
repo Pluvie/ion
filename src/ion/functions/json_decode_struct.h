@@ -1,7 +1,6 @@
 static inline void json_decode_struct (
-    struct io* input,
-    struct io* output,
-    struct protocol* json
+    struct io* source,
+    struct object* target
 )
 /**
  * ### Description
