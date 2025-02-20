@@ -76,14 +76,14 @@ i32 fread_simulated (
 }
 
 i32 fwrite_simulated (
-    void* output,
+    void* input,
     u64 byte_size,
     u64 count,
     void* stream
 )
 /**
  * This function is a simulation of the real `fwrite` function, which enables to manually
- * specify the result of the fwrite call, and the received data.
+ * specify the result of the fwrite call, and the written data.
  *
  * In order to do so, the global variable `fwrite_simulated_data` is used. Example:
  *
@@ -94,22 +94,25 @@ i32 fwrite_simulated (
  *
  * Every time the `fwrite` function is invoked, the `fwrite_simulated_data` is written. */
 {
-  return 0;
-  //if (fwrite_simulated_data == NULL)
-  //  return -1;
+  if (fwrite_simulated_data == NULL)
+    return 0;
 
-  //if (io_exhausted(fwrite_simulated_data))
-  //  return -1;
+  if (io_exhausted(fwrite_simulated_data))
+    return 0;
 
-  //u64 remainder = fwrite_simulated_data->length - fwrite_simulated_data->cursor;
-  //if (length > remainder)
-  //  length = remainder;
+  u64 total_size = count * byte_size;
+  i64 remainder = fwrite_simulated_data->length - fwrite_simulated_data->cursor;
+  if (total_size > remainder)
+    total_size = remainder;
 
-  //io_write(fwrite_simulated_data, (void*) data, length);
-  //if (error.occurred)
-  //  return -1;
+  io_write(fwrite_simulated_data, input, total_size);
+  if (error.occurred)
+    return 0;
 
-  //return length;
+  if (total_size < byte_size)
+    return 1;
+  else
+    return total_size / byte_size;
 }
 
 i32 fseek (
@@ -119,7 +122,8 @@ i32 fseek (
 )
 /**
  * This function is a simulation of the real `fseek` function, to avoid incorrect
- * NULL pointer access while simulating the filesystem. */
+ * NULL pointer access while simulating the filesystem, and to simulate correctly
+ * the `io_peek_file` function. */
 {
   if (fread_simulated_data == NULL)
     return -1;

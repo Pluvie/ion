@@ -79,7 +79,7 @@ i64 send_simulated (
 )
 /**
  * This function is a simulation of the real `send` function, which enables to manually
- * specify the result of the send call, and the received data.
+ * specify the result of the send call, and the sent data.
  *
  * In order to do so, the global variable `send_simulated_data` is used. Example:
  *
