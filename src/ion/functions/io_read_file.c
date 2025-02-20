@@ -5,9 +5,9 @@ static inline void* io_read_file (
 )
 {
 adjust_amount:
-  u64 amount_remaining = reader->length - reader->cursor;
+  i64 amount_remaining = reader->length - reader->cursor;
 
-  if (amount_remaining == 0) {
+  if (amount_remaining <= 0) {
     fail("io: end of file reached");
     return NULL;
   }

@@ -1,7 +1,7 @@
-test( json_parse_string, buffer_optimization_huge ) {
+test( json_parse_string, buffer_optimization_file_huge ) {
 
   given("a huge json string");
-    char* json =
+    char json[] =
       "\"Very long string that surpasses 256 characters, which is the default peek "
       "window of the json_parse_string function. The peek window is introduced to "
       "optimize io from file or sockets, where each io_read function call executes "
@@ -14,8 +14,12 @@ test( json_parse_string, buffer_optimization_huge ) {
 
 
   when("the string is read from a file");
-    void* file = fopen("src/test/json_parse_string/buffer_optimization_huge.txt", "r");
-    struct io input = io_reader_file(file);
+    fread_simulated_data = &io_reader(json, sizeof(json));
+    struct io input = {
+      .channel = IO_CHANNEL_FILE,
+      .mode = IO_MODE_READ,
+      .length = sizeof(json),
+    };
 
 
   calling("json_parse_string()");
@@ -29,5 +33,4 @@ test( json_parse_string, buffer_optimization_huge ) {
 
 
   success();
-    fclose(file);
 }

@@ -1,5 +1,4 @@
 /**
- * @file
  * This file simulates network sending / receiving, in order to control which
  * data is being transmitted. */
 
@@ -57,11 +56,15 @@ i64 recv_simulated (
   if (io_exhausted(recv_simulated_data))
     return -1;
 
-  u64 remainder = recv_simulated_data->length - recv_simulated_data->cursor;
+  i64 remainder = recv_simulated_data->length - recv_simulated_data->cursor;
   if (length > remainder)
     length = remainder;
 
   io_read(recv_simulated_data, output, length);
+
+  if (flags & MSG_PEEK)
+    recv_simulated_data->cursor -= recv_simulated_data->read_amount;
+
   if (error.occurred)
     return -1;
 

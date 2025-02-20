@@ -1,4 +1,5 @@
 #include <test/simulation/abort.h>
+#include <test/simulation/filesystem.h>
 #include <test/simulation/network.h>
 #include <test/simulation/stderr.h>
 

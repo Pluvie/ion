@@ -1,12 +1,16 @@
-test( json_parse_string, buffer_optimization ) {
+test( json_parse_string, buffer_optimization_file ) {
 
   given("a json string");
-    char* json = "\"example string\"";
+    char json[] = "\"example string\"";
 
 
   when("the string is read from a file");
-    void* file = fopen("src/test/json_parse_string/buffer_optimization.txt", "r");
-    struct io input = io_reader_file(file);
+    fread_simulated_data = &io_reader(json, sizeof(json));
+    struct io input = {
+      .channel = IO_CHANNEL_FILE,
+      .mode = IO_MODE_READ,
+      .length = sizeof(json),
+    };
 
 
   calling("json_parse_string()");
@@ -20,5 +24,4 @@ test( json_parse_string, buffer_optimization ) {
 
 
   success();
-    fclose(file);
 }
