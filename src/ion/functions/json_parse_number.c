@@ -99,6 +99,12 @@ integral_part:
 
   if (digit == '.') {
     fractional.begin = position;
+
+    if (!isdigit(buffer[position])) {
+      fail("expected a digit after the decimal separator");
+      return;
+    }
+
     goto fractional_part;
   }
 
