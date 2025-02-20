@@ -144,6 +144,7 @@ exponent_sign:
     goto exponent_part;
   default:
     if (isdigit(sign)) {
+      exponent.length = 1;
       exponent.begin = position - 1;
       goto exponent_part;
     }
