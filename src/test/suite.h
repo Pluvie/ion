@@ -45,6 +45,8 @@
 #include "test/io_write_file/fwrite_success.c"
 #include "test/io_write_memory/invalid_cursor.c"
 #include "test/io_write_memory/valid_cursor.c"
+#include "test/io_write_socket/send_failure.c"
+#include "test/io_write_socket/send_success.c"
 //#include "test/json_decode_number/convert_error.c"
 //#include "test/json_decode_number/parse_error.c"
 //#include "test/json_decode_number/success.c"

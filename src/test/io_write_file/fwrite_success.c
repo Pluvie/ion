@@ -4,7 +4,6 @@ test( io_write_file, fwrite_success ) {
     struct io writer = {
       .channel = IO_CHANNEL_FILE,
       .mode = IO_MODE_WRITE,
-      .length = 4,
     };
 
 
@@ -21,7 +20,7 @@ test( io_write_file, fwrite_success ) {
   must("not write the io");
     verify(amount == 4);
     verify(writer.cursor == 4);
-    verify(writer.length == 8);
+    verify(writer.length == 4);
     verify(file[0] == 0x00);
     verify(file[1] == 0x01);
     verify(file[2] == 0x02);

@@ -51,6 +51,8 @@ void test_suite (
   test_run( io_write_file, fwrite_success );
   test_run( io_write_memory, invalid_cursor );
   test_run( io_write_memory, valid_cursor );
+  test_run( io_write_socket, send_failure );
+  test_run( io_write_socket, send_success );
   //test_run( json_decode_number, convert_error );
   //test_run( json_decode_number, parse_error );
   //test_run( json_decode_number, success );
