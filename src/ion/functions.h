@@ -52,6 +52,7 @@
 #include "functions/json_parse_number.h"
 #include "functions/json_parse_spaces.h"
 #include "functions/json_parse_string.h"
+#include "functions/json_parser_peek.h"
 #include "functions/map_allocate.h"
 #include "functions/map_get.h"
 #include "functions/map_hash.h"

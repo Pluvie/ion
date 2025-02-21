@@ -52,6 +52,7 @@
 #include "functions/json_parse_number.c"
 #include "functions/json_parse_spaces.c"
 #include "functions/json_parse_string.c"
+#include "functions/json_parser_peek.c"
 #include "functions/map_allocate.c"
 #include "functions/map_get.c"
 #include "functions/map_hash.c"

@@ -2,48 +2,19 @@ static inline u64 json_parse_string (
     struct io* input
 )
 {
-  char* string = NULL;
-
+  char character;
+  bool escaped = false;
   u64 position = 0;
+
+  struct buffer buffer = { 0 };
   u64 max_position = U64_MAX;
 
-  bool escaped = false;
-  char character;
+  char* string = NULL;
 
-  u64 peek_size = 256;
-  struct buffer buffer = { 0 };
-
-initialize:
-  switch (input->channel) {
-  case IO_CHANNEL_MEM:
-    max_position = input->length - input->cursor;
-
-    string = io_peek(input, NULL, max_position);
-    if (error.occurred) {
-      fail("unable to parse string: %s", error.message);
-      return 0;
-    }
-
-    break;
-
-  case IO_CHANNEL_FILE:
-  case IO_CHANNEL_SOCK:
-    buffer_release(&buffer);
-    buffer = buffer_init(peek_size);
-    buffer_alloc(&buffer, peek_size);
-    string = buffer_data(&buffer, 0);
-
-    io_peek(input, string, peek_size);
-    if (error.occurred) {
-      fail("unable to parse string: %s", error.message);
-      return 0;
-    }
-
-    if (input->read_amount < peek_size)
-      max_position = input->read_amount;
-
-    break;
-  }
+peek_string:
+  string = json_parser_peek(input, &buffer, &max_position);
+  if (error.occurred)
+    return 0;
 
 read_character:
   character = string[position];
@@ -76,18 +47,10 @@ next_character:
     return 0;
   }
 
-  switch (input->channel) {
-  case IO_CHANNEL_MEM:
+  if (position < buffer.capacity)
     goto read_character;
+  else
+    goto peek_string;
 
-  case IO_CHANNEL_FILE:
-  case IO_CHANNEL_SOCK:
-    if (position < peek_size)
-      goto read_character;
-
-    peek_size *= 2;
-    goto initialize;
-  }
-
-  return position;
+  return 0;
 }

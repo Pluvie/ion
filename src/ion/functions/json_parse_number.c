@@ -19,10 +19,8 @@ static inline u64 json_parse_number (
 
 initialize:
   io_peek(input, buffer, sizeof(buffer));
-  if (error.occurred) {
-    fail("error while parsing number: %s", error.message);
+  if (error.occurred)
     return 0;
-  }
 
 check_sign:
   sign = buffer[0];
@@ -193,10 +191,8 @@ terminate:
   number.exponent.content = exponent.content;
 
   sci_notation_convert(&number, type, result);
-  if (error.occurred) {
-    fail("unable to convert number: %s", error.message);
+  if (error.occurred)
     return 0;
-  }
 
   return position - 1;
 }

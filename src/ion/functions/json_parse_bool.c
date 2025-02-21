@@ -5,10 +5,8 @@ static inline u64 json_parse_bool (
   char buffer[5] = { 0 };
 
   io_peek(input, buffer, sizeof(buffer));
-  if (error.occurred) {
-    fail("error while parsing bool: %s", error.message);
+  if (error.occurred)
     return 0;
-  }
 
   if (strneq("true", buffer, 4))
     return 4;

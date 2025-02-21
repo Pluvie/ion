@@ -2,47 +2,18 @@ static inline u64 json_parse_spaces (
     struct io* input
 )
 {
-  char* spaces = NULL;
-
+  char character;
   u64 position = 0;
+
+  struct buffer buffer = { 0 };
   u64 max_position = U64_MAX;
 
-  char character;
+  char* spaces = NULL;
 
-  u64 peek_size = 256;
-  struct buffer buffer = { 0 };
-
-initialize:
-  switch (input->channel) {
-  case IO_CHANNEL_MEM:
-    max_position = input->length - input->cursor;
-
-    spaces = io_peek(input, NULL, max_position);
-    if (error.occurred) {
-      fail("unable to parse spaces: %s", error.message);
-      return 0;
-    }
-
-    break;
-
-  case IO_CHANNEL_FILE:
-  case IO_CHANNEL_SOCK:
-    buffer_release(&buffer);
-    buffer = buffer_init(peek_size);
-    buffer_alloc(&buffer, peek_size);
-    spaces = buffer_data(&buffer, 0);
-
-    io_peek(input, spaces, peek_size);
-    if (error.occurred) {
-      fail("unable to parse spaces: %s", error.message);
-      return 0;
-    }
-
-    if (input->read_amount < peek_size)
-      max_position = input->read_amount;
-
-    break;
-  }
+peek_spaces:
+  spaces = json_parser_peek(input, &buffer, &max_position);
+  if (error.occurred)
+    return 0;
 
 read_character:
   character = spaces[position];
@@ -55,22 +26,14 @@ read_character:
 next_character:
   position++;
   if (position >= max_position) {
-    fail("expected a space but found EOF");
+    fail("[%li] expected a space but found EOF", input->cursor);
     return 0;
   }
 
-  switch (input->channel) {
-  case IO_CHANNEL_MEM:
+  if (position < buffer.capacity)
     goto read_character;
+  else
+    goto peek_spaces;
 
-  case IO_CHANNEL_FILE:
-  case IO_CHANNEL_SOCK:
-    if (position < peek_size)
-      goto read_character;
-
-    peek_size *= 2;
-    goto initialize;
-  }
-
-  return position;
+  return 0;
 }

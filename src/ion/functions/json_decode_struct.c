@@ -21,7 +21,7 @@ object_begin:
       return;
   }
 
-  io_peek(source, &character, sizeof(char));
+  io_read(source, &character, sizeof(char));
   if (error.occurred)
     return;
 
@@ -32,6 +32,9 @@ object_begin:
 
 next_field:
   amount_read = json_parse_spaces(source);
+  if (error.occurred)
+    return;
+
   if (amount_read > 0) {
     io_read(source, NULL, amount_read);
     if (error.occurred)
