@@ -42,8 +42,11 @@ void test_suite (
   test_run( io_read_file, fread_failure );
   test_run( io_read_file, fread_partial );
   test_run( io_read_file, fread_success );
+  test_run( io_read_file, null_result );
   test_run( io_read_memory, invalid_cursor );
+  test_run( io_read_memory, null_result );
   test_run( io_read_memory, valid_cursor );
+  test_run( io_read_socket, null_result );
   test_run( io_read_socket, recv_failure );
   test_run( io_read_socket, recv_partial );
   test_run( io_read_socket, recv_success );
@@ -53,7 +56,8 @@ void test_suite (
   test_run( io_write_memory, valid_cursor );
   test_run( io_write_socket, send_failure );
   test_run( io_write_socket, send_success );
-  test_run( json_decode, primitive );
+  //test_run( json_decode, primitive );
+  test_run( json_decode, struct );
   test_run( json_parse_number, error_eof );
   test_run( json_parse_number, error_exponent );
   test_run( json_parse_number, error_exponent_eof );

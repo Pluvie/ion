@@ -1,4 +1,4 @@
-static inline void json_parse_number (
+static inline u64 json_parse_number (
     struct io* input,
     enum types type,
     void* result
@@ -21,7 +21,7 @@ initialize:
   io_peek(input, buffer, sizeof(buffer));
   if (error.occurred) {
     fail("error while parsing number: %s", error.message);
-    return;
+    return 0;
   }
 
 check_sign:
@@ -47,7 +47,7 @@ check_sign:
   }
 
   fail("expected a number");
-  return;
+  return 0;
 
 check_after_zero:
   after_zero = buffer[1];
@@ -64,7 +64,7 @@ check_after_zero:
 
   case 'x':
     fail("hexadecimal numbers are not valid JSON");
-    return;
+    return 0;
 
   case '0':
   case '1':
@@ -77,7 +77,7 @@ check_after_zero:
   case '8':
   case '9':
     fail("octal numbers are not valid JSON");
-    return;
+    return 0;
 
   default:
     goto terminate;
@@ -86,7 +86,7 @@ check_after_zero:
 integral_part:
   if (position >= sizeof(buffer)) {
     fail("number too big");
-    return;
+    return 0;
   }
 
   digit = buffer[position];
@@ -102,7 +102,7 @@ integral_part:
 
     if (!isdigit(buffer[position])) {
       fail("expected a digit after the decimal separator");
-      return;
+      return 0;
     }
 
     goto fractional_part;
@@ -118,7 +118,7 @@ integral_part:
 fractional_part:
   if (position >= sizeof(buffer)) {
     fail("number too big");
-    return;
+    return 0;
   }
 
   digit = buffer[position];
@@ -156,13 +156,13 @@ exponent_sign:
     }
 
     fail("expected sign or digit after exponent");
-    return;
+    return 0;
   }
 
 exponent_part:
   if (position >= sizeof(buffer)) {
     fail("number too big");
-    return;
+    return 0;
   }
 
   digit = buffer[position];
@@ -176,6 +176,9 @@ exponent_part:
   goto terminate;
 
 terminate:
+  if (result == NULL)
+    return position - 1;
+
   memcpy(integral.content, buffer + integral.begin, integral.length);
   if (fractional.length > 0)
     memcpy(fractional.content, buffer + fractional.begin, fractional.length);
@@ -192,6 +195,8 @@ terminate:
   sci_notation_convert(&number, type, result);
   if (error.occurred) {
     fail("unable to convert number: %s", error.message);
-    return;
+    return 0;
   }
+
+  return position - 1;
 }

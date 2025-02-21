@@ -16,6 +16,11 @@ adjust_amount:
     amount = amount_remaining;
 
 read_data:
+  if (result == NULL) {
+    fseek(reader->file, amount, SEEK_CUR);
+    goto update_positions;
+  }
+
   i32 fread_output = fread(result, amount, 1, reader->file);
 
   if (unlikely(fread_output != 1)) {

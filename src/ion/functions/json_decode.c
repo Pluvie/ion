@@ -7,9 +7,15 @@ void json_decode (
     struct object* target
 )
 {
-  reflect_initialize(source->reflection);
+  if (target != NULL)
+    goto decode_to_target;
+  else
+    goto discard_value;
 
-  switch (source->reflection->type) {
+decode_to_target:
+  reflect_initialize(target->reflection);
+
+  switch (target->reflection->type) {
   case U8:
   case U16:
   case U32:
@@ -25,26 +31,105 @@ void json_decode (
   case CHAR:
   case BOOL:
     json_decode_primitive(source, target);
-    break;
+    return;
 
   case STRUCT:
     json_decode_struct(source, target);
-    break;
+    return;
 
   case POINTER:
     //json_decode_pointer(source, target);
-    break;
+    return;
 
   case SEQUENCE:
     //json_decode_sequence(source, target);
-    break;
+    return;
 
   case ARRAY:
     //json_decode_array(source, target);
-    break;
+    return;
 
   case VECTOR:
     //json_decode_vector(source, target);
-    break;
+    return;
+  }
+
+discard_value:
+  u64 amount_read = 0;
+  char character;
+
+  amount_read = json_parse_spaces(source);
+  if (amount_read > 0) {
+    io_read(source, NULL, amount_read);
+    if (error.occurred)
+      return;
+  }
+
+  io_peek(source, &character, sizeof(char));
+  if (error.occurred)
+    return;
+
+  switch (character) {
+  case '{':
+    json_decode_struct(source, NULL);
+    if (error.occurred)
+      return;
+
+  case '[':
+    fail("json_decode_array not yet implemented");
+    return;
+    //json_decode_array(source, NULL);
+    //if (error.occurred)
+    //  return;
+
+  case '"':
+    amount_read = json_parse_string(source);
+    if (error.occurred)
+      return;
+
+    io_read(source, NULL, amount_read);
+    if (error.occurred)
+      return;
+
+  case '-':
+  case '0':
+  case '1':
+  case '2':
+  case '3':
+  case '4':
+  case '5':
+  case '6':
+  case '7':
+  case '8':
+  case '9':
+    amount_read = json_parse_number(source, 0, NULL);
+    if (error.occurred)
+      return;
+
+    io_read(source, NULL, amount_read);
+    if (error.occurred)
+      return;
+
+  default:
+    amount_read = json_parse_bool(source);
+    if (error.occurred)
+      return;
+
+    if (amount_read > 0) {
+      io_read(source, NULL, amount_read);
+      return;
+    }
+
+    amount_read = json_parse_null(source);
+    if (error.occurred)
+      return;
+
+    if (amount_read > 0) {
+      io_read(source, NULL, amount_read);
+      return;
+    }
+
+    fail("unexpected character `%c`", character);
+    return;
   }
 }

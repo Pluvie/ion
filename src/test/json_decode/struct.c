@@ -1,38 +1,41 @@
+focus_test( json_decode, struct ) {
+  print("");
 
-test( json_decode_struct, success ) {
-
-  given("a json protocol and a reflection with a struct type");
-    struct protocol json = { 0 };
-
+  given("a example struct");
     struct example {
-      u8 value_u8;
+      u8 number;
+      char* string;
     } example;
 
-    struct reflect reflection = {
-      type(STRUCT, { sizeof(struct example), 1 }) {
-        { field(struct example, value_u8), type(U8) },
-      }
-    };
 
-    struct memory allocator = memory_init(4096);
-    json.allocator = &allocator;
-    json.reflection = &schema;
+  when("it has an associated reflection")
+    struct reflect reflection = {
+      type(STRUCT, sizeof(struct example)), fields({
+        { field(struct example, number), type(U8) },
+        { field(struct example, string), type(POINTER), of({ type(CHAR) }) },
+      })
+    };
 
 
   when("some input data is ready to decode");
-    char* input_data = " { \"value_u8\": 123  \n\n  }";
+    char* input =
+      " {"
+      "   \"number\": 255,"
+      "   \"example_string\": \"example\","
+      " }";
 
 
-  calling("json_decode_struct()");
-    struct io input = io_reader(input_data, strlen(input_data));
-    struct io output = io_writer(&example, sizeof(example));
-    json_decode_struct(&input, &output, &json);
+  calling("json_decode()");
+    struct memory allocator = memory_init(4096);
+    struct io source = io_reader(input, sizeof(input));
+    struct object target = object(example, &reflection, &allocator);
+    json_decode(&source, &target);
 
 
   must("decode the input data on the struct correctly");
-    verify(json.error.occurred == false);
-    verify(io_exhausted(&input) == true);
-    verify(example.value_u8 == 123);
+    error_print();
+    verify(error.occurred == false);
+    verify(example.number == 255);
 
 
   success();

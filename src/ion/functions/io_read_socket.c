@@ -9,7 +9,10 @@ read_data:
   if (reader->flags & IO_FLAGS_NO_BUFFERED)
     recv_flags |= MSG_WAITALL;
 
-  i32 recv_output = recv(reader->socket, result, amount, recv_flags);
+  byte discarded_result[result == NULL ? amount : 1];
+
+  i32 recv_output = recv(reader->socket,
+    result == NULL ? discarded_result : result, amount, recv_flags);
 
   if (unlikely(recv_output < 0)) {
     fail("io: error while reading from socket: %s", strerror(errno));

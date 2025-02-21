@@ -6,20 +6,22 @@ static inline void json_decode_struct (
   u64 amount_read = 0;
   char character;
 
-  u64 fields_count = reflection->bounds[1];
-  struct reflect* field = NULL;
+  u64 field_index = 0;
+  struct reflect* field_reflection = NULL;
   struct object field_object = { 0 };
-  struct object* target_field = NULL;
+
+  struct memory allocator = memory_init(0);
+  struct string field_name = { 0 };
 
 object_begin:
   amount_read = json_parse_spaces(source);
   if (amount_read > 0) {
-    io_read(source, memory_alloc(target->allocator, amount_read), amount_read);
+    io_read(source, NULL, amount_read);
     if (error.occurred)
       return;
   }
 
-  io_peek(input, &character, sizeof(char));
+  io_peek(source, &character, sizeof(char));
   if (error.occurred)
     return;
 
@@ -31,17 +33,17 @@ object_begin:
 next_field:
   amount_read = json_parse_spaces(source);
   if (amount_read > 0) {
-    io_read(source, memory_alloc(target->allocator, amount_read), amount_read);
+    io_read(source, NULL, amount_read);
     if (error.occurred)
       return;
   }
 
-  io_peek(input, &character, sizeof(char));
+  io_peek(source, &character, sizeof(char));
   if (error.occurred)
     return;
 
-  if (character == '}')
-    goto terminate;
+  if (field_index == 0 && character == '}')
+    return;
 
   amount_read = json_parse_string(source);
   if (error.occurred)
@@ -52,141 +54,84 @@ next_field:
     return;
   }
 
-  field = target->reflection->nodes;
-  for (u64 i = 0; i < fields_count; i++) {
-    /* Field name equality must be done removing the `"` surrounding `field_name`.*/
-    if (strneq(field->name, field_name.content + 1, field_name.length - 2))
-      goto check_semicolon;
+  field_name.content = memory_alloc(&allocator, amount_read);
+  field_name.length = amount_read;
+  io_read(source, field_name.content, field_name.length);
+  if (error.occurred)
+    return;
 
-    field++;
+  if (target != NULL) {
+    for vector_each(target->reflection->child, struct reflect*, field_reflection) {
+      /* Field name equality must be done removing the `"` surrounding `field_name`.*/
+      if (strneq(field_reflection->name, field_name.content + 1, field_name.length - 2))
+        goto check_semicolon;
+
+      field_reflection++;
+    }
   }
 
-  /* Here need to parse the field value and ignore it since it does not match any
-   * field in the reflection. */
-  field = NULL;
-  target_field = NULL;
+  field_reflection = NULL;
 
-  if (field != NULL) {
-    field_object = {
-      .name = field->name,
-      .reflection = field,
-      .address = target->address + field->offset,
-      .allocator = target->allocator
-    };
-    target_field = &field_object;
+  if (field_reflection != NULL) {
+    field_object.name = field_reflection->name;
+    field_object.reflection = field_reflection;
+    field_object.address = target->address + field_reflection->offset;
+    field_object.allocator = target->allocator;
   }
 
 check_semicolon:
   amount_read = json_parse_spaces(source);
   if (amount_read > 0) {
-    io_read(source, memory_alloc(target->allocator, amount_read), amount_read);
+    io_read(source, NULL, amount_read);
     if (error.occurred)
       return;
   }
 
-  io_read(input, &character, sizeof(char));
+  io_read(source, &character, sizeof(char));
   if (error.occurred)
     return;
 
   if (character != ':') {
-    fail("[%s] expected a `:` after the field name", field->name);
+    fail("[%.*s] expected a `:` after the field name",
+      (i32) field_name.length, field_name.content);
     return;
   }
 
   amount_read = json_parse_spaces(source);
   if (amount_read > 0) {
-    io_read(source, memory_alloc(target->allocator, amount_read), amount_read);
+    io_read(source, NULL, amount_read);
     if (error.occurred)
       return;
   }
 
 parse_value:
-  io_peek(input, &character, sizeof(char));
+  json_decode(source, field_reflection != NULL ? &field_object : NULL);
+  if (error.occurred)
+    return;
+
+check_comma:
+  amount_read = json_parse_spaces(source);
+  if (amount_read > 0) {
+    io_read(source, NULL, amount_read);
+    if (error.occurred)
+      return;
+  }
+
+  io_read(source, &character, sizeof(char));
   if (error.occurred)
     return;
 
   switch (character) {
-  case '{':
-    if (field->type != STRUCT) {
-      fail("[%s] field of type %s but found an object",
-        field->name, type_names[field->type]);
-      return;
-    }
-
-    json_decode(
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-next_field:
-  json_decode_spaces(input, output, json);
-  field_name = json_parse_string(input, &(json->error));
-
-  if (field_name.length == 0)
-    goto object_end;
-
-  field = reflection->nodes;
-  for (u64 i = 0; i < fields_count; i++) {
-    /* Field name equality must be done removing the `"` surrounding `field_name`.*/
-    if (strneq(field->name, field_name.content + 1, field_name.length - 2))
-      goto check_semicolon;
-
-    field++;
-  }
-
-  failure(&(json->error), "[%s] unrecognized field `%.*s`",
-    reflection->name, (i32) field_name.length, field_name.content);
-  return;
-
-decode_field:
-  json->reflection = field;
-  output->cursor = output_initial_cursor + field->offset;
-  json_decode(input, output, json);
-
-  if (json->error.occurred)
+  case '}':
     return;
 
-comma_separator:
-  json_decode_spaces(input, output, json);
-  comma = io_peek(input, sizeof(char));
-  if (comma == NULL) {
-    failure(&(json->error), "[%s] expected a `,` after the field value but found EOF",
-      reflection->name);
-    return;
-  }
-
-  if (*comma == ',') {
-    io_read(input, sizeof(char));
+  case ',':
+    field_index++;
     goto next_field;
-  }
 
-object_end:
-  curly_close = io_read(input, sizeof(char));
-  if (curly_close == NULL || *curly_close != '}') {
-    failure(&(json->error), "[%s] expected a field or `}` to end object",
-      reflection->name);
+  default:
+    fail("unexpected character `%c`: expected comma or object end after field value",
+      character);
     return;
   }
-
-  json->reflection = schema;
-  output->cursor = output_initial_cursor + struct_typesize;
 }
