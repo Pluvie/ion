@@ -21,6 +21,9 @@ set_position_only:
   return;
 
 set_position_with_extraction:
+  char extraction[64] = { 0 };
+  char caret[64] = { 0 };
+
   u64 extraction_begin = 0;
   if (position > 20)
     extraction_begin = position - 20;
@@ -30,8 +33,8 @@ set_position_with_extraction:
     extraction_end = io->length;
 
   u64 extraction_length = extraction_end - extraction_begin;
-  char extraction[extraction_length + 1];
 
+rewind_cursor:
   switch (io->channel) {
   case IO_CHANNEL_MEM:
     io->cursor = extraction_begin;
@@ -43,7 +46,12 @@ set_position_with_extraction:
     return;
   }
 
+extract:
+  error.occurred = false;
   io_peek(io, extraction, extraction_length);
+  if (error.occurred)
+    return;
+
   extraction[extraction_length] = '\0';
 
   u64 extraction_position = position - extraction_begin;
@@ -62,8 +70,8 @@ set_position_with_extraction:
   if (caret_position > 0)
     caret_position--;
 
-  char caret[caret_position + 1];
-  memset(caret, ' ', caret_position + 1);
+set_error:
+  memset(caret, ' ', caret_position);
   caret[caret_position] = '^';
   caret[caret_position + 1] = '\0';
 
@@ -71,5 +79,15 @@ set_position_with_extraction:
   error.trace[error.trace_count - 1].file = file;
   error.trace[error.trace_count - 1].line = line;
 
-  return;
+restore_cursor:
+  switch (io->channel) {
+  case IO_CHANNEL_MEM:
+    io->cursor = position;
+    return;
+  case IO_CHANNEL_FILE:
+    fseek(io->file, position, SEEK_SET);
+    return;
+  default:
+    return;
+  }
 }

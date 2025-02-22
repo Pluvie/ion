@@ -72,15 +72,12 @@ discard_value:
   switch (character) {
   case '{':
     json_decode_struct(source, NULL);
-    if (error.occurred)
-      return;
+    return;
 
   case '[':
+    //json_decode_array(source, NULL);
     fail("json_decode_array not yet implemented");
     return;
-    //json_decode_array(source, NULL);
-    //if (error.occurred)
-    //  return;
 
   case '"':
     amount_read = json_parse_string(source);
@@ -88,8 +85,7 @@ discard_value:
       return;
 
     io_read(source, NULL, amount_read);
-    if (error.occurred)
-      return;
+    return;
 
   case '-':
   case '0':
@@ -107,8 +103,7 @@ discard_value:
       return;
 
     io_read(source, NULL, amount_read);
-    if (error.occurred)
-      return;
+    return;
 
   default:
     amount_read = json_parse_bool(source);
@@ -129,7 +124,7 @@ discard_value:
       return;
     }
 
-    fail("unexpected character `%c`", character);
+    io_failure(source, "unexpected character `%c`", character);
     return;
   }
 }

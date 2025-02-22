@@ -35,17 +35,13 @@ read_character:
     return position;
   }
 
-  if (unlikely(character != '"' && position == 0)) {
-    fail("not a string: missing initial '\"'");
+  if (unlikely(character != '"' && position == 0))
     return 0;
-  }
 
 next_character:
   position++;
-  if (position >= max_position) {
-    fail("expected '\"' but found EOF");
+  if (position >= max_position)
     return 0;
-  }
 
   if (position < buffer.capacity)
     goto read_character;
