@@ -26,7 +26,7 @@ object_begin:
     return;
 
   if (character != '{') {
-    fail("expected `{` to begin object");
+    io_failure(source, "expected `{` to begin object");
     return;
   }
 

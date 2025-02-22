@@ -32,6 +32,7 @@
 #include "functions/hexdump.h"
 #include "functions/file_size.h"
 #include "functions/io_exhausted.h"
+#include "functions/io_failure_position.h"
 #include "functions/io_peek.h"
 #include "functions/io_peek_file.h"
 #include "functions/io_peek_memory.h"

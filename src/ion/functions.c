@@ -32,6 +32,7 @@
 #include "functions/file_size.c"
 #include "functions/hexdump.c"
 #include "functions/io_exhausted.c"
+#include "functions/io_failure_position.c"
 #include "functions/io_peek.c"
 #include "functions/io_peek_file.c"
 #include "functions/io_peek_memory.c"

@@ -115,7 +115,7 @@ i32 fwrite_simulated (
     return total_size / byte_size;
 }
 
-i32 fseek (
+i32 fseek_simulated (
   void* stream,
   i64 offset,
   i32 whence

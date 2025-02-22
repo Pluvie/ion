@@ -28,6 +28,8 @@
 #include "test/buffer_init/default_capacity.c"
 #include "test/buffer_init/no_immediate_allocation.c"
 #include "test/buffer_init/power_2_capacity.c"
+#include "test/io_failure_position/position_only.c"
+#include "test/io_failure_position/position_with_extraction.c"
 #include "test/io_peek_memory/invalid_cursor.c"
 #include "test/io_peek_memory/valid_cursor.c"
 #include "test/io_peek_socket/recv_failure.c"

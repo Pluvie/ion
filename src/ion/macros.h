@@ -21,6 +21,7 @@
 #include "macros/failure.h"
 #include "macros/field.h"
 #include "macros/fields.h"
+#include "macros/io_failure.h"
 #include "macros/io_reader.h"
 #include "macros/io_reader_file.h"
 #include "macros/io_reader_socket.h"
