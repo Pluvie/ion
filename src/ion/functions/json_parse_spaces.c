@@ -11,7 +11,7 @@ static inline u64 json_parse_spaces (
   char* spaces = NULL;
 
 peek_spaces:
-  spaces = json_parser_peek(input, &buffer, &max_position);
+  spaces = io_peek_window(input, &buffer, &max_position);
   if (error.occurred)
     return 0;
 

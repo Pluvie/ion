@@ -12,7 +12,7 @@ static inline u64 json_parse_string (
   char* string = NULL;
 
 peek_string:
-  string = json_parser_peek(input, &buffer, &max_position);
+  string = io_peek_window(input, &buffer, &max_position);
   if (error.occurred)
     return 0;
 
