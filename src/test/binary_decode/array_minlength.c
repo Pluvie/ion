@@ -6,7 +6,7 @@ test( binary_decode, array_minlength ) {
     } example;
 
 
-  when("it has an associated reflection that enforces a minimum length")
+  when("it has an associated reflection that enforces a minimum length");
     struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, bytes), type(ARRAY, 4, 0), of({ type(BYTE) }) },

@@ -13,7 +13,7 @@ test( binary_decode, vector ) {
     };
 
 
-  when("it has an associated reflection")
+  when("it has an associated reflection");
     struct reflect element_reflection = {
       type(STRUCT, sizeof(struct element)), fields({
         { field(struct element, a), type(I32) },

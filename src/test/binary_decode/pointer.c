@@ -11,7 +11,7 @@ test( binary_decode, pointer ) {
     } example;
 
 
-  when("it has an associated reflection")
+  when("it has an associated reflection");
     struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, name), type(POINTER, 32), of({ type(CHAR) }) },

@@ -6,7 +6,7 @@ test( binary_decode, vector_maxlength ) {
     } example;
 
 
-  when("it has an associated reflection that enforces a maximum length")
+  when("it has an associated reflection that enforces a maximum length");
     struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, bytes), type(VECTOR, 0, 2), of({ type(BYTE) }) },

@@ -9,7 +9,7 @@ test( binary_decode, validator ) {
     } example;
 
 
-  when("it has an associated reflection")
+  when("it has an associated reflection");
     struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, age), type(U16), valid_if(is_adult) },

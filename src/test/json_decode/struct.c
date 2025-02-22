@@ -7,7 +7,7 @@ test( json_decode, struct ) {
     } example;
 
 
-  when("it has an associated reflection")
+  when("it has an associated reflection");
     struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, number), type(U8) },

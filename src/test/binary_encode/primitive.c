@@ -9,7 +9,7 @@ test( binary_encode, primitive ) {
     };
 
 
-  when("it has an associated reflection")
+  when("it has an associated reflection");
     struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, value_u8), type(U8) },

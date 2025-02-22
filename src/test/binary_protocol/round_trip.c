@@ -11,7 +11,7 @@ test( binary_protocol, round_trip ) {
     struct example target = { 0 };
 
 
-  when("it has an associated reflection")
+  when("it has an associated reflection");
     struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, value_u8), type(U8) },

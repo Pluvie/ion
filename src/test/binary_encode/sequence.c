@@ -10,7 +10,7 @@ test( binary_encode, sequence ) {
     };
 
 
-  when("it has an associated reflection")
+  when("it has an associated reflection");
     struct reflect reflection = {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, name), type(SEQUENCE, 32), of({ type(CHAR) }) },
