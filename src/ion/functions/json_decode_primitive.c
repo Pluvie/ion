@@ -61,7 +61,7 @@ static inline void json_decode_primitive (
     break;
 
   default:
-    fail("primitive type `%s` not yet implemented.", type_names[primitive_type]);
+    fail("primitive type `%s` not supported.", type_names[primitive_type]);
     error_add_io_extraction(source);
     error_add_reflection_path(target->reflection);
     return;

@@ -23,8 +23,6 @@ test( json_decode, primitive ) {
         { field(struct example, value_d32), type(D32) },
         { field(struct example, value_d64), type(D64) },
         { field(struct example, value_d128), type(D128) },
-        { field(struct example, value_byte), type(BYTE) },
-        { field(struct example, value_char), type(CHAR) },
         { field(struct example, value_bool), type(BOOL) },
       })
     };
@@ -68,8 +66,6 @@ test( json_decode, primitive ) {
     verify(example.value_d32 == 0.1171875f);
     verify(example.value_d64 == 0.1171875);
     verify(example.value_d128 == 0.1171875);
-    //verify(example.value_byte == 0xff);
-    //verify(example.value_char == 'F');
     verify(example.value_bool == true);
 
 
