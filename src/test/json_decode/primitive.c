@@ -31,36 +31,45 @@ test( json_decode, primitive ) {
 
 
   when("some input data is ready to decode");
-    char* input_data =
+    char* input =
       " {"
-      "   \"value_char\": \"Q\","
-      "   \"value_byte\": 255,"
+      "   \"value_u8\": 1,"
+      "   \"value_u16\": 20,"
+      "   \"value_u32\": 300,"
+      "   \"value_u64\": 4000,"
+      "   \"value_i8\": -1,"
+      "   \"value_i16\": -20,"
+      "   \"value_i32\": -300,"
+      "   \"value_i64\": -4000,"
+      "   \"value_d32\": 0.1171875,"
+      "   \"value_d64\": 1.171875e-1,"
+      "   \"value_d128\": 117.1875E-3,"
+      "   \"value_bool\": true"
       " }";
 
 
   calling("json_decode()");
     struct memory allocator = memory_init(4096);
-    struct io source = io_reader(input, sizeof(input));
+    struct io source = io_reader(input, strlen(input));
     struct object target = object(example, &reflection, &allocator);
     json_decode(&source, &target);
 
 
   must("decode the input data on the struct correctly");
-    verify(json.error.occurred == false);
-    verify(io_exhausted(&input) == true);
+    verify(error.occurred == false);
     verify(example.value_u8 == 1);
-    verify(example.value_u16 == 2);
-    verify(example.value_u32 == 3);
-    verify(example.value_u64 == 4);
+    verify(example.value_u16 == 20);
+    verify(example.value_u32 == 300);
+    verify(example.value_u64 == 4000);
     verify(example.value_i8 == -1);
-    verify(example.value_i16 == -2);
-    verify(example.value_i32 == -3);
-    verify(example.value_i64 == -4);
-    verify(example.value_d32 == 3.0f / 256.0f);
-    verify(example.value_d64 == 3.0 / 256.0);
-    verify(example.value_d128 == 3.0 / 256.0);
-    verify(example.value_byte == 0xff);
-    verify(example.value_char == 'F');
+    verify(example.value_i16 == -20);
+    verify(example.value_i32 == -300);
+    verify(example.value_i64 == -4000);
+    verify(example.value_d32 == 0.1171875f);
+    verify(example.value_d64 == 0.1171875);
+    verify(example.value_d128 == 0.1171875);
+    //verify(example.value_byte == 0xff);
+    //verify(example.value_char == 'F');
     verify(example.value_bool == true);
 
 

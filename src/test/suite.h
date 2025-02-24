@@ -57,7 +57,7 @@
 #include "test/io_write_memory/valid_cursor.c"
 #include "test/io_write_socket/send_failure.c"
 #include "test/io_write_socket/send_success.c"
-//#include "test/json_decode/primitive.c"
+#include "test/json_decode/primitive.c"
 #include "test/json_decode/struct.c"
 #include "test/json_parse_number/error_eof.c"
 #include "test/json_parse_number/error_exponent.c"

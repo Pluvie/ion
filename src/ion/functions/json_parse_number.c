@@ -53,12 +53,12 @@ check_after_zero:
 
   switch(after_zero) {
   case '.':
+    fractional.begin = position;
+    goto fractional_part;
   case 'E':
   case 'e':
-    if (after_zero == '.')
-      goto fractional_part;
-    else
-      goto exponent_part;
+    exponent.begin = position;
+    goto exponent_part;
 
   case 'x':
     fail("hexadecimal numbers are not valid JSON");

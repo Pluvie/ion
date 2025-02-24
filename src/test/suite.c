@@ -63,7 +63,7 @@ void test_suite (
   test_run( io_write_memory, valid_cursor );
   test_run( io_write_socket, send_failure );
   test_run( io_write_socket, send_success );
-  //test_run( json_decode, primitive );
+  test_run( json_decode, primitive );
   test_run( json_decode, struct );
   test_run( json_parse_number, error_eof );
   test_run( json_parse_number, error_exponent );
