@@ -37,6 +37,5 @@ test( binary_decode, array_maxlength ) {
 
 
   success();
-    error_reset();
     memory_release(&allocator);
 }
