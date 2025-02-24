@@ -131,7 +131,7 @@ terminate:
     return error_add_reflection_path(target->reflection);
   }
 
-  reflect_validate(target->reflection, target->address);
+  reflect_validate(target->reflection, &array);
   if (error.occurred)
     return error_add_reflection_path(target->reflection);
 

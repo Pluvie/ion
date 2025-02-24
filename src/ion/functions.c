@@ -54,6 +54,7 @@
 #include "functions/json_decode_primitive.c"
 #include "functions/json_decode_sequence.c"
 #include "functions/json_decode_struct.c"
+#include "functions/json_decode_vector.c"
 #include "functions/json_parse_bool.c"
 #include "functions/json_parse_null.c"
 #include "functions/json_parse_number.c"

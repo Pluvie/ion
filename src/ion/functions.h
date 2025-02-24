@@ -54,6 +54,7 @@
 #include "functions/json_decode_primitive.h"
 #include "functions/json_decode_sequence.h"
 #include "functions/json_decode_struct.h"
+#include "functions/json_decode_vector.h"
 #include "functions/json_parse_bool.h"
 #include "functions/json_parse_null.h"
 #include "functions/json_parse_number.h"

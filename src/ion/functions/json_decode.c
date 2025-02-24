@@ -50,7 +50,7 @@ decode_to_target:
     return;
 
   case VECTOR:
-    //json_decode_vector(source, target);
+    json_decode_vector(source, target);
     return;
   }
 

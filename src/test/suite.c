@@ -71,6 +71,9 @@ void test_suite (
   test_run( json_decode, sequence );
   test_run( json_decode, sequence_overlength );
   test_run( json_decode, struct );
+  test_run( json_decode, vector );
+  test_run( json_decode, vector_maxlength );
+  test_run( json_decode, vector_minlength );
   test_run( json_parse_number, error_eof );
   test_run( json_parse_number, error_exponent );
   test_run( json_parse_number, error_exponent_eof );
