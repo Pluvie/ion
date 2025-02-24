@@ -38,7 +38,7 @@ decode_to_target:
     return;
 
   case POINTER:
-    //json_decode_pointer(source, target);
+    json_decode_pointer(source, target);
     return;
 
   case SEQUENCE:

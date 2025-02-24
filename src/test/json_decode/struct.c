@@ -1,5 +1,4 @@
-focus_test( json_decode, struct ) {
-  print("");
+test( json_decode, struct ) {
 
   given("a example struct");
     struct example {
@@ -34,9 +33,9 @@ focus_test( json_decode, struct ) {
 
 
   must("decode the input data on the struct correctly");
-    error_print();
     verify(error.occurred == false);
     verify(example.number == 255);
+    verify(streq("\"example\"", example.string));
 
 
   success();

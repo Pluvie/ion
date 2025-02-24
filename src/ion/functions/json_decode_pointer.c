@@ -32,10 +32,11 @@ check_string_size:
     fail("pointer required maximum string size of %li but found %li",
       string_max_size, pointer_size);
     error_add_io_extraction(source);
+    error_add_reflection_path(target->reflection);
     return;
   }
 
-  pointer_size = string_size;
+  pointer_size = string_size + 1;
 
 allocate_pointer:
   void* pointer_data = memory_alloc(target->allocator, pointer_size);
@@ -48,6 +49,7 @@ allocate_pointer:
 pointer_type_char:
   /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
   io_read(source, pointer_data, pointer_size);
+  ((char*) pointer_data)[pointer_size - 1] = '\0';
   if (error.occurred)
     return;
 
@@ -61,7 +63,7 @@ pointer_type_other:
     .allocator = target->allocator,
   };
 
-  binary_decode(source, &pointer);
+  json_decode(source, &pointer);
   if (error.occurred)
     return;
 
