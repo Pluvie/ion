@@ -68,6 +68,8 @@ void test_suite (
   test_run( json_decode, array_minlength );
   test_run( json_decode, primitive );
   test_run( json_decode, primitive_not_supported );
+  test_run( json_decode, sequence );
+  test_run( json_decode, sequence_overlength );
   test_run( json_decode, struct );
   test_run( json_parse_number, error_eof );
   test_run( json_parse_number, error_exponent );

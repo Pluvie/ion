@@ -1,6 +1,6 @@
 test( json_decode, struct ) {
 
-  given("a example struct");
+  given("an example struct");
     struct example {
       u8 number;
       char* string;

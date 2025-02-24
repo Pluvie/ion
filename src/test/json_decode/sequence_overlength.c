@@ -1,17 +1,15 @@
-test( json_decode, array_maxlength ) {
+test( json_decode, sequence_overlength ) {
 
-  given("an example array");
-    struct array users;
-
+  given("an example sequence");
     struct user {
       char* name;
       u32 age;
-    };
+    } users[2];
 
 
-  when("it has an associated reflection that enforces a maximum length");
+  when("it has an associated reflection");
     struct reflect reflection = {
-      type(ARRAY, 0, 2), of({
+      type(SEQUENCE, 2), of({
         type(STRUCT, sizeof(struct user)), fields({
           { field(struct user, name), type(POINTER), of({ type(CHAR) }) },
           { field(struct user, age), type(U64) },
@@ -20,7 +18,7 @@ test( json_decode, array_maxlength ) {
     };
 
 
-  when("some input data is ready to decode, and the max length is not satisfied");
+  when("some input data is ready to decode");
     char* input =
       " ["
       "   { \"name\": \"Augustine\", \"age\": 25 },"
@@ -36,13 +34,12 @@ test( json_decode, array_maxlength ) {
     json_decode(&source, &target);
 
 
-  must("fail to decode the input data and report the error properly");
-    char* expected_error =
-      "array required maximum length of 2, at position 78:\n"
-      " Gold\", \"age\": 19 },   { \"name\": \"Donade\n"
-      "                   ^";
-    verify(error.occurred == true);
-    verify(streq(expected_error, error.message));
+  must("decode the input data on the struct correctly");
+    verify(error.occurred == false);
+    verify(streq("Augustine", users[0].name));
+    verify(users[0].age == 25);
+    verify(streq("Tess Gold", users[1].name));
+    verify(users[1].age == 19);
 
 
   success();

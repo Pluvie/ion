@@ -1,6 +1,6 @@
 test( json_decode, array_minlength ) {
 
-  given("a example array");
+  given("an example array");
     struct array users;
 
     struct user {

@@ -62,6 +62,8 @@
 #include "test/json_decode/array_minlength.c"
 #include "test/json_decode/primitive.c"
 #include "test/json_decode/primitive_not_supported.c"
+#include "test/json_decode/sequence.c"
+#include "test/json_decode/sequence_overlength.c"
 #include "test/json_decode/struct.c"
 #include "test/json_parse_number/error_eof.c"
 #include "test/json_parse_number/error_exponent.c"

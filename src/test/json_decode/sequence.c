@@ -1,17 +1,15 @@
-test( json_decode, array ) {
+test( json_decode, sequence ) {
 
-  given("an example array");
-    struct array users;
-
+  given("an example sequence");
     struct user {
       char* name;
       u32 age;
-    };
+    } users[4];
 
 
   when("it has an associated reflection");
     struct reflect reflection = {
-      type(ARRAY, 0, 0), of({
+      type(SEQUENCE, 4), of({
         type(STRUCT, sizeof(struct user)), fields({
           { field(struct user, name), type(POINTER), of({ type(CHAR) }) },
           { field(struct user, age), type(U64) },
@@ -37,14 +35,10 @@ test( json_decode, array ) {
 
   must("decode the input data on the struct correctly");
     verify(error.occurred == false);
-
-    struct user* user;
-    user = array_get(&users, 0);
-    verify(streq("Augustine", user->name));
-    verify(user->age == 25);
-    user = array_get(&users, 1);
-    verify(streq("Tess Gold", user->name));
-    verify(user->age == 19);
+    verify(streq("Augustine", users[0].name));
+    verify(users[0].age == 25);
+    verify(streq("Tess Gold", users[1].name));
+    verify(users[1].age == 19);
 
 
   success();
