@@ -28,7 +28,8 @@ check_string_size:
     return;
   }
 
-  if (string_max_size > 0 && string_size > string_max_size) {
+  /* In checking the string size, does not consider the surrounding '"'. */
+  if (string_max_size > 0 && (string_size - 2) > string_max_size) {
     fail("pointer required maximum string size of %li but found %li",
       string_max_size, pointer_size);
     error_add_io_extraction(source);
@@ -36,7 +37,7 @@ check_string_size:
     return;
   }
 
-  pointer_size = string_size + 1;
+  pointer_size = string_size;
 
 allocate_pointer:
   void* pointer_data = memory_alloc(target->allocator, pointer_size);
@@ -48,8 +49,12 @@ allocate_pointer:
 
 pointer_type_char:
   /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
-  io_read(source, pointer_data, pointer_size - 1);
-  ((char*) pointer_data)[pointer_size - 1] = '\0';
+  io_read(source, pointer_data, pointer_size);
+
+  /* Removes the surrounding '"'. */
+  pointer_data = pointer_data + 1;
+  ((char*) pointer_data)[pointer_size - 2] = '\0';
+
   if (error.occurred)
     return;
 

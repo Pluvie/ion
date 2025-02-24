@@ -53,7 +53,7 @@ test( json_decode, struct ) {
   must("decode the input data on the struct correctly");
     verify(error.occurred == false);
     verify(example.number == 255);
-    verify(streq("\"example\"", example.string));
+    verify(streq("example", example.string));
 
     struct point* point;
     point = array_get(&(example.points), 0);

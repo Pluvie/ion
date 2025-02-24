@@ -42,7 +42,7 @@ decode_to_target:
     return;
 
   case SEQUENCE:
-    //json_decode_sequence(source, target);
+    json_decode_sequence(source, target);
     return;
 
   case ARRAY:
