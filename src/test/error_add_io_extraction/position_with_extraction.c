@@ -1,4 +1,4 @@
-test( io_failure_position, position_only ) {
+test( error_add_io_extraction, position_with_extraction ) {
 
   given("some input data");
     char* input =
@@ -17,26 +17,22 @@ test( io_failure_position, position_only ) {
     fail("unexpected io error");
 
 
-  when("the io cannot be extracted");
-    source.channel = IO_CHANNEL_SOCK;
+  calling("error_add_io_extraction()");
+    error_add_io_extraction(&source);
 
 
-  calling("io_failure_position()");
-    io_failure_position(&source, "example_file.c", 77);
-
-
-  must("set the error message with the correct position and without a data extraction");
+  must("set the error message with the correct position and a data extraction");
     verify(error.occurred == true);
-    char* expected_error_message = "unexpected io error, at position 14";
+    char* expected_error_message =
+      "unexpected io error, at position 14:\n"
+      "{\n"
+      "  \"number\": 255,\n"
+      "            ^";
     verify(streq(error.message, expected_error_message));
 
     verify(streq(error.trace[0].file,
-      "./src/test/io_failure_position/position_only.c"));
+      "./src/test/error_add_io_extraction/position_with_extraction.c"));
     verify(error.trace[0].line == 17);
-
-    verify(streq(error.trace[1].file,
-      "example_file.c"));
-    verify(error.trace[1].line == 77);
 
 
   success();

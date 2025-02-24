@@ -1,4 +1,4 @@
-static inline void binary_decode_pointer (
+static inline void json_decode_pointer (
     struct io* source,
     struct object* target
 )
@@ -15,14 +15,24 @@ static inline void binary_decode_pointer (
 
 check_string_size:
   u64 string_max_size = target->reflection->bounds[0];
-  u64 string_size; io_read(source, &string_size, sizeof(u64));
+  u64 string_size = 0;
+
+  string_size = json_parse_string(source);
   if (error.occurred)
-    return error_add_reflection_path(target->reflection);
+    return;
+
+  if (string_size == 0) {
+    fail("expected a string");
+    error_add_io_extraction(source);
+    error_add_reflection_path(target->reflection);
+    return;
+  }
 
   if (string_max_size > 0 && string_size > string_max_size) {
     fail("pointer required maximum string size of %li but found %li",
       string_max_size, pointer_size);
-    return error_add_reflection_path(target->reflection);
+    error_add_io_extraction(source);
+    return;
   }
 
   pointer_size = string_size;

@@ -20,22 +20,19 @@ static inline void json_decode_primitive (
   case D128:
     amount_read = json_parse_number(source, primitive_type, target->address);
     if (error.occurred)
-      return reflect_failure(target->reflection);
+      return error_add_reflection_path(target->reflection);
 
     if (amount_read == 0) {
-      fail("[%s] expected a number", target->name);
-      return reflect_failure(target->reflection);
+      fail("expected a number");
+      error_add_io_extraction(source);
+      error_add_reflection_path(target->reflection);
+      return;
     }
 
     io_read(source, NULL, amount_read);
     if (error.occurred)
-      return reflect_failure(target->reflection);
+      return error_add_reflection_path(target->reflection);
 
-    break;
-
-  case BYTE:
-  case CHAR:
-    fail("[%s] CHAR and BYTE types not yet implemented.", target->name);
     break;
 
   case BOOL:
@@ -51,21 +48,26 @@ static inline void json_decode_primitive (
       memcpy(target->address, &(bool) { false }, sizeof(bool));
       break;
     default:
-      fail("[%s] expected a boolean", target->name);
-      return reflect_failure(target->reflection);
+      fail("expected a boolean");
+      error_add_io_extraction(source);
+      error_add_reflection_path(target->reflection);
+      return;
     }
 
     io_read(source, NULL, amount_read);
     if (error.occurred)
-      return reflect_failure(target->reflection);
+      return error_add_reflection_path(target->reflection);
 
     break;
 
   default:
+    fail("primitive type `%s` not yet implemented.", type_names[primitive_type]);
+    error_add_io_extraction(source);
+    error_add_reflection_path(target->reflection);
     return;
   }
   
   reflect_validate(target->reflection, target->address);
   if (error.occurred)
-    return reflect_failure(target->reflection);
+    return error_add_reflection_path(target->reflection);
 }

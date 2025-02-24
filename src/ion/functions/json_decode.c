@@ -124,7 +124,8 @@ discard_value:
       return;
     }
 
-    io_failure(source, "unexpected character `%c`", character);
+    fail("unexpected character `%c`", character);
+    error_add_io_extraction(source);
     return;
   }
 }

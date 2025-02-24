@@ -7,5 +7,5 @@ static inline void binary_encode_primitive (
 
   io_write(target, source->address, type_size);
   if (error.occurred)
-    return reflect_failure(source->reflection);
+    return error_add_reflection_path(source->reflection);
 }

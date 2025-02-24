@@ -34,8 +34,9 @@ void test_suite (
   test_run( buffer_init, default_capacity );
   test_run( buffer_init, no_immediate_allocation );
   test_run( buffer_init, power_2_capacity );
-  test_run( io_failure_position, position_only );
-  test_run( io_failure_position, position_with_extraction );
+  test_run( error_add_io_extraction, position_only );
+  test_run( error_add_io_extraction, position_with_extraction );
+  test_run( error_add_reflection_path, preserve_trace );
   test_run( io_peek_memory, invalid_cursor );
   test_run( io_peek_memory, valid_cursor );
   test_run( io_peek_socket, recv_failure );
@@ -98,7 +99,6 @@ void test_suite (
   test_run( memory_init, default_capacity );
   test_run( memory_init, no_immediate_allocation );
   test_run( memory_init, power_2_capacity );
-  test_run( reflect_failure, preserve_trace );
   test_run( reflect_path_print, dot_separated );
   test_run( reflect_path_print, empty );
   test_run( reflect_path_print, index );

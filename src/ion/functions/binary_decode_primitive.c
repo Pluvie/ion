@@ -8,7 +8,7 @@ static inline void binary_decode_primitive (
 
   io_read(source, target->address, primitive_type_size);
   if (error.occurred)
-    return reflect_failure(target->reflection);
+    return error_add_reflection_path(target->reflection);
 
   if (primitive_type == BOOL && *(u8*) target->address > 0) {
     /* Special case for booleans: any value other than 0 is forced as `true`. */
@@ -17,5 +17,5 @@ static inline void binary_decode_primitive (
 
   reflect_validate(target->reflection, target->address);
   if (error.occurred)
-    return reflect_failure(target->reflection);
+    return error_add_reflection_path(target->reflection);
 }

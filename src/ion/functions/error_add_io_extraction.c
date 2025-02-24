@@ -1,9 +1,8 @@
-static inline void io_failure_position (
-    struct io* io,
-    char* file,
-    u64 line
+static inline void error_add_io_extraction (
+    struct io* io
 )
 {
+  char message[sizeof(error.message)];
   u64 position = io->cursor;
 
   if (io->channel == IO_CHANNEL_SOCK)
@@ -14,9 +13,9 @@ static inline void io_failure_position (
   goto set_position_with_extraction;
 
 set_position_only:
-  fail("%s, at position %li", error.message, position);
-  error.trace[error.trace_count - 1].file = file;
-  error.trace[error.trace_count - 1].line = line;
+  error.length = snprintf(message, sizeof(message),
+    "%s, at position %li", error.message, position);
+  memcpy(error.message, message, sizeof(message));
 
   return;
 
@@ -75,9 +74,11 @@ set_error:
   caret[caret_position] = '^';
   caret[caret_position + 1] = '\0';
 
-  fail("%s, at position %li:\n%s\n%s", error.message, position, extraction, caret);
-  error.trace[error.trace_count - 1].file = file;
-  error.trace[error.trace_count - 1].line = line;
+  error.occurred = true;
+  error.length = snprintf(message, sizeof(message),
+    "%s, at position %li:\n%s\n%s",
+    error.message, position, extraction, caret);
+  memcpy(error.message, message, sizeof(message));
 
 restore_cursor:
   switch (io->channel) {

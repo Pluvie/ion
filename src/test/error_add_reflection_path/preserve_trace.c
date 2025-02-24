@@ -1,6 +1,6 @@
 #include "preserve_trace_failing_function.c"
 
-test( reflect_failure, preserve_trace ) {
+test( error_add_reflection_path, preserve_trace ) {
 
   given("a reflection");
     struct example {
@@ -23,16 +23,13 @@ test( reflect_failure, preserve_trace ) {
     preserve_trace_failing_function(reflection_inner);
 
 
-  calling("reflect_failure()");
+  calling("error_add_reflection_path()");
   must("preserve the correct error trace");
     verify(error.occurred == true);
-    verify(error.trace_count == 2);
+    verify(error.trace_count == 1);
     verify(streq(error.trace[0].file,
       "./src/ion/functions/io_write.c"));
     verify(error.trace[0].line == 17);
-    verify(streq(error.trace[1].file,
-      "./src/test/reflect_failure/preserve_trace_failing_function.c"));
-    verify(error.trace[1].line == 9);
 
 
   success();

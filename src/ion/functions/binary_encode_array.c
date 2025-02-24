@@ -10,7 +10,7 @@ check_minlength:
   if (array_minlength > 0 && array->length < array_minlength) {
     fail("array required minimum length of %li but found %li",
       array_minlength, array->length);
-    return reflect_failure(source->reflection);
+    return error_add_reflection_path(source->reflection);
   }
 
 check_maxlength:
@@ -18,13 +18,13 @@ check_maxlength:
   if (array_maxlength > 0 && array->length > array_maxlength) {
     fail("array required maximum length of %li but found %li",
       array_maxlength, array->length);
-    return reflect_failure(source->reflection);
+    return error_add_reflection_path(source->reflection);
   }
 
 encode_length:
   io_write(target, &(array->length), sizeof(array->length));
   if (error.occurred)
-    return reflect_failure(source->reflection);
+    return error_add_reflection_path(source->reflection);
 
 encode_array:
   struct reflect* element_reflection = vector_get(source->reflection->child, 0);

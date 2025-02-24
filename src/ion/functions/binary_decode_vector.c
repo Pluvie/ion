@@ -6,14 +6,14 @@ static inline void binary_decode_vector (
 read_length:
   u64 vector_length; io_read(source, &vector_length, sizeof(u64));
   if (error.occurred)
-    return reflect_failure(target->reflection);
+    return error_add_reflection_path(target->reflection);
 
 check_minlength:
   u64 vector_minlength = target->reflection->bounds[0];
   if (vector_minlength > 0 && vector_length < vector_minlength) {
     fail("vector required minimum length of %li but found %li",
       vector_minlength, vector_length);
-    return reflect_failure(target->reflection);
+    return error_add_reflection_path(target->reflection);
   }
 
 check_maxlength:
@@ -21,7 +21,7 @@ check_maxlength:
   if (vector_maxlength > 0 && vector_length > vector_maxlength) {
     fail("vector required maximum length of %li but found %li",
       vector_maxlength, vector_length);
-    return reflect_failure(target->reflection);
+    return error_add_reflection_path(target->reflection);
   }
 
 allocate_vector:
@@ -47,7 +47,7 @@ decode_vector:
 validate_vector:
   reflect_validate(target->reflection, &vector);
   if (error.occurred)
-    return reflect_failure(target->reflection);
+    return error_add_reflection_path(target->reflection);
 
 write_target:
   memcpy(target->address, &vector, sizeof(struct vector));

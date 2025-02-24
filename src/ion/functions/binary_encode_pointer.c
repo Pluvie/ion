@@ -21,18 +21,18 @@ check_string_size:
   if (string_max_size > 0 && string_size > string_max_size) {
     fail("pointer required maximum string size of %li but found %li",
       string_max_size, pointer_size);
-    return reflect_failure(source->reflection);
+    return error_add_reflection_path(source->reflection);
   }
 
 encode_length:
   io_write(target, &string_size, sizeof(string_size));
   if (error.occurred)
-    return reflect_failure(source->reflection);
+    return error_add_reflection_path(source->reflection);
 
 encode_string:
   io_write(target, pointer_address, string_size);
   if (error.occurred)
-    return reflect_failure(source->reflection);
+    return error_add_reflection_path(source->reflection);
 
   return;
 

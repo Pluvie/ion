@@ -25,7 +25,8 @@ object_begin:
     return;
 
   if (character != '{') {
-    io_failure(source, "expected `{` to begin object");
+    fail("expected `{` to begin object");
+    error_add_io_extraction(source);
     return;
   }
 
@@ -49,16 +50,17 @@ check_empty_object:
 
     if (field_index > 0) {
       /* Moves back the cursor to the comma before the spaces, if any, to print the
-       * correct cursor caret helper, using the `io_failure` macro. */
+       * correct cursor caret helper, using the `error_add_io_extraction` function. */
       source->cursor -= amount_read;
-      io_failure(source, "trailing comma before object end");
+      fail("trailing comma before object end");
+      error_add_io_extraction(source);
     }
 
     io_read(source, NULL, sizeof(char));
     if (error.occurred)
       return;
 
-    return;
+    goto terminate;
   }
 
 parse_field:
@@ -67,7 +69,8 @@ parse_field:
     return;
 
   if (amount_read == 0) {
-    io_failure(source, "expected a string as object key");
+    fail("expected a string as object key");
+    error_add_io_extraction(source);
     return;
   }
 
@@ -109,7 +112,8 @@ check_semicolon:
     return;
 
   if (character != ':') {
-    io_failure(source, "expected a `:` after the field name");
+    fail("expected a `:` after the field name");
+    error_add_io_extraction(source);
     return;
   }
 
@@ -146,14 +150,23 @@ check_comma:
 
   switch (character) {
   case '}':
-    return;
+    goto terminate;
 
   case ',':
     field_index++;
     goto next_field;
 
   default:
-    io_failure(source, "expected comma or object end after field value");
+    fail("expected comma or object end after field value");
+    error_add_io_extraction(source);
     return;
   }
+
+terminate:
+  if (target == NULL)
+    return;
+
+  reflect_validate(target->reflection, target->address);
+  if (error.occurred)
+    return error_add_reflection_path(target->reflection);
 }

@@ -6,14 +6,14 @@ static inline void binary_decode_array (
 read_length:
   u64 array_length; io_read(source, &array_length, sizeof(u64));
   if (error.occurred)
-    return reflect_failure(target->reflection);
+    return error_add_reflection_path(target->reflection);
 
 check_minlength:
   u64 array_minlength = target->reflection->bounds[0];
   if (array_minlength > 0 && array_length < array_minlength) {
     fail("array required minimum length of %li but found %li",
       array_minlength, array_length);
-    return reflect_failure(target->reflection);
+    return error_add_reflection_path(target->reflection);
   }
 
 check_maxlength:
@@ -21,7 +21,7 @@ check_maxlength:
   if (array_maxlength > 0 && array_length > array_maxlength) {
     fail("array required maximum length of %li but found %li",
       array_maxlength, array_length);
-    return reflect_failure(target->reflection);
+    return error_add_reflection_path(target->reflection);
   }
 
 allocate_array:
@@ -47,7 +47,7 @@ decode_array:
 validate_array:
   reflect_validate(target->reflection, &array);
   if (error.occurred)
-    return reflect_failure(target->reflection);
+    return error_add_reflection_path(target->reflection);
 
 write_target:
   memcpy(target->address, &array, sizeof(struct array));

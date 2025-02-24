@@ -21,5 +21,5 @@ static inline void binary_decode_sequence (
 
   reflect_validate(target->reflection, target->address);
   if (error.occurred)
-    return reflect_failure(target->reflection);
+    return error_add_reflection_path(target->reflection);
 }
