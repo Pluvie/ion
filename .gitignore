@@ -1,13 +1,15 @@
 **/tmp/
 **/exe/
 
-prf/map/abseil/build
+doc/examples/tcp_client_chat
+doc/examples/tcp_server_chat
+prf/json/go/go
+prf/json/ion/ion
 prf/map/abseil/abseil
-prf/map/skarupke/flat_hash_map
+prf/map/abseil/build
 prf/map/go/go
 prf/map/ion/ion
-doc/examples/tcp_server_chat
-doc/examples/tcp_client_chat
+prf/map/skarupke/flat_hash_map
 
 !/**/.gitkeep
 *.gz

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+gcc ion.c           \
+  -D ION_INCLUDED   \
+  -g -o ion
+#gcc ion.c           \
+#  -D ION_INCLUDED   \
+#  -O3 -march=native \
+#  -o ion

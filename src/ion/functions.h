@@ -31,6 +31,7 @@
 #include "functions/date_today.h"
 #include "functions/error_add_io_extraction.h"
 #include "functions/error_add_reflection_path.h"
+#include "functions/file_read.h"
 #include "functions/file_size.h"
 #include "functions/hexdump.h"
 #include "functions/hexdump_io.h"

@@ -60,6 +60,7 @@
 #include "test/json_decode/array.c"
 #include "test/json_decode/array_maxlength.c"
 #include "test/json_decode/array_minlength.c"
+#include "test/json_decode/array_nested.c"
 #include "test/json_decode/primitive.c"
 #include "test/json_decode/primitive_not_supported.c"
 #include "test/json_decode/sequence.c"

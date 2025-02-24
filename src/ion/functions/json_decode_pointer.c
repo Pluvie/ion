@@ -61,14 +61,14 @@ pointer_type_char:
   goto validate_pointer;
 
 pointer_type_other:
-  struct object pointer = {
+  struct object pointer_object = {
     .name = target->name,
     .address = pointer_data,
     .reflection = pointer_reflection,
     .allocator = target->allocator,
   };
 
-  json_decode(source, &pointer);
+  json_decode(source, &pointer_object);
   if (error.occurred)
     return;
 

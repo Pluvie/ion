@@ -2,5 +2,5 @@
 
 gcc ion.c           \
   -D ION_INCLUDED   \
-  -I ../../../src/  \
+  -O3 -march=native \
   -o ion
