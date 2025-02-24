@@ -6,7 +6,7 @@ void* array_last (
     struct array* ary
 )
 {
-  if (unlikely(ary->length > 0)) {
+  if (unlikely(ary->length == 0)) {
     fail("array at 0 length.");
     return NULL;
   }
