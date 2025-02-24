@@ -46,7 +46,7 @@ decode_to_target:
     return;
 
   case ARRAY:
-    //json_decode_array(source, target);
+    json_decode_array(source, target);
     return;
 
   case VECTOR:
@@ -75,8 +75,7 @@ discard_value:
     return;
 
   case '[':
-    //json_decode_array(source, NULL);
-    fail("json_decode_array not yet implemented");
+    json_decode_array(source, NULL);
     return;
 
   case '"':

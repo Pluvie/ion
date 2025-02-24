@@ -48,6 +48,7 @@
 #include "functions/io_write_memory.c"
 #include "functions/io_write_socket.c"
 #include "functions/json_decode.c"
+#include "functions/json_decode_array.c"
 #include "functions/json_decode_pointer.c"
 #include "functions/json_decode_primitive.c"
 #include "functions/json_decode_struct.c"

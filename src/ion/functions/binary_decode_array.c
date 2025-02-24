@@ -26,9 +26,9 @@ check_maxlength:
 
 allocate_array:
   struct reflect* element_reflection = vector_get(target->reflection->child, 0);
-  u64 array_typesize = reflect_typesize(element_reflection);
+  u64 element_typesize = reflect_typesize(element_reflection);
 
-  struct array array = array_init(array_typesize, array_length, target->allocator);
+  struct array array = array_init(element_typesize, array_length, target->allocator);
   array.length = array_length;
 
 decode_array:
@@ -36,7 +36,7 @@ decode_array:
     element_reflection->index = i;
     struct object element = {
       .reflection = element_reflection,
-      .address = array.data + (i * array_typesize),
+      .address = array.data + (i * element_typesize),
       .allocator = target->allocator
     };
     binary_decode(source, &element);

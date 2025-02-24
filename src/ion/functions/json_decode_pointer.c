@@ -48,7 +48,7 @@ allocate_pointer:
 
 pointer_type_char:
   /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
-  io_read(source, pointer_data, pointer_size);
+  io_read(source, pointer_data, pointer_size - 1);
   ((char*) pointer_data)[pointer_size - 1] = '\0';
   if (error.occurred)
     return;

@@ -4,7 +4,13 @@ test( json_decode, struct ) {
     struct example {
       u8 number;
       char* string;
+      struct array points;
     } example;
+
+    struct point {
+      d64 x;
+      d64 y;
+    };
 
 
   when("it has an associated reflection");
@@ -12,6 +18,13 @@ test( json_decode, struct ) {
       type(STRUCT, sizeof(struct example)), fields({
         { field(struct example, number), type(U8) },
         { field(struct example, string), type(POINTER), of({ type(CHAR) }) },
+        { field(struct example, points), type(ARRAY, 0, 0), of({
+            type(STRUCT, sizeof(struct point)), fields({
+              { field(struct point, x), type(D64) },
+              { field(struct point, y), type(D64) },
+            })
+          })
+        },
       })
     };
 
@@ -21,7 +34,12 @@ test( json_decode, struct ) {
       " {"
       "   \"number\": 255,"
       "   \"ignored_field\": \"ignore me\","
-      "   \"string\": \"example\""
+      "   \"string\": \"example\","
+      "   \"points\": ["
+      "     { \"x\": 3.14, \"y\": 7 },"
+      "     { \"x\": 5.05, \"y\": -9 }"
+      "   ],"
+      "   \"empty_array\": []"
       " }";
 
 
@@ -36,6 +54,14 @@ test( json_decode, struct ) {
     verify(error.occurred == false);
     verify(example.number == 255);
     verify(streq("\"example\"", example.string));
+
+    struct point* point;
+    point = array_get(&(example.points), 0);
+    verify(point->x == 3.14);
+    verify(point->y == 7.0);
+    point = array_get(&(example.points), 1);
+    verify(point->x == 5.05);
+    verify(point->y == -9.0);
 
 
   success();
