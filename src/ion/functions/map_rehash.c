@@ -12,11 +12,11 @@ rehash_begin:
   void* entry = map->entries;
 
   for (u64 i = 0; i < probed_capacity; i++, entry += map->entry_typesize) {
-    if (*(u64*) entry == MAP_EMPTY_SPOT)
+    if (map_entry_is_empty(entry))
       continue;
 
-    void* key = entry + sizeof(u64);
-    void* value = key + map->key_typesize;
+    void* key = map_entry_key(map, entry);
+    void* value = map_entry_value(map, entry);
 
     /* This code is very important to protect the map from a double rehash, which
      * occurs when the map is doing a rehash and the rehashing key falls over the

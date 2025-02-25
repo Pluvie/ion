@@ -16,10 +16,10 @@ void* map_get (
   void* entry = map->entries + (hash_index * map->entry_typesize);
 
 linear_probing:
-  if (*(u64*) entry == MAP_EMPTY_SPOT)
+  if (map_entry_is_empty(entry))
     return NULL;
 
-  if (memeq(key, entry + sizeof(u64), map->key_typesize))
+  if (memeq(key, map_entry_key(map, entry), map->key_typesize))
     goto return_value;
 
   probe_count++;
@@ -31,5 +31,5 @@ linear_probing:
   goto linear_probing;
 
 return_value:
-  return entry + sizeof(u64) + map->key_typesize;
+  return map_entry_value(map, entry);
 }
