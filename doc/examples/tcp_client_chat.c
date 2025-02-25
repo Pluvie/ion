@@ -1,5 +1,5 @@
-#include "ion.h"
-#include "ion.c"
+#include "../../src/ion.h"
+#include "../../src/ion.c"
 void chat_sender (struct tcp_client* client);
 
 /**
@@ -61,7 +61,7 @@ void chat_sender (
 
   /* The io abstraction is a common interface to execute input / output operations
    * on various devices. In this case, a network socket. */
-  struct io reader = io_reader_socket(client->descriptor, &allocator);
+  struct io reader = io_reader_socket(client->descriptor);
   struct io writer = io_writer_socket(client->descriptor);
 
   while(streq("quit", prompt) == false) {
@@ -85,7 +85,8 @@ void chat_sender (
 
     /* Reads back the server reply. If a network error occurs, print it on screen and
      * close the client. */
-    char* reply = io_read(&reader, 2048);
+    char* reply = buffer_data(&allocator, buffer_alloc(&allocator, 2048));
+    io_read(&reader, reply, 2048);
     if (error.occurred) {
       print("Error while receiving server reply: %s", error.message);
       break;

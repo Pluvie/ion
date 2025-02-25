@@ -1,12 +1,9 @@
 **/tmp/
 **/exe/
 
-doc/examples/tcp_client_chat
-doc/examples/tcp_server_chat
-prf/json/go/go
-prf/json/ion/ion
+doc/examples/exe
+prf/json/exe
 prf/map/exe
-prf/map/src/abseil/build
 
 !/**/.gitkeep
 *.gz

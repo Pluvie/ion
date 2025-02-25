@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Abseil
+cd src/abseil
+mkdir -p build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . --target abseil
+mv abseil ../../../exe
+cd ../
+rm -rf build
+cd ../../
+
+# Go
+cd src/go
+go build go.go
+mv go ../../exe
+cd -
+
+# Ion
+cd src/ion
+gcc ion.c           \
+  -D ION_INCLUDED   \
+  -O3 -march=native \
+  -o ../../exe/ion
+cd -
+
+# Skarupke
+# https://probablydance.com/2017/02/26/i-wrote-the-fastest-hashtable/
+cd src/skarupke
+g++ skarupke.cpp \
+  -O3 -march=native   \
+  -o ../../exe/skarupke
+cd -

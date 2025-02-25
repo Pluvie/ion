@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "Compiling $1.."
+bin/compile $1 -g3
+echo "Test running $1.."
+valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all exe/$1 ${@:2}
+echo
