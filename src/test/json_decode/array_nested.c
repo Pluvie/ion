@@ -1,9 +1,7 @@
 test( json_decode, array_nested ) {
 
   given("an example array");
-    struct data {
-      struct array* users;
-    };
+    struct array users;
 
     struct user {
       char* name;
