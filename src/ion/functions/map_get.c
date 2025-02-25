@@ -16,7 +16,7 @@ void* map_get (
   void* comparing_key = map->keys + (capped_hash * map->key_typesize);
 
 linear_probing:
-  if (*hashes == U64_MAX)
+  if (*hashes == MAP_EMPTY_SPOT)
     return NULL;
 
   if (*hashes == capped_hash && memeq(key, comparing_key, map->key_typesize))
