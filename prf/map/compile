@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Ion
+cd src/ion
+gcc ion.c           \
+  -D ION_INCLUDED   \
+  -O3 -march=native \
+  -o ../../exe/ion
+cd -
+
+# Abseil
+cd src/abseil
+mkdir -p build && cd build
+cmake ..
+cmake --build . --target abseil
+mv abseil ../../exe
+cd -
+
+# Skarupke
+cd src/skarupke
+g++ skarupke.cpp \
+  -O3 -march=native   \
+  -o ../../exe/skarupke
+cd -
+
+# Go
+cd src/go
+go build go.go
+mv go ../../exe
+cd -

@@ -1,5 +1,4 @@
 test( json_decode, array_nested ) {
-  print("");
 
   given("an example array");
     struct data {

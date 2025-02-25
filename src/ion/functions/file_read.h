@@ -3,7 +3,7 @@ static inline
 #endif
 
 struct io file_read (
-    void* file,
+    const char* file_path,
     struct memory* allocator
 )
 /**

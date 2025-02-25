@@ -34,11 +34,7 @@ void decode (
   };
 
   struct memory allocator = memory_init(0);
-
-  void* json_file = fopen("../decode.json", "r");
-  struct io json = file_read(json_file, &allocator);
-  fclose(json_file);
-
+  struct io json = file_read("../decode.json", &allocator);
   struct object target = object(data, &data_reflection, &allocator);
   json_decode(&json, &target);
 
@@ -49,13 +45,13 @@ void decode (
     user->name, user->age,
     *(char**) array_get(user->roles, 0),
     *(char**) array_get(user->roles, 1));
-  memory_release(&allocator);
 
   user = array_get(data.users, 99999);
   print("Done: { %s, %i, [ %s, %s ] }",
     user->name, user->age,
     *(char**) array_get(user->roles, 0),
     *(char**) array_get(user->roles, 1));
+
   memory_release(&allocator);
 }
 

@@ -1,22 +1,4 @@
 #!/bin/bash
 
-if [ "$1" = "recompile" ]; then
-  cd ion
-  ./compile > /dev/null 2>&1
-  cd ..
-  
-  cd go
-  ./compile > /dev/null 2>&1
-  cd ..
-
-  cd skarupke
-  ./compile > /dev/null 2>&1
-  cd ..
-  
-  #cd abseil
-  #./compile > /dev/null 2>&1
-  #cd ..
-fi
-
 #hyperfine --warmup 5 ion/ion go/go skarupke/flat_hash_map abseil/abseil
-hyperfine --warmup 5 ion/ion go/go skarupke/flat_hash_map
+hyperfine --warmup 5 exe/ion exe/go exe/skarupke

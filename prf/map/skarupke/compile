@@ -1,4 +1,0 @@
-#!/bin/bash
-
-g++ flat_hash_map.cpp \
-  -o flat_hash_map
