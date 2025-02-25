@@ -13,11 +13,11 @@ void map_print (
     fprintf(stderr, "%9li |\n", index);
     fprintf(stderr, "-----------\n");
 
-    u64* is_empty = map->entries + (index * map->entry_typesize);
-    void* key = map->entries + (index * map->entry_typesize) + sizeof(u64);
-    void* value = key + map->key_typesize;
+    void* entry = map->entries + (index * map->entry_typesize);
+    void* key = map_entry_key(map, entry);
+    void* value = map_entry_value(map, entry);
 
-    if (*is_empty == MAP_EMPTY_SPOT) {
+    if (map_entry_is_empty(entry)) {
       fprintf(stderr, "         --\n");
       continue;
     }

@@ -94,6 +94,7 @@
 #include "test/map_init/power_2_capacity.c"
 #include "test/map_rehash/data_invariance.c"
 #include "test/map_rehash/doubled_capacity.c"
+#include "test/map_set/complex_types.c"
 #include "test/map_set/rehash_trigger.c"
 #include "test/memory_alloc/dynamic_grow_double_cap.c"
 #include "test/memory_alloc/dynamic_grow_next_pow_2.c"

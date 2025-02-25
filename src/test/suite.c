@@ -100,6 +100,7 @@ void test_suite (
   test_run( map_init, power_2_capacity );
   test_run( map_rehash, data_invariance );
   test_run( map_rehash, doubled_capacity );
+  test_run( map_set, complex_types );
   test_run( map_set, rehash_trigger );
   test_run( memory_alloc, dynamic_grow_double_cap );
   test_run( memory_alloc, dynamic_grow_next_pow_2 );
