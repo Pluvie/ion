@@ -9,12 +9,12 @@ void* map_set (
 )
 {
   /* In order to protect from double rehashing, the `map_set` function works as a
-   * wrapper to the `map_set_rehash` function.
+   * wrapper to the `map_set_internal` function.
    *
    * This function takes an additional boolean argument, which indicates whether the
    * `map_set` function is being called within a rehash. If so, the rehash is aborted,
    * and a new one is reinitiated with double the capacity.
    *
    * See the `map_rehash` function for more details. */
-  return map_set_rehash(map, key, value, false);
+  return map_set_internal(map, key, value, false);
 }

@@ -68,7 +68,7 @@
 #include "functions/map_print.c"
 #include "functions/map_rehash.c"
 #include "functions/map_set.c"
-#include "functions/map_set_rehash.c"
+#include "functions/map_set_internal.c"
 #include "functions/memory_alloc.c"
 #include "functions/memory_alloc_zero.c"
 #include "functions/memory_init.c"
