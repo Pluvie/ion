@@ -1,4 +1,3 @@
 #!/bin/bash
 
-#hyperfine --warmup 5 ion/ion go/go skarupke/flat_hash_map abseil/abseil
-hyperfine --warmup 5 exe/ion exe/go exe/skarupke
+hyperfine --warmup 5 exe/ion exe/go exe/skarupke exe/abseil
