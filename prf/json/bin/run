@@ -1,0 +1,9 @@
+#!/bin/bash
+
+gunzip src/decode.json.gz
+
+hyperfine --warmup 5  \
+  exe/go              \
+  exe/ion
+
+gzip src/decode.json

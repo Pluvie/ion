@@ -1,5 +1,5 @@
-#include "../../../src/ion.h"
-#include "../../../src/ion.c"
+#include "../../../../src/ion.h"
+#include "../../../../src/ion.c"
 
 void decode (
     void
@@ -34,7 +34,7 @@ void decode (
   };
 
   struct memory allocator = memory_init(0);
-  struct io json = file_read("../decode.json", &allocator);
+  struct io json = file_read("src/decode.json", &allocator);
   struct object target = object(data, &data_reflection, &allocator);
   json_decode(&json, &target);
 
