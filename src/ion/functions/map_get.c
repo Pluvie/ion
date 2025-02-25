@@ -11,20 +11,19 @@ void* map_get (
   u64 probe_count = 0;
 
   u64 hash = map_hash(key, map->key_typesize);
-  u64 capped_hash = hash & (map->capacity - 1);
-  u64* hashes = map->hashes + capped_hash;
-  void* comparing_key = map->keys + (capped_hash * map->key_typesize);
+  u64 hash_index = hash & (map->capacity - 1);
+
+  void* entry = map->entries + (hash_index * map->entry_typesize);
 
 linear_probing:
-  if (*hashes == MAP_EMPTY_SPOT)
+  if (*(u64*) entry == MAP_EMPTY_SPOT)
     return NULL;
 
-  if (*hashes == capped_hash && memeq(key, comparing_key, map->key_typesize))
+  if (memeq(key, entry + sizeof(u64), map->key_typesize))
     goto return_value;
 
-  hashes++;
   probe_count++;
-  comparing_key += map->key_typesize;
+  entry += map->entry_typesize;
 
   if (probe_count >= probe_limit)
     return NULL;
@@ -32,5 +31,5 @@ linear_probing:
   goto linear_probing;
 
 return_value:
-  return map->values + ((capped_hash + probe_count) * map->value_typesize);
+  return entry + sizeof(u64) + map->key_typesize;
 }

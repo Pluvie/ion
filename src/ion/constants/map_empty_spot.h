@@ -1,1 +1,1 @@
-#define MAP_EMPTY_SPOT        U64_MAX
+#define MAP_EMPTY_SPOT        0

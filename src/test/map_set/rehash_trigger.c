@@ -4,10 +4,10 @@ test( map_set, rehash_trigger ) {
     struct map map;
     struct memory allocator = memory_init(0);
     map = map_init(sizeof(u64), sizeof(u64), 8, &allocator);
-    void* original_keys_address = map.keys;
+    void* original_entries_address = map.entries;
 
 
-  when("the map has some keys in it");
+  when("the map has some entries in it");
     for (u64 index = 0; index < 9; index++)
       map_set(&map, &index, &index);
 
@@ -19,7 +19,7 @@ test( map_set, rehash_trigger ) {
 
 
   must("trigger the map rehash");
-    verify(original_keys_address != map.keys);
+    verify(original_entries_address != map.entries);
 
 
   success();

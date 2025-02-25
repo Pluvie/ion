@@ -6,9 +6,9 @@ struct map {
   u64 length;
   u64 key_typesize;
   u64 value_typesize;
-  void* keys;
-  void* values;
-  u64* hashes;
+  u64 entry_typesize;
+  void* entries;
   struct memory* allocator;
+  padding(8);
 };
 check_sizeof(struct map, 64);

@@ -8,16 +8,15 @@ rehash_begin:
   struct map rehashed_map = map_init(
     map->key_typesize, map->value_typesize, new_capacity, map->allocator);
 
-  void* key;
-  void* value;
   u64 probed_capacity = map->capacity + log2(map->capacity);
+  void* entry = map->entries;
 
-  for (u64 i = 0; i < probed_capacity; i++) {
-    if (*(map->hashes + i) == MAP_EMPTY_SPOT)
+  for (u64 i = 0; i < probed_capacity; i++, entry += map->entry_typesize) {
+    if (*(u64*) entry == MAP_EMPTY_SPOT)
       continue;
 
-    key = map->keys + (i * map->key_typesize);
-    value = map->values + (i * map->value_typesize);
+    void* key = entry + sizeof(u64);
+    void* value = key + map->key_typesize;
 
     /* This code is very important to protect the map from a double rehash, which
      * occurs when the map is doing a rehash and the rehashing key falls over the
@@ -37,7 +36,5 @@ rehash_begin:
   }
 
   map->capacity = new_capacity;
-  map->keys = rehashed_map.keys;
-  map->values = rehashed_map.values;
-  map->hashes = rehashed_map.hashes;
+  map->entries = rehashed_map.entries;
 }

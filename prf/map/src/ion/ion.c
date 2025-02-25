@@ -8,13 +8,11 @@ void insert (
   struct memory allocator = memory_init(0);
   struct map* map = map_allocate(sizeof(i32), sizeof(i32), 0, &allocator);
 
-  for (int i = 0; i < 1000; i++) {
-    for (int j = 0; j < 10000; j++) {
-      map_set(map, &j, &i);
-    }
+  for (int i = 0; i < 1000000; i++) {
+    map_set(map, &i, &i);
   }
 
-  print("Done: %i", as(i32, map_get(map, &(i32) { 999 })));
+  print("Done: %i", as(i32, map_get(map, &(i32) { 999999 })));
   memory_release(&allocator);
 }
 

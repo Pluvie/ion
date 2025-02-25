@@ -16,19 +16,17 @@ capacity_check:
 
 initialize:
   u64 probed_capacity = capacity + log2(capacity);
+  u64 entry_typesize = key_typesize + value_typesize + sizeof(u64);
 
   struct map map = {
     .capacity = capacity,
     .length = 0,
     .key_typesize = key_typesize,
     .value_typesize = value_typesize,
-    .keys = memory_alloc(allocator, key_typesize * probed_capacity),
-    .values = memory_alloc(allocator, value_typesize * probed_capacity),
-    .hashes = memory_alloc(allocator, sizeof(u64) * probed_capacity),
+    .entry_typesize = entry_typesize,
+    .entries = memory_alloc_zero(allocator, entry_typesize * probed_capacity),
     .allocator = allocator
   };
-
-  memset(map.hashes, 0xff, sizeof(u64) * probed_capacity);
 
   return map;
 }

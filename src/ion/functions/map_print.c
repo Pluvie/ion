@@ -13,11 +13,11 @@ void map_print (
     fprintf(stderr, "%9li |\n", index);
     fprintf(stderr, "-----------\n");
 
-    byte* key = (byte*) map->keys + (index * map->key_typesize);
-    byte* value = (byte*) map->values + (index * map->value_typesize);
-    u64 hash = map->hashes[index];
+    u64* is_empty = map->entries + (index * map->entry_typesize);
+    void* key = map->entries + (index * map->entry_typesize) + sizeof(u64);
+    void* value = key + map->key_typesize;
 
-    if (hash == MAP_EMPTY_SPOT) {
+    if (*is_empty == MAP_EMPTY_SPOT) {
       fprintf(stderr, "         --\n");
       continue;
     }

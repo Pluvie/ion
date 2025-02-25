@@ -6,13 +6,11 @@
 void insert () {
   ska::flat_hash_map<int, int> map = {};
 
-  for (int i = 0; i < 1000; i++) {
-    for (int j = 0; j < 10000; j++) {
-      map[j] = i;
-    }
+  for (int i = 0; i < 1000000; i++) {
+      map[i] = i;
   }
 
-  std::cout << "Done: " << map[999] << "\n";
+  std::cout << "Done: " << map[999999] << "\n";
 }
 
 int main() {
