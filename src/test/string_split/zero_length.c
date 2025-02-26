@@ -1,4 +1,4 @@
-focus_test( string_split, zero_length ) {
+test( string_split, zero_length ) {
 
   given("a string");
     struct string string = s("");

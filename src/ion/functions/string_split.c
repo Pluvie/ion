@@ -21,7 +21,6 @@ struct array* string_split (
     array_allocate(sizeof(struct string), 0, allocator);
 
 read_chunk:
-  print("> [%c] %i - %i", string.content[cursor], cursor, string.length);
   if (cursor >= string.length - 1)
     goto push_chunk;
 
@@ -39,7 +38,6 @@ push_chunk:
 
   chunk.content = memory_alloc_zero(allocator, chunk.length + 1);
   snprintf(chunk.content, chunk.length + 1, "%s", string.content + chunk.begin);
-  print("pushing chunk: |%.*s|", chunk.length, chunk.content);
   array_push(chunks, &(struct string) { chunk.content, chunk.length });
   
   memzero(&chunk, sizeof(chunk));
