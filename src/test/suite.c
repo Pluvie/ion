@@ -146,6 +146,8 @@ void test_suite (
   test_run( sci_notation_convert, unsigned_8 );
   test_run( sci_notation_convert, unsigned_8_overflow );
   test_run( sci_notation_convert, unsigned_consistency );
+  test_run( string_split, array_of_chunks );
+  test_run( string_split, zero_length );
   test_run( tensor_at, correct_offsets );
   test_run( tensor_at_ranges, correct_offsets );
   test_run( tensor_at_sequences, correct_offsets );

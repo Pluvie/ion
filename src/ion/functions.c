@@ -84,6 +84,7 @@
 #include "functions/reflect_typesize.c"
 #include "functions/reflect_validate.c"
 #include "functions/sci_notation_convert.c"
+#include "functions/string_split.c"
 #include "functions/tcp_client_start.c"
 #include "functions/tcp_server_sigint.c"
 #include "functions/tcp_server_start.c"

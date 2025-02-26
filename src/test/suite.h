@@ -140,6 +140,8 @@
 #include "test/sci_notation_convert/unsigned_8.c"
 #include "test/sci_notation_convert/unsigned_8_overflow.c"
 #include "test/sci_notation_convert/unsigned_consistency.c"
+#include "test/string_split/array_of_chunks.c"
+#include "test/string_split/zero_length.c"
 #include "test/tensor_at/correct_offsets.c"
 #include "test/tensor_at_ranges/correct_offsets.c"
 #include "test/tensor_at_sequences/correct_offsets.c"
