@@ -16,12 +16,20 @@ static inline void* csv_decode_headers (
   u64 newline_position = 0;
   u32 separators_count = 0;
 
-peek_headers:
-  header_row = io_peek_window(input, &buffer, &max_position);
-  if (error.occurred) {
-    header_row = NULL;
+check_empty:
+  bool is_empty = io_exhausted(input);
+  if (error.occurred)
+    goto terminate;
+
+  if (is_empty) {
+    fail("csv is empty");
     goto terminate;
   }
+
+peek_headers:
+  header_row = io_peek_window(input, &buffer, &max_position);
+  if (error.occurred)
+    goto terminate;
 
 find_newline:
   character = header_row[position];
@@ -35,10 +43,8 @@ find_newline:
     separators_count++;
 
   position++;
-  if (position >= max_position) {
-    headers = NULL;
+  if (position >= max_position)
     goto terminate;
-  }
 
   if (position < buffer.capacity)
     goto find_newline;
@@ -48,14 +54,12 @@ find_newline:
 split_headers:
   if (newline_position == 0) {
     fail("expected a csv with at least one column");
-    headers = NULL;
     goto terminate;
   }
 
   if (separators_count != csv.columns_count - 1) {
     fail("expected a csv with %i columns, but found only %i separators `%c`",
       csv.columns_count, separators_count, csv.separator);
-    headers = NULL;
     goto terminate;
   }
 
