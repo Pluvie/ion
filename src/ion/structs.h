@@ -3,6 +3,7 @@
 #include "structs/string.h"
 
 #include "structs/array.h"
+#include "structs/csv_header.h"
 #include "structs/csv_properties.h"
 #include "structs/failure.h"
 #include "structs/io.h"

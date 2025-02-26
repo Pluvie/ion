@@ -1,10 +1,11 @@
-static inline void* csv_decode_headers (
+static inline struct map* csv_decode_headers (
     struct io* input,
+    struct vector* fields,
     struct memory* allocator,
     struct csv_properties csv
 )
 {
-  struct vector* headers = NULL;
+  struct map* headers = NULL;
 
   struct buffer buffer = { 0 };
   u64 max_position = U64_MAX;
@@ -63,49 +64,77 @@ split_headers:
     goto terminate;
   }
 
-  headers = vector_allocate(sizeof(char[128]), csv.columns_count, allocator);
-  char header[128] = { 0 };
+  headers = map_allocate(
+    sizeof(u64), sizeof(struct csv_header), csv.columns_count, allocator);
+
+  char* header = NULL;
   u64 header_begin = 0;
   u64 header_end = 0;
-  u32 header_index = 0;
+  u64 header_index = 0;
+  i32 header_length = 0;
+  u64 cursor = 0;
 
-  for (u64 cursor = 0; cursor <= newline_position; cursor++) {
-    if (header_row[cursor] != '\n' && header_row[cursor] != csv.separator)
-      continue;
+read_header:
+  if (header_row[cursor] != '\n' && header_row[cursor] != csv.separator) {
+    cursor++;
+    goto read_header;
+  }
 
-    header_end = cursor;
+  header_end = cursor;
 
-    if (csv.wrapper != 0) {
-      if (header_row[header_begin] != csv.wrapper) {
-        input->cursor = header_begin + 1;
-        goto incorrect_wrapper;
-      }
-
-      if (header_row[header_end - 1] != csv.wrapper) {
-        input->cursor = header_end - 1;
-        goto incorrect_wrapper;
-      }
-
-      snprintf(header, sizeof(header), "%.*s",
-        (i32) (header_end - header_begin) - 2, header_row + header_begin + 1);
-
-    } else {
-      snprintf(header, sizeof(header), "%.*s",
-        (i32) (header_end - header_begin), header_row + header_begin);
+  if (csv.wrapper != 0) {
+    if (header_row[header_begin] != csv.wrapper) {
+      input->cursor = header_begin + 1;
+      goto incorrect_wrapper;
     }
 
-    vector_set(headers, header_index, header);
-    header_begin = header_end + 1;
-    header_index++;
+    if (header_row[header_end - 1] != csv.wrapper) {
+      input->cursor = header_end - 1;
+      goto incorrect_wrapper;
+    }
+
+    header_length = (i32) (header_end - header_begin) - 2;
+    header = memory_alloc_zero(allocator, header_length + 1);
+    snprintf(header, header_length + 1, "%s", header_row + header_begin + 1);
+
+  } else {
+    header_length = (i32) (header_end - header_begin);
+    header = memory_alloc_zero(allocator, header_length + 1);
+    snprintf(header, header_length + 1, "%s", header_row + header_begin);
+  }
+
+  for vector_each(fields, struct reflect*, field) {
+    if (!streq(field->name, header))
+      continue;
+
+    map_set(headers, &header_index, &(struct csv_header) {
+      .name = header,
+      .index = header_index,
+      .target = &(struct object) {
+        .name = field->name,
+        .reflection = field,
+        .allocator = allocator
+       },
+    });
+    break;
   }
   
-terminate:
-  buffer_release(&buffer);
-  return headers;
+  header_begin = header_end + 1;
+  header_index++;
+  cursor++;
+
+  if (cursor > newline_position)
+    goto terminate;
+
+  goto read_header;
 
 incorrect_wrapper:
   fail("expected field to be wrapped with `%c`", csv.wrapper);
   error_add_io_extraction(input);
   headers = NULL;
   goto terminate;
+  
+terminate:
+  buffer_release(&buffer);
+  return headers;
 }

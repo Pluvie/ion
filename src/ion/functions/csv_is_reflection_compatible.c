@@ -4,13 +4,11 @@ static inline bool csv_is_reflection_compatible (
 {
   switch (reflection->type) {
   case ARRAY:
-  case VECTOR:
-  case SEQUENCE:
     goto check_element_is_struct;
 
   default:
     fail("unable to decode csv due to incompatible reflection: it must be an "
-      "ARRAY, VECTOR or SEQUENCE of type STRUCT");
+      "ARRAY of type STRUCT");
     return false;
   }
 
@@ -19,7 +17,7 @@ check_element_is_struct:
 
   if (element->type != STRUCT) {
     fail("unable to decode csv due to incompatible reflection: it must be an "
-      "ARRAY, VECTOR or SEQUENCE of type STRUCT");
+      "ARRAY of type STRUCT");
     return false;
   }
 
@@ -37,18 +35,26 @@ check_struct_not_nested:
     case D32:
     case D64:
     case D128:
-    case BYTE:
-    case CHAR:
     case BOOL:
       continue;
 
-    case STRUCT:
     case POINTER:
+      struct reflect* pointer_reflection = vector_get(field_reflection->child, 0);
+      if (pointer_reflection->type != CHAR) {
+        fail("unable to decode csv due to incompatible reflection: all fields of the "
+          "struct must be numbers, BOOL, or POINTER of type CHAR");
+        return false;
+      }
+      continue;
+
+    case BYTE:
+    case CHAR:
+    case STRUCT:
     case SEQUENCE:
     case ARRAY:
     case VECTOR:
       fail("unable to decode csv due to incompatible reflection: all fields of the "
-        "struct must be primitive types or POINTER of CHAR");
+        "struct must be numbers, BOOL, or POINTER of type CHAR");
       return false;
     }
   }
