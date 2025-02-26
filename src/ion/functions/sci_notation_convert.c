@@ -48,7 +48,7 @@ consistency_checks:
 
 unsigned_conversion:
   snprintf(number_string, number_length + 1, "%.*s",
-    (i32) number->integral.length, number->integral.content);
+    number->integral.length, number->integral.content);
 
   errno = 0;
   u64 unsigned_value = strtoull(number_string, NULL, 10);
@@ -90,7 +90,7 @@ unsigned_conversion:
 signed_conversion:
   snprintf(number_string, number_length + 1, "%c%.*s",
     number->negative ? '-' : '+',
-    (i32) number->integral.length, number->integral.content);
+    number->integral.length, number->integral.content);
 
   errno = 0;
   i64 signed_value = strtoll(number_string, NULL, 10);
@@ -133,15 +133,15 @@ decimal_conversion:
   if (number->exponent.length > 0)
     snprintf(number_string, number_length + 1, "%c%.*s.%.*se%c%.*s",
       number->negative ? '-' : '+',
-      (i32) number->integral.length, number->integral.content,
-      (i32) number->fractional.length, number->fractional.content,
+      number->integral.length, number->integral.content,
+      number->fractional.length, number->fractional.content,
       number->negative_exponent ? '-' : '+',
-      (i32) number->exponent.length, number->exponent.content);
+      number->exponent.length, number->exponent.content);
   else
     snprintf(number_string, number_length + 1, "%c%.*s.%.*s",
       number->negative ? '-' : '+',
-      (i32) number->integral.length, number->integral.content,
-      (i32) number->fractional.length, number->fractional.content);
+      number->integral.length, number->integral.content,
+      number->fractional.length, number->fractional.content);
 
   errno = 0;
   d128 decimal_value = strtold(number_string, NULL);
