@@ -1,7 +1,9 @@
 #include "structs/memory.h"
 #include "structs/buffer.h"
 #include "structs/string.h"
+
 #include "structs/array.h"
+#include "structs/csv_properties.h"
 #include "structs/failure.h"
 #include "structs/io.h"
 #include "structs/map.h"
