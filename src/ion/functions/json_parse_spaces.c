@@ -12,22 +12,22 @@ static inline u64 json_parse_spaces (
 
 peek_spaces:
   spaces = io_peek_window(input, &buffer, &max_position);
-  if (error.occurred)
-    return 0;
+  if (error.occurred) {
+    position = 0;
+    goto terminate;
+  }
 
 read_character:
   character = spaces[position];
 
-  if (!isspace(character)) {
-    buffer_release(&buffer);
-    return position;
-  }
+  if (!isspace(character))
+    goto terminate;
 
 next_character:
   position++;
   if (position >= max_position) {
-    fail("[%li] expected a space but found EOF", input->cursor);
-    return 0;
+    position = 0;
+    goto terminate;
   }
 
   if (position < buffer.capacity)
@@ -35,5 +35,7 @@ next_character:
   else
     goto peek_spaces;
 
-  return 0;
+terminate:
+  buffer_release(&buffer);
+  return position;
 }

@@ -13,8 +13,10 @@ static inline u64 json_parse_string (
 
 peek_string:
   string = io_peek_window(input, &buffer, &max_position);
-  if (error.occurred)
-    return 0;
+  if (error.occurred) {
+    position = 0;
+    goto terminate;
+  }
 
 read_character:
   character = string[position];
@@ -31,22 +33,27 @@ read_character:
 
   if (character == '"' && position > 0) {
     position++;
-    buffer_release(&buffer);
-    return position;
+    goto terminate;
   }
 
-  if (unlikely(character != '"' && position == 0))
-    return 0;
+  if (unlikely(character != '"' && position == 0)) {
+    position = 0;
+    goto terminate;
+  }
 
 next_character:
   position++;
-  if (position >= max_position)
-    return 0;
+  if (position >= max_position) {
+    position = 0;
+    goto terminate;
+  }
 
   if (position < buffer.capacity)
     goto read_character;
   else
     goto peek_string;
 
-  return 0;
+terminate:
+  buffer_release(&buffer);
+  return position;
 }
