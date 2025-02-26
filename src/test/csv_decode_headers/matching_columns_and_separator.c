@@ -1,4 +1,4 @@
-test( csv_decode_headers, matching_columns_and_separator ) {
+focus_test( csv_decode_headers, matching_columns_and_separator ) {
 
   given("a csv file");
     char* csv_file;
@@ -42,7 +42,7 @@ test( csv_decode_headers, matching_columns_and_separator ) {
 
     header = map_get(headers, &(u64) { 1 });
     verify(header != NULL);
-    verify(streq("second col", header->name));
+    verify(strneq("second col", header->name->content, header->name->length));
 
     header = map_get(headers, &(u64) { 2 });
     verify(header == NULL);
@@ -52,7 +52,7 @@ test( csv_decode_headers, matching_columns_and_separator ) {
 
     header = map_get(headers, &(u64) { 4 });
     verify(header != NULL);
-    verify(streq("fifth col", header->name));
+    verify(strneq("fifth col", header->name->content, header->name->length));
 
 
   success();

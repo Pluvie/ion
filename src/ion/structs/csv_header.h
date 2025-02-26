@@ -2,8 +2,8 @@ struct csv_header;
 /**
  * Contains the header of a CSV file and its data. */
 struct csv_header {
-  char* name;
   u64 index;
+  struct string* name;
   struct object* target;
   padding(8);
 };

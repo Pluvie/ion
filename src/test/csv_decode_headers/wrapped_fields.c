@@ -42,23 +42,23 @@ test( csv_decode_headers, wrapped_fields ) {
     struct csv_header* header;
     header = map_get(headers, &(u64) { 0 });
     verify(header != NULL);
-    verify(streq("first col", header->name));
+    verify(strneq("first col", header->name->content, header->name->length));
 
     header = map_get(headers, &(u64) { 1 });
     verify(header != NULL);
-    verify(streq("second col", header->name));
+    verify(strneq("second col", header->name->content, header->name->length));
 
     header = map_get(headers, &(u64) { 2 });
     verify(header != NULL);
-    verify(streq("third col", header->name));
+    verify(strneq("third col", header->name->content, header->name->length));
 
     header = map_get(headers, &(u64) { 3 });
     verify(header != NULL);
-    verify(streq("fourth col", header->name));
+    verify(strneq("fourth col", header->name->content, header->name->length));
 
     header = map_get(headers, &(u64) { 4 });
     verify(header != NULL);
-    verify(streq("fifth col", header->name));
+    verify(strneq("fifth col", header->name->content, header->name->length));
 
 
   success();

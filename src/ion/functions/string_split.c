@@ -4,8 +4,9 @@ static inline
 
 struct array* string_split (
     struct string string,
+    struct memory* allocator,
     char separator,
-    struct memory* allocator
+    char wrapper
 )
 {
   struct {
