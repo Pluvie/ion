@@ -14,10 +14,10 @@ static inline void* map_set_internal (
   void* entry = map->entries + (hash_index * map->entry_typesize);
 
 linear_probing:
-  if (*(u64*) entry == MAP_EMPTY_SPOT)
+  if (map_entry_is_empty(entry))
     goto set_value_new;
 
-  if (memeq(key, entry + sizeof(u64), map->key_typesize))
+  if (memeq(key, map_entry_key(map, entry), map->key_typesize))
     goto set_value_existing;
 
   probe_count++;
@@ -34,11 +34,11 @@ linear_probing:
   goto linear_probing;
 
 set_value_new:
-  memcpy(entry + sizeof(u64), key, map->key_typesize);
-  *(u64*) entry = !MAP_EMPTY_SPOT;
+  memcpy(map_entry_key(map, entry), key, map->key_typesize);
+  map_entry_occupy(entry);
   map->length++;
 
 set_value_existing:
-  memcpy(entry + sizeof(u64) + map->key_typesize, value, map->value_typesize);
+  memcpy(map_entry_value(map, entry), value, map->value_typesize);
   return value;
 }
