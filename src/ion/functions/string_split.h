@@ -4,8 +4,8 @@ static inline
 
 struct array* string_split (
     struct string string,
-    char separator,
-    struct memory* allocator
+    struct memory* allocator,
+    char separator
 )
 /**
  * ### Description

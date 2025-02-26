@@ -6,7 +6,7 @@ test( string_split, array_of_chunks ) {
 
   calling("string_split()");
     struct memory allocator = memory_init(0);
-    struct array* chunks = string_split(string, ';', &allocator);
+    struct array* chunks = string_split(string, &allocator, ';');
 
 
   must("split the string into an array of chunks");

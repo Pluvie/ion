@@ -74,7 +74,7 @@ split_headers:
   headers_mapping = map_allocate(
     sizeof(u64), sizeof(struct csv_header), csv.columns_count, allocator);
   headers = string_split(
-    (struct string) { header_row, (i32) newline_position }, csv.separator, allocator);
+    (struct string) { header_row, (i32) newline_position }, allocator, csv.separator);
 
   for array_each_with_index(headers, header_index, struct string*, header) {
 
