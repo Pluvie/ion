@@ -18,6 +18,8 @@ char* test_case_in_focus = NULL;
 
 
 
+#ifdef FOCUSED_SUITE
+
 /**
  * Redefines the macro to run a focused test case.
  *
@@ -41,10 +43,16 @@ char* test_case_in_focus = NULL;
       suppressed_stderr = original_stderr;                                              \
     }                                                                                   \
                                                                                         \
+    fprintf(original_stderr, "\n");                                                     \
     test_function ## __ ## test_case();                                                 \
+                                                                                        \
+    if (error.occurred)                                                                 \
+      error_print();                                                                    \
                                                                                         \
     if (test_case_in_focus != NULL &&                                                   \
         streq(#test_function " | " #test_case, test_case_in_focus)) {                   \
       suppressed_stderr = tmp_stderr;                                                   \
     }                                                                                   \
   }
+
+#endif
