@@ -55,21 +55,15 @@ decode_to_target:
   }
 
 discard_value:
-  u64 amount_read = 0;
-  char character;
-
-  amount_read = json_parse_spaces(source);
-  if (amount_read > 0) {
-    io_read(source, NULL, amount_read);
-    if (error.occurred)
-      return;
-  }
-
-  io_peek(source, &character, sizeof(char));
+  json_parse_spaces(source);
   if (error.occurred)
     return;
 
-  switch (character) {
+  char* character = io_read(source, sizeof(char));
+  if (error.occurred)
+    return;
+
+  switch (*character) {
   case '{':
     json_decode_struct(source, NULL);
     return;
@@ -79,11 +73,7 @@ discard_value:
     return;
 
   case '"':
-    amount_read = json_parse_string(source);
-    if (error.occurred)
-      return;
-
-    io_read(source, NULL, amount_read);
+    json_parse_string(source);
     return;
 
   case '-':
@@ -97,33 +87,24 @@ discard_value:
   case '7':
   case '8':
   case '9':
-    amount_read = json_parse_number(source, 0, NULL);
-    if (error.occurred)
-      return;
-
-    io_read(source, NULL, amount_read);
+    struct sci_notation number;
+    json_parse_number(source, &number);
     return;
 
   default:
-    amount_read = json_parse_bool(source);
+    if (json_parse_bool(source))
+      return;
+
     if (error.occurred)
       return;
 
-    if (amount_read > 0) {
-      io_read(source, NULL, amount_read);
+    if (json_parse_null(source))
       return;
-    }
 
-    amount_read = json_parse_null(source);
     if (error.occurred)
       return;
 
-    if (amount_read > 0) {
-      io_read(source, NULL, amount_read);
-      return;
-    }
-
-    fail("unexpected character `%c`", character);
+    fail("unexpected character `%c`", *character);
     error_add_io_extraction(source);
     return;
   }

@@ -1,5 +1,5 @@
 static inline struct map* csv_decode_headers (
-    struct io* input,
+    struct io* source,
     struct vector* fields,
     struct memory* allocator,
     struct csv_properties csv
@@ -18,8 +18,8 @@ static inline struct map* csv_decode_headers (
   u64 newline_position = 0;
   u32 separators_count = 0;
 
-check_empty_input:
-  bool is_empty = io_exhausted(input);
+check_empty_source:
+  bool is_empty = io_exhausted(source);
   if (error.occurred)
     goto terminate;
 
@@ -29,7 +29,7 @@ check_empty_input:
   }
 
 peek_headers:
-  header_row = io_peek_window(input, &buffer, &max_position);
+  header_row = io_peek_window(source, &buffer, &max_position);
   if (error.occurred)
     goto terminate;
 
@@ -46,7 +46,7 @@ find_newline:
 
   position++;
   if (position >= max_position) {
-    fail("unable to decode csv headers: end of input reached");
+    fail("unable to decode csv headers: end of source reached");
     goto terminate;
   }
 
@@ -80,18 +80,18 @@ split_headers:
 
     if (csv.wrapper != '\0') {
       if (header->content[0] != csv.wrapper) {
-        input->cursor = cursor;
+        source->cursor = cursor;
         incorrect_wrapper = true;
       }
 
       if (header->content[header->length - 1] != csv.wrapper) {
-        input->cursor = cursor + header->length;
+        source->cursor = cursor + header->length;
         incorrect_wrapper = true;
       }
       
       if (incorrect_wrapper) {
         fail("expected field to be wrapped with `%c`", csv.wrapper);
-        error_add_io_extraction(input);
+        error_add_io_extraction(source);
         return NULL;
       }
     }
@@ -117,7 +117,7 @@ split_headers:
   }
   
 advance_io_cursor:
-  io_read(input, NULL, newline_position + 1);
+  io_read(source, NULL, newline_position + 1);
   if (error.occurred)
     return NULL;
   

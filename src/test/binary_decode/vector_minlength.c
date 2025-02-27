@@ -25,7 +25,7 @@ test( binary_decode, vector_minlength ) {
 
   calling("binary_decode()");
     struct memory allocator = memory_init(4096);
-    struct io source = io_reader(input, sizeof(input));
+    struct io source = io_memory(input, sizeof(input));
     struct object target = object(example, &reflection, &allocator);
     binary_decode(&source, &target);
 

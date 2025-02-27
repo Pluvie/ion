@@ -45,7 +45,7 @@ i64 recv_simulated (
  *
  * ```c
  * byte example_data[] = { 0x00, 0x01, 0x02 };
- * recv_simulated_data = &io_reader(example_data, sizeof(example_data));
+ * recv_simulated_data = &io_memory(example_data, sizeof(example_data));
  * ```
  *
  * Every time the `recv` function is invoked, the `recv_simulated_data` is read. */
@@ -60,7 +60,7 @@ i64 recv_simulated (
   if (length > remainder)
     length = remainder;
 
-  io_read(recv_simulated_data, output, length);
+  output = io_read(recv_simulated_data, length);
 
   if (flags & MSG_PEEK)
     recv_simulated_data->cursor -= recv_simulated_data->read_amount;
@@ -85,7 +85,7 @@ i64 send_simulated (
  *
  * ```c
  * byte example_data[64] = { 0 };
- * send_simulated_data = &io_writer(example_data, sizeof(example_data));
+ * send_simulated_data = &io_memory(example_data, sizeof(example_data));
  * ```
  *
  * Every time the `send` function is invoked, the `send_simulated_data` is written. */

@@ -27,7 +27,7 @@ test( csv_decode_headers, mismatching_columns_and_separator ) {
 
   calling("csv_decode_headers()");
     struct memory allocator = memory_init(0);
-    struct io input = io_reader(csv_file, strlen(csv_file));
+    struct io input = io_memory(csv_file, strlen(csv_file));
     struct map* headers = csv_decode_headers(&input, &fields, &allocator, csv);
 
 

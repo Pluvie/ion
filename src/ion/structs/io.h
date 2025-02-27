@@ -17,8 +17,8 @@ struct io {
     u64 reads_count;
     u64 writes_count;
   };
+  struct buffer* allocator;
   enum io_channels channel;
-  enum io_modes mode;
   enum io_flags flags;
   padding(8);
 };

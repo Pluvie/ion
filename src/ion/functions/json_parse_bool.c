@@ -1,18 +1,24 @@
-static inline u64 json_parse_bool (
-    struct io* input
+static inline bool json_parse_bool (
+    struct io* source
 )
 {
-  char buffer[5] = { 0 };
+  u64 initial_cursor_position = source->cursor;
 
-  io_peek(input, buffer, sizeof(buffer));
+  char* boolean = io_read(source, 5);
+
   if (error.occurred)
-    return 0;
+    return false;
 
-  if (strneq("true", buffer, 4))
-    return 4;
+  if (strneq("true", boolean, 4)) {
+    source->cursor = initial_cursor_position + 4;
+    return true;
+  }
 
-  if (strneq("false", buffer, 5))
-    return 5;
+  if (strneq("false", boolean, 5)) {
+    source->cursor = initial_cursor_position + 5;
+    return true;
+  }
 
-  return 0;
+  source->cursor = initial_cursor_position;
+  return false;
 }

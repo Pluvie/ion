@@ -3,7 +3,6 @@ test( io_write_file, fwrite_failure ) {
   given("a struct io");
     struct io writer = {
       .channel = IO_CHANNEL_FILE,
-      .mode = IO_MODE_WRITE,
       .length = 4,
     };
 

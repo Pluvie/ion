@@ -1,6 +1,5 @@
 static inline void* io_read_memory (
     struct io* reader,
-    void* result,
     u64 amount
 )
 {
@@ -8,7 +7,7 @@ adjust_amount:
   i64 amount_remaining = reader->length - reader->cursor;
 
   if (amount_remaining <= 0) {
-    fail("io: end of input reached");
+    fail("io: end of memory reached");
     return NULL;
   }
 
@@ -16,10 +15,7 @@ adjust_amount:
     amount = amount_remaining;
 
 read_data:
-  if (result == NULL)
-    result = reader->memory + reader->cursor;
-  else
-    memcpy(result, reader->memory + reader->cursor, amount);
+  void* result = reader->memory + reader->cursor;
 
 update_positions:
   reader->cursor += amount;

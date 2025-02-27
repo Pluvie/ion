@@ -45,7 +45,7 @@ test( json_decode, struct ) {
 
   calling("json_decode()");
     struct memory allocator = memory_init(4096);
-    struct io source = io_reader(input, strlen(input));
+    struct io source = io_memory(input, strlen(input));
     struct object target = object(example, &reflection, &allocator);
     json_decode(&source, &target);
 

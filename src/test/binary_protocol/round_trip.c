@@ -54,8 +54,8 @@ test( binary_protocol, round_trip ) {
     struct memory allocator = memory_init(0);
 
     struct object encoder = object(source, &reflection);
-    struct io binary_writer = io_writer(wire, sizeof(wire));
-    struct io binary_reader = io_reader(wire, sizeof(wire));
+    struct io binary_writer = io_memory(wire, sizeof(wire));
+    struct io binary_reader = io_memory(wire, sizeof(wire));
     struct object decoder = object(target, &reflection, &allocator);
     binary_encode(&encoder, &binary_writer);
     binary_decode(&binary_reader, &decoder);

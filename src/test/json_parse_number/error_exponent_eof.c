@@ -9,14 +9,15 @@ test( json_parse_number, error_exponent_eof ) {
 
 
   calling("json_parse_number()");
-    struct io input = io_reader(json, strlen(json));
-    d32 number;
-    json_parse_number(&input, D32, &number);
+    struct io input = io_memory(json, strlen(json));
+    struct sci_notation number;
+    bool is_number = json_parse_number(&input, &number);
 
 
   must("fail to parse the number with a specific error");
     verify(error.occurred == true);
     verify(streq(error.message, "expected sign or digit after exponent"));
+    verify(is_number == false);
 
 
   success();

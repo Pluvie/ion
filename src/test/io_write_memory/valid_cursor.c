@@ -2,8 +2,7 @@ test( io_write_memory, valid_cursor ) {
 
   given("a struct io");
     struct io writer = {
-      .channel = IO_CHANNEL_MEM,
-      .mode = IO_MODE_WRITE,
+      .channel = IO_CHANNEL_MEMORY,
       .memory = (byte[]) { 0x00, 0x01, 0x00 },
       .length = 3,
     };

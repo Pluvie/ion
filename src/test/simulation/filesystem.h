@@ -49,7 +49,7 @@ i32 fread_simulated (
  *
  * ```c
  * byte example_data[] = { 0x00, 0x01, 0x02 };
- * fread_simulated_data = &io_reader(example_data, sizeof(example_data));
+ * fread_simulated_data = &io_memory(example_data, sizeof(example_data));
  * ```
  *
  * Every time the `fread` function is invoked, the `fread_simulated_data` is read. */
@@ -65,7 +65,7 @@ i32 fread_simulated (
   if (total_size > remainder)
     total_size = remainder;
 
-  io_read(fread_simulated_data, output, total_size);
+  output = io_read(fread_simulated_data, total_size);
   if (error.occurred)
     return 0;
 
@@ -89,7 +89,7 @@ i32 fwrite_simulated (
  *
  * ```c
  * byte example_data[64] = { 0 };
- * fwrite_simulated_data = &io_writer(example_data, sizeof(example_data));
+ * fwrite_simulated_data = &io_memory(example_data, sizeof(example_data));
  * ```
  *
  * Every time the `fwrite` function is invoked, the `fwrite_simulated_data` is written. */

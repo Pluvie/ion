@@ -1,21 +1,18 @@
-static inline u64 json_parse_spaces (
-    struct io* input
+static inline bool json_parse_spaces (
+    struct io* source
 )
 {
-  char character;
+  u64 initial_cursor_position = source->cursor;
   u64 position = 0;
-
-  struct buffer buffer = { 0 };
-  u64 max_position = U64_MAX;
+  u64 peek_window = 1024;
 
   char* spaces = NULL;
+  char character;
 
-peek_spaces:
-  spaces = io_peek_window(input, &buffer, &max_position);
-  if (error.occurred) {
-    position = 0;
-    goto terminate;
-  }
+read_source:
+  spaces = io_read(source, peek_window);
+  if (error.occurred)
+    return false;
 
 read_character:
   character = spaces[position];
@@ -25,17 +22,14 @@ read_character:
 
 next_character:
   position++;
-  if (position >= max_position) {
-    position = 0;
-    goto terminate;
-  }
 
-  if (position < buffer.capacity)
+  if (position < source->length)
     goto read_character;
-  else
-    goto peek_spaces;
+
+  peek_window *= 2;
+  goto read_source;
 
 terminate:
-  buffer_release(&buffer);
-  return position;
+  source->cursor = initial_cursor_position + position;
+  return position > 0;
 }

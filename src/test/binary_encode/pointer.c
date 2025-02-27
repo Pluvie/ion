@@ -48,7 +48,7 @@ test( binary_encode, pointer ) {
   calling("binary_encode()");
     byte output[1024] = { 0 };
     struct object source = object(input, &reflection);
-    struct io target = io_writer(output, sizeof(output));
+    struct io target = io_memory(output, sizeof(output));
     binary_encode(&source, &target);
 
 

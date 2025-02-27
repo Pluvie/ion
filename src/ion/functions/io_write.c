@@ -13,17 +13,12 @@ u64 io_write (
     return 0;
   }
 
-  if (unlikely((writer->mode & IO_MODE_WRITE) == 0)) {
-    fail("io: mode not enabled for writing");
-    return 0;
-  }
-
   switch (writer->channel) {
-  case IO_CHANNEL_MEM:
+  case IO_CHANNEL_MEMORY:
     return io_write_memory(writer, data, amount);
   case IO_CHANNEL_FILE:
     return io_write_file(writer, data, amount);
-  case IO_CHANNEL_SOCK:
+  case IO_CHANNEL_SOCKET:
     return io_write_socket(writer, data, amount);
   }
 

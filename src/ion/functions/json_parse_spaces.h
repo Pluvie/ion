@@ -1,5 +1,5 @@
-static inline u64 json_parse_spaces (
-    struct io* input
+static inline bool json_parse_spaces (
+    struct io* source
 )
 /**
  * ### Description

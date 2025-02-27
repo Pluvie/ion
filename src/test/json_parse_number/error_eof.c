@@ -9,15 +9,15 @@ test( json_parse_number, error_eof ) {
 
 
   calling("json_parse_number()");
-    struct io input = io_reader(json, strlen(json));
-    i32 number;
-    json_parse_number(&input, I32, &number);
+    struct io input = io_memory(json, strlen(json));
+    struct sci_notation number;
+    bool is_number = json_parse_number(&input, &number);
 
 
   must("fail to parse the number with a specific error");
-    error_print();
     verify(error.occurred == true);
     verify(streq(error.message, "io: end of input reached"));
+    verify(is_number == false);
 
 
   success();

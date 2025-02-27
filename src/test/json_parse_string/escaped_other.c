@@ -9,7 +9,7 @@ test( json_parse_string, escaped_other ) {
 
 
   calling("json_parse_string()");
-    struct io input = io_reader(json, strlen(json));
+    struct io input = io_memory(json, strlen(json));
     u64 string_length = json_parse_string(&input);
 
 

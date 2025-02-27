@@ -7,18 +7,13 @@ bool io_exhausted (
 )
 {
   switch (io->channel) {
-  case IO_CHANNEL_MEM:
+  case IO_CHANNEL_MEMORY:
     return io->cursor == io->length;
 
   case IO_CHANNEL_FILE:
     return io->cursor == io->length;
 
-  case IO_CHANNEL_SOCK:
-    if ((io->mode & IO_MODE_READ) == 0) {
-      fail("io: mode not enabled for reading");
-      return false;
-    }
-
+  case IO_CHANNEL_SOCKET:
     i32 recv_output = recv(io->socket, NULL, 1, MSG_PEEK);
     if (unlikely(recv_output < 0)) {
       fail("io: error while reading from socket: %s", strerror(errno));

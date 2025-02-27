@@ -46,11 +46,11 @@ test( binary_decode, validator ) {
     struct memory allocator = memory_init(4096);
     struct object target = object(example, &reflection, &allocator);
 
-    struct io valid_source = io_reader(
+    struct io valid_source = io_memory(
       valid_input, sizeof(valid_input));
-    struct io invalid_age_source = io_reader(
+    struct io invalid_age_source = io_memory(
       invalid_age_input, sizeof(invalid_age_input));
-    struct io invalid_numbers_source = io_reader(
+    struct io invalid_numbers_source = io_memory(
       invalid_numbers_input, sizeof(invalid_numbers_input));
 
 

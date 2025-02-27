@@ -4,7 +4,6 @@ static inline
 
 void* io_read (
     struct io* reader,
-    void* result,
     u64 amount
 )
 {
@@ -13,18 +12,13 @@ void* io_read (
     return NULL;
   }
 
-  if (unlikely((reader->mode & IO_MODE_READ) == 0)) {
-    fail("io: mode not enabled for reading");
-    return NULL;
-  }
-
   switch (reader->channel) {
-  case IO_CHANNEL_MEM:
-    return io_read_memory(reader, result, amount);
+  case IO_CHANNEL_MEMORY:
+    return io_read_memory(reader, amount);
   case IO_CHANNEL_FILE:
-    return io_read_file(reader, result, amount);
-  case IO_CHANNEL_SOCK:
-    return io_read_socket(reader, result, amount);
+    return io_read_file(reader, amount);
+  case IO_CHANNEL_SOCKET:
+    return io_read_socket(reader, amount);
   }
 
   fail("io: unsupported channel");

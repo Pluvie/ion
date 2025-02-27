@@ -6,7 +6,7 @@ static inline void binary_decode_primitive (
   enum types primitive_type = target->reflection->type;
   u32 primitive_type_size = type_sizes[primitive_type];
 
-  io_read(source, target->address, primitive_type_size);
+  target->address = io_read(source, primitive_type_size);
   if (error.occurred)
     return error_add_reflection_path(target->reflection);
 

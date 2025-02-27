@@ -1,51 +1,46 @@
-static inline u64 json_parse_number (
-    struct io* input,
-    enum types type,
-    void* result
+static inline bool json_parse_number (
+    struct io* source,
+    struct sci_notation* number
 )
 {
-  struct sci_notation number = { 0 };
-
-  char buffer[256] = { 0 };
+  u64 initial_cursor_position = source->cursor;
   u64 position = 0;
 
   char sign;
   char digit;
   char after_zero;
 
-  struct { char content[128]; u64 begin; u64 length; } integral = { 0 };
-  struct { char content[128]; u64 begin; u64 length; } fractional = { 0 };
-  struct { char content[32];  u64 begin; u64 length; } exponent = { 0 };
-
 initialize:
-  io_peek(input, buffer, sizeof(buffer));
+  char* buffer = io_read(source, 1024);
   if (error.occurred)
-    return 0;
+    return false;
+
+  source->cursor = initial_cursor_position;
+  memzero(number, sizeof(struct sci_notation));
 
 check_sign:
   sign = buffer[0];
   position++;
 
   if (sign == '-') {
-    number.negative = true;
-    integral.begin = 1;
+    number->negative = true;
+    number->integral.content = buffer + position;
     goto integral_part;
   }
 
   if (sign == '0') {
-    integral.begin = 0;
-    integral.length = 1;
+    number->integral.content = buffer + 0;
+    number->integral.length = 1;
     goto check_after_zero;
   }
 
   if (isdigit(sign)) {
-    integral.begin = 0;
-    integral.length = 1;
+    number->integral.content = buffer + 0;
+    number->integral.length = 1;
     goto integral_part;
   }
 
-  fail("expected a number");
-  return 0;
+  return false;
 
 check_after_zero:
   after_zero = buffer[1];
@@ -53,16 +48,16 @@ check_after_zero:
 
   switch(after_zero) {
   case '.':
-    fractional.begin = position;
+    number->fractional.content = buffer + position;
     goto fractional_part;
   case 'E':
   case 'e':
-    exponent.begin = position;
+    number->exponent.content = buffer + position;
     goto exponent_part;
 
   case 'x':
-    fail("hexadecimal numbers are not valid JSON");
-    return 0;
+    /* Hexadecimal numbers are not valid JSON. */
+    return false;
 
   case '0':
   case '1':
@@ -74,65 +69,61 @@ check_after_zero:
   case '7':
   case '8':
   case '9':
-    fail("octal numbers are not valid JSON");
-    return 0;
+    /* Octal numbers are not valid JSON. */
+    return false;
 
   default:
-    goto terminate;
+    return true;
   }
 
 integral_part:
-  if (position >= sizeof(buffer)) {
-    fail("number too big");
-    return 0;
-  }
+  if (position >= source->read_amount)
+    return true;
 
   digit = buffer[position];
   position++;
 
   if (isdigit(digit)) {
-    integral.length++;
+    number->integral.length++;
     goto integral_part;
   }
 
   if (digit == '.') {
-    fractional.begin = position;
+    number->fractional.content = buffer + position;
 
     if (!isdigit(buffer[position])) {
       fail("expected a digit after the decimal separator");
-      return 0;
+      return false;
     }
 
     goto fractional_part;
   }
 
   if (digit == 'e' || digit == 'E') {
-    exponent.begin = position;
+    number->exponent.content = buffer + position;
     goto exponent_sign;
   }
 
-  goto terminate;
+  return true;
 
 fractional_part:
-  if (position >= sizeof(buffer)) {
-    fail("number too big");
-    return 0;
-  }
+  if (position >= source->read_amount)
+    return true;
 
   digit = buffer[position];
   position++;
 
   if (isdigit(digit)) {
-    fractional.length++;
+    number->fractional.length++;
     goto fractional_part;
   }
 
   if (digit == 'e' || digit == 'E') {
-    exponent.begin = position;
+    number->exponent.content = buffer + position;
     goto exponent_sign;
   }
 
-  goto terminate;
+  return true;
 
 exponent_sign:
   sign = buffer[position];
@@ -140,59 +131,34 @@ exponent_sign:
 
   switch (sign) {
   case '-':
-    number.negative_exponent = true;
-    exponent.begin = position;
+    number->negative_exponent = true;
+    number->exponent.content = buffer + position;
     goto exponent_part;
   case '+':
-    exponent.begin = position;
+    number->exponent.content = buffer + position;
     goto exponent_part;
   default:
     if (isdigit(sign)) {
-      exponent.length = 1;
-      exponent.begin = position - 1;
+      number->exponent.length = 1;
+      number->exponent.content = buffer + position - 1;
       goto exponent_part;
     }
 
     fail("expected sign or digit after exponent");
-    return 0;
+    return false;
   }
 
 exponent_part:
-  if (position >= sizeof(buffer)) {
-    fail("number too big");
-    return 0;
-  }
+  if (position >= source->read_amount)
+    return true;
 
   digit = buffer[position];
   position++;
 
   if (isdigit(digit)) {
-    exponent.length++;
+    number->exponent.length++;
     goto exponent_part;
   }
 
-  goto terminate;
-
-terminate:
-  if (result == NULL)
-    return position - 1;
-
-  memcpy(integral.content, buffer + integral.begin, integral.length);
-  if (fractional.length > 0)
-    memcpy(fractional.content, buffer + fractional.begin, fractional.length);
-  if (exponent.length > 0)
-    memcpy(exponent.content, buffer + exponent.begin, exponent.length);
-
-  number.integral.length = integral.length;
-  number.integral.content = integral.content;
-  number.fractional.length = fractional.length;
-  number.fractional.content = fractional.content;
-  number.exponent.length = exponent.length;
-  number.exponent.content = exponent.content;
-
-  sci_notation_convert(&number, type, result);
-  if (error.occurred)
-    return 0;
-
-  return position - 1;
+  return true;
 }

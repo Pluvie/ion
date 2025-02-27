@@ -4,6 +4,7 @@ static inline u64 io_write_memory (
     u64 amount
 )
 {
+write_data:
   if (unlikely(writer->cursor + amount > writer->length)) {
     fail("io: unable to write, memory exhausted");
     return 0;
@@ -11,6 +12,7 @@ static inline u64 io_write_memory (
 
   memcpy(writer->memory + writer->cursor, data, amount);
 
+update_positions:
   writer->cursor += amount;
   writer->written_amount = amount;
   writer->writes_count++;

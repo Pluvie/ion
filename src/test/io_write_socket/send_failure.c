@@ -2,8 +2,7 @@ test( io_write_socket, send_failure ) {
 
   given("a struct io");
     struct io writer = {
-      .channel = IO_CHANNEL_SOCK,
-      .mode = IO_MODE_WRITE,
+      .channel = IO_CHANNEL_SOCKET,
     };
 
 

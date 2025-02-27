@@ -1,5 +1,5 @@
 static inline void csv_decode_row (
-    struct io* input,
+    struct io* source,
     struct object* target,
     struct map* headers,
     struct csv_properties csv
@@ -16,7 +16,7 @@ static inline void csv_decode_row (
   u32 separators_count = 0;
 
 peek_row:
-  row = io_peek_window(input, &buffer, &max_position);
+  row = io_peek_window(source, &buffer, &max_position);
   if (error.occurred)
     goto terminate;
 
@@ -33,7 +33,7 @@ count_separators:
 
   position++;
   if (position >= max_position) {
-    fail("unable to decode csv row: end of input reached");
+    fail("unable to decode csv row: end of source reached");
     goto terminate;
   }
 
@@ -60,12 +60,12 @@ read_field:
 
   if (csv.wrapper != 0) {
     if (row[field_begin] != csv.wrapper) {
-      input->cursor = field_begin + 1;
+      source->cursor = field_begin + 1;
       goto incorrect_wrapper;
     }
 
     if (row[field_end - 1] != csv.wrapper) {
-      input->cursor = field_end - 1;
+      source->cursor = field_end - 1;
       goto incorrect_wrapper;
     }
 

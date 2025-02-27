@@ -2,8 +2,7 @@ test( io_read_socket, recv_failure ) {
 
   given("a struct io");
     struct io reader = {
-      .channel = IO_CHANNEL_SOCK,
-      .mode = IO_MODE_READ,
+      .channel = IO_CHANNEL_SOCKET,
     };
 
 
@@ -12,8 +11,7 @@ test( io_read_socket, recv_failure ) {
 
 
   calling("io_read()");
-    byte value[4];
-    void* result = io_read(&reader, value, sizeof(value));
+    byte* result = io_read(&reader, 4);
 
 
   must("not read the io");

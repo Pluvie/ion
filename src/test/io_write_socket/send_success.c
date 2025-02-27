@@ -2,14 +2,13 @@ test( io_write_socket, send_success ) {
 
   given("a struct io");
     struct io write = {
-      .channel = IO_CHANNEL_SOCK,
-      .mode = IO_MODE_WRITE,
+      .channel = IO_CHANNEL_SOCKET,
     };
 
 
   when("the send call succeeds");
     byte response[4] = { 0 };
-    send_simulated_data = &io_writer(response, sizeof(response));
+    send_simulated_data = &io_memory(response, sizeof(response));
 
 
   calling("io_write()");

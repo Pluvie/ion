@@ -3,13 +3,12 @@ test( io_write_file, fwrite_success ) {
   given("a struct io");
     struct io writer = {
       .channel = IO_CHANNEL_FILE,
-      .mode = IO_MODE_WRITE,
     };
 
 
   when("the fwrite call succeeds");
     byte file[4] = { 0 };
-    fwrite_simulated_data = &io_writer(file, sizeof(file));
+    fwrite_simulated_data = &io_memory(file, sizeof(file));
 
 
   calling("io_write()");

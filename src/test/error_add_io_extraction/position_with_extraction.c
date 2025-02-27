@@ -9,7 +9,7 @@ test( error_add_io_extraction, position_with_extraction ) {
 
 
   when("it has an associated io");
-    struct io source = io_reader(input, strlen(input));
+    struct io source = io_memory(input, strlen(input));
 
 
   when("the io has encountered an error afer reading some data");

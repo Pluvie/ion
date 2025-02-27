@@ -23,5 +23,5 @@ struct io file_read (
   }
 
   fclose(file);
-  return io_reader(file_content, file_bytesize);
+  return io_memory(file_content, file_bytesize);
 }

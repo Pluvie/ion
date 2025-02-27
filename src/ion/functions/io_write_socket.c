@@ -4,6 +4,7 @@ static inline u64 io_write_socket (
     u64 amount
 )
 {
+write_data:
   i32 written_amount = send(writer->socket, data, amount, 0);
 
   if (unlikely(written_amount < 0)) {
@@ -11,6 +12,7 @@ static inline u64 io_write_socket (
     return 0;
   }
 
+update_positions:
   writer->length += written_amount;
   writer->cursor += written_amount;
   writer->written_amount = written_amount;
