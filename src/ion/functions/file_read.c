@@ -7,6 +7,7 @@ struct io file_read (
     struct memory* allocator
 )
 {
+  void* file = fopen(file_path, "r");
   u64 file_bytesize = file_size(file);
   void* file_content = memory_alloc(allocator, file_bytesize);
   i32 fread_output = fread(file_content, file_bytesize, 1, file);
