@@ -3,8 +3,7 @@ static inline void json_decode_sequence (
     struct object* target
 )
 {
-  u64 amount_read = 0;
-  char character;
+  char* character;
 
   struct reflect* element_reflection = NULL;
   struct object element_object = { 0 };
@@ -19,57 +18,47 @@ static inline void json_decode_sequence (
   }
 
 sequence_begin:
-  amount_read = json_parse_spaces(source);
-  if (amount_read > 0) {
-    io_read(source, NULL, amount_read);
-    if (error.occurred)
-      return;
-  }
-
-  io_read(source, &character, sizeof(char));
+  json_parse_spaces(source);
   if (error.occurred)
     return;
 
-  if (character != '[') {
+  character = io_read(source, sizeof(char));
+  if (error.occurred)
+    return;
+
+  if (*character != '[') {
     fail("expected `[` to begin a sequence");
     error_add_io_extraction(source);
     return;
   }
 
 next_element:
-  amount_read = json_parse_spaces(source);
+  json_parse_spaces(source);
   if (error.occurred)
     return;
 
-  if (amount_read > 0) {
-    io_read(source, NULL, amount_read);
-    if (error.occurred)
-      return;
-  }
-
-  io_peek(source, &character, sizeof(char));
+  character = io_read(source, sizeof(char));
   if (error.occurred)
     return;
 
 check_empty_sequence:
-  if (character == ']') {
+  if (*character == ']') {
 
     if (element_index > 0) {
       /* Moves back the cursor to the comma before the spaces, if any, to print the
        * correct cursor caret helper, using the `error_add_io_extraction` function. */
-      source->cursor -= amount_read;
+      source->cursor -= source->read_amount;
       fail("trailing comma before sequence end");
       error_add_io_extraction(source);
     }
-
-    io_read(source, NULL, sizeof(char));
-    if (error.occurred)
-      return;
 
     goto terminate;
   }
 
 parse_value:
+  /* Moves back the cursor as the character was not ']' and thus not an empty sequence. */
+  source->cursor -= source->read_amount;
+
   /* Ignores all elements that are over the sequence length. */
   if (element_index >= sequence_length)
     element_reflection = NULL;
@@ -87,18 +76,15 @@ parse_value:
     return;
 
 check_comma:
-  amount_read = json_parse_spaces(source);
-  if (amount_read > 0) {
-    io_read(source, NULL, amount_read);
-    if (error.occurred)
-      return;
-  }
-
-  io_read(source, &character, sizeof(char));
+  json_parse_spaces(source);
   if (error.occurred)
     return;
 
-  switch (character) {
+  character = io_read(source, sizeof(char));
+  if (error.occurred)
+    return;
+
+  switch (*character) {
   case ']':
     goto terminate;
 
@@ -107,7 +93,7 @@ check_comma:
     goto next_element;
 
   default:
-    fail("expected comma or array end after value");
+    fail("expected comma or sequence end after value");
     error_add_io_extraction(source);
     return;
   }

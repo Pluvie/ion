@@ -31,7 +31,7 @@ test( csv_decode_headers, no_columns ) {
   must("fail to decode the headers");
     verify(error.occurred == true);
     verify(headers == NULL);
-    verify(streq(error.message, "expected a csv with at least one header column"));
+    verify(streq(error.message, "expected a csv header with at least one column"));
 
 
   success();

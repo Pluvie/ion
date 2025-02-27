@@ -1,5 +1,6 @@
 static inline bool json_parse_bool (
-    struct io* source
+    struct io* source,
+    void* target
 )
 /**
  * ### Description

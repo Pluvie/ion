@@ -34,7 +34,7 @@ test( json_decode, primitive_not_supported ) {
 
   must("fail to decode the input data with a specific error");
     char* expected_error =
-      "[value_byte] primitive type `BYTE` not supported., at position 42:\n"
+      "[value_byte] primitive type `BYTE` not supported, at position 42:\n"
       "se,   \"value_byte\": \"0xff\",   \"value_cha\n"
       "                   ^";
     verify(error.occurred == true);

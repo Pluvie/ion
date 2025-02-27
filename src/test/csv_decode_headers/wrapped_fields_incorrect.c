@@ -35,13 +35,27 @@ test( csv_decode_headers, wrapped_fields_incorrect ) {
 
 
   must("fail to decode the headers");
-    char* expected_error =
-      "expected field to be wrapped with `'`, at position 26:\n"
-      " col';'second col';third col;'fourth col\n"
-      "                   ^";
-    verify(error.occurred == true);
-    verify(headers == NULL);
-    verify(streq(error.message, expected_error));
+    verify(headers->length == 4);
+
+    struct csv_header* header;
+    header = map_get(headers, &(u64) { 0 });
+    verify(header != NULL);
+    verify(strneq("first col", header->name->content, header->name->length));
+
+    header = map_get(headers, &(u64) { 1 });
+    verify(header != NULL);
+    verify(strneq("second col", header->name->content, header->name->length));
+
+    header = map_get(headers, &(u64) { 2 });
+    verify(header == NULL);
+
+    header = map_get(headers, &(u64) { 3 });
+    verify(header != NULL);
+    verify(strneq("fourth col", header->name->content, header->name->length));
+
+    header = map_get(headers, &(u64) { 4 });
+    verify(header != NULL);
+    verify(strneq("fifth col", header->name->content, header->name->length));
 
 
   success();

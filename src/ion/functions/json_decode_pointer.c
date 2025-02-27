@@ -17,11 +17,11 @@ check_string_size:
   u64 string_max_size = target->reflection->bounds[0];
   u64 string_size = 0;
 
-  string_size = json_parse_string(source);
+  bool is_string = json_parse_string(source, &string_size);
   if (error.occurred)
     return;
 
-  if (string_size == 0) {
+  if (!is_string) {
     fail("expected a string");
     error_add_io_extraction(source);
     error_add_reflection_path(target->reflection);
@@ -37,6 +37,7 @@ check_string_size:
     return;
   }
 
+  source->cursor -= string_size;
   pointer_size = string_size;
 
 allocate_pointer:
@@ -49,14 +50,15 @@ allocate_pointer:
 
 pointer_type_char:
   /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
-  io_read(source, pointer_data, pointer_size);
-
-  /* Removes the surrounding '"'. */
-  pointer_data = pointer_data + 1;
-  ((char*) pointer_data)[pointer_size - 2] = '\0';
-
+  char* string = io_read(source, pointer_size);
   if (error.occurred)
     return;
+
+  /* Removes the surrounding '"'. */
+  memcpy(pointer_data, string + 1, pointer_size);
+  string = pointer_data;
+  string[pointer_size - 2] = '\0';
+  string[pointer_size - 1] = '\0';
 
   goto validate_pointer;
 

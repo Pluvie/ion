@@ -65,10 +65,11 @@ i32 fread_simulated (
   if (total_size > remainder)
     total_size = remainder;
 
-  output = io_read(fread_simulated_data, total_size);
+  void* result = io_read(fread_simulated_data, total_size);
   if (error.occurred)
     return 0;
 
+  memcpy(output, result, fread_simulated_data->read_amount);
   if (total_size < byte_size)
     return 1;
   else

@@ -5,7 +5,8 @@ static inline
 struct array* string_split (
     struct string string,
     struct memory* allocator,
-    char separator
+    char separator,
+    char wrapper
 )
 {
   struct {
@@ -16,13 +17,28 @@ struct array* string_split (
   } chunk = { 0 };
 
   i32 cursor = 0;
+  bool in_wrap = false;
+  bool last_chunk = false;
 
   struct array* chunks =
     array_allocate(sizeof(struct string), 0, allocator);
 
 read_chunk:
-  if (cursor >= string.length - 1)
+  if (cursor >= string.length - 1) {
+    last_chunk = true;
     goto push_chunk;
+  }
+
+  if (wrapper != '\0' && string.content[cursor] == wrapper) {
+    in_wrap = !in_wrap;
+    cursor++;
+    goto read_chunk;
+  }
+
+  if (in_wrap) {
+    cursor++;
+    goto read_chunk;
+  }
 
   if (string.content[cursor] != separator) {
     cursor++;
@@ -36,9 +52,15 @@ push_chunk:
   if (unlikely(chunk.length == 0))
     goto terminate;
 
+  if (last_chunk)
+    chunk.length++;
+
   chunk.content = memory_alloc_zero(allocator, chunk.length + 1);
   snprintf(chunk.content, chunk.length + 1, "%s", string.content + chunk.begin);
   array_push(chunks, &(struct string) { chunk.content, chunk.length });
+
+  if (last_chunk)
+    goto terminate;
   
   memzero(&chunk, sizeof(chunk));
   chunk.begin = cursor + 1;

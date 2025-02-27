@@ -5,106 +5,79 @@ static inline void csv_decode_row (
     struct csv_properties csv
 )
 {
-  struct buffer buffer = { 0 };
-  u64 max_position = U64_MAX;
+  u64 initial_cursor_position = source->cursor;
+  u64 position = 0;
+  u64 newline_position = 0;
+  u64 peek_window = 1024;
 
   char* row = NULL;
   char character;
 
-  u64 position = 0;
-  u64 newline_position = 0;
-  u32 separators_count = 0;
-
-peek_row:
-  row = io_peek_window(source, &buffer, &max_position);
+check_empty_source:
+  bool is_empty = io_exhausted(source);
   if (error.occurred)
-    goto terminate;
+    return;
 
-count_separators:
+  if (is_empty) {
+    fail("csv is empty");
+    return;
+  }
+
+read_source:
+  row = io_read(source, peek_window);
+  if (error.occurred)
+    return;
+
+find_newline:
   character = row[position];
 
-  if (separators_count == csv.columns_count - 1 && character == '\n') {
+  if (character == '\n') {
     newline_position = position;
-    goto split_row;
+    goto check_newline_position;
   }
 
-  if (character == csv.separator)
-    separators_count++;
-
+next_character:
   position++;
-  if (position >= max_position) {
-    fail("unable to decode csv row: end of source reached");
-    goto terminate;
+
+  if (position < source->length)
+    goto find_newline;
+
+  peek_window *= 2;
+  goto read_source;
+
+check_newline_position:
+  if (newline_position == 0) {
+    fail("expected a csv row with at least one column");
+    return;
   }
 
-  if (position < buffer.capacity)
-    goto count_separators;
-  else
-    goto peek_row;
+  source->cursor = initial_cursor_position + newline_position + 1;
 
 split_row:
-  char* field = NULL;
-  u64 field_begin = 0;
-  u64 field_end = 0;
-  u64 field_index = 0;
-  i32 field_length = 0;
-  u64 cursor = 0;
+  struct string row_string = { row, (i32) newline_position };
+  struct array* columns = string_split(
+    row_string, target->allocator, csv.separator, csv.wrapper);
 
-read_field:
-  if (row[cursor] != csv.separator) {
-    cursor++;
-    goto read_field;
+check_columns:
+  if (headers->length != csv.columns_count)
+    goto read_source;
+
+decode_columns:
+  for array_each_with_index(columns, column_index, struct string*, column) {
+    struct csv_header* column_header = map_get(headers, &column_index);
+    struct object* column_object = column_header->target;
+    column_object->address = target->address + column_object->reflection->offset;
+
+    csv_decode_column(column, column_object);
+    if (error.occurred)
+      return;
   }
 
-  field_end = cursor;
-
-  if (csv.wrapper != 0) {
-    if (row[field_begin] != csv.wrapper) {
-      source->cursor = field_begin + 1;
-      goto incorrect_wrapper;
-    }
-
-    if (row[field_end - 1] != csv.wrapper) {
-      source->cursor = field_end - 1;
-      goto incorrect_wrapper;
-    }
-
-    field_length = (i32) (field_end - field_begin) - 2;
-    field = memory_alloc_zero(target->allocator, field_length + 1);
-    snprintf(field, field_length + 1, "%s", row + field_begin + 1);
-
-  } else {
-    field_length = (i32) (field_end - field_begin);
-    field = memory_alloc_zero(target->allocator, field_length + 1);
-    snprintf(field, field_length + 1, "%s", row + field_begin);
+validate:
+  reflect_validate(target->reflection, target->address);
+  if (error.occurred) {
+    error_add_io_extraction(source);
+    error_add_reflection_path(target->reflection);
+    return;
   }
-
-  for vector_each(fields, struct reflect*, field) {
-    if (!streq(field->name, field))
-      continue;
-
-    map_set(fields, &field_index, &(struct csv_field) {
-      .name = field,
-      .index = field_index,
-      .target = &(struct object) {
-        .name = field->name,
-        .reflection = field,
-        .allocator = allocator
-       },
-    });
-    break;
-  }
-  
-  field_begin = field_end + 1;
-  field_index++;
-  cursor++;
-
-  if (cursor > newline_position)
-    goto advance_io_cursor;
-
-  goto read_field;
-
-terminate:
-  buffer_release(&buffer);
-  return;
 }

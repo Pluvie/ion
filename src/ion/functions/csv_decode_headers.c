@@ -5,95 +5,75 @@ static inline struct map* csv_decode_headers (
     struct csv_properties csv
 )
 {
-  struct map* headers_mapping = NULL;
-  struct array* headers = NULL;
-
-  struct buffer buffer = { 0 };
-  u64 max_position = U64_MAX;
-
-  char* header_row = NULL;
-  char character;
-
+  u64 initial_cursor_position = source->cursor;
   u64 position = 0;
   u64 newline_position = 0;
-  u32 separators_count = 0;
+  u64 peek_window = 1024;
+
+  char* header = NULL;
+  char character;
 
 check_empty_source:
   bool is_empty = io_exhausted(source);
   if (error.occurred)
-    goto terminate;
+    return NULL;
 
   if (is_empty) {
     fail("csv is empty");
-    goto terminate;
+    return NULL;
   }
 
-peek_headers:
-  header_row = io_peek_window(source, &buffer, &max_position);
+read_source:
+  header = io_read(source, peek_window);
   if (error.occurred)
-    goto terminate;
+    return NULL;
 
 find_newline:
-  character = header_row[position];
+  character = header[position];
 
   if (character == '\n') {
     newline_position = position;
-    goto split_headers;
+    goto check_newline_position;
   }
 
-  if (character == csv.separator)
-    separators_count++;
-
+next_character:
   position++;
-  if (position >= max_position) {
-    fail("unable to decode csv headers: end of source reached");
-    goto terminate;
-  }
+
+  if (position < source->length)
+    goto find_newline;
+
+  peek_window *= 2;
+  goto read_source;
 
 check_newline_position:
-  if (position < buffer.capacity)
-    goto find_newline;
-  else
-    goto peek_headers;
-
   if (newline_position == 0) {
-    fail("expected a csv with at least one header column");
-    goto terminate;
+    fail("expected a csv header with at least one column");
+    return NULL;
   }
 
-  if (separators_count != csv.columns_count - 1) {
-    fail("expected a csv with %i columns, but found only %i separators `%c`",
-      csv.columns_count, separators_count, csv.separator);
-    goto terminate;
-  }
+  source->cursor = initial_cursor_position + newline_position + 1;
 
 split_headers:
-  u64 cursor = 0;
-  bool incorrect_wrapper = false;
+  struct map* headers_mapping = map_allocate(
+    sizeof(u64), sizeof(struct csv_header),
+    csv.columns_count, allocator);
 
-  headers_mapping = map_allocate(
-    sizeof(u64), sizeof(struct csv_header), csv.columns_count, allocator);
-  headers = string_split(
-    (struct string) { header_row, (i32) newline_position }, allocator, csv.separator);
+  struct string header_string = { header, (i32) newline_position };
+  struct array* headers = string_split(
+    header_string, allocator, csv.separator, csv.wrapper);
 
+check_columns:
+  if (headers->length != csv.columns_count) {
+    fail("expected a csv with %i columns, but found only %li separators `%c`",
+      csv.columns_count, headers->length - 1, csv.separator);
+    return NULL;
+  }
+
+map_headers:
   for array_each_with_index(headers, header_index, struct string*, header) {
-
     if (csv.wrapper != '\0') {
-      if (header->content[0] != csv.wrapper) {
-        source->cursor = cursor;
-        incorrect_wrapper = true;
-      }
-
-      if (header->content[header->length - 1] != csv.wrapper) {
-        source->cursor = cursor + header->length;
-        incorrect_wrapper = true;
-      }
-      
-      if (incorrect_wrapper) {
-        fail("expected field to be wrapped with `%c`", csv.wrapper);
-        error_add_io_extraction(source);
-        return NULL;
-      }
+      header->content += 1;
+      header->length -= 2;
     }
 
     for vector_each(fields, struct reflect*, field) {
@@ -112,16 +92,7 @@ split_headers:
 
       break;
     }
-
-    cursor += header->length;
   }
-  
-advance_io_cursor:
-  io_read(source, NULL, newline_position + 1);
-  if (error.occurred)
-    return NULL;
-  
-terminate:
-  buffer_release(&buffer);
+
   return headers_mapping;
 }

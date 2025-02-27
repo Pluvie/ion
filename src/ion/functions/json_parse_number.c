@@ -73,12 +73,12 @@ check_after_zero:
     return false;
 
   default:
-    return true;
+    goto terminate;
   }
 
 integral_part:
   if (position >= source->read_amount)
-    return true;
+    goto terminate;
 
   digit = buffer[position];
   position++;
@@ -104,11 +104,11 @@ integral_part:
     goto exponent_sign;
   }
 
-  return true;
+  goto terminate;
 
 fractional_part:
   if (position >= source->read_amount)
-    return true;
+    goto terminate;
 
   digit = buffer[position];
   position++;
@@ -123,7 +123,7 @@ fractional_part:
     goto exponent_sign;
   }
 
-  return true;
+  goto terminate;
 
 exponent_sign:
   sign = buffer[position];
@@ -150,7 +150,7 @@ exponent_sign:
 
 exponent_part:
   if (position >= source->read_amount)
-    return true;
+    goto terminate;
 
   digit = buffer[position];
   position++;
@@ -160,5 +160,7 @@ exponent_part:
     goto exponent_part;
   }
 
+terminate:
+  source->cursor += position - 1;
   return true;
 }

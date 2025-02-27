@@ -27,6 +27,8 @@ read_data:
     return NULL;
   }
 
+  result = allocated_data;
+
 adjust_amount:
   u64 amount_effectively_read = recv_output;
   if (amount_effectively_read < amount) {

@@ -16,7 +16,7 @@ test( json_parse_number, error_eof ) {
 
   must("fail to parse the number with a specific error");
     verify(error.occurred == true);
-    verify(streq(error.message, "io: end of input reached"));
+    verify(streq(error.message, "io: end of memory reached"));
     verify(is_number == false);
 
 

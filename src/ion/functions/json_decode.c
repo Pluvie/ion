@@ -62,6 +62,7 @@ discard_value:
   char* character = io_read(source, sizeof(char));
   if (error.occurred)
     return;
+  source->cursor -= source->read_amount;
 
   switch (*character) {
   case '{':
@@ -73,7 +74,7 @@ discard_value:
     return;
 
   case '"':
-    json_parse_string(source);
+    json_parse_string(source, NULL);
     return;
 
   case '-':
@@ -92,7 +93,7 @@ discard_value:
     return;
 
   default:
-    if (json_parse_bool(source))
+    if (json_parse_bool(source, NULL))
       return;
 
     if (error.occurred)

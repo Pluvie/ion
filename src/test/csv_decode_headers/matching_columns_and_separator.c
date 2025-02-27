@@ -1,4 +1,4 @@
-focus_test( csv_decode_headers, matching_columns_and_separator ) {
+test( csv_decode_headers, matching_columns_and_separator ) {
 
   given("a csv file");
     char* csv_file;

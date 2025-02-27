@@ -1,5 +1,6 @@
 static inline bool json_parse_string (
-    struct io* source
+    struct io* source,
+    u64* string_length
 )
 {
   u64 initial_cursor_position = source->cursor;
@@ -49,5 +50,9 @@ next_character:
 
 terminate:
   source->cursor = initial_cursor_position + position;
+
+  if (string_length != NULL)
+    *string_length = position;
+
   return position > 0;
 }

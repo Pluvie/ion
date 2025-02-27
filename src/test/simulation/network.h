@@ -60,7 +60,7 @@ i64 recv_simulated (
   if (length > remainder)
     length = remainder;
 
-  output = io_read(recv_simulated_data, length);
+  void* result = io_read(recv_simulated_data, length);
 
   if (flags & MSG_PEEK)
     recv_simulated_data->cursor -= recv_simulated_data->read_amount;
@@ -68,6 +68,7 @@ i64 recv_simulated (
   if (error.occurred)
     return -1;
 
+  memcpy(output, result, recv_simulated_data->read_amount);
   return length;
 }
 

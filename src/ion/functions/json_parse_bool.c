@@ -1,5 +1,6 @@
 static inline bool json_parse_bool (
-    struct io* source
+    struct io* source,
+    void* target
 )
 {
   u64 initial_cursor_position = source->cursor;
@@ -11,11 +12,15 @@ static inline bool json_parse_bool (
 
   if (strneq("true", boolean, 4)) {
     source->cursor = initial_cursor_position + 4;
+    if (target != NULL)
+      memcpy(target, &(bool) { true }, sizeof(bool));
     return true;
   }
 
   if (strneq("false", boolean, 5)) {
     source->cursor = initial_cursor_position + 5;
+    if (target != NULL)
+      memcpy(target, &(bool) { false }, sizeof(bool));
     return true;
   }
 

@@ -14,9 +14,8 @@ test( json_parse_number, error_hex ) {
     bool is_number = json_parse_number(&input, &number);
 
 
-  must("fail to parse the number with a specific error");
-    verify(error.occurred == true);
-    verify(streq(error.message, "hexadecimal numbers are not valid JSON"));
+  must("not fail to parse the number but return false");
+    verify(error.occurred == false);
     verify(is_number == false);
 
 

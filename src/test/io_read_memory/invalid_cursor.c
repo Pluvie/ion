@@ -18,7 +18,7 @@ test( io_read_memory, invalid_cursor ) {
 
   must("not read the io");
     verify(error.occurred == true);
-    verify(streq(error.message, "io: end of input reached"));
+    verify(streq(error.message, "io: end of memory reached"));
     verify(result == NULL);
     verify(reader.cursor == 5);
 
