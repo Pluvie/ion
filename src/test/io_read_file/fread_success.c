@@ -3,6 +3,7 @@ test( io_read_file, fread_success ) {
   given("a struct io");
     struct io reader = {
       .channel = IO_CHANNEL_FILE,
+      .allocator = &(struct buffer) { 0 },
       .length = 4,
     };
 

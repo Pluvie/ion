@@ -28,8 +28,8 @@ test( error_add_reflection_path, preserve_trace ) {
     verify(error.occurred == true);
     verify(error.trace_count == 1);
     verify(streq(error.trace[0].file,
-      "./src/ion/functions/io_write.c"));
-    verify(error.trace[0].line == 17);
+      "./src/ion/functions/io_write_memory.c"));
+    verify(error.trace[0].line == 9);
 
 
   success();

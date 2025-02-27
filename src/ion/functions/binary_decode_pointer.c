@@ -28,7 +28,7 @@ check_string_size:
   pointer_size = *string_size;
 
 allocate_pointer:
-  void* pointer_data;
+  void* pointer_data = memory_alloc(target->allocator, pointer_size);
 
   if (pointer_reflection->type == CHAR)
     goto pointer_type_char;
@@ -37,14 +37,14 @@ allocate_pointer:
 
 pointer_type_char:
   /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
-  pointer_data = io_read(source, pointer_size);
+  char* string = io_read(source, pointer_size);
   if (error.occurred)
     return;
 
+  memcpy(pointer_data, string, pointer_size);
   goto validate_pointer;
 
 pointer_type_other:
-  pointer_data = memory_alloc(target->allocator, pointer_size);
   struct object pointer = {
     .name = target->name,
     .address = pointer_data,
