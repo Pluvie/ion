@@ -3,10 +3,10 @@
 
 /* ⚡️ION⚡️ Modules requiring the CORE module only. */
 #include "modules/array.c"
-#include "modules/date.c"
 #include "modules/io.c"
 #include "modules/map.c"
 #include "modules/vector.c"
+#include "modules/time.c"
 
 /* ⚡️ION⚡️ Modules requiring the ARRAY module. */
 #include "modules/string.c"
@@ -26,4 +26,3 @@
 #include "modules/set.c"
 #include "modules/tcp.c"
 #include "modules/tensor.c"
-#include "modules/time.c"

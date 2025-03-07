@@ -3,11 +3,11 @@
 
 /* ⚡️ION⚡️ Modules requiring the CORE module only. */
 #include "modules/array.h"
-#include "modules/date.h"
 #include "modules/io.h"
 #include "modules/map.h"
 #include "modules/string.h"
 #include "modules/vector.h"
+#include "modules/time.h"
 
 /* ⚡️ION⚡️ Modules requiring the STRING, ARRAY and VECTOR module. */
 #include "modules/reflection.h"
@@ -24,4 +24,3 @@
 #include "modules/set.h"
 #include "modules/tcp.h"
 #include "modules/tensor.h"
-#include "modules/time.h"
