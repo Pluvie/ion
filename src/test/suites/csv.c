@@ -8,6 +8,11 @@ void test_suite__csv (
   test_add( csv_is_reflection_compatible, incompatible_struct_fields );
   test_add( csv_is_reflection_compatible, not_array );
   test_add( csv_is_reflection_compatible, not_array_of_struct );
+  test_add( csv_parse_row, comma_separated );
+  test_add( csv_parse_row, comma_separated_overcount );
+  test_add( csv_parse_row, newline_unwrapped );
+  test_add( csv_parse_row, newline_unwrapped_overcount );
+  test_add( csv_parse_row, semicolon_separated );
   test_add( csv_string_split, array_of_chunks );
   test_add( csv_string_split, wrapped );
   test_add( csv_string_split, wrapped_incomplete );

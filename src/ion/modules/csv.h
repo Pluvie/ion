@@ -12,4 +12,5 @@
 
 #define ION_CSV
 
+#include "csv/structs.h"
 #include "csv/functions.h"

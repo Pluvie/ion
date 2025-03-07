@@ -5,5 +5,6 @@
 #define ION_STRING
 
 #include "string/macros.h"
+#include "string/enums.h"
 #include "string/structs.h"
 #include "string/functions.h"
