@@ -5,25 +5,25 @@ void decode (
     void
 )
 {
-  struct data {
+  struct {
     struct array* users;
   } data;
 
   struct user {
-    char* name;
+    struct string name;
     u32 age;
     struct array* roles;
   };
 
-  struct reflect data_reflection = {
-    type(STRUCT, sizeof(struct data)), fields({
-      { field(struct data, users), type(POINTER), of({
-          type(ARRAY, 0, 0), of({
-            type(STRUCT, sizeof(struct user)), fields({
-              { field(struct user, name), type(POINTER), of({ type(CHAR) }) },
-              { field(struct user, age), type(I32) },
-              { field(struct user, roles), type(POINTER), of({
-                  type(ARRAY, 0, 0), of({ type(POINTER), of({ type(CHAR) }) })
+  struct reflection data_rfx = {
+    type(STRUCT, typeof(data)), fields({
+      { field(users, POINTER, typeof(data)), of({
+          type(ARRAY), of({
+            type(STRUCT, struct user), fields({
+              { field(name, STRING, struct user) },
+              { field(age, I32, struct user) },
+              { field(roles, POINTER, struct user), of({
+                  type(ARRAY), of({ type(STRING) })
                 })
               },
             })
@@ -35,22 +35,27 @@ void decode (
 
   struct memory allocator = memory_init(0);
   struct io json = file_read("decode.json", &allocator);
-  struct object target = object(data, &data_reflection, &allocator);
-  json_decode(&json, &target);
+  if (error.occurred) {
+    error_print();
+    return;
+  }
+
+  reflection_initialize(&data_rfx, &data, &allocator);
+  json_decode(&json, &data_rfx);
 
   struct user* user;
 
   user = array_get(data.users, 0);
-  print("Done: { %s, %i, [ %s, %s ] }",
-    user->name, user->age,
-    *(char**) array_get(user->roles, 0),
-    *(char**) array_get(user->roles, 1));
+  print("Done: { %.*s, %i, [ %.*s, %.*s ] }",
+    sp(&(user->name)), user->age,
+    sp((struct string*) array_get(user->roles, 0)),
+    sp((struct string*) array_get(user->roles, 1)));
 
   user = array_get(data.users, 99999);
-  print("Done: { %s, %i, [ %s, %s ] }",
-    user->name, user->age,
-    *(char**) array_get(user->roles, 0),
-    *(char**) array_get(user->roles, 1));
+  print("Done: { %.*s, %i, [ %.*s, %.*s ] }",
+    sp(&(user->name)), user->age,
+    sp((struct string*) array_get(user->roles, 0)),
+    sp((struct string*) array_get(user->roles, 1)));
 
   memory_release(&allocator);
 }
