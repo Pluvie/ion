@@ -1,3 +1,4 @@
+#include "functions/csv_decode.c"
 #include "functions/csv_decode_headers.c"
 #include "functions/csv_decode_row.c"
 #include "functions/csv_is_reflection_compatible.c"

@@ -11,11 +11,11 @@ check_compatibility:
   if (!csv_is_reflection_compatible(rfx))
     return;
 
-  struct reflect* struct_rfx = rfx->element;
-  struct csv* rfx->support_data;
+  struct reflection* struct_rfx = rfx->element;
+  struct csv_properties* csv = rfx->support_data;
 
 decode_headers:
-  struct array* headers = csv_decode_headers(io, struct_rfx, csv);
+  struct array* headers = csv_decode_headers(io, struct_rfx, *csv);
   if (error.occurred)
     return;
 
@@ -26,11 +26,11 @@ decode_rows:
 next_row:
   struct_rfx->index = rows.length;
   struct_rfx->target = empty_row;
-  csv_decode_row(io, struct_rfx, headers, csv);
+  csv_decode_row(io, struct_rfx, headers, *csv);
   if (error.occurred)
     return;
 
-  array_push(&rows, elmement_rfx->target);
+  array_push(&rows, struct_rfx->target);
   memzero(empty_row, struct_rfx->size);
 
   if (io_exhausted(io))

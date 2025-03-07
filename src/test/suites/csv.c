@@ -4,6 +4,8 @@ void test_suite__csv (
     void
 )
 {
+  test_add( csv_decode, detect_headers );
+  test_add( csv_decode, no_headers );
   test_add( csv_decode_headers, matching_fields );
   test_add( csv_decode_headers, unmatching_fields );
   test_add( csv_decode_row, field_types );

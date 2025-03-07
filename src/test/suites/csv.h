@@ -1,5 +1,7 @@
 #include "../../ion/modules/csv.c"
 
+#include "csv/csv_decode/detect_headers.c"
+#include "csv/csv_decode/no_headers.c"
 #include "csv/csv_decode_headers/matching_fields.c"
 #include "csv/csv_decode_headers/unmatching_fields.c"
 #include "csv/csv_decode_row/field_types.c"
