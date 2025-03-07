@@ -1,7 +1,6 @@
-static inline struct map* csv_decode_headers (
+static inline struct array* csv_decode_headers (
     struct io* source,
-    struct vector* fields,
-    struct memory* allocator,
+    struct reflection* struct_rfx,
     struct csv_properties csv
 )
 /**

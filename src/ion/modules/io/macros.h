@@ -1,5 +1,7 @@
 #include "macros/io_buffer_data.h"
 #include "macros/io_buffer_limit.h"
+#include "macros/io_flag_add.h"
+#include "macros/io_flag_remove.h"
 #include "macros/io_open_file.h"
 #include "macros/io_open_memory.h"
 #include "macros/io_open_socket.h"
