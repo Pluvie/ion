@@ -48,21 +48,21 @@ test( csv_decode_headers, matching_fields ) {
     verify(headers != NULL);
     verify(headers->length == csv.columns_count);
 
-    struct reflection* header;
+    struct reflection** header;
     struct reflection* field_rfx;
 
     header = array_get(headers, 0);
     field_rfx = vector_get(rfx.element->fields, 1);
-    verify(header != NULL);
-    verify(*(struct reflection**) header == field_rfx);
+    verify(*header != NULL);
+    verify(*header == field_rfx);
 
     header = array_get(headers, 1);
     field_rfx = vector_get(rfx.element->fields, 0);
-    verify(header != NULL);
-    verify(*(struct reflection**) header == field_rfx);
+    verify(*header != NULL);
+    verify(*header == field_rfx);
 
     header = array_get(headers, 2);
-    verify(*(struct reflection**) header == NULL);
+    verify(*header == NULL);
 
 
   success();

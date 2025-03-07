@@ -18,9 +18,8 @@ test( csv_decode_headers, unmatching_fields ) {
     struct reflection rfx = {
       type(ARRAY), of({
         type(STRUCT, struct user), fields({
-          { field(age, U32, struct user), named("AGE") },
           { field(name, STRING, struct user), named("USERNAME") },
-          { field(last_login, STRING, struct user), named("LAST_LOGIN") },
+          { field(age, U32, struct user), named("AGE") },
         })
       })
     };
@@ -42,21 +41,26 @@ test( csv_decode_headers, unmatching_fields ) {
     struct array* headers = csv_decode_headers(&csv_io, rfx.element, csv);
 
 
-  must("correctly identify no matching fields");
+  must("sequentially match the fields");
     verify(error.occurred == false);
     verify(headers != NULL);
     verify(headers->length == csv.columns_count);
 
-    struct reflection* header;
+    struct reflection** header;
+    struct reflection* field_rfx;
 
     header = array_get(headers, 0);
-    verify(*(struct reflection**) header == NULL);
+    field_rfx = vector_get(rfx.element->fields, 0);
+    verify(*header != NULL);
+    verify(*header == field_rfx);
 
     header = array_get(headers, 1);
-    verify(*(struct reflection**) header == NULL);
+    field_rfx = vector_get(rfx.element->fields, 1);
+    verify(*header != NULL);
+    verify(*header == field_rfx);
 
     header = array_get(headers, 2);
-    verify(*(struct reflection**) header == NULL);
+    verify(*header == NULL);
 
 
   success();
