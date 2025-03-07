@@ -6,7 +6,6 @@ static inline struct array* csv_decode_headers (
 {
   u64 initial_cursor_position = source->cursor;
   bool at_least_one_matching_header = false;
-
   io_flag_add(source, IO_FLAGS_BUFFER_RETAIN);
 
   struct array* columns = csv_parse_row(source, struct_rfx->allocator, csv);
@@ -32,7 +31,6 @@ static inline struct array* csv_decode_headers (
   }
 
   io_flag_remove(source, IO_FLAGS_BUFFER_RETAIN);
-
   if (at_least_one_matching_header)
     return headers;
 

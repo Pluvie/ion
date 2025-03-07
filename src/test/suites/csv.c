@@ -6,6 +6,7 @@ void test_suite__csv (
 {
   test_add( csv_decode_headers, matching_fields );
   test_add( csv_decode_headers, unmatching_fields );
+  test_add( csv_decode_row, field_types );
   test_add( csv_is_reflection_compatible, compatible );
   test_add( csv_is_reflection_compatible, incompatible_struct_fields );
   test_add( csv_is_reflection_compatible, not_array );

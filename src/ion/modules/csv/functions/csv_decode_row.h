@@ -1,7 +1,7 @@
 static inline void csv_decode_row (
     struct io* source,
-    struct object* target,
-    struct map* headers,
+    struct reflection* struct_rfx,
+    struct array* headers,
     struct csv_properties csv
 )
 /**

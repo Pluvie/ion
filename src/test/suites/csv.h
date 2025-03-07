@@ -2,6 +2,7 @@
 
 #include "csv/csv_decode_headers/matching_fields.c"
 #include "csv/csv_decode_headers/unmatching_fields.c"
+#include "csv/csv_decode_row/field_types.c"
 #include "csv/csv_is_reflection_compatible/compatible.c"
 #include "csv/csv_is_reflection_compatible/incompatible_struct_fields.c"
 #include "csv/csv_is_reflection_compatible/not_array.c"
