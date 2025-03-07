@@ -22,6 +22,7 @@ test( csv_parse_row, newline_unwrapped ) {
   must("correctly parse the row into the fields");
     verify(error.occurred == false);
     verify(fields != NULL);
+    verify(fields->length == csv.columns_count);
     for array_each_with_index(fields, field_index, struct string*, field)
       switch (field_index) {
       case 0:

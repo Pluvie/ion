@@ -6,6 +6,7 @@
 #include "csv/csv_is_reflection_compatible/not_array_of_struct.c"
 #include "csv/csv_parse_row/comma_separated.c"
 #include "csv/csv_parse_row/comma_separated_overcount.c"
+#include "csv/csv_parse_row/multiple_rows.c"
 #include "csv/csv_parse_row/newline_unwrapped.c"
 #include "csv/csv_parse_row/newline_unwrapped_overcount.c"
 #include "csv/csv_parse_row/semicolon_separated.c"

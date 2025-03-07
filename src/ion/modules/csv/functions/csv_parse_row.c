@@ -7,10 +7,16 @@ static inline struct array* csv_parse_row (
   struct array* fields = array_allocate(sizeof(struct string), 0, allocator);
   bool last_field = false;
 
+  struct string field = { 0 };
+  u64 field_begin = 0;
+  u64 row_length = 0;
+
   char* character;
 
-next_field:
   io_cursor_save(source);
+
+next_field:
+  field_begin = source->cursor;
 
   character = io_read(source, sizeof(char));
   if (error.occurred)
@@ -83,24 +89,27 @@ check_wrapper_terminator:
   /* Pushes the field in the fields array. If this is the last field, terminates,
    * otherwise keeps parsing. */
 push_field:
-  u64 field_length = source->cursor - source->saved_cursor;
-  io_cursor_restore(source);
-  char* field_content = io_read(source, field_length);
+  field.length = source->cursor - field_begin;
+  source->cursor = field_begin;
+
+  char* field_content = io_read(source, field.length);
   if (error.occurred)
     return NULL;
 
-  struct string field = {
-    .content = memory_alloc(allocator, field_length),
-    .length = field_length
-  };
-  memcpy(field.content, field_content, field_length - 1);
-  field.content[field_length - 1] = '\0';
+  field.content = memory_alloc(allocator, field.length);
+  memcpy(field.content, field_content, field.length);
+  field.content[field.length - 1] = '\0';
+
+  row_length += field.length;
+  field.length--;
+
   array_push(fields, &field);
+  memzero(&field, sizeof(struct string));
 
   if (last_field)
     goto terminate;
 
-  if (fields->length + 1 > csv.columns_count) {
+  if (fields->length >= csv.columns_count) {
     fail("expected newline but found more than the specified %i columns count", csv.columns_count);
     error_add_io_extraction(source);
     return NULL;
@@ -109,5 +118,10 @@ push_field:
   goto next_field;
 
 terminate:
+  io_cursor_restore(source);
+  io_read(source, row_length);
+  if (error.occurred)
+    return NULL;
+
   return fields;
 }
