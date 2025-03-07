@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Data generation.
+touch decode.json
+truncate -s 0 decode.json
+echo -e '{ "users": [' >> decode.json
+
+for i in $(seq 1 100000);
+do
+  echo -e '{ "name": "Billy", "age": 70, "roles": [ "admin", "supervisor" ] },' >> decode.json
+done
+
+echo -e '{ "name": "Tony", "age": 90, "roles": [ "editor", "viewer" ] }' >> decode.json
+echo '] }' >> decode.json
+
+# Perf run.
+hyperfine --warmup 5  \
+  exe/go              \
+  exe/ion
+
+rm decode.json

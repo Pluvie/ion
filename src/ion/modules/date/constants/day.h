@@ -1,0 +1,1 @@
+#define DAY         DAYS

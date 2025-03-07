@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ "$#" -lt 1 ]; then
+    echo "Specify a source to compile."
+    exit -1
+fi
+
+APP=$1
+SOURCE=$1
+
+if [ "$APP" = "test_focus" ]; then
+  SOURCE="test"
+fi
+
+mkdir -p exe
+gcc src/$SOURCE.c               \
+  -o exe/$APP                   \
+  -I ./src                      \
+  -Wall                         \
+  -Wno-unused-label             \
+  -Werror                       \
+  ${@:2}

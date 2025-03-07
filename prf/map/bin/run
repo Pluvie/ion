@@ -1,0 +1,8 @@
+#!/bin/bash
+
+hyperfine --warmup 5  \
+  exe/abseil          \
+  exe/go              \
+  exe/ion             \
+  exe/rust            \
+  exe/skarupke

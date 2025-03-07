@@ -1,0 +1,76 @@
+static inline void json_decode_pointer (
+    struct io* io,
+    struct reflection* rfx
+)
+{
+  struct reflection* element_rfx = rfx->element;
+  u64 pointer_size = element_rfx->size;
+
+  /* Special case: a POINTER size of type CHAR must be explicitly sent, as its
+   * length is not fixed and not known a priori. */
+  if (element_rfx->type == CHAR)
+    goto check_string_size;
+  else
+    goto allocate_pointer;
+
+check_string_size:
+  u64 string_max_size = rfx->size_limits.max;
+  u64 string_size = json_parse_string(io);
+  if (error.occurred)
+    return;
+
+  if (string_size == 0) {
+    fail("expected a string");
+    error_add_io_extraction(io);
+    error_add_reflection_path(rfx);
+    return;
+  }
+
+  /* In checking the string size, does not consider the surrounding '"'. */
+  if (string_max_size > 0 && (string_size - 2) > string_max_size) {
+    fail("pointer required maximum string size of %li but found %li",
+      string_max_size, string_size);
+    error_add_io_extraction(io);
+    error_add_reflection_path(rfx);
+    return;
+  }
+
+  pointer_size = string_size;
+
+allocate_pointer:
+  void* pointer_data = memory_alloc(rfx->allocator, pointer_size);
+
+  if (element_rfx->type == CHAR)
+    goto pointer_type_char;
+  else
+    goto pointer_type_other;
+
+pointer_type_char:
+  /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
+  char* string = io_read(io, pointer_size);
+  if (error.occurred)
+    return;
+
+  /* Removes the surrounding '"'. */
+  memcpy(pointer_data, string + 1, pointer_size);
+  string = pointer_data;
+  string[pointer_size - 2] = '\0';
+  string[pointer_size - 1] = '\0';
+
+  goto validate_pointer;
+
+pointer_type_other:
+  element_rfx->target = pointer_data;
+  json_decode(io, element_rfx);
+  if (error.occurred)
+    return;
+
+validate_pointer:
+  reflection_validate(rfx, pointer_data);
+  if (error.occurred)
+    return error_add_reflection_path(rfx);
+
+copy_pointer:
+  addr pointer_address = (addr) pointer_data;
+  memcpy(rfx->target, &pointer_address, sizeof(addr));
+}

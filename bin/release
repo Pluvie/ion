@@ -1,0 +1,2 @@
+#!/bin/bash
+bin/compile $1 -O3 -march=native && echo

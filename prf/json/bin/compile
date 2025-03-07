@@ -1,0 +1,17 @@
+#!/bin/bash
+
+mkdir -p exe
+
+# Go
+cd src/go
+go build go.go
+mv go ../../exe
+cd -
+
+# Ion
+cd src/ion
+gcc ion.c           \
+  -D ION_INCLUDED   \
+  -O3 -march=native \
+  -o ../../exe/ion
+cd -

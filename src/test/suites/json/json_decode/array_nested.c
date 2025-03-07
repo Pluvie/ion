@@ -1,0 +1,68 @@
+test( json_decode, array_nested ) {
+
+  given("an example array");
+    struct array users;
+
+    struct user {
+      struct string* name;
+      u32 age;
+      struct array* roles;
+    };
+
+
+  when("it has an associated reflection");
+    struct reflection rfx = {
+      type(ARRAY), of({
+        type(STRUCT, struct user), fields({
+          { field(name, POINTER, struct user), of({ type(STRING) }) },
+          { field(age, U32, struct user) },
+          { field(roles, POINTER, struct user), of({
+              type(ARRAY), of({ type(STRING) })
+            })
+          },
+        })
+      })
+    };
+
+
+  when("some input data is ready to decode");
+    char* input =
+      " ["
+      "   { \"name\": \"Augustine\", \"age\": 25, \"roles\": [ \"one\", \"two\" ] },"
+      "   { \"name\": \"Tess Gold\", \"age\": 19, \"roles\": [ \"three\", \"four\" ] }"
+      " ]";
+
+
+  calling("json_decode()");
+    struct memory allocator = memory_init(4096);
+    struct io source = io_open_memory(input, strlen(input));
+    reflection_initialize(&rfx, &users, &allocator);
+    json_decode(&source, &rfx);
+
+
+  must("decode the input data on the struct correctly");
+    verify(error.occurred == false);
+
+    struct user* user;
+    struct string* role;
+
+    user = array_get(&users, 0);
+    verify(streq("Augustine", user->name->content));
+    verify(user->age == 25);
+    role = array_get(user->roles, 0);
+    verify(streq("one", role->content));
+    role = array_get(user->roles, 1);
+    verify(streq("two", role->content));
+
+    user = array_get(&users, 1);
+    verify(streq("Tess Gold", user->name->content));
+    verify(user->age == 19);
+    role = array_get(user->roles, 0);
+    verify(streq("three", role->content));
+    role = array_get(user->roles, 1);
+    verify(streq("four", role->content));
+
+
+  success();
+    memory_release(&allocator);
+}
