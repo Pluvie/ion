@@ -1,5 +1,9 @@
 #include "../../ion/modules/csv.c"
 
+#include "csv/csv_is_reflection_compatible/compatible.c"
+#include "csv/csv_is_reflection_compatible/incompatible_struct_fields.c"
+#include "csv/csv_is_reflection_compatible/not_array.c"
+#include "csv/csv_is_reflection_compatible/not_array_of_struct.c"
 #include "csv/csv_string_split/array_of_chunks.c"
 #include "csv/csv_string_split/wrapped.c"
 #include "csv/csv_string_split/wrapped_incomplete.c"

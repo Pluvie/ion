@@ -22,7 +22,7 @@ check_element_is_struct:
   }
 
 check_struct_not_nested:
-  for vector_each(element_rfx->child, struct reflection*, field_rfx) {
+  for vector_each(element_rfx->fields, struct reflection*, field_rfx) {
     switch (field_rfx->type) {
     case U8:
     case U16:

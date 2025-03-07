@@ -13,10 +13,11 @@ if [ "$APP" = "test_focus" ]; then
 fi
 
 mkdir -p exe
-gcc src/$SOURCE.c               \
-  -o exe/$APP                   \
-  -I ./src                      \
-  -Wall                         \
-  -Wno-unused-label             \
-  -Werror                       \
+gcc src/$SOURCE.c                 \
+  -o exe/$APP                     \
+  -I ./src                        \
+  -Wall                           \
+  -Wno-override-init-side-effects \
+  -Wno-unused-label               \
+  -Werror                         \
   ${@:2}

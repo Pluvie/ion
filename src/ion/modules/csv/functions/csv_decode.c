@@ -8,14 +8,15 @@ void csv_decode (
 )
 {
 check_compatibility:
-  if (!csv_is_reflection_compatible(target->reflection))
+  if (!csv_is_reflection_compatible(rfx))
     return;
 
-  struct reflect* element_reflection = vector_get(target->reflection->child, 0);
-  struct vector* fields = element_reflection->child;
+  struct reflect* element_rfx = rfx->element;
+  struct vector* fields = element_rfx->fields;
+  struct csv* rfx->support_data;
 
 decode_headers:
-  struct map* headers = csv_decode_headers(io, fields, target->allocator, csv);
+  struct map* headers = csv_decode_headers(io, fields, rfx->allocator, csv);
   if (error.occurred)
     return;
 
@@ -25,23 +26,18 @@ decode_headers:
   }
 
 decode_rows:
-  u64 element_typesize = reflect_typesize(element_reflection);
-  void* empty_element = memory_alloc_zero(target->allocator, element_typesize);
-  struct array rows = array_init(element_typesize, 0, target->allocator);
+  struct array rows = array_init(element_rfx->size, 0, rfx->allocator);
+  void* empty_row = memory_alloc_zero(rfx->allocator, element_rfx->size);
 
 next_row:
-  struct object row = {
-    .reflection = element_reflection,
-    .address = empty_element,
-    .allocator = target->allocator,
-  };
-
+  element_rfx->index = rows.length;
+  element_rfx->target = empty_row;
   csv_decode_row(io, &row, headers, csv);
   if (error.occurred)
     return;
 
-  array_push(&rows, row.address);
-  memzero(empty_element, element_typesize);
+  array_push(&rows, elmement_rfx->target);
+  memzero(empty_row, element_rfx->size);
 
   if (io_exhausted(io))
     goto terminate;
@@ -49,5 +45,5 @@ next_row:
   goto next_row;
 
 terminate:
-  memcpy(target->address, &rows, sizeof(struct array));
+  memcpy(rfx->target, &rows, sizeof(struct array));
 }
