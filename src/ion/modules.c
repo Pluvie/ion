@@ -16,11 +16,11 @@
 
 /* ⚡️ION⚡️ Modules requiring the IO, REFLECTION, STRING, ARRAY and VECTOR modules. */
 #include "modules/binary.c"
-//#include "modules/csv.c"
+#include "modules/csv.c"
 #include "modules/json.c"
 
 
-/* TODO: organize these modules. */
+/* TODO: implement and organize these modules. */
 #include "modules/http.c"
 #include "modules/range.c"
 #include "modules/set.c"

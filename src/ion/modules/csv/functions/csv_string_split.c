@@ -2,7 +2,7 @@
 static inline
 #endif
 
-struct array* string_split (
+struct array* csv_string_split (
     struct string string,
     struct memory* allocator,
     char separator,

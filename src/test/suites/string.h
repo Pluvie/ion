@@ -27,8 +27,3 @@
 #include "string/string_to_number/unsigned_8.c"
 #include "string/string_to_number/unsigned_8_overflow.c"
 #include "string/string_to_number/unsigned_consistency.c"
-#include "string/string_split/array_of_chunks.c"
-#include "string/string_split/wrapped.c"
-#include "string/string_split/wrapped_incomplete.c"
-#include "string/string_split/wrapped_unterminated.c"
-#include "string/string_split/zero_length.c"

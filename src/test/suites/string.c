@@ -31,9 +31,4 @@ void test_suite__string (
   test_add( string_to_number, unsigned_8 );
   test_add( string_to_number, unsigned_8_overflow );
   test_add( string_to_number, unsigned_consistency );
-  test_add( string_split, array_of_chunks );
-  test_add( string_split, wrapped );
-  test_add( string_split, wrapped_incomplete );
-  test_add( string_split, wrapped_unterminated );
-  test_add( string_split, zero_length );
 }

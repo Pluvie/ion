@@ -1,12 +1,12 @@
-test( string_split, array_of_chunks ) {
+test( csv_string_split, array_of_chunks ) {
 
   given("a string");
     struct string string = s("example;string;with;separators\n");
 
 
-  calling("string_split()");
+  calling("csv_string_split()");
     struct memory allocator = memory_init(0);
-    struct array* chunks = string_split(string, &allocator, ';', 0);
+    struct array* chunks = csv_string_split(string, &allocator, ';', 0);
 
 
   must("split the string into an array of chunks");

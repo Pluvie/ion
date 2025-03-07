@@ -1,12 +1,12 @@
-test( string_split, wrapped_incomplete ) {
+test( csv_string_split, wrapped_incomplete ) {
 
   given("a string");
     struct string string = s("'example';'str;ing;'with';'separators'");
 
 
-  calling("string_split()");
+  calling("csv_string_split()");
     struct memory allocator = memory_init(0);
-    struct array* chunks = string_split(string, &allocator, ';', '\'');
+    struct array* chunks = csv_string_split(string, &allocator, ';', '\'');
 
 
   must("split the string into an array of chunks");
