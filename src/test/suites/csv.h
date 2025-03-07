@@ -7,6 +7,7 @@
 #include "csv/csv_parse_row/comma_separated.c"
 #include "csv/csv_parse_row/comma_separated_wrapped.c"
 #include "csv/csv_parse_row/comma_separated_overcount.c"
+#include "csv/csv_parse_row/malformed_wrapper.c"
 #include "csv/csv_parse_row/multiple_rows.c"
 #include "csv/csv_parse_row/multiple_rows_mixed.c"
 #include "csv/csv_parse_row/newline_unwrapped.c"

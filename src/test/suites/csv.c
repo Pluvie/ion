@@ -11,6 +11,7 @@ void test_suite__csv (
   test_add( csv_parse_row, comma_separated );
   test_add( csv_parse_row, comma_separated_wrapped );
   test_add( csv_parse_row, comma_separated_overcount );
+  test_add( csv_parse_row, malformed_wrapper );
   test_add( csv_parse_row, multiple_rows );
   test_add( csv_parse_row, multiple_rows_mixed );
   test_add( csv_parse_row, newline_unwrapped );
