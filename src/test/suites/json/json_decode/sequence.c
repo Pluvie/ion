@@ -8,11 +8,11 @@ test( json_decode, sequence ) {
 
 
   when("it has an associated reflection");
-    struct reflect reflection = {
-      type(SEQUENCE, 4), of({
-        type(STRUCT, sizeof(struct user)), fields({
-          { field(struct user, name), type(POINTER), of({ type(CHAR) }) },
-          { field(struct user, age), type(U64) },
+    struct reflection rfx = {
+      type(SEQUENCE, typeof(users)), of({
+        type(STRUCT, struct user), fields({
+          { field(name, POINTER, struct user), of({ type(CHAR) }) },
+          { field(age, U64, struct user) },
         })
       })
     };
@@ -28,9 +28,9 @@ test( json_decode, sequence ) {
 
   calling("json_decode()");
     struct memory allocator = memory_init(4096);
-    struct io source = io_memory(input, strlen(input));
-    struct object target = object(users, &reflection, &allocator);
-    json_decode(&source, &target);
+    struct io source = io_open_memory(input, strlen(input));
+    reflection_initialize(&rfx, users, &allocator);
+    json_decode(&source, &rfx);
 
 
   must("decode the input data on the struct correctly");

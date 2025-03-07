@@ -9,16 +9,13 @@ test( json_parse_number, integer_negative ) {
 
 
   calling("json_parse_number()");
-    struct io input = io_memory(json, strlen(json));
-    struct sci_notation number;
-    bool is_number = json_parse_number(&input, &number);
+    struct io input = io_open_memory(json, strlen(json));
+    u64 number_length = json_parse_number(&input);
 
 
   must("parse the number correctly");
     verify(error.occurred == false);
-    i32 result; sci_notation_convert(&number, I32, &result);
-    verify(result == -1245);
-    verify(is_number == true);
+    verify(number_length == 5);
 
 
   success();

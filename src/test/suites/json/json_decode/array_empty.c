@@ -1,20 +1,20 @@
-test( json_decode, vector ) {
+test( json_decode, array_empty ) {
 
-  given("an example vector");
-    struct vector users;
+  given("an example array");
+    struct array users;
 
     struct user {
-      char* name;
+      struct string name;
       u32 age;
     };
 
 
   when("it has an associated reflection");
     struct reflection rfx = {
-      type(VECTOR), of({
+      type(ARRAY), of({
         type(STRUCT, struct user), fields({
-          { field(name, POINTER, struct user), of({ type(CHAR) }) },
-          { field(age, U64, struct user) },
+          { field(name, STRING, struct user) },
+          { field(age, U32, struct user) },
         })
       })
     };
@@ -22,10 +22,7 @@ test( json_decode, vector ) {
 
   when("some input data is ready to decode");
     char* input =
-      " ["
-      "   { \"name\": \"Augustine\", \"age\": 25 },"
-      "   { \"name\": \"Tess Gold\", \"age\": 19 }"
-      " ]";
+      "[ ]";
 
 
   calling("json_decode()");
@@ -37,14 +34,8 @@ test( json_decode, vector ) {
 
   must("decode the input data on the struct correctly");
     verify(error.occurred == false);
-
-    struct user* user;
-    user = vector_get(&users, 0);
-    verify(streq("Augustine", user->name));
-    verify(user->age == 25);
-    user = vector_get(&users, 1);
-    verify(streq("Tess Gold", user->name));
-    verify(user->age == 19);
+    verify(users.length == 0);
+    verify(users.data != NULL);
 
 
   success();

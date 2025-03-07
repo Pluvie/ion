@@ -45,8 +45,13 @@ check_empty_array:
   if (error.occurred)
     return;
 
-  if (*character == ']')
+  if (*character == ']') {
+    io_read(io, sizeof(char));
+    if (error.occurred)
+      return;
+
     goto terminate;
+  }
 
   goto parse_value;
 

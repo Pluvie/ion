@@ -9,9 +9,9 @@ test( json_decode, primitive_not_supported ) {
   when("it has an associated reflection");
     struct reflection rfx = {
       type(STRUCT, sizeof(struct example)), fields({
-        { field(struct example, value_bool), type(BOOL) },
-        { field(struct example, value_byte), type(BYTE) },
-        { field(struct example, value_char), type(CHAR) },
+        { field(value_bool, BOOL, struct example) },
+        { field(value_byte, BYTE, struct example) },
+        { field(value_char, CHAR, struct example) },
       })
     };
 
@@ -28,13 +28,13 @@ test( json_decode, primitive_not_supported ) {
   calling("json_decode()");
     struct memory allocator = memory_init(4096);
     struct io source = io_open_memory(input, strlen(input));
-    struct object target = object(example, &rfx, &allocator);
-    json_decode(&source, &target);
+    reflection_initialize(&rfx, &example, &allocator);
+    json_decode(&source, &rfx);
 
 
   must("fail to decode the input data with a specific error");
     char* expected_error =
-      "[value_byte] primitive type `BYTE` not supported, at position 42:\n"
+      "[value_byte] primitive type `BYTE` not supported in json, at position 42:\n"
       "se,   \"value_byte\": \"0xff\",   \"value_cha\n"
       "                   ^";
     verify(error.occurred == true);

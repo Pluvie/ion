@@ -10,22 +10,24 @@ test( json_decode, primitive ) {
 
 
   when("it has an associated reflection");
+    #define t struct example
     struct reflection rfx = {
-      type(STRUCT, sizeof(struct example)), fields({
-        { field(struct example, value_u8), type(U8) },
-        { field(struct example, value_u16), type(U16) },
-        { field(struct example, value_u32), type(U32) },
-        { field(struct example, value_u64), type(U64) },
-        { field(struct example, value_i8), type(I8) },
-        { field(struct example, value_i16), type(I16) },
-        { field(struct example, value_i32), type(I32) },
-        { field(struct example, value_i64), type(I64) },
-        { field(struct example, value_d32), type(D32) },
-        { field(struct example, value_d64), type(D64) },
-        { field(struct example, value_d128), type(D128) },
-        { field(struct example, value_bool), type(BOOL) },
+      type(STRUCT, t), fields({
+        { field(value_u8,   U8,   t) },
+        { field(value_u16,  U16,  t) },
+        { field(value_u32,  U32,  t) },
+        { field(value_u64,  U64,  t) },
+        { field(value_i8,   I8,   t) },
+        { field(value_i16,  I16,  t) },
+        { field(value_i32,  I32,  t) },
+        { field(value_i64,  I64,  t) },
+        { field(value_d32,  D32,  t) },
+        { field(value_d64,  D64,  t) },
+        { field(value_d128, D128, t) },
+        { field(value_bool, BOOL, t) },
       })
     };
+    #undef t
 
 
   when("some input data is ready to decode");
@@ -49,8 +51,8 @@ test( json_decode, primitive ) {
   calling("json_decode()");
     struct memory allocator = memory_init(4096);
     struct io source = io_open_memory(input, strlen(input));
-    struct object target = object(example, &rfx, &allocator);
-    json_decode(&source, &target);
+    reflection_initialize(&rfx, &example, &allocator);
+    json_decode(&source, &rfx);
 
 
   must("decode the input data on the struct correctly");

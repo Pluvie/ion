@@ -9,16 +9,13 @@ test( json_parse_number, fractional ) {
 
 
   calling("json_parse_number()");
-    struct io input = io_memory(json, strlen(json));
-    struct sci_notation number;
-    bool is_number = json_parse_number(&input, &number);
+    struct io input = io_open_memory(json, strlen(json));
+    u64 number_length = json_parse_number(&input);
 
 
   must("parse the number correctly");
     verify(error.occurred == false);
-    d32 result; sci_notation_convert(&number, D32, &result);
-    verify(approx_eq(result, (d32) 1245.678) == true);
-    verify(is_number == true);
+    verify(number_length == 8);
 
 
   success();

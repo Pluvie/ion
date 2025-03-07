@@ -65,6 +65,9 @@ check_after_zero:
   }
 
 integral_part:
+  if (io_exhausted(source))
+    goto terminate;
+
   digit = io_read(source, sizeof(char));
   if (error.occurred)
     return 0;
@@ -100,6 +103,9 @@ check_after_decimal_separator:
   goto error;
 
 fractional_part:
+  if (io_exhausted(source))
+    goto terminate;
+
   digit = io_read(source, sizeof(char));
   if (error.occurred)
     return 0;
@@ -137,6 +143,9 @@ exponent_sign:
   }
 
 exponent_part:
+  if (io_exhausted(source))
+    goto terminate;
+
   digit = io_read(source, sizeof(char));
   if (error.occurred)
     return 0;

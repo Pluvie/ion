@@ -10,11 +10,11 @@ test( json_decode, vector_maxlength ) {
 
 
   when("it has an associated reflection that enforces a maximum length");
-    struct reflect reflection = {
-      type(VECTOR, 0, 2), of({
-        type(STRUCT, sizeof(struct user)), fields({
-          { field(struct user, name), type(POINTER), of({ type(CHAR) }) },
-          { field(struct user, age), type(U64) },
+    struct reflection rfx = {
+      type(VECTOR), limited_to(0, 2), of({
+        type(STRUCT, struct user), fields({
+          { field(name, POINTER, struct user), of({ type(CHAR) }) },
+          { field(age, U64, struct user) },
         })
       })
     };
@@ -31,9 +31,9 @@ test( json_decode, vector_maxlength ) {
 
   calling("json_decode()");
     struct memory allocator = memory_init(4096);
-    struct io source = io_memory(input, strlen(input));
-    struct object target = object(users, &reflection, &allocator);
-    json_decode(&source, &target);
+    struct io source = io_open_memory(input, strlen(input));
+    reflection_initialize(&rfx, &users, &allocator);
+    json_decode(&source, &rfx);
 
 
   must("fail to decode the input data and report the error properly");

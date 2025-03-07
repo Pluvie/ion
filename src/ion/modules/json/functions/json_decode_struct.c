@@ -34,8 +34,13 @@ check_empty_object:
   if (error.occurred)
     return;
 
-  if (*character == '}')
+  if (*character == '}') {
+    io_read(io, sizeof(char));
+    if (error.occurred)
+      return;
+
     goto terminate;
+  }
 
   goto parse_field;
 
@@ -56,14 +61,14 @@ parse_field:
   }
 
 read_field:
+  field_name = io_read(io, field_name_length);
+  if (error.occurred)
+    return;
+
   if (rfx == NULL) {
     field_rfx = NULL;
     goto check_semicolon;
   }
-
-  field_name = io_read(io, field_name_length);
-  if (error.occurred)
-    return;
 
   for vector_each(rfx->fields, struct reflection*, fx) {
     /* Field name equality must be done removing the `"` surrounding `field_name`.*/

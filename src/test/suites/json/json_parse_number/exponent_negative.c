@@ -9,16 +9,13 @@ test( json_parse_number, exponent_negative ) {
 
 
   calling("json_parse_number()");
-    struct io input = io_memory(json, strlen(json));
-    struct sci_notation number;
-    bool is_number = json_parse_number(&input, &number);
+    struct io input = io_open_memory(json, strlen(json));
+    u64 number_length = json_parse_number(&input);
 
 
   must("parse the number correctly");
     verify(error.occurred == false);
-    d64 result; sci_notation_convert(&number, D64, &result);
-    verify(approx_eq(result, (d64) 0.01245678) == true);
-    verify(is_number == true);
+    verify(number_length == 11);
 
 
   success();

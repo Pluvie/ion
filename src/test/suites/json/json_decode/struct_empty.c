@@ -1,11 +1,11 @@
-test( json_decode, struct ) {
+test( json_decode, struct_empty ) {
 
   given("an example struct");
     struct example {
       u8 number;
       char* string;
       struct array points;
-    } example;
+    } example = { 0 };
 
     struct point {
       d64 x;
@@ -31,16 +31,7 @@ test( json_decode, struct ) {
 
   when("some input data is ready to decode");
     char* input =
-      " {"
-      "   \"number\": 255,"
-      "   \"ignored_field\": \"ignore me\","
-      "   \"string\": \"example\","
-      "   \"points\": ["
-      "     { \"x\": 3.14, \"y\": 7 },"
-      "     { \"x\": 5.05, \"y\": -9 }"
-      "   ],"
-      "   \"empty_array\": []"
-      " }";
+      "{}";
 
 
   calling("json_decode()");
@@ -52,16 +43,10 @@ test( json_decode, struct ) {
 
   must("decode the input data on the struct correctly");
     verify(error.occurred == false);
-    verify(example.number == 255);
-    verify(streq("example", example.string));
-
-    struct point* point;
-    point = array_get(&(example.points), 0);
-    verify(point->x == 3.14);
-    verify(point->y == 7.0);
-    point = array_get(&(example.points), 1);
-    verify(point->x == 5.05);
-    verify(point->y == -9.0);
+    verify(example.number == 0);
+    verify(example.string == NULL);
+    verify(example.points.length == 0);
+    verify(example.points.data == NULL);
 
 
   success();

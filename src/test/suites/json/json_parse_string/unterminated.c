@@ -9,15 +9,13 @@ test( json_parse_string, unterminated ) {
 
 
   calling("json_parse_string()");
-    struct io input = io_memory(json, strlen(json));
-    u64 string_length = 0;
-    bool is_string = json_parse_string(&input, &string_length);
+    struct io input = io_open_memory(json, strlen(json));
+    u64 string_length = json_parse_string(&input);
 
 
   must("fail to parse the string with a specific error");
     verify(error.occurred == true);
     verify(streq("io: end of memory reached", error.message));
-    verify(is_string == false);
     verify(string_length == 0);
 
 
