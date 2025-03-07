@@ -12,4 +12,13 @@ The `prf` directory is used to host a series of performance tests agains other f
 
 The map data structure is benchmarked against:
 
-  - [Abseil Flat Hash Map](https://abseil.io/docs/cpp/guides/container) from Google.
+  - [absl::flat_hash_map](https://abseil.io/docs/cpp/guides/container) from Google's Abseil library.
+  - [ska::flat_hash_map](https://doc.rust-lang.org/std/collections/struct.HashMap.html) from Malte Skarupke.
+  - [map](https://go.dev/blog/maps) from Go programming language.
+  - [HashMap](https://doc.rust-lang.org/std/collections/struct.HashMap.html) from Rust programming language.
+
+### JSON
+
+The JSON decoding capability is benchmarked against:
+
+  - [encoding/json](https://pkg.go.dev/encoding/json) from Go programming language.
