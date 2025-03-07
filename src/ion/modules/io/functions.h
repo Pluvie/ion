@@ -1,4 +1,5 @@
 #include "functions/error_add_io_extraction.h"
+#include "functions/file_read.h"
 #include "functions/file_size.h"
 #include "functions/io_buffer_chip_away.h"
 #include "functions/io_close.h"
