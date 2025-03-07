@@ -10,6 +10,7 @@ static inline struct array* csv_parse_row (
   struct string field = { 0 };
   u64 field_begin = 0;
   u64 row_length = 0;
+  bool is_wrapped = false;
 
   char* character;
 
@@ -33,6 +34,8 @@ next_field:
    * If a newline is encountered and the fields count is below the expected quantity,
    * the parsing continues, otherwise the function shall fail. */
 parse_unwrapped:
+  is_wrapped = false;
+
   character = io_read(source, sizeof(char));
   if (error.occurred)
     return NULL;
@@ -55,6 +58,8 @@ parse_unwrapped:
    * but only if encountered after the wrapper char. Shall fail if the fields count is
    * not equal to the expected quantity. */
 parse_wrapped:
+  is_wrapped = true;
+
   character = io_read(source, sizeof(char));
   if (error.occurred)
     return NULL;
@@ -90,17 +95,25 @@ check_wrapper_terminator:
    * otherwise keeps parsing. */
 push_field:
   field.length = source->cursor - field_begin;
+  row_length += field.length;
+
   source->cursor = field_begin;
+  if (is_wrapped) {
+    source->cursor++;
+    field.length--;
+  }
 
   char* field_content = io_read(source, field.length);
   if (error.occurred)
     return NULL;
 
+  if (is_wrapped)
+    field.length--;
+
   field.content = memory_alloc(allocator, field.length);
   memcpy(field.content, field_content, field.length);
   field.content[field.length - 1] = '\0';
 
-  row_length += field.length;
   field.length--;
 
   array_push(fields, &field);
