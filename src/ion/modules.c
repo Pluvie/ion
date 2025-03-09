@@ -9,7 +9,7 @@
 #include "modules/time.c"
 
 /* ⚡️ION⚡️ Modules requiring the VECTOR module. */
-//#include "modules/tensor.c"
+#include "modules/tensor.c"
 
 /* ⚡️ION⚡️ Modules requiring the ARRAY module. */
 #include "modules/string.c"
