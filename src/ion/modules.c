@@ -8,6 +8,9 @@
 #include "modules/vector.c"
 #include "modules/time.c"
 
+/* ⚡️ION⚡️ Modules requiring the VECTOR module. */
+//#include "modules/tensor.c"
+
 /* ⚡️ION⚡️ Modules requiring the ARRAY module. */
 #include "modules/string.c"
 
@@ -25,4 +28,3 @@
 #include "modules/range.c"
 #include "modules/set.c"
 #include "modules/tcp.c"
-#include "modules/tensor.c"

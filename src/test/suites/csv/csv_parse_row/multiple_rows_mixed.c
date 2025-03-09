@@ -37,7 +37,7 @@ test( csv_parse_row, multiple_rows_mixed ) {
     verify(fields_3->length == csv.columns_count);
     verify(fields_4->length == csv.columns_count);
 
-    for array_each_with_index(fields_1, field_index, struct string*, field)
+    for array_each(fields_1, struct string*, field, field_index)
       switch (field_index) {
       case 0:
         verify(streq("a\n", field->content));
@@ -52,7 +52,7 @@ test( csv_parse_row, multiple_rows_mixed ) {
         continue;
       }
 
-    for array_each_with_index(fields_2, field_index, struct string*, field)
+    for array_each(fields_2, struct string*, field, field_index)
       switch (field_index) {
       case 0:
         verify(streq("another", field->content));
@@ -67,7 +67,7 @@ test( csv_parse_row, multiple_rows_mixed ) {
         continue;
       }
 
-    for array_each_with_index(fields_3, field_index, struct string*, field)
+    for array_each(fields_3, struct string*, field, field_index)
       switch (field_index) {
       case 0:
         verify(streq("yet ano,ther", field->content));
@@ -82,7 +82,7 @@ test( csv_parse_row, multiple_rows_mixed ) {
         continue;
       }
 
-    for array_each_with_index(fields_4, field_index, struct string*, field)
+    for array_each(fields_4, struct string*, field, field_index)
       switch (field_index) {
       case 0:
         verify(streq("and finally", field->content));

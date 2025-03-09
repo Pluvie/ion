@@ -34,7 +34,8 @@ static inline struct array* csv_decode_headers (
   if (at_least_one_matching_header)
     return headers;
 
-  for vector_each_with_index(struct_rfx->fields, field_index, struct reflection*, field_rfx) {
+  
+  for vector_each(struct_rfx->fields, struct reflection*, field_rfx, field_index) {
     addr field_rfx_addr = (addr) field_rfx;
     array_set(headers, field_index, &field_rfx_addr);
   }

@@ -9,7 +9,7 @@ static inline void csv_decode_row (
   struct array* columns = csv_parse_row(source, &row_allocator, csv);
 
   struct reflection* field_rfx = NULL;
-  for array_each_with_index(headers, header_index, struct reflection**, header) {
+  for array_each(headers, struct reflection**, header, header_index) {
     field_rfx = *header;
     if (field_rfx == NULL)
       continue;
