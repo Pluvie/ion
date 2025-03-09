@@ -9,9 +9,6 @@
 #include "modules/vector.h"
 #include "modules/time.h"
 
-/* ⚡️ION⚡️ Modules requiring the VECTOR module. */
-//#include "modules/tensor.h"
-
 /* ⚡️ION⚡️ Modules requiring the STRING, ARRAY and VECTOR module. */
 #include "modules/reflection.h"
 
@@ -26,3 +23,4 @@
 #include "modules/range.h"
 #include "modules/set.h"
 #include "modules/tcp.h"
+#include "modules/tensor.h"

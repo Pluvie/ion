@@ -5,7 +5,6 @@
 #include "suites/string.c"
 #include "suites/vector.c"
 #include "suites/time.c"
-//#include "suites/tensor.c"
 #include "suites/reflection.c"
 #include "suites/binary.c"
 #include "suites/csv.c"
@@ -26,7 +25,6 @@ bool suite_register (
   test_suite__string();
   test_suite__vector();
   test_suite__time();
-  //test_suite__tensor();
   test_suite__reflection();
   test_suite__binary();
   test_suite__csv();
@@ -51,8 +49,6 @@ run_specific_suite:
     test_suite__vector();
   else  if (strcmp(module, "time") == 0)
     test_suite__time();
-  //else  if (strcmp(module, "tensor") == 0)
-  //  test_suite__tensor();
   else  if (strcmp(module, "reflection") == 0)
     test_suite__reflection();
   else  if (strcmp(module, "binary") == 0)
