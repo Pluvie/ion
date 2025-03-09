@@ -17,10 +17,12 @@
 #include "modules/csv.h"
 #include "modules/json.h"
 
+/* ⚡️ION⚡️ Modules requiring the IO module. */
+#include "modules/tcp.h"
+
 
 /* TODO: implement and organize these modules. */
 #include "modules/http.h"
 #include "modules/range.h"
 #include "modules/set.h"
-#include "modules/tcp.h"
 #include "modules/tensor.h"

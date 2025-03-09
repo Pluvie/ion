@@ -41,24 +41,16 @@ void chat_responder (
   print("New connection from: %s.", server->client_ip);
   print("Waiting for messages.");
 
-  /* The necessary memory to store the received messages is buffer backed.
-   *
-   * A buffer simplifies memory management: there is no need to `malloc` and `free`
-   * every message from the client, as seen in many C tutorials. The buffer shall
-   * create the required space, and then free it all at once when requested. */
-  struct buffer allocator = buffer_init(0);
-
   /* The io abstraction is a common interface to execute input / output operations
    * on various devices. In this case, a network socket. */
-  struct io reader = io_reader_socket(server->descriptor);
-  struct io writer = io_writer_socket(server->descriptor);
+  struct io reader = io_open_socket(server->descriptor);
+  struct io writer = io_open_socket(server->descriptor);
 
   char* message = NULL;
   char reply[2048] = { 0 };
 
 read_message:
-  message = buffer_data(&allocator, buffer_alloc(&allocator, 2048));
-  io_read(&reader, message, 2048);
+  message = io_read(&reader, 2048);
 
   /* The client sent 0 bytes: this happens if the client crashes or either way closes
    * the connection. We can safely close the connection on our end too. */
@@ -94,11 +86,10 @@ read_message:
   goto read_message;
 
 close_connection:
+  /* Closes the IOs and release their buffers. */
+  io_close(&reader);
+  io_close(&writer);
+
   if (server->descriptor > 0)
     close(server->descriptor);
-
-  /* All the necessary memory to receive the client messages now can be safely freed:
-   * isn't this so much simpler than tracking each object lifetime individually, as it
-   * is done with the widespread improper use of `malloc` and `free`? */
-  buffer_release(&allocator);
 }

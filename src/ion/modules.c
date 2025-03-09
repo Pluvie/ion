@@ -19,10 +19,12 @@
 #include "modules/csv.c"
 #include "modules/json.c"
 
+/* ⚡️ION⚡️ Modules requiring the IO module. */
+#include "modules/tcp.c"
+
 
 /* TODO: implement and organize these modules. */
 #include "modules/http.c"
 #include "modules/range.c"
 #include "modules/set.c"
-#include "modules/tcp.c"
 #include "modules/tensor.c"

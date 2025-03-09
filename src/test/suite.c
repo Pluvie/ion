@@ -9,6 +9,7 @@
 #include "suites/binary.c"
 #include "suites/csv.c"
 #include "suites/json.c"
+#include "suites/tcp.c"
 
 bool suite_register (
     i32 argc,
@@ -29,6 +30,7 @@ bool suite_register (
   test_suite__binary();
   test_suite__csv();
   test_suite__json();
+  test_suite__tcp();
 
   return true;
 
@@ -57,6 +59,8 @@ run_specific_suite:
     test_suite__csv();
   else  if (strcmp(module, "json") == 0)
     test_suite__json();
+  else  if (strcmp(module, "tcp") == 0)
+    test_suite__tcp();
   else
     goto unrecognized_module;
 
