@@ -2,9 +2,8 @@
 static inline
 #endif
 
-void* tensor_at_sequences (
-    struct tensor* tensor,
-    struct vector* sequences
+void tcp_client_start (
+    struct tcp_client* client
 )
 /**
  * ### Description

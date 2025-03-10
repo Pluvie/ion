@@ -14,8 +14,8 @@ test( tensor_init, correct_dimensions ) {
 
 
   must("initialize the tensor with the correct dimensions");
-    for vector_each_with_index(
-        tensor.dimensions, dimension_index, struct tensor_dimension*, dimension)
+    for vector_each(
+        tensor.dimensions, struct tensor_dimension*, dimension, dimension_index)
       switch (dimension_index) {
       case 0:
         verify(dimension->length == 2);

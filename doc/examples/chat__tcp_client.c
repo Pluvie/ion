@@ -1,5 +1,9 @@
-#include "../../src/ion.h"
-#include "../../src/ion.c"
+#include "../../src/ion/modules/core.h"
+#include "../../src/ion/modules/io.h"
+#include "../../src/ion/modules/tcp.h"
+#include "../../src/ion/modules/core.c"
+#include "../../src/ion/modules/io.c"
+#include "../../src/ion/modules/tcp.c"
 void chat_sender (struct tcp_client* client);
 
 /**
@@ -52,18 +56,12 @@ void chat_sender (
   /* This string holds the text that the user inserts via prompt. */
   char prompt[1024] = { 0 };
 
-  /* All necessary memory to read back the server reply shall be buffer backed.
-   *
-   * A buffer simplifies memory management: there is no need to `malloc` and `free`
-   * every message from the server, as seen in many C tutorials. The buffer shall
-   * create the required space, and then free it all at once when requested. */
-  struct buffer allocator = buffer_init(0);
-
   /* The io abstraction is a common interface to execute input / output operations
    * on various devices. In this case, a network socket. */
-  struct io reader = io_reader_socket(client->descriptor);
-  struct io writer = io_writer_socket(client->descriptor);
+  struct io reader = io_open_socket(client->descriptor);
+  struct io writer = io_open_socket(client->descriptor);
 
+send_messages:
   while(streq("quit", prompt) == false) {
     /* Shows a fancy prompt. */
     emit_c(PRINT_COLOR_CYAN, "> ");
@@ -85,8 +83,7 @@ void chat_sender (
 
     /* Reads back the server reply. If a network error occurs, print it on screen and
      * close the client. */
-    char* reply = buffer_data(&allocator, buffer_alloc(&allocator, 2048));
-    io_read(&reader, reply, 2048);
+    char* reply = io_read(&reader, 2048);
     if (error.occurred) {
       print("Error while receiving server reply: %s", error.message);
       break;
@@ -96,12 +93,12 @@ void chat_sender (
     print("%s", reply);
   }
 
+close_connection:
+  /* Closes the IOs and release their buffers. */
+  io_close(&reader);
+  io_close(&writer);
+
   /* Close the client socket, if not already done by a previous system call. */
   if (client->descriptor > 0)
     close(client->descriptor);
-
-  /* All the necessary memory to receive the server replies now can be safely freed:
-   * isn't this so much simpler than tracking each object lifetime individually, as it
-   * is done with the widespread improper use of `malloc` and `free`? */
-  buffer_release(&allocator);
 }

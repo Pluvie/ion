@@ -8,8 +8,8 @@ void* tensor_at (
 )
 {
   u64 position_offset = 0;
-  for vector_each_with_index(
-      tensor->dimensions, dimension_index, struct tensor_dimension*, dimension) {
+  for vector_each(
+    tensor->dimensions, struct tensor_dimension*, dimension, dimension_index) {
 
     u64 position = as(u64, vector_get(positions, dimension_index));
     u64 dimension_offset_multiplicator = dimension->offset;

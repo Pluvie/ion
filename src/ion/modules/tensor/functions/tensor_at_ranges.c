@@ -8,8 +8,8 @@ void* tensor_at_ranges (
 )
 {
   u64 position_offset = 0;
-  for vector_each_with_index(
-      tensor->dimensions, dimension_index, struct tensor_dimension*, dimension) {
+  for vector_each(
+      tensor->dimensions, struct tensor_dimension*, dimension, dimension_index) {
 
     struct range* range = vector_get(ranges, dimension_index);
 

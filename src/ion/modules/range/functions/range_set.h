@@ -2,9 +2,10 @@
 static inline
 #endif
 
-bool tensor_iterate_sequences (
-    struct tensor* tensor,
-    struct vector* sequences
+void range_set (
+    struct range* range,
+    i64 min,
+    i64 max
 )
 /**
  * ### Description

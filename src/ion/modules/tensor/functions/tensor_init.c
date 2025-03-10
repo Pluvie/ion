@@ -20,8 +20,8 @@ initialize_length_and_dimensions:
    *
    * Also, calculates each dimension offset by multiplying sequentially all its
    * next dimensions. The last dimension shall always have offset equal to 0. */
-  for vector_each_with_index(
-      input_dimensions, input_dimension_index, u64*, input_dimension_length) {
+  for vector_each(
+      input_dimensions, u64*, input_dimension_length, input_dimension_index) {
 
     tensor_length *= *input_dimension_length;
 

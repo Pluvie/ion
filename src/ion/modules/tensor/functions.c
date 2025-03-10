@@ -1,7 +1,5 @@
 #include "functions/tensor_allocate.c"
 #include "functions/tensor_at.c"
 #include "functions/tensor_at_ranges.c"
-#include "functions/tensor_at_sequences.c"
 #include "functions/tensor_init.c"
 #include "functions/tensor_iterate_ranges.c"
-#include "functions/tensor_iterate_sequences.c"
