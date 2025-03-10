@@ -116,6 +116,10 @@ void suite_run (
   if (suite_passed) {
     fprintf(original_stderr, "\n");
     fprintf(original_stderr, PRINT_COLOR_GREEN);
+    if (focused_tests[0] == NULL)
+      fprintf(original_stderr, "Completed %i tests.\n", registered_tests_count);
+    else
+      fprintf(original_stderr, "Completed %i focused test(s).\n", focused_tests_count);
     fprintf(original_stderr, "The test suite passed successfully.");
     fprintf(original_stderr, "\n");
     fprintf(original_stderr, PRINT_COLOR_NONE);
