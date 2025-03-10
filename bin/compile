@@ -5,16 +5,10 @@ if [ "$#" -lt 1 ]; then
     exit -1
 fi
 
-APP=$1
 SOURCE=$1
-
-if [ "$APP" = "test_focus" ]; then
-  SOURCE="test"
-fi
 
 mkdir -p exe
 gcc src/$SOURCE.c                 \
-  -o exe/$APP                     \
   -I ./src                        \
   -Wall                           \
   -Wno-override-init-side-effects \

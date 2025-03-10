@@ -1,3 +1,0 @@
-#!/bin/bash
-bin/release $1 && exe/$1 ${@:2}
-echo

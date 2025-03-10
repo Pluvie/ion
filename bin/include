@@ -1,8 +1,0 @@
-#!/bin/bash
-sudo rm -rf /usr/include/ion                          &&
-sudo mkdir -p /usr/include/ion                        &&
-sudo mkdir -p /usr/include/ion/test                   &&
-sudo cp -r src/ion/* /usr/include/ion                 &&
-sudo cp -r src/test/framework.h /usr/include/ion/test &&
-sudo cp src/ion.h /usr/include/ion/ion.h              &&
-sudo cp src/ion.c /usr/include/ion/ion.c

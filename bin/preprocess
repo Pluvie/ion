@@ -1,18 +1,4 @@
 #!/bin/bash
 
-if [ "$#" -lt 1 ]; then
-    echo "Specify a source to compile."
-    exit -1
-fi
-
-APP=$1
-SOURCE=$1
-
 mkdir -p tmp
-gcc src/$SOURCE.c               \
-  -I ./src                      \
-  -Wall                         \
-  -Wno-unused-label             \
-  -Werror                       \
-  -E                            \
-  ${@:2} > tmp/preprocess.txt
+bin/compile $1 -E > tmp/preprocess.txt
