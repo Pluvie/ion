@@ -36,7 +36,7 @@ test( io_read_file, buffered_read ) {
     verify(result[2] == 'i');
     verify(result[3] == 's');
     verify(reader.buffer.allocator.capacity == 4*reader.buffer.size);
-    verify(reader.buffer.allocator.position == reader.buffer.size);
+    verify(reader.buffer.allocator.position == reader.length);
     verify(reader.buffer.allocator.data == result);
     verify(reader.buffer.begin == 0);
 

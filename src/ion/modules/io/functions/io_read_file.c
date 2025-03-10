@@ -52,6 +52,8 @@ check_allocation:
   u64 amount_overflowing = io->cursor + amount - io_buffer_limit(io);
   if (amount_overflowing > amount_to_allocate)
     amount_to_allocate = amount_overflowing;
+  if (amount_to_allocate > io->length)
+    amount_to_allocate = io->length;
 
   u64 allocated_position = buffer_alloc(&(io->buffer.allocator), amount_to_allocate);
   void* allocated_data = buffer_data(&(io->buffer.allocator), allocated_position);

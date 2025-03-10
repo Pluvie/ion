@@ -33,7 +33,7 @@ test( io_read_file, buffered_optimization ) {
     verify(fread_simulated_data->reads_count == 1);
     verify(reader.reads_count == reader.length);
     verify(reader.buffer.allocator.capacity == 4*reader.buffer.size);
-    verify(reader.buffer.allocator.position == reader.buffer.size);
+    verify(reader.buffer.allocator.position == reader.length);
     verify(reader.buffer.begin == 0);
     verify(strneq(result, file, reader.length));
 
