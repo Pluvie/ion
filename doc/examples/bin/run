@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Compiling $1.."
-bin/compile $1 -O3 -march=native
+bin/compile $1 -o exe/$1 -O3 -march=native
 echo "Running $1.."
 exe/$1 ${@:2}
 echo

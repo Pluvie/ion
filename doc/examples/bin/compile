@@ -1,19 +1,17 @@
 #!/bin/bash
 
-mkdir -p exe
-
 if [ "$#" -lt 1 ]; then
     echo "Specify a source to compile."
     exit -1
 fi
 
-APP=$1
 SOURCE=$1
 
-gcc $SOURCE.c                 \
-  -o exe/$APP                 \
-  -D ION_INCLUDED             \
-  -Wall                       \
-  -Wno-unused-label           \
-  -Werror                     \
+mkdir -p exe
+gcc $SOURCE.c                     \
+  -I ./src                        \
+  -Wall                           \
+  -Wno-override-init-side-effects \
+  -Wno-unused-label               \
+  -Werror                         \
   ${@:2}
