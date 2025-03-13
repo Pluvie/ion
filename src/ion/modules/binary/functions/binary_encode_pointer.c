@@ -4,16 +4,19 @@ static inline void binary_encode_pointer (
 )
 {
   struct reflection* element_rfx = rfx->element;
-  void* pointer_address = *(void**) rfx->target;
+  u64 element_size = element_rfx->size;
 
-  /* Special case: a POINTER size of type CHAR must be explicitly sent, as its
-   * length is not fixed and not known a priori. */
+  void* pointer_address = *(void**) rfx->target;
+  if (pointer_address == NULL)
+    goto encode_null;
+
+  /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
   if (element_rfx->type == CHAR)
-    goto check_string_size;
+    goto encode_string;
   else
     goto encode_pointer;
 
-check_string_size:
+encode_string:
   u64 string_max_size = rfx->size_limits.min;
   u64 string_size = strlen(pointer_address) + 1;
 
@@ -23,12 +26,10 @@ check_string_size:
     return error_add_reflection_path(rfx);
   }
 
-encode_length:
-  io_write(io, &string_size, sizeof(string_size));
+  io_write(io, &string_size, sizeof(u64));
   if (error.occurred)
     return error_add_reflection_path(rfx);
 
-encode_string:
   io_write(io, pointer_address, string_size);
   if (error.occurred)
     return error_add_reflection_path(rfx);
@@ -36,8 +37,19 @@ encode_string:
   return;
 
 encode_pointer:
+  io_write(io, &element_size, sizeof(u64));
+  if (error.occurred)
+    return error_add_reflection_path(rfx);
+
   element_rfx->target = pointer_address;
   binary_encode(element_rfx, io);
   if (error.occurred)
     return;
+
+  return;
+
+encode_null:
+  io_write(io, &(u64) { 0 }, sizeof(u64));
+  if (error.occurred)
+    return error_add_reflection_path(rfx);
 }

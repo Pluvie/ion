@@ -8,6 +8,7 @@ test( binary_encode, pointer ) {
         i32 y;
       } *vertex;
       struct array* coordinates;
+      void* always_null;
     };
 
 
@@ -32,6 +33,10 @@ test( binary_encode, pointer ) {
             })
           })
         },
+
+        { field(always_null, POINTER, struct example),
+            of({ type(BYTE) })
+        },
       })
     };
 
@@ -43,7 +48,8 @@ test( binary_encode, pointer ) {
         .x = 4,
         .y = 5,
       },
-      .coordinates = &array_of(i32, { 7, 8 })
+      .coordinates = &array_of(i32, { 7, 8 }),
+      .always_null = NULL,
     };
 
 
@@ -60,12 +66,16 @@ test( binary_encode, pointer ) {
       0x54, 0x72, 0x69, 0x61, 0x6e, 0x67, 0x6c, 0x65,       /* name */
       0x21, 0x21, 0x00,
 
+      0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       /* vertex ptr size */
       0x04, 0x00, 0x00, 0x00,                               /* vertex->x */
       0x05, 0x00, 0x00, 0x00,                               /* vertex->y */
 
+      0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       /* coordinates ptr size */
       0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       /* coordinates length */
       0x07, 0x00, 0x00, 0x00,                               /* coordinates.1 */
       0x08, 0x00, 0x00, 0x00,                               /* coordinates.2 */
+
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       /* always_null ptr size */
     };
 
     verify(error.occurred == false);

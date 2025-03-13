@@ -5,50 +5,59 @@ static inline void binary_decode_pointer (
 {
   struct reflection* element_rfx = rfx->element;
   u64 element_size = element_rfx->size;
+  void* pointer_data = NULL;
 
-  /* Special case: a POINTER size of type CHAR must be explicitly sent, as its
-   * length is not fixed and not known a priori. */
+read_length:
+  u64* pointer_size = io_read(io, sizeof(u64));
+  if (error.occurred)
+    return error_add_reflection_path(rfx);
+
+  if (*pointer_size == 0)
+    goto allocate_null;
+
+  /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
   if (element_rfx->type == CHAR)
-    goto check_string_size;
+    goto allocate_string;
   else
     goto allocate_pointer;
 
-check_string_size:
+allocate_string:
   u64 string_max_size = rfx->size_limits.max;
-  u64* string_size = io_read(io, sizeof(u64));
-  if (error.occurred)
-    return error_add_reflection_path(rfx);
 
-  if (string_max_size > 0 && *string_size > string_max_size) {
+  if (string_max_size > 0 && *pointer_size > string_max_size) {
     fail("pointer required maximum string size of %li but found %li",
-      string_max_size, *string_size);
+      string_max_size, *pointer_size);
     return error_add_reflection_path(rfx);
   }
 
-  element_size = *string_size;
+  pointer_data = memory_alloc(rfx->allocator, *pointer_size);
 
-allocate_pointer:
-  void* pointer_data = memory_alloc(rfx->allocator, element_size);
-
-  if (element_rfx->type == CHAR)
-    goto pointer_type_char;
-  else
-    goto pointer_type_other;
-
-pointer_type_char:
-  /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
-  char* string = io_read(io, element_size);
+  char* string = io_read(io, *pointer_size);
   if (error.occurred)
     return;
 
-  memcpy(pointer_data, string, element_size);
+  memcpy(pointer_data, string, *pointer_size);
   goto validate_pointer;
 
-pointer_type_other:
+allocate_pointer:
+  if (*pointer_size != element_size) {
+    fail("pointer required element size of %li but found %li",
+      element_size, *pointer_size);
+    return error_add_reflection_path(rfx);
+  }
+
+  pointer_data = memory_alloc(rfx->allocator, element_size);
+
   element_rfx->target = pointer_data;
   binary_decode(io, element_rfx);
   if (error.occurred)
     return;
+
+  goto validate_pointer;
+
+allocate_null:
+  rfx->target = NULL;
+  return;
 
 validate_pointer:
   reflection_validate(rfx, pointer_data);
