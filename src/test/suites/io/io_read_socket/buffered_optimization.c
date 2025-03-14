@@ -33,7 +33,7 @@ test( io_read_socket, buffered_optimization ) {
     verify(recv_simulated_data->reads_count == 1);
     verify(reader.reads_count == strlen(sock));
     verify(reader.buffer.allocator.capacity == 4*reader.buffer.size);
-    verify(reader.buffer.allocator.position == reader.buffer.size);
+    verify(reader.buffer.allocator.position == strlen(sock));
     verify(reader.buffer.begin == 0);
     verify(strneq(result, sock, strlen(sock)));
 

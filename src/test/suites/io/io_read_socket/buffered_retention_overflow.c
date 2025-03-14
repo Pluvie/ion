@@ -37,7 +37,7 @@ test( io_read_socket, buffered_retention_overflow ) {
     verify(reader.reads_count > 1024 + 1);
     verify(reader.reads_count == reads_count);
     verify(reader.buffer.allocator.capacity == 16384);
-    verify(reader.buffer.allocator.position == 2048);
+    verify(reader.buffer.allocator.position == 1143);
     verify(reader.buffer.begin == 7048);
     verify(strneq(result, sock, lengthof(sock)));
 

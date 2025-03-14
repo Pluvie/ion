@@ -27,7 +27,7 @@ test( io_read_socket, buffer_size ) {
     verify(recv_simulated_data->reads_count == 2);
     verify(reader.reads_count == reads_count);
     verify(reader.buffer.allocator.capacity == 16384);
-    verify(reader.buffer.allocator.position == 16000);
+    verify(reader.buffer.allocator.position == 8191);
     verify(reader.buffer.begin == 0);
     verify(strneq(result, sock, reader.length));
 

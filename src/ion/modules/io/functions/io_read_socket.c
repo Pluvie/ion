@@ -42,14 +42,15 @@ read_data:
 adjust_amount:
   /**
    * If the amount of data returned by the system call `recv` is lesser than the
-   * requested amount, adjust the buffer allocated position accordingly.
+   * allocated amount, adjust the buffer allocated position accordingly.
    *
    * Also, since a socket io does not know the length of its data a priori, the
    * amount read is added to the io read, indicating that data was available. */
   u64 amount_effectively_read = recv_output;
-  if (amount_effectively_read < amount) {
-    io->buffer.allocator.position -= amount - amount_effectively_read;
-    amount = amount_effectively_read;
+  if (amount_effectively_read < amount_to_allocate) {
+    io->buffer.allocator.position = allocated_position + amount_effectively_read;
+    if (amount_effectively_read < amount)
+      amount = amount_effectively_read;
   }
 
   io->length += amount;
