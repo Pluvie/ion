@@ -3,6 +3,7 @@ static inline void binary_decode_string (
     struct reflection* rfx
 )
 {
+
 check_string_size:
   u64 string_max_length = rfx->size_limits.min;
   u64* string_length = io_read(io, sizeof(u64));
@@ -17,14 +18,19 @@ check_string_size:
 
 allocate_string:
   struct string string = { 0 };
+
+  if (*string_length == 0)
+    goto validate_string;
+
   string.length = *string_length;
-  string.content = memory_alloc(rfx->allocator, string.length);
+  string.content = memory_alloc(rfx->allocator, string.length + 1);
   
   char* string_content = io_read(io, string.length);
   if (error.occurred)
     return;
 
   memcpy(string.content, string_content, string.length);
+  string.content[string.length] = '\0';
   goto validate_string;
 
 validate_string:

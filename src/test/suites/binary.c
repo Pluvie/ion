@@ -10,6 +10,7 @@ void test_suite__binary (
   test_add( binary_decode, pointer );
   test_add( binary_decode, primitive );
   test_add( binary_decode, sequence );
+  test_add( binary_decode, string );
   test_add( binary_decode, validator );
   test_add( binary_decode, vector );
   test_add( binary_decode, vector_maxlength );
@@ -18,6 +19,7 @@ void test_suite__binary (
   test_add( binary_encode, pointer );
   test_add( binary_encode, primitive );
   test_add( binary_encode, sequence );
+  test_add( binary_encode, string );
   test_add( binary_encode, vector );
   test_add( binary_protocol, round_trip );
 }

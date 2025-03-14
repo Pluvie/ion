@@ -20,6 +20,9 @@ encode_length:
     return error_add_reflection_path(rfx);
 
 encode_content:
+  if (string->length == 0)
+    return;
+
   io_write(io, string->content, string->length);
   if (error.occurred)
     return error_add_reflection_path(rfx);
