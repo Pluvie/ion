@@ -56,7 +56,7 @@ allocate_pointer:
   goto validate_pointer;
 
 allocate_null:
-  rfx->target = NULL;
+  memcpy(rfx->target, &(addr) { 0 }, sizeof(addr));
   return;
 
 validate_pointer:
