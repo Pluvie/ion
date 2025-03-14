@@ -14,4 +14,5 @@
 
 #include "reflection/macros.h"
 #include "reflection/structs.h"
+#include "reflection/globals.h"
 #include "reflection/functions.h"
