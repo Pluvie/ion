@@ -30,7 +30,6 @@
 #include "constants/print_color_grey.h"
 #include "constants/print_color_magenta.h"
 #include "constants/print_color_none.h"
-#include "constants/print_color_purple.h"
 #include "constants/print_color_red.h"
 #include "constants/print_color_yellow.h"
 #include "constants/u16_max.h"
