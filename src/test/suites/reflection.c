@@ -10,6 +10,7 @@ void test_suite__reflection (
   test_add( reflection_path_print, index );
   test_add( reflection_initialize, deep_propagation );
   test_add( reflection_initialize, link_target );
+  test_add( reflection_inspect, print_object );
   test_add( reflection_macros, array_type );
   test_add( reflection_macros, array_type_limited );
   test_add( reflection_macros, array_type_nested );

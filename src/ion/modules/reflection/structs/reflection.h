@@ -9,6 +9,7 @@ struct reflection {
   u64 length;
   enum types type;
   struct string* name;
+  struct string* struct_name;
   union {
     struct vector* fields;
     struct reflection* element;
@@ -22,6 +23,6 @@ struct reflection {
     u64 max;
   } size_limits;
   void* support_data;
-  padding(16);
+  padding(8);
 };
 check_sizeof(struct reflection, 128);

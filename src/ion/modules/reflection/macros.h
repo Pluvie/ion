@@ -1,5 +1,6 @@
 #include "macros/field.h"
 #include "macros/fields.h"
+#include "macros/inspect.h"
 #include "macros/limited_to.h"
 #include "macros/named.h"
 #include "macros/o.h"

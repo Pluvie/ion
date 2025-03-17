@@ -6,6 +6,7 @@
 #include "reflection/reflection_path_print/index.c"
 #include "reflection/reflection_initialize/deep_propagation.c"
 #include "reflection/reflection_initialize/link_target.c"
+#include "reflection/reflection_inspect/print_object.c"
 #include "reflection/reflection_macros/array_type.c"
 #include "reflection/reflection_macros/array_type_limited.c"
 #include "reflection/reflection_macros/array_type_nested.c"
