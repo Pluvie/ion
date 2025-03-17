@@ -4,6 +4,7 @@ void test_suite__string (
     void
 )
 {
+  test_add( string_allocate, null_terminated );
   test_add( string_to_number, decimal_128 );
   test_add( string_to_number, decimal_32 );
   test_add( string_to_number, decimal_64 );

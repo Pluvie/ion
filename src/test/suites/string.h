@@ -1,5 +1,6 @@
 #include "../../ion/modules/string.c"
 
+#include "string/string_allocate/null_terminated.c"
 #include "string/string_to_number/decimal_128.c"
 #include "string/string_to_number/decimal_32.c"
 #include "string/string_to_number/decimal_64.c"
