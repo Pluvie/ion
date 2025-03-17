@@ -38,12 +38,12 @@ To begin using __Ion__, include it in your sources:
 
 And compile your program using the `-D ION_INCLUDED` directive. This shall achieve the
 most performance by inlining many function calls. You can of course compile the source
-and use it as a linked library but you will not benefit the function inlining.
+and use it as a linked library but you will not benefit from the function inlining.
 
 ### Modules
 
-__Ion__ is organized in modules, each offering a different feature. You may pick only
-the modules that you are interested in when including the library:
+__Ion__ is organized in modules, each one offering a different feature. You may pick
+only the modules that you are interested in when including the library:
 
 ```c
 /* To include only the VECTOR module. */
