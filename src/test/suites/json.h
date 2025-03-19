@@ -15,6 +15,7 @@
 #include "json/json_decode/vector.c"
 #include "json/json_decode/vector_maxlength.c"
 #include "json/json_decode/vector_minlength.c"
+#include "json/json_encode/primitive.c"
 #include "json/json_parse_number/error_eof.c"
 #include "json/json_parse_number/error_exponent.c"
 #include "json/json_parse_number/error_exponent_eof.c"
