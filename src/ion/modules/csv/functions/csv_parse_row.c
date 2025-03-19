@@ -1,7 +1,7 @@
 static inline struct array* csv_parse_row (
     struct io* source,
     struct memory* allocator,
-    struct csv_properties csv
+    struct csv_properties* csv
 )
 {
   struct array* fields = array_allocate(sizeof(struct string), 0, allocator);
@@ -23,7 +23,7 @@ next_field:
   if (error.occurred)
     return NULL;
 
-  if (*character == csv.wrapper)
+  if (*character == csv->wrapper)
     goto parse_wrapped;
   else
     goto parse_unwrapped;
@@ -40,11 +40,11 @@ parse_unwrapped:
   if (error.occurred)
     return NULL;
 
-  if (*character == csv.separator)
+  if (*character == csv->separator)
     goto push_field;
 
   if (*character == '\n') {
-    if (fields->length < csv.columns_count - 1)
+    if (fields->length < csv->columns_count - 1)
       goto parse_unwrapped;
 
     last_field = true;
@@ -64,7 +64,7 @@ parse_wrapped:
   if (error.occurred)
     return NULL;
 
-  if (*character == csv.wrapper)
+  if (*character == csv->wrapper)
     goto check_wrapper_terminator;
 
   goto parse_wrapped;
@@ -74,7 +74,7 @@ check_wrapper_terminator:
   if (error.occurred)
     return NULL;
 
-  if (*character == csv.wrapper)
+  if (*character == csv->wrapper)
     goto parse_wrapped;
 
   if (*character == '\n') {
@@ -82,11 +82,11 @@ check_wrapper_terminator:
     goto push_field;
   }
 
-  if (*character == csv.separator)
+  if (*character == csv->separator)
     goto push_field;
 
   fail("expected separator `%c`, or newline, after wrapper `%c`",
-    csv.separator, csv.wrapper);
+    csv->separator, csv->wrapper);
   error_add_io_extraction(source);
   return NULL;
 
@@ -122,8 +122,9 @@ push_field:
   if (last_field)
     goto terminate;
 
-  if (fields->length >= csv.columns_count) {
-    fail("expected newline but found more than the specified %i columns count", csv.columns_count);
+  if (fields->length >= csv->columns_count) {
+    fail("expected newline but found more than the specified %i columns count",
+      csv->columns_count);
     error_add_io_extraction(source);
     return NULL;
   }

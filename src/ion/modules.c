@@ -18,7 +18,7 @@
 
 /* ⚡️ION⚡️ Modules requiring the IO and REFLECTION modules. */
 #include "modules/binary.c"
-//#include "modules/csv.c"
+#include "modules/csv.c"
 #include "modules/json.c"
 
 /* ⚡️ION⚡️ Modules requiring the IO module. */

@@ -1,20 +1,22 @@
 static inline void csv_decode_row (
+    void* row_obj,
     struct io* source,
-    struct reflection* struct_rfx,
-    struct array* headers,
-    struct csv_properties csv
+    struct reflection* row_rfx,
+    struct memory* allocator
 )
 {
+  struct csv_properties* csv = row_rfx->support_data;
+
   struct memory row_allocator = memory_init(0);
   struct array* columns = csv_parse_row(source, &row_allocator, csv);
 
   struct reflection* field_rfx = NULL;
-  for array_each(headers, struct reflection**, header, header_index) {
+  for array_each(csv->headers, struct reflection**, header, header_index) {
     field_rfx = *header;
     if (field_rfx == NULL)
       continue;
 
-    field_rfx->target = struct_rfx->target + field_rfx->offset;
+    void* field_obj = row_obj + field_rfx->offset;
     struct string* column = array_get(columns, header_index);
 
     switch (field_rfx->type) {
@@ -29,7 +31,7 @@ static inline void csv_decode_row (
     case D32:
     case D64:
     case D128:
-      string_to_number(column, field_rfx->type, field_rfx->target);
+      string_to_number(column, field_rfx->type, field_obj);
       if (error.occurred)
         return;
 
@@ -37,15 +39,15 @@ static inline void csv_decode_row (
 
     case BOOL:
       if (strneq("false", column->content, lengthof("false")))
-        memcpy(field_rfx->target, &(bool) { false }, field_rfx->size);
+        memcpy(field_obj, &(bool) { false }, field_rfx->size);
       else
-        memcpy(field_rfx->target, &(bool) { true }, field_rfx->size);
+        memcpy(field_obj, &(bool) { true }, field_rfx->size);
 
       continue;
 
     case STRING:
-      struct string* string = field_rfx->target;
-      string->content = memory_alloc(field_rfx->allocator, column->length + 1);
+      struct string* string = field_obj;
+      string->content = memory_alloc(allocator, column->length + 1);
       string->length = column->length;
       memcpy(string->content, column->content, column->length);
       string->content[string->length] = '\0';

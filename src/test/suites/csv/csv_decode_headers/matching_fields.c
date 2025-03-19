@@ -8,8 +8,6 @@ test( csv_decode_headers, matching_fields ) {
 
 
   when("it has an associated reflection");
-    struct array users;
-
     struct user {
       struct string name;
       struct string last_login;
@@ -34,34 +32,34 @@ test( csv_decode_headers, matching_fields ) {
       .columns_count = 3,
       .encoding = UTF_8,
     };
+    rfx.element->support_data = &csv;
 
 
   calling("csv_decode_headers()");
     struct memory allocator = memory_init(0);
-    struct io csv_io = io_open_memory(csv_file, strlen(csv_file));
-    reflection_initialize(&rfx, &users, &allocator);
-    struct array* headers = csv_decode_headers(&csv_io, rfx.element, csv);
+    struct io input = io_open_memory(csv_file, strlen(csv_file));
+    csv_decode_headers(&input, rfx.element, &allocator);
 
 
   must("correctly identify the matching fields");
     verify(error.occurred == false);
-    verify(headers != NULL);
-    verify(headers->length == csv.columns_count);
+    verify(csv.headers != NULL);
+    verify(csv.headers->length == csv.columns_count);
 
     struct reflection** header;
     struct reflection* field_rfx;
 
-    header = array_get(headers, 0);
+    header = array_get(csv.headers, 0);
     field_rfx = vector_get(rfx.element->fields, 1);
     verify(*header != NULL);
     verify(*header == field_rfx);
 
-    header = array_get(headers, 1);
+    header = array_get(csv.headers, 1);
     field_rfx = vector_get(rfx.element->fields, 0);
     verify(*header != NULL);
     verify(*header == field_rfx);
 
-    header = array_get(headers, 2);
+    header = array_get(csv.headers, 2);
     verify(*header == NULL);
 
 

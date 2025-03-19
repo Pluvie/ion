@@ -16,7 +16,7 @@ test( csv_parse_row, newline_unwrapped_overcount ) {
   calling("csv_parse_row()");
     struct memory allocator = memory_init(0);
     struct io row_io = io_open_memory(row, strlen(row));
-    struct array* fields = csv_parse_row(&row_io, &allocator, csv);
+    struct array* fields = csv_parse_row(&row_io, &allocator, &csv);
 
 
   must("fail to parse the fields");

@@ -6,6 +6,7 @@ struct csv_properties {
   char wrapper;
   u32 columns_count;
   enum charset encoding;
-  padding(4);
+  struct array* headers;
+  padding(8);
 };
-check_sizeof(struct csv_properties, 16);
+check_sizeof(struct csv_properties, 32);

@@ -38,9 +38,8 @@ test( csv_decode, no_headers ) {
 
   calling("csv_decode()");
     struct memory allocator = memory_init(0);
-    struct io csv_io = io_open_memory(csv_file, strlen(csv_file));
-    reflection_initialize(&rfx, &users, &allocator);
-    csv_decode(&csv_io, &rfx);
+    struct io input = io_open_memory(csv_file, strlen(csv_file));
+    csv_decode(&users, &input, &rfx, &allocator);
 
 
   must("correctly decode the matching fields by detecting the headers");

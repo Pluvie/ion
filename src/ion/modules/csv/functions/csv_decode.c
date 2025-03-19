@@ -3,35 +3,40 @@ static inline
 #endif
 
 void csv_decode (
+    void* obj,
     struct io* io,
-    struct reflection* rfx
+    struct reflection* rfx,
+    struct memory* allocator
 )
 {
 check_compatibility:
   if (!csv_is_reflection_compatible(rfx))
     return;
 
-  struct reflection* struct_rfx = rfx->element;
+  struct reflection* row_rfx = rfx->element;
   struct csv_properties* csv = rfx->support_data;
 
+  row_rfx->parent = rfx;
+  row_rfx->support_data = csv;
+
 decode_headers:
-  struct array* headers = csv_decode_headers(io, struct_rfx, *csv);
+  csv_decode_headers(io, row_rfx, allocator);
   if (error.occurred)
     return;
 
 decode_rows:
-  void* empty_row = memory_alloc_zero(rfx->allocator, struct_rfx->size);
-  struct array rows = array_init(struct_rfx->size, 0, rfx->allocator);
+  void* empty_row = memory_alloc_zero(allocator, row_rfx->size);
+  struct array rows = array_init(row_rfx->size, 0, allocator);
 
 next_row:
-  struct_rfx->index = rows.length;
-  struct_rfx->target = empty_row;
-  csv_decode_row(io, struct_rfx, headers, *csv);
+  row_rfx->index = rows.length;
+  void* row_obj = empty_row;
+  csv_decode_row(row_obj, io, row_rfx, allocator);
   if (error.occurred)
     return;
 
-  array_push(&rows, struct_rfx->target);
-  memzero(empty_row, struct_rfx->size);
+  array_push(&rows, row_obj);
+  memzero(empty_row, row_rfx->size);
 
   if (io_exhausted(io))
     goto terminate;
@@ -39,5 +44,5 @@ next_row:
   goto next_row;
 
 terminate:
-  memcpy(rfx->target, &rows, sizeof(struct array));
+  memcpy(obj, &rows, sizeof(struct array));
 }

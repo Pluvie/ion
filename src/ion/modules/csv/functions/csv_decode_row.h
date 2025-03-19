@@ -1,8 +1,8 @@
 static inline void csv_decode_row (
+    void* row_obj,
     struct io* source,
-    struct reflection* struct_rfx,
-    struct array* headers,
-    struct csv_properties csv
+    struct reflection* row_rfx,
+    struct memory* allocator
 )
 /**
  * ### Description

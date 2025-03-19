@@ -9,7 +9,7 @@
 #include "suites/tensor.c"
 #include "suites/reflection.c"
 #include "suites/binary.c"
-//#include "suites/csv.c"
+#include "suites/csv.c"
 #include "suites/json.c"
 #include "suites/tcp.c"
 
@@ -32,7 +32,7 @@ bool suite_register (
   test_suite__tensor();
   test_suite__reflection();
   test_suite__binary();
-  //test_suite__csv();
+  test_suite__csv();
   test_suite__json();
   test_suite__tcp();
 
@@ -63,8 +63,8 @@ run_specific_suite:
     test_suite__reflection();
   else  if (strcmp(module, "binary") == 0)
     test_suite__binary();
-  //else  if (strcmp(module, "csv") == 0)
-  //  test_suite__csv();
+  else  if (strcmp(module, "csv") == 0)
+    test_suite__csv();
   else  if (strcmp(module, "json") == 0)
     test_suite__json();
   else  if (strcmp(module, "tcp") == 0)

@@ -8,8 +8,6 @@ test( csv_decode_row, field_types ) {
 
 
   when("it has an associated reflection");
-    struct array users;
-
     struct user {
       struct string name;
       struct string last_login;
@@ -34,27 +32,24 @@ test( csv_decode_row, field_types ) {
       .columns_count = 3,
       .encoding = UTF_8,
     };
+    struct reflection* row_rfx = rfx.element;
+    row_rfx->support_data = &csv;
 
 
   when("the csv headers have been decoded");
     struct memory allocator = memory_init(0);
-    struct io csv_io = io_open_memory(csv_file, strlen(csv_file));
-    reflection_initialize(&rfx, &users, &allocator);
-
-    struct reflection* struct_rfx = rfx.element;
-    struct array* headers = csv_decode_headers(&csv_io, struct_rfx, csv);
+    struct io input = io_open_memory(csv_file, strlen(csv_file));
+    csv_decode_headers(&input, row_rfx, &allocator);
 
 
   calling("csv_decode_row()");
     struct user user_1;
-    struct_rfx->index = 0;
-    struct_rfx->target = &user_1;
-    csv_decode_row(&csv_io, struct_rfx, headers, csv);
+    row_rfx->index = 0;
+    csv_decode_row(&user_1, &input, row_rfx, &allocator);
 
     struct user user_2;
-    struct_rfx->index = 0;
-    struct_rfx->target = &user_2;
-    csv_decode_row(&csv_io, struct_rfx, headers, csv);
+    row_rfx->index = 0;
+    csv_decode_row(&user_2, &input, row_rfx, &allocator);
 
 
   must("correctly decode the matching fields");

@@ -20,8 +20,8 @@ test( csv_parse_row, malformed_wrapper ) {
   calling("csv_parse_row() in succession");
     struct memory allocator = memory_init(0);
     struct io rows_io = io_open_memory(rows, strlen(rows));
-    struct array* fields_1 = csv_parse_row(&rows_io, &allocator, csv);
-    struct array* fields_2 = csv_parse_row(&rows_io, &allocator, csv);
+    struct array* fields_1 = csv_parse_row(&rows_io, &allocator, &csv);
+    struct array* fields_2 = csv_parse_row(&rows_io, &allocator, &csv);
 
 
   must("fail to parse the fields");
