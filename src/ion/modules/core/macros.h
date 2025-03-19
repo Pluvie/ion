@@ -12,7 +12,7 @@
 #include "macros/error_reset.h"
 #include "macros/error_trace.h"
 #include "macros/fail.h"
-#include "macros/lenghtof.h"
+#include "macros/lengthof.h"
 #include "macros/likely.h"
 #include "macros/log2.h"
 #include "macros/lvar.h"
