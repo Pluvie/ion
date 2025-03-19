@@ -28,8 +28,7 @@ test( json_decode, array_empty ) {
   calling("json_decode()");
     struct memory allocator = memory_init(4096);
     struct io source = io_open_memory(input, strlen(input));
-    reflection_initialize(&rfx, &users, &allocator);
-    json_decode(&source, &rfx);
+    json_decode(&users, &source, &rfx, &allocator);
 
 
   must("decode the input data on the struct correctly");

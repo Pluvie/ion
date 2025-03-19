@@ -1,25 +1,29 @@
 static inline void json_decode_pointer (
+    void* obj,
     struct io* io,
-    struct reflection* rfx
+    struct reflection* rfx,
+    struct memory* allocator
 )
 {
   struct reflection* element_rfx = rfx->element;
-  u64 pointer_size = element_rfx->size;
+  element_rfx->parent = rfx;
 
-  /* Special case: a POINTER size of type CHAR must be explicitly sent, as its
-   * length is not fixed and not known a priori. */
+  u64 pointer_size = element_rfx->size;
+  void* pointer_data = NULL;
+
+  /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
   if (element_rfx->type == CHAR)
-    goto check_string_size;
+    goto allocate_string;
   else
     goto allocate_pointer;
 
-check_string_size:
-  u64 string_max_size = rfx->size_limits.max;
-  u64 string_size = json_parse_string(io);
+allocate_string:
+  u64 string_max_length = rfx->size_limits.max;
+  u64 string_length = json_parse_string(io);
   if (error.occurred)
     return;
 
-  if (string_size == 0) {
+  if (string_length == 0) {
     fail("expected a string");
     error_add_io_extraction(io);
     error_add_reflection_path(rfx);
@@ -27,41 +31,30 @@ check_string_size:
   }
 
   /* In checking the string size, does not consider the surrounding '"'. */
-  if (string_max_size > 0 && (string_size - 2) > string_max_size) {
+  if (string_max_length > 0 && (string_length - 2) > string_max_length) {
     fail("pointer required maximum string size of %li but found %li",
-      string_max_size, string_size);
+      string_max_length, string_length);
     error_add_io_extraction(io);
     error_add_reflection_path(rfx);
     return;
   }
 
-  pointer_size = string_size;
-
-allocate_pointer:
-  void* pointer_data = memory_alloc(rfx->allocator, pointer_size);
-
-  if (element_rfx->type == CHAR)
-    goto pointer_type_char;
-  else
-    goto pointer_type_other;
-
-pointer_type_char:
-  /* Special case: a POINTER of type CHAR is intended to be a nul-terminated string. */
-  char* string = io_read(io, pointer_size);
+  char* string_content = io_read(io, string_length);
   if (error.occurred)
     return;
 
   /* Removes the surrounding '"'. */
-  memcpy(pointer_data, string + 1, pointer_size);
-  string = pointer_data;
-  string[pointer_size - 2] = '\0';
-  string[pointer_size - 1] = '\0';
+  string_length = string_length - 2;
+  pointer_data = memory_alloc(allocator, string_length + 1);
+  memcpy(pointer_data, string_content + 1, string_length);
+  ((char*) pointer_data)[string_length] = '\0';
 
   goto validate_pointer;
 
-pointer_type_other:
-  element_rfx->target = pointer_data;
-  json_decode(io, element_rfx);
+allocate_pointer:
+  pointer_data = memory_alloc(allocator, pointer_size);
+
+  json_decode(pointer_data, io, element_rfx, allocator);
   if (error.occurred)
     return;
 
@@ -72,5 +65,5 @@ validate_pointer:
 
 copy_pointer:
   addr pointer_address = (addr) pointer_data;
-  memcpy(rfx->target, &pointer_address, sizeof(addr));
+  memcpy(obj, &pointer_address, sizeof(addr));
 }

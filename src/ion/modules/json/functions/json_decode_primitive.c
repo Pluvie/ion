@@ -1,6 +1,8 @@
 static inline void json_decode_primitive (
+    void* obj,
     struct io* io,
-    struct reflection* rfx
+    struct reflection* rfx,
+    struct memory* allocator
 )
 {
   switch (rfx->type) {
@@ -32,9 +34,9 @@ static inline void json_decode_primitive (
       return;
     }
 
-    struct string number = string_init(rfx->allocator, number_length);
+    struct string number = string_init(number_length, allocator);
     memcpy(number.content, number_content, number_length);
-    string_to_number(&number, rfx->type, rfx->target);
+    string_to_number(&number, rfx->type, obj);
 
     if (error.occurred) {
       error_add_io_extraction(io);
@@ -57,11 +59,11 @@ static inline void json_decode_primitive (
 
     switch (bool_length) {
     case lengthof("true"):
-      memcpy(rfx->target, &(bool) { true }, sizeof(bool));
+      memcpy(obj, &(bool) { true }, sizeof(bool));
       break;
 
     case lengthof("false"):
-      memcpy(rfx->target, &(bool) { false }, sizeof(bool));
+      memcpy(obj, &(bool) { false }, sizeof(bool));
       break;
 
     default:
@@ -80,7 +82,7 @@ static inline void json_decode_primitive (
     return;
   }
   
-  reflection_validate(rfx, rfx->target);
+  reflection_validate(rfx, obj);
   if (error.occurred)
     return error_add_reflection_path(rfx);
 }

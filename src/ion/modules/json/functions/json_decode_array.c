@@ -1,6 +1,8 @@
 static inline void json_decode_array (
+    void* obj,
     struct io* io,
-    struct reflection* rfx
+    struct reflection* rfx,
+    struct memory* allocator
 )
 {
   struct reflection* element_rfx = NULL;
@@ -13,8 +15,9 @@ static inline void json_decode_array (
 
   if (rfx != NULL) {
     element_rfx = rfx->element;
-    empty_element = memory_alloc_zero(rfx->allocator, element_rfx->size);
-    array = array_init(element_rfx->size, 0, rfx->allocator);
+    element_rfx->parent = rfx;
+    empty_element = memory_alloc_zero(allocator, element_rfx->size);
+    array = array_init(element_rfx->size, 0, allocator);
     array_minlength = rfx->size_limits.min;
     array_maxlength = rfx->size_limits.max;
   }
@@ -63,11 +66,11 @@ next_element:
 parse_value:
   if (element_rfx != NULL) {
     element_rfx->index = element_index;
-    element_rfx->target = array_push(&array, empty_element);
-    json_decode(io, element_rfx);
+    void* element_obj = array_push(&array, empty_element);
+    json_decode(element_obj, io, element_rfx, allocator);
 
   } else {
-    json_decode(io, NULL);
+    json_decode(NULL, io, NULL, NULL);
   }
 
   if (error.occurred)
@@ -115,5 +118,5 @@ terminate:
   if (error.occurred)
     return error_add_reflection_path(rfx);
 
-  memcpy(rfx->target, &array, sizeof(struct array));
+  memcpy(obj, &array, sizeof(struct array));
 }

@@ -1,23 +1,24 @@
 static inline void json_decode_vector (
+    void* obj,
     struct io* io,
-    struct reflection* rfx
+    struct reflection* rfx,
+    struct memory* allocator
 )
 {
   if (rfx == NULL)
-    return json_decode_array(io, rfx);
+    return json_decode_array(NULL, io, NULL, NULL);
 
 decode_as_array:
   struct reflection* element_rfx = rfx->element;
-  struct array array = array_init(element_rfx->size, 0, rfx->allocator);
+  struct array array = array_init(element_rfx->size, 0, allocator);
 
   struct reflection array_rfx;
   memcpy(&array_rfx, rfx, sizeof(struct reflection));
   array_rfx.type = ARRAY;
   array_rfx.size_limits.min = 0;
   array_rfx.size_limits.max = 0;
-  array_rfx.target = &array;
 
-  json_decode_array(io, &array_rfx);
+  json_decode_array(&array, io, &array_rfx, allocator);
   if (error.occurred)
     return;
 
@@ -45,5 +46,5 @@ terminate:
   if (error.occurred)
     return error_add_reflection_path(rfx);
 
-  memcpy(rfx->target, &vector, sizeof(struct vector));
+  memcpy(obj, &vector, sizeof(struct vector));
 }

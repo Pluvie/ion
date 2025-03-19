@@ -3,8 +3,10 @@ static inline
 #endif
 
 void json_decode (
+    void* obj,
     struct io* io,
-    struct reflection* rfx
+    struct reflection* rfx,
+    struct memory* allocator
 )
 {
   if (rfx != NULL)
@@ -35,31 +37,31 @@ decode_with_reflection:
   case BYTE:
   case CHAR:
   case BOOL:
-    json_decode_primitive(io, rfx);
+    json_decode_primitive(obj, io, rfx, allocator);
     return;
 
   case STRING:
-    json_decode_string(io, rfx);
+    json_decode_string(obj, io, rfx, allocator);
     return;
 
   case STRUCT:
-    json_decode_struct(io, rfx);
+    json_decode_struct(obj, io, rfx, allocator);
     return;
 
   case POINTER:
-    json_decode_pointer(io, rfx);
+    json_decode_pointer(obj, io, rfx, allocator);
     return;
 
   case SEQUENCE:
-    json_decode_sequence(io, rfx);
+    json_decode_sequence(obj, io, rfx, allocator);
     return;
 
   case ARRAY:
-    json_decode_array(io, rfx);
+    json_decode_array(obj, io, rfx, allocator);
     return;
 
   case VECTOR:
-    json_decode_vector(io, rfx);
+    json_decode_vector(obj, io, rfx, allocator);
     return;
   }
 
@@ -68,7 +70,7 @@ decode_null_value:
   if (error.occurred)
     return;
 
-  memzero(rfx->target, rfx->size);
+  memzero(obj, rfx->size);
   return;
 
 discard_value:
@@ -82,11 +84,11 @@ discard_value:
 
   switch (*character) {
   case '{':
-    json_decode_struct(io, NULL);
+    json_decode_struct(NULL, io, NULL, NULL);
     return;
 
   case '[':
-    json_decode_array(io, NULL);
+    json_decode_array(NULL, io, NULL, NULL);
     return;
 
   case '"':

@@ -1,6 +1,8 @@
 static inline void json_decode_struct (
+    void* obj,
     struct io* io,
-    struct reflection* rfx
+    struct reflection* rfx,
+    struct memory* allocator
 )
 {
   struct reflection* field_rfx = NULL;
@@ -74,6 +76,7 @@ read_field:
     /* Field name equality must be done removing the `"` surrounding `field_name`.*/
     if (strneq(fx->name->content, field_name + 1, field_name_length - 2)) {
       field_rfx = fx;
+      field_rfx->parent = rfx;
       goto check_semicolon;
     }
   }
@@ -101,11 +104,11 @@ check_semicolon:
 
 parse_value:
   if (field_rfx != NULL) {
-    field_rfx->target = rfx->target + field_rfx->offset;
-    json_decode(io, field_rfx);
+    void* field_obj = obj + field_rfx->offset;
+    json_decode(field_obj, io, field_rfx, allocator);
 
   } else {
-    json_decode(io, NULL);
+    json_decode(NULL, io, NULL, NULL);
   }
 
   if (error.occurred)
@@ -138,7 +141,7 @@ terminate:
   if (rfx == NULL)
     return;
 
-  reflection_validate(rfx, rfx->target);
+  reflection_validate(rfx, obj);
   if (error.occurred)
     return error_add_reflection_path(rfx);
 }

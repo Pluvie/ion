@@ -1,6 +1,8 @@
 static inline void json_decode_string (
+    void* obj,
     struct io* io,
-    struct reflection* rfx
+    struct reflection* rfx,
+    struct memory* allocator
 )
 {
 check_string_size:
@@ -33,7 +35,7 @@ allocate_string:
 
   /* Removes the surrounding '"'. */
   string.length = string_length - 2;
-  string.content = memory_alloc(rfx->allocator, string.length + 1);
+  string.content = memory_alloc(allocator, string.length + 1);
   memcpy(string.content, string_content + 1, string.length);
   string.content[string.length] = '\0';
 
@@ -45,5 +47,5 @@ validate_string:
     return error_add_reflection_path(rfx);
 
 copy_string:
-  memcpy(rfx->target, &string, sizeof(struct string));
+  memcpy(obj, &string, sizeof(struct string));
 }

@@ -28,8 +28,7 @@ test( json_decode, primitive_not_supported ) {
   calling("json_decode()");
     struct memory allocator = memory_init(4096);
     struct io source = io_open_memory(input, strlen(input));
-    reflection_initialize(&rfx, &example, &allocator);
-    json_decode(&source, &rfx);
+    json_decode(&example, &source, &rfx, &allocator);
 
 
   must("fail to decode the input data with a specific error");
