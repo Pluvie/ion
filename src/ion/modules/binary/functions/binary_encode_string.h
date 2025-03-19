@@ -1,6 +1,7 @@
 static inline void binary_encode_string (
-    struct reflection* rfx,
-    struct io* io
+    void* obj,
+    struct io* io,
+    struct reflection* rfx
 )
 /**
  * ### Description

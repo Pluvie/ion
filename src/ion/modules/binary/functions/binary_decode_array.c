@@ -1,6 +1,8 @@
 static inline void binary_decode_array (
+    void* obj,
     struct io* io,
-    struct reflection* rfx
+    struct reflection* rfx,
+    struct memory* allocator
 )
 {
 read_length:
@@ -26,14 +28,16 @@ check_maxlength:
 
 allocate_array:
   struct reflection* element_rfx = rfx->element;
-  struct array array = array_init(element_rfx->size, *array_length, rfx->allocator);
+  element_rfx->parent = rfx;
+
+  struct array array = array_init(element_rfx->size, *array_length, allocator);
   array.length = *array_length;
 
 decode_array:
   for (u64 element_index = 0; element_index < array.length; element_index++) {
     element_rfx->index = element_index;
-    element_rfx->target = array.data + (element_index * element_rfx->size);
-    binary_decode(io, element_rfx);
+    void* element_obj = array.data + (element_index * element_rfx->size);
+    binary_decode(element_obj, io, element_rfx, allocator);
     if (error.occurred)
       return;
   }
@@ -44,5 +48,5 @@ validate_array:
     return error_add_reflection_path(rfx);
 
 copy_array:
-  memcpy(rfx->target, &array, sizeof(struct array));
+  memcpy(obj, &array, sizeof(struct array));
 }

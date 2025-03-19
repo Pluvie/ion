@@ -18,8 +18,8 @@
 
 /* ⚡️ION⚡️ Modules requiring the IO and REFLECTION modules. */
 #include "modules/binary.h"
-#include "modules/csv.h"
-#include "modules/json.h"
+//#include "modules/csv.h"
+//#include "modules/json.h"
 
 /* ⚡️ION⚡️ Modules requiring the IO module. */
 #include "modules/tcp.h"

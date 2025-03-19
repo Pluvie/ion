@@ -96,7 +96,8 @@ void reflection_inspect_value (
     emit(": ");
     print("{");
 
-    for (u64 i = 0; i < rfx->length; i++) {
+    u64 length = rfx->size / rfx->element->size;
+    for (u64 i = 0; i < length; i++) {
       void* element = object + (i * rfx->element->size);
       reflection_inspect_indentation(rfx->element, element, indentation + 2);
     }

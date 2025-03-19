@@ -3,8 +3,10 @@ static inline
 #endif
 
 void binary_decode (
+    void* obj,
     struct io* io,
-    struct reflection* rfx
+    struct reflection* rfx,
+    struct memory* allocator
 )
 {
   switch (rfx->type) {
@@ -22,31 +24,31 @@ void binary_decode (
   case BYTE:
   case CHAR:
   case BOOL:
-    binary_decode_primitive(io, rfx);
+    binary_decode_primitive(obj, io, rfx, allocator);
     break;
 
   case STRING:
-    binary_decode_string(io, rfx);
+    binary_decode_string(obj, io, rfx, allocator);
     break;
 
   case STRUCT:
-    binary_decode_struct(io, rfx);
+    binary_decode_struct(obj, io, rfx, allocator);
     break;
 
   case POINTER:
-    binary_decode_pointer(io, rfx);
+    binary_decode_pointer(obj, io, rfx, allocator);
     break;
 
   case SEQUENCE:
-    binary_decode_sequence(io, rfx);
+    binary_decode_sequence(obj, io, rfx, allocator);
     break;
 
   case ARRAY:
-    binary_decode_array(io, rfx);
+    binary_decode_array(obj, io, rfx, allocator);
     break;
 
   case VECTOR:
-    binary_decode_vector(io, rfx);
+    binary_decode_vector(obj, io, rfx, allocator);
     break;
   }
 }

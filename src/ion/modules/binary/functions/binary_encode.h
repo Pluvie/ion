@@ -3,8 +3,9 @@ static inline
 #endif
 
 void binary_encode (
-    struct reflection* rfx,
-    struct io* io
+    void* obj,
+    struct io* io,
+    struct reflection* rfx
 )
 /**
  * ### Description

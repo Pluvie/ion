@@ -36,7 +36,7 @@ test( binary_encode, primitive ) {
     struct example input = { 0 };
     /* Important: the `input` struct **must** be zeroed out. This is because the
      * padding bytes set by the compiler are uninitialized and thus cannot be tested
-     * for in memory equality of the output. */
+     * for in memory equality of the wire. */
     input.value_u8 = 1;
     input.value_u16 = 2;
     input.value_u32 = 3;
@@ -54,14 +54,13 @@ test( binary_encode, primitive ) {
 
 
   calling("binary_encode()");
-    byte output[1024] = { 0 };
-    struct io target = io_open_memory(output, sizeof(output));
-    reflection_initialize(&rfx, &input, NULL);
-    binary_encode(&rfx, &target);
+    byte wire[1024] = { 0 };
+    struct io output = io_open_memory(wire, sizeof(wire));
+    binary_encode(&input, &output, &rfx);
 
 
   must("encode the input data correctly");
-    byte expected_output[] = {
+    byte expected_wire[] = {
       0x01,                                                 /* 1 */
       0x02, 0x00,                                           /* 2 */
       0x03, 0x00, 0x00, 0x00,                               /* 3 */
@@ -86,7 +85,7 @@ test( binary_encode, primitive ) {
     };
 
     verify(error.occurred == false);
-    verify(memeq(output, expected_output, sizeof(expected_output)) == true);
+    verify(memeq(wire, expected_wire, sizeof(expected_wire)) == true);
 
 
   success();

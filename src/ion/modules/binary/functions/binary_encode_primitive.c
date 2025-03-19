@@ -1,9 +1,10 @@
 static inline void binary_encode_primitive (
-    struct reflection* rfx,
-    struct io* io
+    void* obj,
+    struct io* io,
+    struct reflection* rfx
 )
 {
-  io_write(io, rfx->target, rfx->size);
+  io_write(io, obj, rfx->size);
   if (error.occurred)
     return error_add_reflection_path(rfx);
 }

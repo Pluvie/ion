@@ -1,9 +1,10 @@
 static inline void binary_encode_vector (
-    struct reflection* rfx,
-    struct io* io
+    void* obj,
+    struct io* io,
+    struct reflection* rfx
 )
 {
-  struct vector* vector = (struct vector*) rfx->target;
+  struct vector* vector = (struct vector*) obj;
 
 check_minlength:
   u64 vector_minlength = rfx->size_limits.min;
@@ -28,11 +29,12 @@ encode_length:
 
 encode_vector:
   struct reflection* element_rfx = rfx->element;
+  element_rfx->parent = rfx;
 
   for (u64 element_index = 0; element_index < vector->length; element_index++) {
     element_rfx->index = element_index;
-    element_rfx->target = vector->data + (element_index * vector->typesize);
-    binary_encode(element_rfx, io);
+    void* element_obj = vector->data + (element_index * vector->typesize);
+    binary_encode(element_obj, io, element_rfx);
     if (error.occurred)
       return;
   }

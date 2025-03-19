@@ -53,15 +53,13 @@ test( binary_protocol, round_trip ) {
 
   calling("binary_encode() and binary_decode()");
     byte wire[1024] = { 0 };
+
+    struct io output = io_open_memory(wire, sizeof(wire));
+    binary_encode(&source, &output, &rfx);
+
     struct memory allocator = memory_init(0);
-
-    struct io io_writer = io_open_memory(wire, sizeof(wire));
-    reflection_initialize(&rfx, &source, &allocator);
-    binary_encode(&rfx, &io_writer);
-
-    struct io io_reader = io_open_memory(wire, sizeof(wire));
-    reflection_initialize(&rfx, &target, &allocator);
-    binary_decode(&io_reader, &rfx);
+    struct io input = io_open_memory(wire, sizeof(wire));
+    binary_decode(&target, &input, &rfx, &allocator);
 
 
   must("encode the source data correctly and decode it on the target");

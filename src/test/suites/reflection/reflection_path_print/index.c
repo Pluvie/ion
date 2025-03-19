@@ -23,11 +23,6 @@ test( reflection_path_print, index ) {
     };
 
 
-  when("the reflection is initialized");
-    struct example object;
-    reflection_initialize(&rfx, &object, NULL);
-
-
   when("a supposed error is found in an indexed element");
     struct reflection* sequence_rfx =
       vector_get(rfx.fields, 2);
@@ -36,7 +31,10 @@ test( reflection_path_print, index ) {
     struct reflection* sequence_inner_value_rfx =
       vector_get(sequence_inner_rfx->fields, 0);
 
+    sequence_rfx->parent = &rfx;
+    sequence_inner_rfx->parent = sequence_rfx;
     sequence_inner_rfx->index = 2;
+    sequence_inner_value_rfx->parent = sequence_inner_rfx;
 
 
   calling("reflection_path_print()");

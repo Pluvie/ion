@@ -54,14 +54,13 @@ test( binary_encode, pointer ) {
 
 
   calling("binary_encode()");
-    byte output[1024] = { 0 };
-    struct io target = io_open_memory(output, sizeof(output));
-    reflection_initialize(&rfx, &input, NULL);
-    binary_encode(&rfx, &target);
+    byte wire[1024] = { 0 };
+    struct io output = io_open_memory(wire, sizeof(wire));
+    binary_encode(&input, &output, &rfx);
 
 
   must("encode the input data on the struct correctly");
-    byte expected_output[] = {
+    byte expected_wire[] = {
       0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       /* name size */
       0x54, 0x72, 0x69, 0x61, 0x6e, 0x67, 0x6c, 0x65,       /* name */
       0x21, 0x21, 0x00,
@@ -79,7 +78,7 @@ test( binary_encode, pointer ) {
     };
 
     verify(error.occurred == false);
-    verify(memeq(output, expected_output, sizeof(expected_output)) == true);
+    verify(memeq(wire, expected_wire, sizeof(expected_wire)) == true);
 
 
   success();

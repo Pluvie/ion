@@ -3,8 +3,9 @@ static inline
 #endif
 
 void binary_encode (
-    struct reflection* rfx,
-    struct io* io
+    void* obj,
+    struct io* io,
+    struct reflection* rfx
 )
 {
   switch (rfx->type) {
@@ -22,31 +23,31 @@ void binary_encode (
   case BYTE:
   case CHAR:
   case BOOL:
-    binary_encode_primitive(rfx, io);
+    binary_encode_primitive(obj, io, rfx);
     break;
 
   case STRING:
-    binary_encode_string(rfx, io);
+    binary_encode_string(obj, io, rfx);
     break;
 
   case STRUCT:
-    binary_encode_struct(rfx, io);
+    binary_encode_struct(obj, io, rfx);
     break;
 
   case POINTER:
-    binary_encode_pointer(rfx, io);
+    binary_encode_pointer(obj, io, rfx);
     break;
 
   case SEQUENCE:
-    binary_encode_sequence(rfx, io);
+    binary_encode_sequence(obj, io, rfx);
     break;
 
   case ARRAY:
-    binary_encode_array(rfx, io);
+    binary_encode_array(obj, io, rfx);
     break;
 
   case VECTOR:
-    binary_encode_vector(rfx, io);
+    binary_encode_vector(obj, io, rfx);
     break;
   }
 }

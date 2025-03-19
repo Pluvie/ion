@@ -1,9 +1,13 @@
 static inline void binary_decode_pointer (
+    void* obj,
     struct io* io,
-    struct reflection* rfx
+    struct reflection* rfx,
+    struct memory* allocator
 )
 {
   struct reflection* element_rfx = rfx->element;
+  element_rfx->parent = rfx;
+
   u64 element_size = element_rfx->size;
   void* pointer_data = NULL;
 
@@ -30,7 +34,7 @@ allocate_string:
     return error_add_reflection_path(rfx);
   }
 
-  pointer_data = memory_alloc(rfx->allocator, *pointer_size);
+  pointer_data = memory_alloc(allocator, *pointer_size);
 
   char* string = io_read(io, *pointer_size);
   if (error.occurred)
@@ -46,17 +50,16 @@ allocate_pointer:
     return error_add_reflection_path(rfx);
   }
 
-  pointer_data = memory_alloc(rfx->allocator, element_size);
+  pointer_data = memory_alloc(allocator, element_size);
 
-  element_rfx->target = pointer_data;
-  binary_decode(io, element_rfx);
+  binary_decode(pointer_data, io, element_rfx, allocator);
   if (error.occurred)
     return;
 
   goto validate_pointer;
 
 allocate_null:
-  memcpy(rfx->target, &(addr) { 0 }, sizeof(addr));
+  memcpy(obj, &(addr) { 0 }, sizeof(addr));
   return;
 
 validate_pointer:
@@ -66,5 +69,5 @@ validate_pointer:
 
 copy_pointer:
   addr pointer_address = (addr) pointer_data;
-  memcpy(rfx->target, &pointer_address, sizeof(addr));
+  memcpy(obj, &pointer_address, sizeof(addr));
 }

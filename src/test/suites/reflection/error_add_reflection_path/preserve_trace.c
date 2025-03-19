@@ -14,13 +14,9 @@ test( error_add_reflection_path, preserve_trace ) {
     };
 
 
-  when("the reflection is initialized");
-    struct example object;
-    reflection_initialize(&rfx, &object, NULL);
-
-
   when("a supposed error is found");
     struct reflection* field_rfx = vector_get(rfx.fields, 0);
+    field_rfx->parent = &rfx;
     preserve_trace_failing_function(field_rfx);
 
 

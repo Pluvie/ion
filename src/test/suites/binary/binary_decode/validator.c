@@ -44,7 +44,6 @@ test( binary_decode, validator ) {
     };
 
     struct memory allocator = memory_init(4096);
-    reflection_initialize(&rfx, &example, &allocator);
 
     struct io valid_source = io_open_memory(
       valid_input, sizeof(valid_input));
@@ -56,16 +55,16 @@ test( binary_decode, validator ) {
 
   calling("binary_decode()");
   must("decode the input data based on the validator");
-    binary_decode(&valid_source, &rfx);
+    binary_decode(&example, &valid_source, &rfx, &allocator);
     verify(error.occurred == false);
 
-    binary_decode(&invalid_age_source, &rfx);
+    binary_decode(&example, &invalid_age_source, &rfx, &allocator);
     verify(error.occurred == true);
     verify(streq(error.message,
       "[age] must be greater or equal than 18"));
     error_reset();
 
-    binary_decode(&invalid_numbers_source, &rfx);
+    binary_decode(&example, &invalid_numbers_source, &rfx, &allocator);
     verify(error.occurred == true);
     verify(streq(error.message,
       "[numbers] all numbers must be greater than 0"));

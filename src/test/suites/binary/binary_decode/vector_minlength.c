@@ -28,8 +28,7 @@ test( binary_decode, vector_minlength ) {
   calling("binary_decode()");
     struct memory allocator = memory_init(4096);
     struct io source = io_open_memory(input, sizeof(input));
-    reflection_initialize(&rfx, &example, &allocator);
-    binary_decode(&source, &rfx);
+    binary_decode(&example, &source, &rfx, &allocator);
 
 
   must("fail to decode the input data and report the error properly");

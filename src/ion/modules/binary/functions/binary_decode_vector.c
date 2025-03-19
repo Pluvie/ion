@@ -1,6 +1,8 @@
 static inline void binary_decode_vector (
+    void* obj,
     struct io* io,
-    struct reflection* rfx
+    struct reflection* rfx,
+    struct memory* allocator
 )
 {
 read_length:
@@ -26,14 +28,16 @@ check_maxlength:
 
 allocate_vector:
   struct reflection* element_rfx = rfx->element;
-  struct vector vector = vector_init(element_rfx->size, *vector_length, rfx->allocator);
+  element_rfx->parent = rfx;
+
+  struct vector vector = vector_init(element_rfx->size, *vector_length, allocator);
   vector.length = *vector_length;
 
 decode_vector:
   for (u64 element_index = 0; element_index < vector.length; element_index++) {
     element_rfx->index = element_index;
-    element_rfx->target = vector.data + (element_index * element_rfx->size);
-    binary_decode(io, element_rfx);
+    void* element_obj = vector.data + (element_index * element_rfx->size);
+    binary_decode(element_obj, io, element_rfx, allocator);
     if (error.occurred)
       return;
   }
@@ -44,5 +48,5 @@ validate_vector:
     return error_add_reflection_path(rfx);
 
 copy_vector:
-  memcpy(rfx->target, &vector, sizeof(struct vector));
+  memcpy(obj, &vector, sizeof(struct vector));
 }

@@ -1,9 +1,10 @@
 static inline void binary_encode_string (
-    struct reflection* rfx,
-    struct io* io
+    void* obj,
+    struct io* io,
+    struct reflection* rfx
 )
 {
-  struct string* string = (struct string*) rfx->target;
+  struct string* string = (struct string*) obj;
 
 check_string_size:
   u64 string_max_length = rfx->size_limits.max;

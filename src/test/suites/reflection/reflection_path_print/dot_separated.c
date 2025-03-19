@@ -21,14 +21,12 @@ test( reflection_path_print, dot_separated ) {
     };
 
 
-  when("the reflection is initialized");
-    struct example object;
-    reflection_initialize(&rfx, &object, NULL);
-
-
   when("a supposed error is found in an inner element");
     struct reflection* inner_rfx = vector_get(rfx.fields, 2);
     struct reflection* inner_value_rfx = vector_get(inner_rfx->fields, 0);
+
+    inner_rfx->parent = &rfx;
+    inner_value_rfx->parent = inner_rfx;
 
 
   calling("reflection_path_print()");

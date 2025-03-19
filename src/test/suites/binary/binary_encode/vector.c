@@ -83,14 +83,13 @@ test( binary_encode, vector ) {
 
 
   calling("binary_encode()");
-    byte output[1024] = { 0 };
-    struct io target = io_open_memory(output, sizeof(output));
-    reflection_initialize(&rfx, &input, NULL);
-    binary_encode(&rfx, &target);
+    byte wire[1024] = { 0 };
+    struct io output = io_open_memory(wire, sizeof(wire));
+    binary_encode(&input, &output, &rfx);
 
 
   must("encode the input data on the struct correctly");
-    byte expected_output[] = {
+    byte expected_wire[] = {
       0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       /* one_dim length */
       0x00, 0x00, 0x00, 0x00,                               /* one_dim.0.a */
       0x01, 0x00, 0x00, 0x00,                               /* one_dim.0.b */
@@ -141,7 +140,7 @@ test( binary_encode, vector ) {
     };
 
     verify(error.occurred == false);
-    verify(memeq(output, expected_output, sizeof(expected_output)) == true);
+    verify(memeq(wire, expected_wire, sizeof(expected_wire)) == true);
 
   success();
 }

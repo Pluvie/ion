@@ -1,6 +1,8 @@
 static inline void binary_decode_string (
+    void* obj,
     struct io* io,
-    struct reflection* rfx
+    struct reflection* rfx,
+    struct memory* allocator
 )
 {
 
@@ -23,7 +25,7 @@ allocate_string:
     goto validate_string;
 
   string.length = *string_length;
-  string.content = memory_alloc(rfx->allocator, string.length + 1);
+  string.content = memory_alloc(allocator, string.length + 1);
   
   char* string_content = io_read(io, string.length);
   if (error.occurred)
@@ -39,5 +41,5 @@ validate_string:
     return error_add_reflection_path(rfx);
 
 copy_string:
-  memcpy(rfx->target, &string, sizeof(struct string));
+  memcpy(obj, &string, sizeof(struct string));
 }

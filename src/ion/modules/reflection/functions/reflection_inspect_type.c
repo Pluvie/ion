@@ -80,9 +80,9 @@ void reflection_inspect_type (
 
   case SEQUENCE:
     rfx->element->parent = rfx;
-    rfx->length = rfx->size / rfx->element->size;
+    u64 length = rfx->size / rfx->element->size;
     emit("[");
-    emit_c(PRINT_COLOR_GREEN, "%li", rfx->length);
+    emit_c(PRINT_COLOR_GREEN, "%li", length);
     break;
 
   case ARRAY:

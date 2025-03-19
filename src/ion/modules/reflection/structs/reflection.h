@@ -6,7 +6,6 @@ struct reflection {
   u64 offset;
   u64 index;
   u64 size;
-  u64 length;
   enum types type;
   struct string* name;
   struct string* struct_name;
@@ -14,15 +13,12 @@ struct reflection {
     struct vector* fields;
     struct reflection* element;
   };
-  void* target;
   struct reflection* parent;
-  struct memory* allocator;
   bool (*validator)(void*, struct reflection*);
   struct {
     u64 min;
     u64 max;
   } size_limits;
   void* support_data;
-  padding(8);
 };
-check_sizeof(struct reflection, 128);
+check_sizeof(struct reflection, 96);
