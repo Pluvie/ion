@@ -11,7 +11,7 @@ static inline u64 json_parse_string (
 read_character:
   character = io_read(source, sizeof(char));
   if (error.occurred)
-    return false;
+    return 0;
 
   if (escaped) {
     escaped = false;

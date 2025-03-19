@@ -24,7 +24,9 @@
 /* ⚡️ION⚡️ Modules requiring the IO module. */
 #include "modules/tcp.c"
 
+/* ⚡️ION⚡️ Modules requiring the TCP module. */
+#include "modules/http.c"
+
 
 /* TODO: implement and organize these modules. */
-#include "modules/http.c"
 #include "modules/set.c"

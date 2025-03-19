@@ -12,6 +12,7 @@
 #include "suites/csv.c"
 #include "suites/json.c"
 #include "suites/tcp.c"
+#include "suites/http.c"
 
 bool suite_register (
     i32 argc,
@@ -35,6 +36,7 @@ bool suite_register (
   test_suite__csv();
   test_suite__json();
   test_suite__tcp();
+  test_suite__http();
 
   return true;
 
@@ -69,6 +71,8 @@ run_specific_suite:
     test_suite__json();
   else  if (strcmp(module, "tcp") == 0)
     test_suite__tcp();
+  else  if (strcmp(module, "http") == 0)
+    test_suite__http();
   else
     goto unrecognized_module;
 
