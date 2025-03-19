@@ -50,7 +50,7 @@ test( json_encode, primitive ) {
     json_encode(&example, &output, &rfx);
 
 
-  must("decode the input data on the struct correctly");
+  must("encode the input data on the struct correctly");
     char expected_wire[] =
       "{"
         "\"value_u8\":1,"

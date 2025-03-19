@@ -17,9 +17,20 @@ static inline void json_encode_struct (
 
     field_rfx->parent = rfx;
     io_write(io, "\"", 1);
+    if (error.occurred)
+      return;
+
     io_write(io, field_rfx->name->content, field_rfx->name->length);
+    if (error.occurred)
+      return;
+
     io_write(io, "\"", 1);
+    if (error.occurred)
+      return;
+
     io_write(io, ":", 1);
+    if (error.occurred)
+      return;
 
     void* field_obj = obj + field_rfx->offset;
     json_encode(field_obj, io, field_rfx);

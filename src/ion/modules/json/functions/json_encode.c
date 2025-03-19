@@ -27,7 +27,7 @@ void json_encode (
     return;
 
   case STRING:
-    //json_encode_string(obj, io, rfx);
+    json_encode_string(obj, io, rfx);
     return;
 
   case STRUCT:
@@ -35,19 +35,19 @@ void json_encode (
     return;
 
   case POINTER:
-    //json_encode_pointer(obj, io, rfx);
+    json_encode_pointer(obj, io, rfx);
     return;
 
   case SEQUENCE:
-    //json_encode_sequence(obj, io, rfx);
+    json_encode_sequence(obj, io, rfx);
     return;
 
   case ARRAY:
-    //json_encode_array(obj, io, rfx);
+    json_encode_array(obj, io, rfx);
     return;
 
   case VECTOR:
-    //json_encode_vector(obj, io, rfx);
+    json_encode_vector(obj, io, rfx);
     return;
   }
 }

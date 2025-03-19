@@ -20,6 +20,7 @@ void test_suite__json (
   test_add( json_decode, vector_maxlength );
   test_add( json_decode, vector_minlength );
   test_add( json_encode, primitive );
+  test_add( json_encode, struct );
   test_add( json_parse_number, error_eof );
   test_add( json_parse_number, error_exponent );
   test_add( json_parse_number, error_exponent_eof );
