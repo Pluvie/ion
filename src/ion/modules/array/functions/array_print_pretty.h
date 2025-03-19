@@ -5,10 +5,4 @@ static inline
 void array_print_pretty (
     struct array* ary,
     void (*printer)(void*, u64)
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

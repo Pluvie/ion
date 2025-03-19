@@ -3,10 +3,4 @@ static inline void* map_set_internal (
     void* key,
     void* value,
     bool rehashing
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

@@ -5,10 +5,4 @@ static inline
 bool vector_equal (
     struct vector* v1,
     struct vector* v2
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

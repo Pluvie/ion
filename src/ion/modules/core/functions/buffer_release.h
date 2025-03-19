@@ -4,10 +4,4 @@ static inline
 
 void buffer_release (
     struct buffer* allocator
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

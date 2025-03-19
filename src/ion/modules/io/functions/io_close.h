@@ -4,10 +4,4 @@ static inline
 
 void io_close (
     struct io* io
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

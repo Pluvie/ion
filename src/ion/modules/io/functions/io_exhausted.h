@@ -4,10 +4,4 @@ static inline
 
 bool io_exhausted (
     struct io* io
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

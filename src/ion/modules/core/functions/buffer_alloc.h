@@ -5,10 +5,4 @@ static inline
 u64 buffer_alloc (
     struct buffer* allocator,
     u64 amount
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

@@ -4,10 +4,4 @@ static inline
 
 i64 date_today (
     void
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

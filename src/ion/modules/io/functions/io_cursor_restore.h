@@ -4,10 +4,4 @@ static inline
 
 void io_cursor_restore (
     struct io* io
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

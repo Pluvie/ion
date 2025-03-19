@@ -4,10 +4,4 @@ static inline
 
 void tcp_server_start (
     struct tcp_server* server
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

@@ -6,10 +6,4 @@ struct vector* vector_allocate (
     u64 typesize,
     u64 length,
     struct memory* allocator
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

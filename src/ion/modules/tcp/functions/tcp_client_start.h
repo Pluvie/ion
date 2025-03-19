@@ -4,10 +4,4 @@ static inline
 
 void tcp_client_start (
     struct tcp_client* client
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

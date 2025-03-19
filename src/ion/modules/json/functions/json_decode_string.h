@@ -3,10 +3,4 @@ static inline void json_decode_string (
     struct io* io,
     struct reflection* rfx,
     struct memory* allocator
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

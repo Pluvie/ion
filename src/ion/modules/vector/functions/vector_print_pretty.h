@@ -5,10 +5,4 @@ static inline
 void vector_print_pretty (
     struct vector* vec,
     void (*printer)(void*, u64)
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

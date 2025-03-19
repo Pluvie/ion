@@ -6,10 +6,4 @@ void string_to_number (
     struct string* string,
     enum types type,
     void* number
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

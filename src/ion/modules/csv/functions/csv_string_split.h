@@ -7,10 +7,4 @@ struct array* csv_string_split (
     struct memory* allocator,
     char separator,
     char wrapper
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

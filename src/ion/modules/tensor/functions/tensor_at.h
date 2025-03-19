@@ -5,10 +5,4 @@ static inline
 void* tensor_at (
     struct tensor* tensor,
     struct vector* positions
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

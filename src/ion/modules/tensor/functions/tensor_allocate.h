@@ -6,10 +6,4 @@ struct tensor* tensor_allocate (
     u64 typesize,
     struct vector* input_dimensions,
     struct memory* allocator
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

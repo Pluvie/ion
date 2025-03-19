@@ -4,10 +4,4 @@ static inline
 
 i64 file_size (
     void* file
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

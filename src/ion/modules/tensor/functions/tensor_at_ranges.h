@@ -5,10 +5,4 @@ static inline
 void* tensor_at_ranges (
     struct tensor* tensor,
     struct vector* ranges
-)
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
+);

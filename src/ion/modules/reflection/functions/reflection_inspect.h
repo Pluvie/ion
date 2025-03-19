@@ -3,9 +3,3 @@ void reflection_inspect (
     struct string* name,
     void* object
 );
-/**
- * ### Description
- *
- * ### Return Value
- *
- */;
