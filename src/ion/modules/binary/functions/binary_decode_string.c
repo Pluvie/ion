@@ -7,7 +7,7 @@ static inline void binary_decode_string (
 {
 
 check_string_size:
-  u64 string_max_length = rfx->size_limits.min;
+  u64 string_max_length = rfx->size_limits.max;
   u64* string_length = io_read(io, sizeof(u64));
   if (error.occurred)
     return error_add_reflection_path(rfx);
