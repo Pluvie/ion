@@ -14,25 +14,26 @@ static inline struct http_header http_parse_header (
 read_name:
   character = io_read(io, sizeof(char));
   if (error.occurred)
-    return header;
+    goto error;
 
-  if (isspace(*character)) {
-    fail("no space allowed in header name");
-    return header;
+  if (is_httptoken(*character)) {
+    header.name.length++;
+    goto read_name;
   }
 
   if (*character == ':')
     goto read_separator;
 
-  header.name.length++;
-  goto read_name;
+  fail("header name must be a token: no spaces or delimiters allowed");
+  error_add_io_extraction(io);
+  goto error;
 
 read_separator:
   character = io_read(io, sizeof(char));
   if (error.occurred)
-    return header;
+    goto error;
 
-  if (isspace(*character))
+  if (is_httpwspace(*character))
     goto read_separator;
 
   value_begin = io->cursor - 1;
@@ -41,8 +42,15 @@ read_separator:
 read_value:
   character = io_read(io, sizeof(char));
   if (error.occurred)
-    return header;
+    goto error;
 
+  /**
+   * [RFC 7230](https://www.ietf.org/rfc/rfc7230.txt)
+   * Section 3.5 - Message Parsing Robustness
+   *
+   * Although the line terminator for the start-line and header fields is
+   * the sequence CRLF, a recipient MAY recognize a single LF as a line
+   * terminator and ignore any preceding CR. */
   if (*character == '\n')
     goto terminate;
 
@@ -55,11 +63,12 @@ read_value:
 read_terminator:
   character = io_read(io, sizeof(char));
   if (error.occurred)
-    return header;
+    goto error;
 
   if (*character != '\n') {
     fail("expected line feed after carriage return to end header value");
-    return header;
+    error_add_io_extraction(io);
+    goto error;
   }
 
 terminate:
@@ -71,7 +80,7 @@ terminate:
   io->cursor = name_begin;
   char* name = io_read(io, header.name.length);
   if (error.occurred)
-    return header;
+    goto error;
 
   memcpy(header.name.content, name, header.name.length);
   header.name.content[header.name.length] = '\0';
@@ -79,7 +88,7 @@ terminate:
   io->cursor = value_begin;
   char* value = io_read(io, header.value.length);
   if (error.occurred)
-    return header;
+    goto error;
 
   memcpy(header.value.content, value, header.value.length);
   header.value.content[header.value.length] = '\0';
@@ -88,4 +97,7 @@ terminate:
   io->cursor = final_cursor_position;
 
   return header;
+
+error:
+  return (struct http_header) { 0 };
 }
