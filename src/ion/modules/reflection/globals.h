@@ -1,4 +1,5 @@
 #include "globals/bool_rfx.h"
+#include "globals/failure_rfx.h"
 #include "globals/i16_rfx.h"
 #include "globals/i32_rfx.h"
 #include "globals/i64_rfx.h"
