@@ -6,9 +6,9 @@ static inline bool is_httptoken (
    * [RFC 7230](https://www.ietf.org/rfc/rfc7230.txt)
    * Section 3.2.6 - Field Value Components
    *
-   * token  = 1*tchar
+   *   token  = 1*tchar
    *
-   * tchar  = "!" / "#" / "$" / "%" / "&" / "'" / "*"
+   *   tchar  = "!" / "#" / "$" / "%" / "&" / "'" / "*"
    *          / "+" / "-" / "." / "^" / "_" / "`" / "|" / "~"
    *          / DIGIT / ALPHA
    */

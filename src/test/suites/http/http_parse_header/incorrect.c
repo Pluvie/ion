@@ -13,7 +13,8 @@ test( http_parse_header, incorrect ) {
   must("fail to parse the header with a specific error");
     verify(error.occurred == true);
     verify(streq(error.message,
-      "header name must be a token: no spaces or delimiters allowed, at position 13:\n"
+      "HTTP header name must be a token: no spaces or delimiters allowed, "
+        "at position 13:\n"
       "Content-Type application/json\r\n"
       "            ^"));
     verify(header.name.content == NULL);

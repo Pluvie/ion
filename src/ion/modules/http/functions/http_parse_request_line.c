@@ -1,45 +1,52 @@
-static inline struct http_header http_parse_header (
-    struct io* io,
-    struct memory* allocator
+static inline struct http_request http_parse_request_line (
+    struct io* io
 )
 {
+  /**
+   * [RFC 7230](https://www.ietf.org/rfc/rfc7230.txt)
+   * Section 3.1.1 - Request Line
+   *
+   * A request-line begins with a method token, followed by a single space
+   * (SP), the request-target, another single space (SP), the protocol
+   * version, and ends with CRLF.
+   *
+   *   request-line   = method SP request-target SP HTTP-version CRLF
+   *
+   * The method token indicates the request method to be performed on the
+   * target resource.  The request method is case-sensitive.
+   *
+   *   method         = token
+   */
+
   io_cursor_save(io);
 
-  struct http_header header = { 0 };
+  struct http_request req = { 0 };
 
   char* character;
-  u64 name_begin = io->cursor;
-  u64 value_begin = io->cursor;
+  u64 method_begin = io->cursor;
+  u64 target_begin = io->cursor;
+  u64 version_begin = io->cursor;
 
-read_name:
+read_method:
   character = io_read(io, sizeof(char));
   if (error.occurred)
     goto error;
 
   if (is_httptoken(*character)) {
     header.name.length++;
-    goto read_name;
+    goto read_method;
   }
 
-  if (*character == ':')
-    goto read_separator;
+  if (*character == ' ') {
+    target_begin = io->cursor;
+    goto read_target;
+  }
 
-  fail("HTTP header name must be a token: no spaces or delimiters allowed");
+  fail("HTTP method must be a token: no spaces or delimiters allowed");
   error_add_io_extraction(io);
   goto error;
 
-read_separator:
-  character = io_read(io, sizeof(char));
-  if (error.occurred)
-    goto error;
-
-  if (is_httpwspace(*character))
-    goto read_separator;
-
-  value_begin = io->cursor - 1;
-  header.value.length++;
-
-read_value:
+read_target:
   character = io_read(io, sizeof(char));
   if (error.occurred)
     goto error;
@@ -66,7 +73,7 @@ read_terminator:
     goto error;
 
   if (*character != '\n') {
-    fail("expected line feed after carriage return to end HTTP header value");
+    fail("expected line feed after carriage return to end header value");
     error_add_io_extraction(io);
     goto error;
   }
@@ -99,5 +106,5 @@ terminate:
   return header;
 
 error:
-  return (struct http_header) { 0 };
+  return (struct http_request) { 0 };
 }
