@@ -1,6 +1,6 @@
 /**
  * References the name of every ION type. */
-const char* type_names[] = {
+static const char* type_names[] = {
   "U8",
   "U16",
   "U32",
