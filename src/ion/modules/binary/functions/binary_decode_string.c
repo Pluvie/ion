@@ -8,9 +8,16 @@ static inline void binary_decode_string (
 
 check_string_size:
   u64 string_max_length = rfx->size_limits.max;
+  u64 string_min_length = rfx->size_limits.min;
   u64* string_length = io_read(io, sizeof(u64));
   if (error.occurred)
     return error_add_reflection_path(rfx);
+
+  if (string_min_length > 0 && *string_length < string_min_length) {
+    fail("string required minimum string length of %li but found %li",
+      string_min_length, *string_length);
+    return error_add_reflection_path(rfx);
+  }
 
   if (string_max_length > 0 && *string_length > string_max_length) {
     fail("string required maximum string length of %li but found %li",
