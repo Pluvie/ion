@@ -107,4 +107,5 @@ static inline struct http_request http_parse_request_line (
 //
 //error:
 //  return (struct http_request) { 0 };
+  return (struct http_request) { 0 };
 }
