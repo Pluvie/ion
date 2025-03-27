@@ -1,4 +1,5 @@
 #include "test.h"
+#include "test/suite.h"
 #include "test/suite.c"
 
 i32 main (
