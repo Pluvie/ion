@@ -26,11 +26,18 @@ read_length:
     goto allocate_pointer;
 
 allocate_string:
-  u64 string_max_size = rfx->size_limits.max;
+  u64 string_max_length = rfx->size_limits.max;
+  u64 string_min_length = rfx->size_limits.min;
 
-  if (string_max_size > 0 && *pointer_size > string_max_size) {
-    fail("pointer required maximum string size of %li but found %li",
-      string_max_size, *pointer_size);
+  if (string_max_length > 0 && *pointer_size > string_max_length) {
+    fail("pointer required maximum string length of %li but found %li",
+      string_max_length, *pointer_size);
+    return error_add_reflection_path(rfx);
+  }
+
+  if (string_min_length > 0 && *pointer_size < string_min_length) {
+    fail("pointer required minimum string length of %li but found %li",
+      string_min_length, *pointer_size);
     return error_add_reflection_path(rfx);
   }
 
