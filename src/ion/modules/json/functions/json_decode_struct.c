@@ -72,16 +72,14 @@ read_field:
     goto check_semicolon;
   }
 
-  for vector_each(rfx->fields, struct reflection*, fx) {
-    /* Field name equality must be done removing the `"` surrounding `field_name`.*/
-    if (strneq(fx->name->content, field_name + 1, field_name_length - 2)) {
-      field_rfx = fx;
-      field_rfx->parent = rfx;
-      goto check_semicolon;
-    }
-  }
+  struct string field_name_no_quotes = {
+    .content = field_name + 1,
+    .length = field_name_length - 2
+  };
 
-  field_rfx = NULL;
+  field_rfx = reflection_field_find(rfx, &field_name_no_quotes);
+  if (field_rfx != NULL)
+    goto check_semicolon;
 
 check_semicolon:
   json_parse_spaces(io);

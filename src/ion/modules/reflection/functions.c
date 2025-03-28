@@ -1,4 +1,5 @@
 #include "functions/error_add_reflection_path.c"
+#include "functions/reflection_field_find.c"
 #include "functions/reflection_inspect.c"
 #include "functions/reflection_inspect_indentation.c"
 #include "functions/reflection_inspect_type.c"

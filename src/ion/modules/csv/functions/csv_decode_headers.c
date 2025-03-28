@@ -14,21 +14,16 @@ static inline void csv_decode_headers (
   csv->headers = array_allocate(sizeof(addr), columns->length, allocator);
 
   for array_each(columns, struct string*, column) {
-    bool matching_field = false;
+    struct reflection* field_rfx = reflection_field_find(row_rfx, column);
 
-    for vector_each(row_rfx->fields, struct reflection*, field_rfx) {
-      if (strneq(column->content, field_rfx->name->content, column->length)) {
-        matching_field = true;
-        at_least_one_matching_header = true;
-
-        addr field_rfx_addr = (addr) field_rfx;
-        array_push(csv->headers, &field_rfx_addr);
-        break;
-      }
+    if (field_rfx == NULL) {
+      array_push(csv->headers, &(addr) { 0 });
+      continue;
     }
 
-    if (!matching_field)
-      array_push(csv->headers, &(addr) { 0 });
+    at_least_one_matching_header = true;
+    addr field_rfx_addr = (addr) field_rfx;
+    array_push(csv->headers, &field_rfx_addr);
   }
 
   io_flag_remove(source, IO_FLAGS_BUFFER_RETAIN);
