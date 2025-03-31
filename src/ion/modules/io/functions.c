@@ -1,4 +1,5 @@
 #include "functions/error_add_io_extraction.c"
+#include "functions/file_exists.c"
 #include "functions/file_read.c"
 #include "functions/file_size.c"
 #include "functions/io_buffer_chip_away.c"
