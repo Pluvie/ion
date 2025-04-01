@@ -69,7 +69,7 @@ read_field:
 
   if (rfx == NULL) {
     field_rfx = NULL;
-    goto check_semicolon;
+    goto check_colon;
   }
 
   struct string field_name_no_quotes = {
@@ -79,9 +79,9 @@ read_field:
 
   field_rfx = reflection_field_find(rfx, &field_name_no_quotes);
   if (field_rfx != NULL)
-    goto check_semicolon;
+    goto check_colon;
 
-check_semicolon:
+check_colon:
   json_parse_spaces(io);
   if (error.occurred)
     return;
