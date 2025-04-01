@@ -81,7 +81,7 @@ char* focused_test_names[16] = { 0 };
 /**
  * Forks a test. */
 #define test_fork()                                                                     \
-  if (fork() == 0)
+  if ((forked_pid = fork()) == 0)
 
 
 /**

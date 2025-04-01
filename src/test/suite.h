@@ -1,4 +1,5 @@
 i32 suite_pid;
+i32 forked_pid;
 
 void suite_run (
     void
