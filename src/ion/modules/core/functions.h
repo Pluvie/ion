@@ -8,4 +8,5 @@
 #include "functions/memory_alloc_zero.h"
 #include "functions/memory_init.h"
 #include "functions/memory_release.h"
+#include "functions/sleep_ms.h"
 #include "functions/signal_catch.h"
