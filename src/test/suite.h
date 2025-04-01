@@ -1,7 +1,11 @@
+i32 suite_pid;
+
 void suite_run (
     void
 )
 {
+  suite_pid = getpid();
+
   if (focused_tests[0] == NULL) {
     original_stderr = fdopen(STDERR_FILENO, "w");
     stderr = fopen("/dev/null", "w");
@@ -15,6 +19,8 @@ void suite_run (
       fprintf(original_stderr, "%s", registered_test_names[i]);
       registered_tests[i]();
       error_reset();
+      if (suite_pid == 0)
+        return;
     }
   } else {
     for (u32 i = 0; i < focused_tests_count; i++) {
@@ -23,6 +29,8 @@ void suite_run (
       if (!suite_passed)
         error_print();
       error_reset();
+      if (suite_pid == 0)
+        return;
     }
   }
 
