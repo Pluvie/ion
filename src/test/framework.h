@@ -81,19 +81,13 @@ char* focused_test_names[16] = { 0 };
 /**
  * Forks a test. */
 #define test_fork()                                                                     \
-  suite_pid = fork();                                                                   \
-  if (suite_pid == -1) {                                                                \
-    fprintf(original_stderr, "Error while forking test: %s.", strerror(errno));         \
-    exit(1);                                                                            \
-  }                                                                                     \
-  if (suite_pid == 0)
+  if (fork() == 0)
 
 
 /**
  * Waits a forked test. */
 #define test_wait_forked()                                                              \
-  i32 test_wait_status;                                                                 \
-  waitpid(suite_pid, &test_wait_status, 0);
+  i32 lvar(wait_status); wait(&lvar(wait_status));
 
 
 /**

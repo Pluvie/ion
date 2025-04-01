@@ -11,26 +11,24 @@ void suite_run (
     stderr = fopen("/dev/null", "w");
   } else {
     original_stderr = fdopen(STDERR_FILENO, "w");
-    stderr = fdopen(STDERR_FILENO, "w");
+    //stderr = fdopen(STDERR_FILENO, "w");
   }
 
   if (focused_tests[0] == NULL) {
     for (u32 i = 0; i < registered_tests_count; i++) {
       fprintf(original_stderr, "%s", registered_test_names[i]);
+      fflush(original_stderr);
       registered_tests[i]();
       error_reset();
-      if (suite_pid == 0)
-        return;
     }
   } else {
     for (u32 i = 0; i < focused_tests_count; i++) {
       fprintf(original_stderr, "%s", focused_test_names[i]);
+      fflush(original_stderr);
       focused_tests[i]();
       if (!suite_passed)
         error_print();
       error_reset();
-      if (suite_pid == 0)
-        return;
     }
   }
 
