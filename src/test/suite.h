@@ -11,7 +11,6 @@ void suite_run (
     stderr = fopen("/dev/null", "w");
   } else {
     original_stderr = fdopen(STDERR_FILENO, "w");
-    //stderr = fdopen(STDERR_FILENO, "w");
   }
 
   if (focused_tests[0] == NULL) {

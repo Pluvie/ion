@@ -90,15 +90,6 @@ char* focused_test_names[16] = { 0 };
   i32 lvar(wait_status); wait(&lvar(wait_status));
 
 
-/**
- * Enables test printing inside this macro. Normally, all printing inside tests is
- * redirected to `/dev/null`. By using this macro, the variable #suppressed_stderr shall
- * be temporarily reverted back, enabling to print on `stderr`. */
-#define test_print()                                                                    \
-  tmp_stderr = suppressed_stderr; suppressed_stderr = original_stderr;                  \
-  i32 lvar(l) = 0; for (; lvar(l) == 0; (suppressed_stderr = tmp_stderr), (lvar(l)++))
-
-
 #define given(description)
 #define when(description)
 #define calling(description)
