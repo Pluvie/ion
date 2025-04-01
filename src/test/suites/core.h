@@ -19,3 +19,4 @@
 #include "core/memory_init/default_capacity.c"
 #include "core/memory_init/no_immediate_allocation.c"
 #include "core/memory_init/power_2_capacity.c"
+#include "core/signal_catch/intercept.c"

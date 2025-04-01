@@ -48,7 +48,7 @@ void tcp_server_start (
   /* Sets up an intercept function for SIGINT signals: they can be used to interrupt
    * the server block while accepting connections. */ 
   struct sigaction signal_action = {
-    .sa_handler = tcp_server_sigint,
+    .sa_handler = signal_catch,
   };
   sigemptyset(&signal_action.sa_mask);
   if (sigaction(SIGINT, &signal_action, NULL) == -1) {
