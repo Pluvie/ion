@@ -10,4 +10,5 @@
 #include "functions/memory_release.h"
 #include "functions/signal_catch.h"
 #include "functions/signal_catcher.h"
+#include "functions/signal_received.h"
 #include "functions/sleep_ms.h"

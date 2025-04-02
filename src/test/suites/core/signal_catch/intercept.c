@@ -5,7 +5,7 @@ test( signal_catch, intercept ) {
 
 
   when("no signal is received");
-    verify(signal_received == 0);
+    verify(signal_received(SIGUSR1) == false);
 
 
   calling("raise()");
@@ -13,9 +13,8 @@ test( signal_catch, intercept ) {
 
 
   must("catch the raised signal");
-    verify(signal_received == SIGUSR1);
+    verify(signal_received(SIGUSR1) == true);
 
 
   success();
-    signal_received = 0;
 }

@@ -58,7 +58,7 @@ void tcp_server_start (
       (struct sockaddr*) &(address),
       (socklen_t*) &socklen_size);
 
-    if (signal_received == SIGINT) {
+    if (signal_received(SIGINT)) {
       print("Interrupt received.");
       break;
     }
