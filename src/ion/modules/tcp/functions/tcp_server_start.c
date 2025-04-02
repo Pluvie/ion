@@ -15,7 +15,7 @@ void tcp_server_start (
 
   i32 sock = socket(AF_INET, SOCK_STREAM, 0);
   if (sock == -1) {
-    fail("Socket failure: %s.", strerror(errno));
+    fail("socket failure: %s.", strerror(errno));
     return;
   }
 
@@ -23,13 +23,13 @@ void tcp_server_start (
   setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &reuse_socket, sizeof(i32));
   i32 bind_outcome = bind(sock, (struct sockaddr*) &address, sizeof(address));
   if (bind_outcome == -1) {
-    fail("Socket binding failure: %s.", strerror(errno));
+    fail("socket binding failure: %s.", strerror(errno));
     return;
   }
 
   i32 listen_outcome = listen(sock, 10);
   if (listen_outcome == -1) {
-    fail("Socket listen failure: %s.", strerror(errno));
+    fail("socket listen failure: %s.", strerror(errno));
     return;
   }
 
@@ -47,14 +47,9 @@ void tcp_server_start (
 
   /* Sets up an intercept function for SIGINT signals: they can be used to interrupt
    * the server block while accepting connections. */ 
-  struct sigaction signal_action = {
-    .sa_handler = signal_catch,
-  };
-  sigemptyset(&signal_action.sa_mask);
-  if (sigaction(SIGINT, &signal_action, NULL) == -1) {
-    fail("Could not set up an intercept for SIGINT: %s", strerror(errno));
+  signal_catch(SIGINT);
+  if (error.occurred)
     return;
-  }
 
   /* Accepts incoming connection and waits up until 5 seconds to receive data. If no
    * data are received after this timeout, the connection shall be closed. */
