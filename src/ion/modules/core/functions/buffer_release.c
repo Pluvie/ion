@@ -6,7 +6,8 @@ void buffer_release (
     struct buffer* allocator
 )
 {
-  free(allocator->data);
+  if (allocator->data != NULL)
+    free(allocator->data);
 
   memzero(allocator, sizeof(struct buffer));
 }
