@@ -1,42 +1,4 @@
-package main
-
-import (
-  "fmt"
-)
-
-func insert() {
-  m := make(map[int]int)
-
-  for i := 0; i < 1000000; i++ {
-    m[i] = i;
-  }
-
-  fmt.Println("Done: ", m[999999])
-}
-
-func lookup() {
-  m := make(map[int]int)
-
-  for i := 0; i < 1000; i++ {
-    m[numbers[i]] = i;
-  }
-
-  var v int;
-  for j := 0; j < 10000; j++ {
-    for i := 0; i < 1000; i++ {
-      v = m[numbers[i]];
-   }
- }
-
-  fmt.Println("Done: ", v)
-}
-
-func main() {
-  //insert()
-  lookup()
-}
-
-var numbers = []int{
+i32 numbers[] = {
  660243, 183487, 349829, 723521, 869182, 855900, 631825, 762097,  88760, 877229, 211180,
  184250, 938476, 879995, 478638, 941064,  95831, 106271, 585635, 900241, 636978, 819282,
  200357, 744761, 704975, 984066, 361726, 417089, 342256, 173680, 709161, 951830, 120277,

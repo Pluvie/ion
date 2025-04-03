@@ -1,5 +1,6 @@
 #include "../../../../src/ion.h"
 #include "../../../../src/ion.c"
+#include "numbers.h"
 
 void insert (
     void
@@ -8,11 +9,33 @@ void insert (
   struct memory allocator = memory_init(0);
   struct map* map = map_allocate(sizeof(i32), sizeof(i32), 0, &allocator);
 
-  for (int i = 0; i < 1000000; i++) {
+  for (i32 i = 0; i < 1000000; i++) {
     map_set(map, &i, &i);
   }
 
   print("Done: %i", as(i32, map_get(map, &(i32) { 999999 })));
+  memory_release(&allocator);
+}
+
+void lookup (
+    void
+)
+{
+  struct memory allocator = memory_init(0);
+  struct map* map = map_allocate(sizeof(i32), sizeof(i32), 0, &allocator);
+
+  for (i32 i = 0; i < countof(numbers); i++) {
+    map_set(map, &numbers[i], &i);
+  }
+
+  i32 v;
+  for (i32 j = 0; j < 10000; j++) {
+    for (i32 i = 0; i < countof(numbers); i++) {
+      v = as(i32, map_get(map, &numbers[i]));
+    }
+  }
+
+  print("Done: %i", v);
   memory_release(&allocator);
 }
 
@@ -21,6 +44,7 @@ i32 main (
     char** argv
 )
 {
-  insert();
+  //insert();
+  lookup();
   return EXIT_SUCCESS;
 }
