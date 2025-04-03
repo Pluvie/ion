@@ -7,13 +7,11 @@ void* map_get (
     void* key
 )
 {
-  u64 probe_limit = log2(map->capacity);
-  u64 probe_count = 0;
-
   u64 hash = map_hash(key, map->key_typesize);
-  u64 hash_index = hash & (map->capacity - 1);
+  u64 probe_index = hash & (map->capacity - 1);
+  u64 probe_index_limit = map->capacity - 1;
 
-  void* entry = map->entries + (hash_index * map->entry_typesize);
+  void* entry = map->entries + (probe_index * map->entry_typesize);
 
 linear_probing:
   if (map_entry_is_empty(entry))
@@ -22,11 +20,13 @@ linear_probing:
   if (memeq(key, map_entry_key(map, entry), map->key_typesize))
     goto return_value;
 
-  probe_count++;
+  probe_index++;
   entry += map->entry_typesize;
 
-  if (probe_count >= probe_limit)
-    return NULL;
+  if (probe_index >= probe_index_limit) {
+    entry = map->entries;
+    probe_index = 0;
+  }
 
   goto linear_probing;
 

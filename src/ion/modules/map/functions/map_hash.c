@@ -7,7 +7,7 @@ static inline u64 map_hash (
  * (http://www.cse.yorku.ca/~oz/hash.html). */
 {
   if (key_typesize <= sizeof(u64))
-    return *(u64*) key;
+    return (*(u64*) key) & ((u64) 0x7FFFFFFFFFFFFFFF);
 
   u64 hash = 5381;
   byte* key_byte = (byte*) key;

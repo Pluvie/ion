@@ -6,9 +6,7 @@ void map_print (
     struct map* map
 )
 {
-  u64 probed_capacity = map->capacity + log2(map->capacity);
-
-  for (u64 index = 0; index < probed_capacity; index++) {
+  for (u64 index = 0; index < map->capacity; index++) {
     fprintf(stderr, "-----------\n");
     fprintf(stderr, "%9li |\n", index);
     fprintf(stderr, "-----------\n");

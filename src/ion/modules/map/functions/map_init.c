@@ -15,16 +15,16 @@ capacity_check:
     capacity = MAP_DEFAULT_CAP;
 
 initialize:
-  u64 probed_capacity = capacity + log2(capacity);
   u64 entry_typesize = key_typesize + value_typesize + sizeof(u64);
 
   struct map map = {
     .capacity = capacity,
     .length = 0,
+    .load_limit = (capacity * 70) / 100,
     .key_typesize = key_typesize,
     .value_typesize = value_typesize,
     .entry_typesize = entry_typesize,
-    .entries = memory_alloc_zero(allocator, entry_typesize * probed_capacity),
+    .entries = memory_alloc_zero(allocator, entry_typesize * capacity),
     .allocator = allocator
   };
 

@@ -7,14 +7,17 @@ test( map_set, rehash_trigger ) {
     void* original_entries_address = map.entries;
 
 
-  when("the map has some entries in it");
-    for (u64 index = 0; index < 9; index++)
+  when("the map has some entries in it, under the load factor");
+    for (u64 index = 0; index < 5; index++)
       map_set(&map, &index, &index);
 
 
-  calling("map_set()");
+  when("adding a new key and surpassing the load factor");
     u64 key = 10;
     u64 value = 10;
+
+
+  calling("map_set()");
     map_set(&map, &key, &value);
 
 

@@ -1,1 +1,1 @@
-#define MAP_EMPTY_SPOT        0
+#define MAP_EMPTY_SPOT        0UL
