@@ -7,7 +7,7 @@ struct map {
   u64 load_limit;
   u64 key_typesize;
   u64 value_typesize;
-  u64 entry_typesize;
+  void* hashes;
   void* entries;
   struct memory* allocator;
 };

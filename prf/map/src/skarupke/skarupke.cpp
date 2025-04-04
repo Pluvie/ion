@@ -7,7 +7,7 @@ void insert () {
   ska::flat_hash_map<int, int> map = {};
 
   for (int i = 0; i < 1000000; i++) {
-      map[i] = i;
+    map[i] = i;
   }
 
   std::cout << "Done: " << map[999999] << "\n";
@@ -28,6 +28,9 @@ void lookup() {
     }
   }
 
+  std::cout << "Size: " << map.size() << std::endl;
+  std::cout << "LF: " << map.load_factor() << std::endl;
+  std::cout << "Buckets: " << map.bucket_count() << std::endl;
   std::cout << "Done: " << v << std::endl;
 }
 

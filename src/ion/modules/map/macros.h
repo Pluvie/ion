@@ -4,4 +4,5 @@
 #include "macros/map_entry_is_empty.h"
 #include "macros/map_entry_key.h"
 #include "macros/map_entry_occupy.h"
+#include "macros/map_entry_typesize.h"
 #include "macros/map_entry_value.h"

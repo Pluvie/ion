@@ -2,27 +2,27 @@
 
 mkdir -p exe
 
-# Abseil
-if [ ! -d "/tmp/abseil-cpp" ]; then
-  mkdir -p /tmp/abseil-cpp
-  mkdir -p /tmp/abseil-cpp/repo
-  mkdir -p /tmp/abseil-cpp/build
-  git clone --depth 1 --branch 20250127.0 \
-    git@github.com:abseil/abseil-cpp.git  \
-    /tmp/abseil-cpp/repo
-fi
-cp src/abseil/* /tmp/abseil-cpp
-cd /tmp/abseil-cpp/build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build . --target abseil
-cd -
-mv /tmp/abseil-cpp/build/abseil exe
-
-# Go
-cd src/go
-go build go.go
-mv go ../../exe
-cd -
+## Abseil
+#if [ ! -d "/tmp/abseil-cpp" ]; then
+#  mkdir -p /tmp/abseil-cpp
+#  mkdir -p /tmp/abseil-cpp/repo
+#  mkdir -p /tmp/abseil-cpp/build
+#  git clone --depth 1 --branch 20250127.0 \
+#    git@github.com:abseil/abseil-cpp.git  \
+#    /tmp/abseil-cpp/repo
+#fi
+#cp src/abseil/* /tmp/abseil-cpp
+#cd /tmp/abseil-cpp/build
+#cmake .. -DCMAKE_BUILD_TYPE=Release
+#cmake --build . --target abseil
+#cd -
+#mv /tmp/abseil-cpp/build/abseil exe
+#
+## Go
+#cd src/go
+#go build go.go
+#mv go ../../exe
+#cd -
 
 # Ion
 cd src/ion
@@ -32,12 +32,12 @@ gcc ion.c           \
   -o ../../exe/ion
 cd -
 
-# Rust
-cd src/rust
-cargo build --release
-mv target/release/rust ../../exe
-rm -rf target
-cd -
+## Rust
+#cd src/rust
+#cargo build --release
+#mv target/release/rust ../../exe
+#rm -rf target
+#cd -
 
 # Skarupke
 # https://probablydance.com/2017/02/26/i-wrote-the-fastest-hashtable/

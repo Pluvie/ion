@@ -15,7 +15,7 @@ capacity_check:
     capacity = MAP_DEFAULT_CAP;
 
 initialize:
-  u64 entry_typesize = key_typesize + value_typesize + sizeof(u64);
+  u64 entry_typesize = key_typesize + value_typesize;
 
   struct map map = {
     .capacity = capacity,
@@ -23,8 +23,8 @@ initialize:
     .load_limit = (capacity * 70) / 100,
     .key_typesize = key_typesize,
     .value_typesize = value_typesize,
-    .entry_typesize = entry_typesize,
-    .entries = memory_alloc_zero(allocator, entry_typesize * capacity),
+    .hashes = memory_alloc_zero(allocator, sizeof(u64) * (capacity + 8)),
+    .entries = memory_alloc_zero(allocator,  entry_typesize * (capacity + 8)),
     .allocator = allocator
   };
 

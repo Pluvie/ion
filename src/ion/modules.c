@@ -4,7 +4,7 @@
 /* ⚡️ION⚡️ Modules requiring the CORE module only. */
 #include "modules/array.c"
 #include "modules/io.c"
-#include "modules/map.c"
+//#include "modules/map.c"
 #include "modules/range.c"
 #include "modules/string.c"
 #include "modules/time.c"

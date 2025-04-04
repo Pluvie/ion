@@ -35,6 +35,9 @@ void lookup (
     }
   }
 
+  print("Size: %li", map->length);
+  print("LF: %f", (d64) map->length / (d64) map->capacity);
+  print("Buckets: %li", map->capacity);
   print("Done: %i", v);
   memory_release(&allocator);
 }
@@ -44,7 +47,7 @@ i32 main (
     char** argv
 )
 {
-  //insert();
-  lookup();
+  insert();
+  //lookup();
   return EXIT_SUCCESS;
 }
