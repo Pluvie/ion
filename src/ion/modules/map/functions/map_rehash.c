@@ -9,9 +9,13 @@ rehash_begin:
     map->key_typesize, map->value_typesize, new_capacity, map->allocator);
 
   void* entry = map->entries;
+  u32* hash = map->hashes;
 
-  for (u64 i = 0; i < map->capacity; i++, entry += map->entry_typesize) {
-    if (map_entry_is_empty(entry))
+  for (u64 i = 0;
+      i < map->capacity + MAP_PADDED_CAP;
+      i++, hash++, entry += map->entry_typesize) {
+
+    if (map_hash_is_empty(hash))
       continue;
 
     void* key = map_entry_key(map, entry);
@@ -20,6 +24,7 @@ rehash_begin:
   }
 
   map->capacity = new_capacity;
-  map->load_limit = (new_capacity * 70) / 100,
+  map->load_limit = map_load_limit(new_capacity);
   map->entries = rehashed_map.entries;
+  map->hashes = rehashed_map.hashes;
 }

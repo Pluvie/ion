@@ -18,7 +18,7 @@ void test_suite__core (
   test_add( memory_alloc, first_alloc_aligned );
   test_add( memory_alloc, increment_position );
   test_add( memory_alloc_zero, zero_out );
-  test_focus( memory_init, default_capacity );
+  test_add( memory_init, default_capacity );
   test_add( memory_init, no_immediate_allocation );
   test_add( memory_init, power_2_capacity );
   test_add( signal_catch, intercept );

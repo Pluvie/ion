@@ -6,14 +6,16 @@ static inline u64 map_hash (
  * This function returns a generic hash value based on [djb2 algorithm]
  * (http://www.cse.yorku.ca/~oz/hash.html). */
 {
-  if (key_typesize <= sizeof(u64))
-    return (*(u64*) key) & ((u64) 0x7FFFFFFFFFFFFFFF);
+  return (*(u64*) key) & ((u64) 0x000000007FFFFFFF);
 
-  u64 hash = 5381;
-  byte* key_byte = (byte*) key;
+  //if (key_typesize <= sizeof(u64))
+  //  return (*(u64*) key) & ((u64) 0x7FFFFFFFFFFFFFFF);
 
-  for (u64 i = 0; i < key_typesize; i++)
-    hash = ((hash << 5) + hash) + *(key_byte + i); /* hash * 33 + key_byte */
+  //u64 hash = 5381;
+  //byte* key_byte = (byte*) key;
+
+  //for (u64 i = 0; i < key_typesize; i++)
+  //  hash = ((hash << 5) + hash) + *(key_byte + i); /* hash * 33 + key_byte */
 
   // AVX2 Test -- to be continued.
   //
@@ -24,5 +26,5 @@ static inline u64 map_hash (
   //}
 
   //u64 hash = *(u64*) &hash_accumulator;
-  return hash;
+  //return hash;
 }

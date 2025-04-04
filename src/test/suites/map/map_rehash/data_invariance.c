@@ -9,10 +9,17 @@ test( map_rehash, data_invariance ) {
   when("the map has some keys in it");
     for (u64 index = 0; index < 3; index++)
       map_set(&map, &index, &index);
+    map_print(&map);
 
 
   calling("map_rehash()");
     map_rehash(&map);
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    map_print(&map);
 
 
   must("be invariant on keys and values");

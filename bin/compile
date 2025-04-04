@@ -6,6 +6,13 @@ if [ "$#" -lt 1 ]; then
 fi
 
 SOURCE=$1
+AVX_FLAG=""
+
+if cat /proc/cpuinfo | grep -q avx512f; then
+  AVX_FLAG="-mavx512f"
+elif cat /proc/cpuinfo | grep -q avx2; then
+  AVX_FLAG="-mavx2"
+fi
 
 mkdir -p exe
 gcc src/$SOURCE.c                 \
@@ -14,4 +21,5 @@ gcc src/$SOURCE.c                 \
   -Wno-override-init-side-effects \
   -Wno-unused-label               \
   -Werror                         \
+  $AVX_FLAG                       \
   ${@:2}
