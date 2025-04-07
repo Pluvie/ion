@@ -14,7 +14,7 @@ void* map_get (
 #if defined(__AVX512F__)
   #include "map_get__avx512.c"
 
-#elsif defined(__AVX2__)
+#elif defined(__AVX2__)
   #include "map_get__avx2.c"
 
 #else
@@ -33,9 +33,9 @@ linear_probing:
   entry += map->entry_typesize;
 
   if (probe_index >= probe_index_limit) {
-    entry = map->entries;
-    hash = map->hashes;
     probe_index = 0;
+    hash = map->hashes;
+    entry = map->entries;
   }
 
   goto linear_probing;

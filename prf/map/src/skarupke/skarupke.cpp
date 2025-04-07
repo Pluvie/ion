@@ -35,7 +35,7 @@ void lookup() {
 }
 
 int main() {
-  //insert();
-  lookup();
+  insert();
+  //lookup();
   return 0;
 }

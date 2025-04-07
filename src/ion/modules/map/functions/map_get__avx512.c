@@ -1,8 +1,15 @@
 {
-  //__m512i hashes_expected = _mm512_set1_epi64(hash);
-  //__m512i hashes_found = _mm512_loadu_si512(hashes);
-  //__mmask8 cmp = _mm512_cmpeq_epi64_mask(hashes_expected, hashes_found);
-  //i32 cnt = _popcnt32(cmp);
-  //print("yo: %i", cmp);
-  //print("cnt: %i (%i)", cnt, __builtin_clz(cmp));
+  /* TODO
+
+  Implementation idea:
+
+  u32* hash = map->hashes + probe_index;
+
+  __m512i wanted = _mm512_set1_epi64(key_hash);
+  __m512i found = _mm512_load_si512(hash);
+  __mmask8 cmp = _mm512_cmpeq_epi64_mask(wanted, found);
+
+  i32 cnt = _popcnt32(cmp);
+
+  */
 }

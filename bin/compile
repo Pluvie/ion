@@ -9,7 +9,14 @@ SOURCE=$1
 AVX_FLAG=""
 
 if cat /proc/cpuinfo | grep -q avx512f; then
-  AVX_FLAG="-mavx512f"
+  if [[ $SOURCE == "test" ]]; then
+    # Reverting to AVX2 in test mode due to Valgrind not yet supporting the AVX512
+    # instruction format.
+    # See here: https://bugs.kde.org/show_bug.cgi?id=383010
+    AVX_FLAG="-mavx2"
+  else
+    AVX_FLAG="-mavx512f"
+  fi
 elif cat /proc/cpuinfo | grep -q avx2; then
   AVX_FLAG="-mavx2"
 fi

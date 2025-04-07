@@ -21,6 +21,7 @@ void map_print (
       continue;
     }
 
+    fprintf(stderr, "hash: %u\n", *hash & 0x7FFFFFFF);
     hexdump(key, map->key_typesize);
     fprintf(stderr, "-----------\n");
     hexdump(value, map->value_typesize);

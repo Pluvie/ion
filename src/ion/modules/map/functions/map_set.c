@@ -12,13 +12,13 @@ void* map_set (
   u64 probe_index = key_hash & (map->capacity - 1);
   u64 probe_index_limit = map->capacity + MAP_PADDED_CAP - 1;
 
-#if defined(__AVX512F__)
-  #include "map_set__avx512.c"
-
-#elsif defined(__AVX2__)
-  #include "map_set__avx2.c"
-
-#else
+//#if defined(__AVX512F__)
+//  #include "map_set__avx512.c"
+//
+//#elif defined(__AVX2__)
+//  #include "map_set__avx2.c"
+//
+//#else
   void* entry = map->entries + (probe_index * map->entry_typesize);
   u32* hash = map->hashes + probe_index;
 
@@ -43,7 +43,7 @@ linear_probing:
 
 set_value_new:
   memcpy(map_entry_key(map, entry), key, map->key_typesize);
-  map_hash_occupy(hash);
+  map_hash_occupy(hash, key_hash);
   map->length++;
 
 set_value_existing:
@@ -53,5 +53,5 @@ set_value_existing:
     map_rehash(map);
 
   return value;
-#endif
+//#endif
 }
