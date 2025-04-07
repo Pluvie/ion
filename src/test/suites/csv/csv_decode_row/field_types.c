@@ -54,9 +54,9 @@ test( csv_decode_row, field_types ) {
 
   must("correctly decode the matching fields");
     verify(error.occurred == false);
-    verify(streq("Esculapio", user_1.name.content));
+    verify(string_equal(&s("Esculapio"), &(user_1.name)));
     verify(user_1.age == 33);
-    verify(streq("Romualdo", user_2.name.content));
+    verify(string_equal(&s("Romualdo"), &(user_2.name)));
     verify(user_2.age == 17);
 
 

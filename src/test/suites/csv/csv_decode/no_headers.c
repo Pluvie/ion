@@ -48,14 +48,14 @@ test( csv_decode, no_headers ) {
     struct user* user;
 
     user = array_get(&users, 0);
-    verify(streq("Esculapio", user->name.content));
+    verify(string_equal(&s("Esculapio"), &(user->name)));
     verify(user->age == 33);
-    verify(streq("1-jan-99", user->last_login.content));
+    verify(string_equal(&s("1-jan-99"), &(user->last_login)));
 
     user = array_get(&users, 1);
-    verify(streq("Romualdo", user->name.content));
+    verify(string_equal(&s("Romualdo"), &(user->name)));
     verify(user->age == 17);
-    verify(streq("31-dec-99", user->last_login.content));
+    verify(string_equal(&s("31-dec-99"), &(user->last_login)));
 
 
   success();

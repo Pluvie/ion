@@ -26,13 +26,13 @@ test( csv_parse_row, newline_unwrapped ) {
     for array_each(fields, struct string*, field, field_index)
       switch (field_index) {
       case 0:
-        verify(streq("a", field->content));
+        verify(string_equal(field, &s("a")));
         continue;
       case 1:
-        verify(streq("sam\nple", field->content));
+        verify(string_equal(field, &s("sam\nple")));
         continue;
       case 2:
-        verify(streq("row", field->content));
+        verify(string_equal(field, &s("row")));
         continue;
       default:
         continue;

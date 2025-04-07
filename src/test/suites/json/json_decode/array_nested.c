@@ -46,20 +46,20 @@ test( json_decode, array_nested ) {
     struct string* role;
 
     user = array_get(&users, 0);
-    verify(streq("Augustine", user->name->content));
+    verify(string_equal(&s("Augustine"), user->name));
     verify(user->age == 25);
     role = array_get(user->roles, 0);
-    verify(streq("one", role->content));
+    verify(string_equal(&s("one"), role));
     role = array_get(user->roles, 1);
-    verify(streq("two", role->content));
+    verify(string_equal(&s("two"), role));
 
     user = array_get(&users, 1);
-    verify(streq("Tess Gold", user->name->content));
+    verify(string_equal(&s("Tess Gold"), user->name));
     verify(user->age == 19);
     role = array_get(user->roles, 0);
-    verify(streq("three", role->content));
+    verify(string_equal(&s("three"), role));
     role = array_get(user->roles, 1);
-    verify(streq("four", role->content));
+    verify(string_equal(&s("four"), role));
 
 
   success();

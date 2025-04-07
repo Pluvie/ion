@@ -49,12 +49,12 @@ test( csv_decode, detect_headers ) {
     struct user* user;
 
     user = array_get(&users, 0);
-    verify(streq("Esculapio", user->name.content));
+    verify(string_equal(&s("Esculapio"), &(user->name)));
     verify(user->age == 33);
     verify(user->last_login.content == NULL);
 
     user = array_get(&users, 1);
-    verify(streq("Romualdo", user->name.content));
+    verify(string_equal(&s("Romualdo"), &(user->name)));
     verify(user->age == 17);
     verify(user->last_login.content == NULL);
 

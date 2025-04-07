@@ -39,10 +39,10 @@ test( json_decode, array ) {
 
     struct user* user;
     user = array_get(&users, 0);
-    verify(streq("Augustine", user->name.content));
+    verify(string_equal(&s("Augustine"), &(user->name)));
     verify(user->age == 25);
     user = array_get(&users, 1);
-    verify(streq("Tess Gold", user->name.content));
+    verify(string_equal(&s("Tess Gold"), &(user->name)));
     verify(user->age == 19);
 
 

@@ -52,14 +52,14 @@ test( reflection_macros, struct_type_tagless ) {
     verify(field_rfx->type == U64);
     verify(field_rfx->size == sizeof(u64));
     verify(field_rfx->offset == offsetof(struct example, value_u64));
-    verify(streq(field_rfx->name->content, "value_u64"));
+    verify(string_equal(field_rfx->name, &s("value_u64")));
     verify(field_rfx->index == 0);
 
     field_rfx = vector_get(rfx.fields, 1);
     verify(field_rfx->type == D64);
     verify(field_rfx->size == sizeof(d64));
     verify(field_rfx->offset == offsetof(struct example, value_d64));
-    verify(streq(field_rfx->name->content, "value_d64"));
+    verify(string_equal(field_rfx->name, &s("value_d64")));
     verify(field_rfx->index == 0);
 
     struct example example;
@@ -68,7 +68,7 @@ test( reflection_macros, struct_type_tagless ) {
     verify(inside_1_rfx->size == sizeof(example.inside_1));
     verify(inside_1_rfx->offset == offsetof(struct example, inside_1));
     verify(inside_1_rfx->index == 0);
-    verify(streq(inside_1_rfx->name->content, "inside_1"));
+    verify(string_equal(inside_1_rfx->name, &s("inside_1")));
     verify(inside_1_rfx->fields != NULL);
     verify(inside_1_rfx->fields->length == 3);
 
@@ -77,7 +77,7 @@ test( reflection_macros, struct_type_tagless ) {
     verify(field_rfx->size == sizeof(void*));
     verify(field_rfx->offset ==
       offsetof(struct example, inside_1.string) - offsetof(struct example, inside_1));
-    verify(streq(field_rfx->name->content, "string"));
+    verify(string_equal(field_rfx->name, &s("string")));
     verify(field_rfx->index == 0);
     verify(field_rfx->element != NULL);
     verify(field_rfx->element->type == CHAR);
@@ -87,7 +87,7 @@ test( reflection_macros, struct_type_tagless ) {
     verify(field_rfx->size == sizeof(u32));
     verify(field_rfx->offset ==
       offsetof(struct example, inside_1.number) - offsetof(struct example, inside_1));
-    verify(streq(field_rfx->name->content, "number"));
+    verify(string_equal(field_rfx->name, &s("number")));
     verify(field_rfx->index == 0);
 
     struct reflection* inside_2_rfx = vector_get(inside_1_rfx->fields, 2);
@@ -96,7 +96,7 @@ test( reflection_macros, struct_type_tagless ) {
     verify(inside_2_rfx->offset ==
       offsetof(struct example, inside_1.inside_2) - offsetof(struct example, inside_1));
     verify(inside_2_rfx->index == 0);
-    verify(streq(inside_2_rfx->name->content, "inside_2"));
+    verify(string_equal(inside_2_rfx->name, &s("inside_2")));
     verify(inside_2_rfx->fields != NULL);
     verify(inside_2_rfx->fields->length == 2);
 
@@ -106,7 +106,7 @@ test( reflection_macros, struct_type_tagless ) {
     verify(field_rfx->offset ==
       offsetof(struct example, inside_1.inside_2.string) -
       offsetof(struct example, inside_1.inside_2));
-    verify(streq(field_rfx->name->content, "string"));
+    verify(string_equal(field_rfx->name, &s("string")));
     verify(field_rfx->index == 0);
     verify(field_rfx->element != NULL);
     verify(field_rfx->element->type == CHAR);
@@ -117,7 +117,7 @@ test( reflection_macros, struct_type_tagless ) {
     verify(field_rfx->offset ==
       offsetof(struct example, inside_1.inside_2.number) -
       offsetof(struct example, inside_1.inside_2));
-    verify(streq(field_rfx->name->content, "number"));
+    verify(string_equal(field_rfx->name, &s("number")));
     verify(field_rfx->index == 0);
 
 

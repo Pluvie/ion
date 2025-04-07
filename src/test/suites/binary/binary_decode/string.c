@@ -36,7 +36,7 @@ test( binary_decode, string ) {
     verify(error.occurred == false);
     verify(io_exhausted(&source) == true);
 
-    verify(streq(example.name.content, "Triangle!!"));
+    verify(string_equal(&(example.name), &s("Triangle!!")));
     verify(example.empty.content == NULL);
 
 

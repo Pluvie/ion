@@ -41,14 +41,14 @@ test( reflection_macros, array_type ) {
     verify(field_rfx->type == STRING);
     verify(field_rfx->size == sizeof(struct string));
     verify(field_rfx->offset == offsetof(typeof(country), name));
-    verify(streq(field_rfx->name->content, "name"));
+    verify(string_equal(field_rfx->name, &s("name")));
     verify(field_rfx->index == 0);
 
     field_rfx = vector_get(element_rfx->fields, 1);
     verify(field_rfx->type == U64);
     verify(field_rfx->size == sizeof(u64));
     verify(field_rfx->offset == offsetof(typeof(country), population));
-    verify(streq(field_rfx->name->content, "population"));
+    verify(string_equal(field_rfx->name, &s("population")));
     verify(field_rfx->index == 0);
 
 

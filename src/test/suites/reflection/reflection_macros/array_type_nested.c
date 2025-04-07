@@ -61,14 +61,14 @@ test( reflection_macros, array_type_nested ) {
     verify(field_rfx->type == D64);
     verify(field_rfx->size == sizeof(d64));
     verify(field_rfx->offset == offsetof(struct space, temperature));
-    verify(streq(field_rfx->name->content, "temperature"));
+    verify(string_equal(field_rfx->name, &s("temperature")));
     verify(field_rfx->index == 0);
 
     field_rfx = vector_get(element_rfx->fields, 1);
     verify(field_rfx->type == D64);
     verify(field_rfx->size == sizeof(d64));
     verify(field_rfx->offset == offsetof(struct space, humidity));
-    verify(streq(field_rfx->name->content, "humidity"));
+    verify(string_equal(field_rfx->name, &s("humidity")));
     verify(field_rfx->index == 0);
 
 

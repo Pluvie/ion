@@ -39,14 +39,14 @@ test( reflection_macros, sequence_type_tagless ) {
     verify(field_rfx->type == U64);
     verify(field_rfx->size == sizeof(u64));
     verify(field_rfx->offset == offsetof(struct example, value_u64));
-    verify(streq(field_rfx->name->content, "value_u64"));
+    verify(string_equal(field_rfx->name, &s("value_u64")));
     verify(field_rfx->index == 0);
 
     field_rfx = vector_get(rfx.fields, 1);
     verify(field_rfx->type == SEQUENCE);
     verify(field_rfx->size == sizeof(o(struct example)->why));
     verify(field_rfx->offset == offsetof(struct example, why));
-    verify(streq(field_rfx->name->content, "why"));
+    verify(string_equal(field_rfx->name, &s("why")));
     verify(field_rfx->index == 0);
     verify(field_rfx->element != NULL);
 
@@ -64,14 +64,14 @@ test( reflection_macros, sequence_type_tagless ) {
     verify(field_rfx->type == I64);
     verify(field_rfx->size == sizeof(i64));
     verify(field_rfx->offset == offsetof(typeof(*o(struct example)->why), value_i64));
-    verify(streq(field_rfx->name->content, "value_i64"));
+    verify(string_equal(field_rfx->name, &s("value_i64")));
     verify(field_rfx->index == 0);
 
     field_rfx = vector_get(element_rfx->fields, 1);
     verify(field_rfx->type == D64);
     verify(field_rfx->size == sizeof(d64));
     verify(field_rfx->offset == offsetof(typeof(*o(struct example)->why), value_d64));
-    verify(streq(field_rfx->name->content, "value_d64"));
+    verify(string_equal(field_rfx->name, &s("value_d64")));
     verify(field_rfx->index == 0);
 
 

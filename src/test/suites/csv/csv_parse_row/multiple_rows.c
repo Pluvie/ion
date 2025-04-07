@@ -40,13 +40,13 @@ test( csv_parse_row, multiple_rows ) {
     for array_each(fields_1, struct string*, field, field_index)
       switch (field_index) {
       case 0:
-        verify(streq("a", field->content));
+        verify(string_equal(field, &s("a")));
         continue;
       case 1:
-        verify(streq("sample", field->content));
+        verify(string_equal(field, &s("sample")));
         continue;
       case 2:
-        verify(streq("row", field->content));
+        verify(string_equal(field, &s("row")));
         continue;
       default:
         continue;
@@ -55,13 +55,13 @@ test( csv_parse_row, multiple_rows ) {
     for array_each(fields_2, struct string*, field, field_index)
       switch (field_index) {
       case 0:
-        verify(streq("another", field->content));
+        verify(string_equal(field, &s("another")));
         continue;
       case 1:
-        verify(streq("sample", field->content));
+        verify(string_equal(field, &s("sample")));
         continue;
       case 2:
-        verify(streq("row", field->content));
+        verify(string_equal(field, &s("row")));
         continue;
       default:
         continue;
@@ -70,13 +70,13 @@ test( csv_parse_row, multiple_rows ) {
     for array_each(fields_3, struct string*, field, field_index)
       switch (field_index) {
       case 0:
-        verify(streq("yet another", field->content));
+        verify(string_equal(field, &s("yet another")));
         continue;
       case 1:
-        verify(streq("sample", field->content));
+        verify(string_equal(field, &s("sample")));
         continue;
       case 2:
-        verify(streq("row", field->content));
+        verify(string_equal(field, &s("row")));
         continue;
       default:
         continue;
@@ -85,13 +85,13 @@ test( csv_parse_row, multiple_rows ) {
     for array_each(fields_4, struct string*, field, field_index)
       switch (field_index) {
       case 0:
-        verify(streq("and finally", field->content));
+        verify(string_equal(field, &s("and finally")));
         continue;
       case 1:
-        verify(streq("last", field->content));
+        verify(string_equal(field, &s("last")));
         continue;
       case 2:
-        verify(streq("one", field->content));
+        verify(string_equal(field, &s("one")));
         continue;
       default:
         continue;

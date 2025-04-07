@@ -40,14 +40,14 @@ test( reflection_macros, sequence_type_referenced ) {
     verify(field_rfx->type == BOOL);
     verify(field_rfx->size == sizeof(bool));
     verify(field_rfx->offset == offsetof(struct chess_square, is_occupied));
-    verify(streq(field_rfx->name->content, "is_occupied"));
+    verify(string_equal(field_rfx->name, &s("is_occupied")));
     verify(field_rfx->index == 0);
 
     field_rfx = vector_get(element_rfx->fields, 1);
     verify(field_rfx->type == STRING);
     verify(field_rfx->size == sizeof(struct string));
     verify(field_rfx->offset == offsetof(struct chess_square, occupying_piece));
-    verify(streq(field_rfx->name->content, "occupying_piece"));
+    verify(string_equal(field_rfx->name, &s("occupying_piece")));
     verify(field_rfx->index == 0);
 
 
