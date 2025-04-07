@@ -1,12 +1,12 @@
-static inline u64 map_hash (
+static inline u32 map_hash (
     void* key,
-    u64 key_typesize
+    u32 key_typesize
 )
 /**
  * This function returns a generic hash value based on [djb2 algorithm]
  * (http://www.cse.yorku.ca/~oz/hash.html). */
 {
-  return (*(u64*) key) & ((u64) 0x000000007FFFFFFF);
+  return (*(u32*) key) & ((u32) 0x7FFFFFFF);
 
   //if (key_typesize <= sizeof(u64))
   //  return (*(u64*) key) & ((u64) 0x7FFFFFFFFFFFFFFF);

@@ -7,9 +7,9 @@ void* map_get (
     void* key
 )
 {
-  u64 key_hash = map_hash(key, map->key_typesize);
-  u64 probe_index = key_hash & (map->capacity - 1);
-  u64 probe_index_limit = map->capacity + MAP_PADDED_CAP - 1;
+  u32 key_hash = map_hash(key, map->key_typesize);
+  u32 probe_index = key_hash & (map->capacity - 1);
+  u32 probe_index_limit = map->capacity + MAP_PADDED_CAP - 1;
 
 #if defined(__AVX512F__)
   #include "map_get__avx512.c"
