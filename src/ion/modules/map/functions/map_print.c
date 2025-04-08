@@ -11,11 +11,14 @@ void map_print (
     fprintf(stderr, "%9li |\n", index);
     fprintf(stderr, "-----------\n");
 
-    void* entry = map->entries + (index * map->entry_typesize);
-    void* key = map_entry_key(map, entry);
-    void* value = map_entry_value(map, entry);
+    //void* entry = map->entries + (index * map->entry_typesize);
+    //void* key = map_entry_key(map, entry);
+    //void* value = map_entry_value(map, entry);
+    void* key = map_key_at(map, index);
+    void* value = map_value_at(map, index);
 
-    if (map_entry_is_empty(map, entry)) {
+    //if (map_entry_is_empty(map, entry)) {
+    if (map_entry_is_empty(map, index)) {
       fprintf(stderr, "         --\n");
       continue;
     }

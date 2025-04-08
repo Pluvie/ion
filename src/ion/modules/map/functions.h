@@ -2,6 +2,7 @@
 #include "functions/map_get.h"
 #include "functions/map_hash.h"
 #include "functions/map_init.h"
+#include "functions/map_key_equal.h"
 #include "functions/map_print.h"
 #include "functions/map_rehash.h"
 #include "functions/map_set.h"

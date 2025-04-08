@@ -3,19 +3,19 @@
 
 extern i32 numbers[];
 
-void map_inspect(struct map* map) {
-  for (i32 i = 0; i < map->capacity + MAP_PADDED_CAP; i++) {
-    void* entry = map->entries + (i * map->entry_typesize);
-    i32 key = as(i32, map_entry_key(map, entry));
-    i32 value = as(i32, map_entry_value(map, entry));
-
-    if (map_entry_is_empty(map, entry)) {
-      print("index: %u,--", i);
-    } else {
-      print("index: %u, key: %u, value: %u", i, key, value);
-    }
-  }
-}
+//void map_inspect(struct map* map) {
+//  for (i32 i = 0; i < map->capacity + MAP_PADDED_CAP; i++) {
+//    void* entry = map->entries + (i * map->entry_typesize);
+//    i32 key = as(i32, map_entry_key(map, entry));
+//    i32 value = as(i32, map_entry_value(map, entry));
+//
+//    if (map_entry_is_empty(map, entry)) {
+//      print("index: %u,--", i);
+//    } else {
+//      print("index: %u, key: %u, value: %u", i, key, value);
+//    }
+//  }
+//}
 
 void insert (
     void
@@ -63,7 +63,7 @@ i32 main (
     char** argv
 )
 {
-  insert();
+  //insert();
   lookup();
   return EXIT_SUCCESS;
 }

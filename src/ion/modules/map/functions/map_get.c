@@ -19,18 +19,19 @@ void* map_get (
 //
 //#else
 linear_probing:
-  void* entry = map->entries + (probe_index * map->entry_typesize);
+  //void* entry = map->entries + (probe_index * map->entry_typesize);
 
-  if (map->key_typesize <= sizeof(u64)) {
-    if (*(u64*) key == *(u64*) map_entry_key(map, entry))
-      return map_entry_value(map, entry);
+  //if (map_key_equal(map, key, map_entry_key(map, entry))
+  //  return map_entry_value(map, entry);
 
-  } else {
-    if (memeq(key, map_entry_key(map, entry), map->key_typesize))
-      return map_entry_value(map, entry);
-  }
+  //if (map_entry_is_empty(map, entry))
+  //  return NULL;
 
-  if (map_entry_is_empty(map, entry))
+  void* observed_key = map_key_at(map, probe_index);
+  if (map_key_equal(map, key, observed_key))
+    return map_value_at(map, probe_index);
+
+  if (map_entry_is_empty(map, probe_index))
     return NULL;
 
   probe_index++;

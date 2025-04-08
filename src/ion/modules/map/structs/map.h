@@ -7,10 +7,12 @@ struct map {
   u64 load_limit;
   u32 key_typesize;
   u32 value_typesize;
-  u32 entry_typesize;
-  u32 hash_typesize;
-  void* entries;
+  //u32 entry_typesize;
+  //u32 hash_typesize;
+  //void* entries;
+  u64* hashes;
+  void* keys;
+  void* values;
   struct memory* allocator;
-  padding(8);
 };
 check_sizeof(struct map, 64);
