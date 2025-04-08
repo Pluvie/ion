@@ -1,5 +1,5 @@
 #!/bin/bash
-bin/compile ion           \
+bin/compile src/ion.c     \
   --include ./src/ion.h   \
   -O3 -march=native       \
   -o exe/libion.so        \

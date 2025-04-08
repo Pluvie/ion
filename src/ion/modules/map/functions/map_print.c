@@ -11,17 +11,15 @@ void map_print (
     fprintf(stderr, "%9li |\n", index);
     fprintf(stderr, "-----------\n");
 
-    u32* hash = map->hashes + index;
     void* entry = map->entries + (index * map->entry_typesize);
     void* key = map_entry_key(map, entry);
     void* value = map_entry_value(map, entry);
 
-    if (map_hash_is_empty(hash)) {
+    if (map_entry_is_empty(map, entry)) {
       fprintf(stderr, "         --\n");
       continue;
     }
 
-    fprintf(stderr, "hash: %u\n", *hash & 0x7FFFFFFF);
     hexdump(key, map->key_typesize);
     fprintf(stderr, "-----------\n");
     hexdump(value, map->value_typesize);

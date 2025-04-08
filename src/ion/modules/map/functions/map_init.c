@@ -5,18 +5,21 @@ static inline
 struct map map_init (
     u32 key_typesize,
     u32 value_typesize,
-    u32 initial_capacity,
+    u64 initial_capacity,
     struct memory* allocator
 )
 {
 capacity_check:
-  u32 capacity = next_pow2(initial_capacity);
+  u64 capacity = next_pow2(initial_capacity);
   if (capacity < MAP_DEFAULT_CAP)
     capacity = MAP_DEFAULT_CAP;
 
 initialize:
-  u32 entry_typesize = key_typesize + value_typesize;
-  u32 padded_capacity = capacity + MAP_PADDED_CAP;
+  if (key_typesize < sizeof(u64))
+    key_typesize = sizeof(u64);
+
+  u32 entry_typesize = sizeof(u64) + key_typesize + value_typesize;
+  u64 padded_capacity = capacity + MAP_PADDED_CAP;
 
   struct map map = {
     .capacity = capacity,
@@ -25,7 +28,7 @@ initialize:
     .key_typesize = key_typesize,
     .value_typesize = value_typesize,
     .entry_typesize = entry_typesize,
-    .hashes = memory_alloc_zero(allocator, sizeof(u32) * padded_capacity),
+    .hash_typesize = sizeof(u64),
     .entries = memory_alloc_zero(allocator, entry_typesize * padded_capacity),
     .allocator = allocator
   };

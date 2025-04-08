@@ -31,10 +31,10 @@ fi
 # Ion
 if [ $# -eq 0 ] || [[ $1 == "ion" ]]; then
   cd ../..
-  bin/compile ../prf/map/src/ion/ion  \
+  bin/compile prf/map/src/ion/ion.c   \
     -D ION_INCLUDED                   \
     -O3 -march=native                 \
-    -o exe/ion
+    -o prf/map/exe/ion
   cd -
 fi
 

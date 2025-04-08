@@ -8,9 +8,9 @@ void* map_set (
     void* value
 )
 {
-  u32 key_hash = map_hash(key, map->key_typesize);
-  u32 probe_index = key_hash & (map->capacity - 1);
-  u32 probe_index_limit = map->capacity + MAP_PADDED_CAP - 1;
+  u64 key_hash = map_hash(key, map->key_typesize);
+  u64 probe_index = key_hash & (map->capacity - 1);
+  u64 probe_index_limit = map->capacity + MAP_PADDED_CAP - 1;
 
 //#if defined(__AVX512F__)
 //  #include "map_set__avx512.c"
@@ -19,31 +19,30 @@ void* map_set (
 //  #include "map_set__avx2.c"
 //
 //#else
-  void* entry = map->entries + (probe_index * map->entry_typesize);
-  u32* hash = map->hashes + probe_index;
-
 linear_probing:
-  if (map_hash_is_empty(hash))
+  void* entry = map->entries + (probe_index * map->entry_typesize);
+
+  if (map_entry_is_empty(map, entry))
     goto set_value_new;
 
-  if (memeq(key, map_entry_key(map, entry), map->key_typesize))
-    goto set_value_existing;
+  if (map->key_typesize <= sizeof(u64)) {
+    if (*(u64*) key == *(u64*) map_entry_key(map, entry))
+      goto set_value_existing;
 
-  hash++;
-  probe_index++;
-  entry += map->entry_typesize;
-
-  if (probe_index >= probe_index_limit) {
-    hash = map->hashes;
-    entry = map->entries;
-    probe_index = 0;
+  } else {
+    if (memeq(key, map_entry_key(map, entry), map->key_typesize))
+      goto set_value_existing;
   }
+
+  probe_index++;
+  if (probe_index >= probe_index_limit)
+    probe_index = 0;
 
   goto linear_probing;
 
 set_value_new:
   memcpy(map_entry_key(map, entry), key, map->key_typesize);
-  map_hash_occupy(hash, key_hash);
+  map_entry_occupy(map, entry, key_hash);
   map->length++;
 
 set_value_existing:

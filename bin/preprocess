@@ -1,4 +1,4 @@
 #!/bin/bash
 
 mkdir -p tmp
-bin/compile $1 -E > tmp/preprocess.txt
+bin/compile src/$1.c -E > tmp/preprocess.txt

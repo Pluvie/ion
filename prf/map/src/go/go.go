@@ -32,7 +32,7 @@ func lookup() {
 }
 
 func main() {
-  //insert()
+  insert()
   lookup()
 }
 

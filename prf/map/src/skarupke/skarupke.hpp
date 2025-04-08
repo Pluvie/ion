@@ -786,8 +786,10 @@ public:
         return num_elements == 0;
     }
 
-private:
+    /* NOTE(Pluvie): moved out of privates to print the full map entries using
+     * `map_inspect` defined in "skarupke.cpp". */
     EntryPointer entries = Entry::empty_default_table();
+private:
     size_t num_slots_minus_one = 0;
     typename HashPolicySelector<ArgumentHash>::type hash_policy;
     int8_t max_lookups = detailv3::min_lookups - 1;
