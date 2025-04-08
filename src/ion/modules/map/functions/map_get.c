@@ -7,10 +7,6 @@ void* map_get (
     void* key
 )
 {
-  u64 key_hash = map_hash(key, map->key_typesize);
-  u64 probe_index = key_hash & (map->capacity - 1);
-  u64 probe_index_limit = map->capacity + MAP_PADDED_CAP - 1;
-
 //#if defined(__AVX512F__)
 //  #include "map_get__avx512.c"
 //
@@ -19,7 +15,11 @@ void* map_get (
 //
 //#else
 linear_probing:
+  u64 key_hash = map_hash(key, map->key_typesize);
+  u64 probe_index = key_hash & (map->capacity - 1);
+  u64 probe_index_limit = map->capacity + MAP_PADDED_CAP - 1;
   void* observed_key = map_key_at(map, probe_index);
+
   if (map_key_equal(map, key, observed_key))
     return map_value_at(map, probe_index);
 

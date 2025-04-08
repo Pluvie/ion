@@ -3,19 +3,19 @@
 
 extern i32 numbers[];
 
-//void map_inspect(struct map* map) {
-//  for (i32 i = 0; i < map->capacity + MAP_PADDED_CAP; i++) {
-//    void* entry = map->entries + (i * map->entry_typesize);
-//    i32 key = as(i32, map_entry_key(map, entry));
-//    i32 value = as(i32, map_entry_value(map, entry));
-//
-//    if (map_entry_is_empty(map, entry)) {
-//      print("index: %u,--", i);
-//    } else {
-//      print("index: %u, key: %u, value: %u", i, key, value);
-//    }
-//  }
-//}
+void map_inspect(struct map* map) {
+  for (i32 i = 0; i < map->capacity + MAP_PADDED_CAP; i++) {
+    i32 key = as(i32, map_key_at(map, i));
+    i32 value = as(i32, map_value_at(map, i));
+
+    if (map_entry_is_empty(map, i)) {
+      print("index: %u,--", i);
+    } else {
+      print("index: %u, key: %u, value: %u", i, key, value);
+      hexdump(map_key_at(map, i), sizeof(u64));
+    }
+  }
+}
 
 void insert (
     void
@@ -39,22 +39,24 @@ void lookup (
   struct memory allocator = memory_init(0);
   struct map* map = map_allocate(sizeof(i32), sizeof(i32), 0, &allocator);
 
-  for (i32 i = 0; i < 1000; i++) {
+  //for (i32 i = 0; i < 1000; i++) {
+  for (i32 i = 0; i < 2; i++) {
     map_set(map, &numbers[i], &i);
   }
 
   i32 v;
-  for (i32 j = 0; j < 10000; j++) {
-    for (i32 i = 0; i < 1000; i++) {
-      v = as(i32, map_get(map, &numbers[i]));
-    }
-  }
+  //for (i32 j = 0; j < 10000; j++) {
+  //  for (i32 i = 0; i < 1000; i++) {
+  //    v = as(i32, map_get(map, &numbers[i]));
+  //  }
+  //}
+  v = as(i32, map_get(map, &(i32) { 660243 }));
 
   print("Size: %li", map->length);
   print("LF: %f", (d64) map->length / (d64) map->capacity);
   print("Buckets: %li", map->capacity);
   print("Done: %i", v);
-  //map_inspect(map);
+  map_inspect(map);
   memory_release(&allocator);
 }
 
