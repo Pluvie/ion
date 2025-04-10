@@ -22,4 +22,27 @@ void test_suite__core (
   test_add( memory_init, no_immediate_allocation );
   test_add( memory_init, power_2_capacity );
   test_add( signal_catch, intercept );
+  test_add( string_to_d32, contained );
+  test_add( string_to_d64, contained );
+  test_add( string_to_d128, contained );
+  test_add( string_to_i16, contained );
+  test_add( string_to_i16, overflow );
+  test_add( string_to_i16, underflow );
+  test_add( string_to_i32, contained );
+  test_add( string_to_i32, overflow );
+  test_add( string_to_i32, underflow );
+  test_add( string_to_i64, contained );
+  test_add( string_to_i64, overflow );
+  test_add( string_to_i64, underflow );
+  test_add( string_to_i8, contained );
+  test_add( string_to_i8, overflow );
+  test_add( string_to_i8, underflow );
+  test_add( string_to_u16, contained );
+  test_add( string_to_u16, overflow );
+  test_add( string_to_u32, contained );
+  test_add( string_to_u32, overflow );
+  test_add( string_to_u64, contained );
+  test_add( string_to_u64, overflow );
+  test_add( string_to_u8, contained );
+  test_add( string_to_u8, overflow );
 }

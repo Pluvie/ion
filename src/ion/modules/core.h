@@ -19,6 +19,7 @@
 #include "core/typedefs.h"
 #include "core/constants.h"
 #include "core/macros.h"
+#include "core/enums.h"
 #include "core/structs.h"
 #include "core/globals.h"
 #include "core/functions.h"
