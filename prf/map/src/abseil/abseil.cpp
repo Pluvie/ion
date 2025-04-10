@@ -16,14 +16,18 @@ void insert() {
 void lookup() {
   absl::flat_hash_map<int, int> map;
 
-  for (int i = 0; i < 1000; i++) {
-    map[numbers[i]] = i;
+  for (int j = 0; j < 1000; j++) {
+    for (int i = 0; i < 1000; i++) {
+      int number = numbers[i] + j;
+      map[number] = i;
+    }
   }
 
   int v;
-  for (int j = 0; j < 10000; j++) {
+  for (int j = 0; j < 1000; j++) {
     for (int i = 0; i < 1000; i++) {
-      v = map[numbers[i]];
+      int number = numbers[i] + j;
+      v = map[number];
     }
   }
 

@@ -1,25 +1,27 @@
 use std::collections::HashMap;
 
-fn insert() {
-  let mut map: HashMap<usize, usize> = HashMap::new();
-  for i in 0..1000000 {
-    map.insert(i, i);
-  }
-
-  println!("Done: {}", map.get(&999999).unwrap());
-}
+//fn insert() {
+//  let mut map: HashMap<usize, usize> = HashMap::new();
+//  for i in 0..1000000 {
+//    map.insert(i, i);
+//  }
+//
+//  println!("Done: {}", map.get(&999999).unwrap());
+//}
 
 fn lookup() {
   let mut map: HashMap<usize, usize> = HashMap::new();
 
-  for i in 0..1000 {
-    map.insert(NUMBERS[i], i);
+  for j in 0..1000 {
+    for i in 0..1000 {
+      map.insert(NUMBERS[i] + j, i);
+    }
   }
 
   let mut v: usize = 0;
-  for _j in 0..10000 {
+  for j in 0..1000 {
     for i in 0..1000 {
-      v = *map.get(&NUMBERS[i]).unwrap();
+      v = *map.get(&(NUMBERS[i] + j)).unwrap();
     }
   }
 
@@ -27,7 +29,7 @@ fn lookup() {
 }
 
 fn main() {
-  insert();
+  //insert();
   lookup();
 }
 

@@ -17,14 +17,16 @@ func insert() {
 func lookup() {
   m := make(map[int]int)
 
-  for i := 0; i < 1000; i++ {
-    m[numbers[i]] = i;
+  for j := 0; j < 1000; j++ {
+    for i := 0; i < 1000; i++ {
+      m[numbers[i] + j] = i;
+    }
   }
 
   var v int;
-  for j := 0; j < 10000; j++ {
+  for j := 0; j < 1000; j++ {
     for i := 0; i < 1000; i++ {
-      v = m[numbers[i]];
+      v = m[numbers[i] + j];
    }
  }
 
@@ -32,7 +34,7 @@ func lookup() {
 }
 
 func main() {
-  insert()
+  //insert()
   lookup()
 }
 
