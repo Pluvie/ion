@@ -1,2 +1,2 @@
-#include "constants/map_default_cap.h"
-#include "constants/map_padded_cap.h"
+#include "constants/map_capacity_default.h"
+#include "constants/map_capacity_padding.h"

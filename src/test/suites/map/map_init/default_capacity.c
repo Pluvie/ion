@@ -1,8 +1,8 @@
 test( map_init, default_capacity ) {
 
-  given("a struct map");
-    struct map map;
-    struct memory allocator = memory_init(0);
+  given("a declined map");
+    map(i32, i32) m;
+    memory allocator = memory_init(0);
 
 
   when("providing a capacity inferior to the default");
@@ -10,11 +10,11 @@ test( map_init, default_capacity ) {
 
 
   calling("map_init()");
-    map = map_init(sizeof(u64), sizeof(u64), capacity, &allocator);
+    m = map_init(i32, i32)(capacity, &allocator);
 
 
-  must("initialize the map with #MAP_DEFAULT_CAP capacity");
-    verify(map.capacity == MAP_DEFAULT_CAP);
+  must("initialize the map with #MAP_CAPACITY_DEFAULT capacity");
+    verify(m.capacity == MAP_CAPACITY_DEFAULT);
 
 
   success();

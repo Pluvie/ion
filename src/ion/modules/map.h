@@ -7,4 +7,3 @@
 #include "map/constants.h"
 #include "map/macros.h"
 #include "map/structs.h"
-#include "map/functions.h"

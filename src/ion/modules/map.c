@@ -1,1 +1,1 @@
-#include "map/functions.c"
+#include "map/declinations.c"

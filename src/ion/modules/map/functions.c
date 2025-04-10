@@ -1,8 +1,0 @@
-#include "functions/map_allocate.c"
-#include "functions/map_get.c"
-#include "functions/map_hash.c"
-#include "functions/map_init.c"
-#include "functions/map_key_equal.c"
-#include "functions/map_print.c"
-#include "functions/map_rehash.c"
-#include "functions/map_set.c"
