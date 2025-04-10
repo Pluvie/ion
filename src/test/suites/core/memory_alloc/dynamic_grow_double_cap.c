@@ -1,7 +1,7 @@
 test( memory_alloc, dynamic_grow_double_cap ) {
 
-  given("a struct memory allocator");
-    struct memory allocator = memory_init(MEMORY_DEFAULT_CAP);
+  given("a memory allocator");
+    memory allocator = memory_init(MEMORY_DEFAULT_CAPACITY);
     u64 initial_capacity = allocator.capacity;
 
 
@@ -9,7 +9,7 @@ test( memory_alloc, dynamic_grow_double_cap ) {
     u64 amount = 40;
     void* allocation = memory_alloc(&allocator, amount);
     verify(allocation != NULL);
-    verify(allocator.capacity == MEMORY_DEFAULT_CAP);
+    verify(allocator.capacity == MEMORY_DEFAULT_CAPACITY);
 
 
   when("the next amount to allocate lesser or equal than the initial capacity");

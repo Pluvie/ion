@@ -1,7 +1,7 @@
 test( buffer_alloc, first_alloc_aligned ) {
 
-  given("a struct buffer allocator");
-    struct buffer allocator = buffer_init(MEMORY_DEFAULT_CAP);
+  given("a buffer allocator");
+    buffer allocator = buffer_init(MEMORY_DEFAULT_CAPACITY);
 
 
   when("there are no allocations yet");

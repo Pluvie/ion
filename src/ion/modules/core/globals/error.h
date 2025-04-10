@@ -6,4 +6,4 @@
  *
  * The error global variable is thread local in order to be used seamlessly also
  * with fibers. */
-static __thread struct failure error = { 0 };
+static __thread failure error = { 0 };

@@ -1,7 +1,7 @@
 test( buffer_init, default_capacity ) {
 
-  given("a struct buffer allocator");
-    struct buffer allocator;
+  given("a buffer allocator");
+    buffer allocator;
 
 
   when("providing a capacity inferior to the default");
@@ -12,8 +12,8 @@ test( buffer_init, default_capacity ) {
     allocator = buffer_init(capacity);
 
 
-  must("initialize the allocator with #MEMORY_DEFAULT_CAP capacity");
-    verify(allocator.capacity == MEMORY_DEFAULT_CAP);
+  must("initialize the allocator with #MEMORY_DEFAULT_CAPACITY capacity");
+    verify(allocator.capacity == MEMORY_DEFAULT_CAPACITY);
 
 
   success();

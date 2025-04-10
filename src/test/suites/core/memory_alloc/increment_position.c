@@ -1,7 +1,7 @@
 test( memory_alloc, increment_position ) {
 
-  given("a struct memory allocator");
-    struct memory allocator = memory_init(MEMORY_DEFAULT_CAP);
+  given("a memory allocator");
+    memory allocator = memory_init(MEMORY_DEFAULT_CAPACITY);
 
 
   when("there are no allocations yet");

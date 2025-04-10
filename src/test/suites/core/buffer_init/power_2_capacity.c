@@ -1,7 +1,7 @@
 test( buffer_init, power_2_capacity ) {
 
-  given("a struct buffer allocator");
-    struct buffer allocator;
+  given("a buffer allocator");
+    buffer allocator;
 
 
   when("providing a capacity which is not a power of 2");

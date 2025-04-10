@@ -1,9 +1,5 @@
-#ifdef ION_INCLUDED
-static inline
-#endif
-
 void memory_release (
-    struct memory* allocator
+    memory* allocator
 )
 {
   if (allocator->data != NULL)
@@ -15,5 +11,5 @@ void memory_release (
   if (allocator->regions != NULL)
     free(allocator->regions);
 
-  memzero(allocator, sizeof(struct memory));
+  memzero(allocator, sizeof(memory));
 }

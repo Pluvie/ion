@@ -1,15 +1,14 @@
-struct memory;
 /**
- * The `struct memory` is a memory abstraction, much like the `struct buffer`, to
+ * The `memory` type is a memory abstraction, much like the `buffer` type, to
  * simplify allocation and deallocation of many objects.
  *
- * This struct takes inspiration from the [arena allocation](
+ * This type takes inspiration from the [arena allocation](
  * https://www.rfleury.com/p/untangling-lifetimes-the-arena-allocator). It works by
- * removing the need of tracing each object own lifetime -- such when using the #malloc
- * and #free functions, and by grouping their allocation in instances of #struct memory,
+ * removing the need of tracing each object own lifetime -- such when using the `malloc`
+ * and `free` functions, and by grouping their allocation in instances of a `memory`,
  * which are oftentimes called "allocators".
  *
- * The memory shall automatically grow to fit as many objects as necessary. This struct
+ * The memory shall automatically grow to fit as many objects as necessary. This type
  * exposes the following functions to allocate memory:
  *
  * - `memory_alloc` : allocates the given amount of memory in the allocator and returns
@@ -19,10 +18,10 @@ struct memory;
  *
  * Memory relase is done all at once, by calling the `memory_release` function.
  *
- * The `struct memory` differs from the `struct buffer` because memory allocation is
+ * The `memory` type differs from the `buffer` type because memory allocation is
  * not linear and is prone to fragmentation. However, its main benefit is that returned
  * pointers after allocations are guaranteed to be always valid. */
-struct memory {
+typedef struct memory {
   u64 capacity;
   u64 position;
   u64 allocations;
@@ -34,5 +33,5 @@ struct memory {
   }* regions;
   byte* data;
   padding(8);
-};
-check_sizeof(struct memory, 64);
+} memory;
+check_sizeof(memory, 64);

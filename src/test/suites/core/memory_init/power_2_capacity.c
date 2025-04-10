@@ -1,7 +1,7 @@
 test( memory_init, power_2_capacity ) {
 
-  given("a struct memory allocator");
-    struct memory allocator;
+  given("a memory allocator");
+    memory allocator;
 
 
   when("providing a capacity which is not a power of 2");

@@ -22,7 +22,7 @@
 #include "constants/i8_min.h"
 #include "constants/i8_min_abs.h"
 #include "constants/memory_default_align.h"
-#include "constants/memory_default_cap.h"
+#include "constants/memory_default_capacity.h"
 #include "constants/memory_min_regions.h"
 #include "constants/print_color_blue.h"
 #include "constants/print_color_cyan.h"

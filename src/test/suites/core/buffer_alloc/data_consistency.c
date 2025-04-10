@@ -1,7 +1,7 @@
 test( buffer_alloc, data_consistency ) {
 
-  given("a struct buffer allocator");
-    struct buffer allocator = buffer_init(MEMORY_DEFAULT_CAP);
+  given("a buffer allocator");
+    buffer allocator = buffer_init(MEMORY_DEFAULT_CAPACITY);
     u64 initial_capacity = allocator.capacity;
 
 
@@ -9,7 +9,7 @@ test( buffer_alloc, data_consistency ) {
     u64 amount = 40;
     u64 position = buffer_alloc(&allocator, amount);
     verify(buffer_data(&allocator, position) != NULL);
-    verify(allocator.capacity == MEMORY_DEFAULT_CAP);
+    verify(allocator.capacity == MEMORY_DEFAULT_CAPACITY);
     memset(buffer_data(&allocator, position), 7, amount);
     byte* data = allocator.data;
 
