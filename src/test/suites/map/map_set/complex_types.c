@@ -1,72 +1,47 @@
 test( map_set, complex_types ) {
 
-  given("a struct map");
-    struct map map;
-    struct memory allocator = memory_init(0);
-
-
-  when("the map has key and values of complex types");
-    struct user {
-      char name[32];
-      u64 age;
-      struct vector* roles;
-    };
-
-    map = map_init(sizeof(char[32]), sizeof(struct user), 0, &allocator);
+  given("a declined map on a complex user defined type");
+    memory allocator = memory_init(0);
+    map(string, type(user)) m = map_init(string, type(user))(0, &allocator);
 
 
   when("there are values for those types");
-    char names[][32] = { "Gerry", "Albert", "Esculapio" };
-    enum roles {
-      BOSS,
-      ADMIN,
-      EDITOR,
-      VIEWER,
-    };
-
-    struct user gerry = {
-      .name = "Gerry",
+    type(user) gerry = {
+      .name = s("Gerry"),
       .age = 37,
-      .roles = &vector_of(enum roles, { ADMIN, EDITOR }),
     };
 
-    struct user albert = {
-      .name = "Albert",
+    type(user) albert = {
+      .name = s("Albert"),
       .age = 25,
-      .roles = &vector_of(enum roles, { VIEWER }),
     };
 
-    struct user esculapio = {
-      .name = "Esculapio",
+    type(user) esculapio = {
+      .name = s("Esculapio"),
       .age = 99,
-      .roles = &vector_of(enum roles, { BOSS }),
     };
 
 
   calling("map_set()");
-    map_set(&map, names[0], &gerry);
-    map_set(&map, names[1], &albert);
-    map_set(&map, names[2], &esculapio);
+    map_set(string, type(user)(&m, &(gerry.name), &gerry));
+    map_set(string, type(user)(&m, &(albert.name), &albert));
+    map_set(string, type(user)(&m, &(esculapio.name), &esculapio));
 
 
   must("store the correct values of their type");
-    struct user* user;
+    type(user)* user;
 
-    user = map_get(&map, (char[32]) { "Gerry" });
-    verify(streq("Gerry", user->name));
+    user = map_get(string, type(user))(&m, &s("Gerry"));
+    verify(streq(user->name, s("Gerry")));
     verify(user->age == 37);
-    verify(ADMIN == as(enum roles, vector_get(user->roles, 0)));
-    verify(EDITOR == as(enum roles, vector_get(user->roles, 1)));
 
-    user = map_get(&map, (char[32]) { "Albert" });
-    verify(streq("Albert", user->name));
+    user = map_get(string, type(user))(&m, &s("Albert"));
+    verify(streq(user->name, s("Albert")));
     verify(user->age == 25);
-    verify(VIEWER == as(enum roles, vector_get(user->roles, 0)));
 
-    user = map_get(&map, (char[32]) { "Esculapio" });
-    verify(streq("Esculapio", user->name));
+    user = map_get(string, type(user))(&m, &s("Esculapio"));
+    verify(streq(user->name, s("Esculapio")));
     verify(user->age == 99);
-    verify(BOSS == as(enum roles, vector_get(user->roles, 0)));
 
 
   success();

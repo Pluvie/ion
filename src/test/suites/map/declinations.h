@@ -16,7 +16,7 @@ static inline u64 map_hasher(i32, i32) (
 {
   return (u64) *key;
 }
-#include  "../../../ion/modules/map/declination.h"
+#include  "ion/modules/map/declination.h"
 
 /**
  * Declines the map on the `string`, `string` key/value type. Used for some tests. */
@@ -41,4 +41,34 @@ static inline u64 map_hasher(string, string) (
 
   return hash;
 }
-#include  "../../../ion/modules/map/declination.h"
+#include  "ion/modules/map/declination.h"
+
+/**
+ * Declines the map on the `string`, `type(user)` key/value type. Used for some tests. */
+typedef struct {
+  string name;
+  u32 age;
+} type(user);
+
+#define map_declination string, type(user)
+#define map_use_comparer
+static inline bool map_comparer(string, type(user)) (
+    string* k1,
+    string* k2
+)
+{
+  return streq(*k1, *k2);
+}
+#define map_use_hasher
+static inline u64 map_hasher(string, type(user)) (
+    string* key
+)
+{
+  u64 hash = 5381;
+
+  for (u64 i = 0; i < key->length; i++)
+    hash = ((hash << 5) + hash) + ((u8*) key)[i];
+
+  return hash;
+}
+#include "ion/modules/map/declination.h"

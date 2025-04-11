@@ -1,23 +1,22 @@
 test( map_rehash, doubled_capacity ) {
 
-  given("a struct map");
-    struct map map;
-    struct memory allocator = memory_init(0);
-    map = map_init(sizeof(u64), sizeof(u64), 8, &allocator);
-    u64 original_capacity = map.capacity;
+  given("a declined map");
+    memory allocator = memory_init(0);
+    map(i32, i32) m = map_init(i32, i32)(0, &allocator);
+    u64 original_capacity = m.capacity;
 
 
   when("the map has some keys in it");
-    for (u64 index = 0; index < 3; index++)
-      map_set(&map, &index, &index);
+    for (i32 index = 0; index < 3; index++)
+      map_set(i32, i32)(&m, &index, &index);
 
 
   calling("map_rehash()");
-    map_rehash(&map);
+    map_rehash(i32, i32)(&m);
 
 
   must("double the map capacity");
-    verify(map.capacity == 2 * original_capacity);
+    verify(m.capacity == 2 * original_capacity);
 
 
   success();
