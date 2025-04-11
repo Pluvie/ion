@@ -9,7 +9,7 @@ SOURCE=$1
 AVX_FLAG=""
 
 if cat /proc/cpuinfo | grep -q avx512f; then
-  if [[ $SOURCE == "test" ]]; then
+  if [[ $SOURCE == "src/test.c" ]]; then
     # Reverting to AVX2 in test mode due to Valgrind not yet supporting the AVX512
     # instruction format.
     # See here: https://bugs.kde.org/show_bug.cgi?id=383010
