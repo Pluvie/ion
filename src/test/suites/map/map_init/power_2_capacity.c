@@ -1,8 +1,8 @@
 test( map_init, power_2_capacity ) {
 
-  given("a struct map");
-    struct map map;
-    struct memory allocator = memory_init(0);
+  given("a declined map");
+    map(i32, i32) m;
+    memory allocator = memory_init(0);
 
 
   when("providing a capacity which is not a power of 2");
@@ -10,11 +10,11 @@ test( map_init, power_2_capacity ) {
 
 
   calling("map_init()");
-    map = map_init(sizeof(u64), sizeof(u64), capacity, &allocator);
+    m = map_init(i32, i32)(capacity, &allocator);
 
 
   must("initialize the map with the next power of 2 capacity");
-    verify(map.capacity == 128);
+    verify(m.capacity == 128);
 
 
   success();

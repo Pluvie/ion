@@ -5,6 +5,7 @@
 #include "macros/map_entry_free.h"
 #include "macros/map_entry_is_empty.h"
 #include "macros/map_entry_occupy.h"
+#include "macros/map_iterator.h"
 #include "macros/map_key_at.h"
 #include "macros/map_load_limit.h"
 #include "macros/map_value_at.h"
