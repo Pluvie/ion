@@ -1,7 +1,5 @@
 #include "macros/map.h"
 #include "macros/map_each.h"
-#include "macros/map_each_key.h"
-#include "macros/map_each_value.h"
 #include "macros/map_entry_free.h"
 #include "macros/map_entry_is_empty.h"
 #include "macros/map_entry_occupy.h"

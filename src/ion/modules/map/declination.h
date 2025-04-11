@@ -11,12 +11,12 @@
  * The `__key_type` and `__value_type` macros are indirection layers: they are needed
  * because the preprocessor cannot handle the `i32, string` token as separate entities.
  * See more here: https://stackoverflow.com/a/57125670 */
-#define   key_type(...) __key_type(__VA_ARGS__)
-#define   value_type(...) __value_type(__VA_ARGS__)
-#define   __key_type(k, ...) k
-#define   __value_type(k, v, ...) v
-#define   kt  key_type(map_declination)
-#define   vt  value_type(map_declination)
+#define key_type(...) __key_type(__VA_ARGS__)
+#define value_type(...) __value_type(__VA_ARGS__)
+#define __key_type(k, ...) k
+#define __value_type(k, v, ...) v
+#define kt  key_type(map_declination)
+#define vt  value_type(map_declination)
 
 /**
  * Includes all map functions, which are now declined on the `kt` and `vt` (key type
@@ -36,7 +36,7 @@
 #ifndef map_use_comparer
   #include "declination/functions/map_comparer.c"
 #else
-  #undef  map_use_comparer
+  #undef map_use_comparer
 #endif
 
 /**

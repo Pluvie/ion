@@ -2,7 +2,7 @@
 #include "modules/core.h"
 
 /* ⚡️ION⚡️ Modules requiring the CORE module only. */
-//#include "modules/array.h"
+#include "modules/array.h"
 //#include "modules/io.h"
 #include "modules/map.h"
 //#include "modules/range.h"

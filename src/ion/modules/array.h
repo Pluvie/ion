@@ -6,5 +6,3 @@
 
 #include "array/constants.h"
 #include "array/macros.h"
-#include "array/structs.h"
-#include "array/functions.h"

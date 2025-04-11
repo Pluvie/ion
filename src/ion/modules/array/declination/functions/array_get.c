@@ -1,9 +1,5 @@
-#ifdef ION_INCLUDED
-static inline
-#endif
-
-void* array_get (
-    struct array* ary,
+t* array_(get, t) (
+    array(t)* ary,
     u64 position
 )
 {
@@ -12,5 +8,5 @@ void* array_get (
     return NULL;
   }
 
-  return ary->data + (position * ary->typesize);
+  return ary->data + position;
 }

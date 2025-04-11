@@ -1,0 +1,1 @@
+#define ARRAY_CAPACITY_DEFAULT  8

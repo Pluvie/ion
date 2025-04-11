@@ -1,5 +1,5 @@
 #include "suites/core.c"
-//#include "suites/array.c"
+#include "suites/array.c"
 //#include "suites/io.c"
 #include "suites/map.c"
 //#include "suites/range.c"
@@ -22,7 +22,7 @@ bool suite_register (
     goto run_specific_suite;
 
   test_suite__core();
-  //test_suite__array();
+  test_suite__array();
   //test_suite__io();
   test_suite__map();
   //test_suite__range();
@@ -43,8 +43,8 @@ run_specific_suite:
 
         if (strcmp(module, "core") == 0)
     test_suite__core();
-  //else  if (strcmp(module, "array") == 0)
-  //  test_suite__array();
+  else  if (strcmp(module, "array") == 0)
+    test_suite__array();
   //else  if (strcmp(module, "io") == 0)
   //  test_suite__io();
   else  if (strcmp(module, "map") == 0)
