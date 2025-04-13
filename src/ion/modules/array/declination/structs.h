@@ -31,5 +31,5 @@ check_sizeof(array(t), 32);
 typedef struct {
   t* element;
   u64 index;
-} array_(iterator, t);
-check_sizeof(array_(iterator, t), 16);
+} array_iterator(t);
+check_sizeof(array_iterator(t), 16);

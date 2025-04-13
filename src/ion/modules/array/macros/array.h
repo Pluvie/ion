@@ -3,11 +3,7 @@
 #define array(...)              _array(__VA_ARGS__)
 #define _array(t)               array__ ## t
 
-/* Defines an array type declination identifier. */
-#define array_(...)             _array_(__VA_ARGS__)
-#define _array_(i, t)           array_ ## i ## __ ## t
-
-/* Defines all array operations. */
+/* Defines all array declined symbols. */
 #define array_allocate(...)     _array_allocate(__VA_ARGS__)
 #define _array_allocate(t)      array_allocate__ ## t
 #define array_init(...)         _array_init(__VA_ARGS__)
@@ -22,3 +18,5 @@
 #define _array_push(t)          array_push__ ## t
 #define array_last(...)         _array_last(__VA_ARGS__)
 #define _array_last(t)          array_last ## t
+#define array_iterator(...)     _array_iterator(__VA_ARGS__)
+#define _array_iterator(t)      array_iterator ## t

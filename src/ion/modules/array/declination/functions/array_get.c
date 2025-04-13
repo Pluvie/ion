@@ -1,4 +1,4 @@
-t* array_(get, t) (
+t* array_get(t) (
     array(t)* ary,
     u64 position
 )

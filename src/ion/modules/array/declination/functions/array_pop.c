@@ -1,4 +1,4 @@
-t* array_(pop, t) (
+t* array_pop(t) (
     array(t)* ary
 )
 {

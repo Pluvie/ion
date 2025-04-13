@@ -19,7 +19,7 @@ test( map_each, avoid_empty ) {
 
   calling("map_each()");
   must("loop over the keys and values of the map, avoiding the empty spots");
-    map_(iterator, string, string) iter = { 0 };
+    map_iterator(string, string) iter = { 0 };
     for map_each(&m, iter)
       verify(streq(*iter.value, s("Solar System")));
     verify(iter.index == 9);

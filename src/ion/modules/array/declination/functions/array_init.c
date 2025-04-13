@@ -1,4 +1,4 @@
-array(t) array_(init, t) (
+array(t) array_init(t) (
     u64 initial_capacity,
     memory* allocator
 )

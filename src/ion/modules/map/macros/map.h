@@ -3,11 +3,7 @@
 #define map(...)              _map(__VA_ARGS__)
 #define _map(k, v)            map__ ## k ## __ ## v
 
-/* Defines a map type declination identifier. */
-#define map_(...)             _map_(__VA_ARGS__)
-#define _map_(i, k, v)        map_ ## i ## __ ## k ## __ ## v
-
-/* Defines all map operations. */
+/* Defines all map declined declined symbols. */
 #define map_allocate(...)     _map_allocate(__VA_ARGS__)
 #define _map_allocate(k, v)   map_allocate__ ## k ## __ ## v
 #define map_init(...)         _map_init(__VA_ARGS__)
@@ -24,3 +20,5 @@
 #define _map_comparer(k, v)   map_comparer__ ## k ## __ ## v
 #define map_hasher(...)       _map_hasher(__VA_ARGS__)
 #define _map_hasher(k, v)     map_hasher__ ## k ## __ ## v
+#define map_iterator(...)     _map_iterator(__VA_ARGS__)
+#define _map_iterator(k, v)   map_iterator__ ## k ## __ ## v

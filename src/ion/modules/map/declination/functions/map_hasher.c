@@ -1,4 +1,4 @@
-static inline u64 map_(hasher, kt, vt) (
+static inline u64 map_hasher(kt, vt) (
     kt* key
 )
 {

@@ -1,4 +1,4 @@
-static inline bool map_(comparer, kt, vt) (
+static inline bool map_comparer(kt, vt) (
     kt* k1,
     kt* k2
 )

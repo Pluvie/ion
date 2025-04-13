@@ -1,4 +1,4 @@
-t* array_(last, t) (
+t* array_last(t) (
     array(t)* ary
 )
 {

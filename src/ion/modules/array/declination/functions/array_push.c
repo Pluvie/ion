@@ -1,4 +1,4 @@
-t* array_(push, t) (
+t* array_push(t) (
     array(t)* ary,
     t* element
 )

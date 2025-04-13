@@ -23,9 +23,9 @@ test( map_set, complex_types ) {
 
 
   calling("map_set()");
-    map_set(string, type(user)(&m, &(gerry.name), &gerry));
-    map_set(string, type(user)(&m, &(albert.name), &albert));
-    map_set(string, type(user)(&m, &(esculapio.name), &esculapio));
+    map_set(string, type(user))(&m, &(gerry.name), &gerry);
+    map_set(string, type(user))(&m, &(albert.name), &albert);
+    map_set(string, type(user))(&m, &(esculapio.name), &esculapio);
 
 
   must("store the correct values of their type");

@@ -1,4 +1,4 @@
-t* array_(set, t) (
+t* array_set(t) (
     array(t)* ary,
     u64 position,
     t* element

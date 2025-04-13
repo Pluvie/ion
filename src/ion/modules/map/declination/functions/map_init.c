@@ -1,4 +1,4 @@
-map(kt, vt) map_(init, kt, vt) (
+map(kt, vt) map_init(kt, vt) (
     u64 initial_capacity,
     memory* allocator
 )
