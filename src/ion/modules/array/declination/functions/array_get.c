@@ -4,7 +4,7 @@ t* array_get(t) (
 )
 {
   if (unlikely(position >= ary->length)) {
-    fail("position %li out of bounds.", position);
+    fail("position %li out of bounds", position);
     return NULL;
   }
 

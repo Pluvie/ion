@@ -3,7 +3,7 @@ t* array_pop(t) (
 )
 {
   if (unlikely(ary->length == 0)) {
-    fail("array at 0 length.");
+    fail("array at 0 length");
     return NULL;
   }
 

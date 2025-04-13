@@ -11,5 +11,6 @@
 #include "array/array_pop/preserve_capacity.c"
 #include "array/array_push/increase_length.c"
 #include "array/array_push/increase_capacity.c"
+#include "array/array_push/stack_allocated.c"
 #include "array/array_set/element_at_position.c"
 #include "array/array_set/position_out_of_bounds.c"

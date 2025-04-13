@@ -23,7 +23,7 @@ test( vector_get, position_out_of_bounds ) {
   must("abort the program");
     verify(error.occurred == true);
     verify(address == NULL);
-    verify(streq(error.message, "position 5 out of bounds."));
+    verify(streq(error.message, "position 5 out of bounds"));
 
 
   success();

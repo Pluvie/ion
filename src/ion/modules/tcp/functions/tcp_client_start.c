@@ -15,13 +15,13 @@ void tcp_client_start (
 
   i32 sock = socket(AF_INET, SOCK_STREAM, 0);
   if (sock == -1) {
-    fail("socket failure: %s.", strerror(errno));
+    fail("socket failure: %s", strerror(errno));
     return;
   }
 
   i32 connect_outcome = connect(sock, (struct sockaddr*) &address, sizeof(address));
   if (connect_outcome == -1) {
-    fail("socket connect failure: %s.", strerror(errno));
+    fail("socket connect failure: %s", strerror(errno));
     return;
   }
 

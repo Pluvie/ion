@@ -13,6 +13,7 @@ void test_suite__array (
   test_add( array_pop, preserve_capacity );
   test_add( array_push, increase_length );
   test_add( array_push, increase_capacity );
+  test_add( array_push, stack_allocated );
   test_add( array_set, element_at_position );
   test_add( array_set, position_out_of_bounds );
 }

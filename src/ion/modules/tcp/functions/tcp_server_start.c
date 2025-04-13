@@ -15,7 +15,7 @@ void tcp_server_start (
 
   i32 sock = socket(AF_INET, SOCK_STREAM, 0);
   if (sock == -1) {
-    fail("socket failure: %s.", strerror(errno));
+    fail("socket failure: %s", strerror(errno));
     return;
   }
 
@@ -23,13 +23,13 @@ void tcp_server_start (
   setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &reuse_socket, sizeof(i32));
   i32 bind_outcome = bind(sock, (struct sockaddr*) &address, sizeof(address));
   if (bind_outcome == -1) {
-    fail("socket binding failure: %s.", strerror(errno));
+    fail("socket binding failure: %s", strerror(errno));
     return;
   }
 
   i32 listen_outcome = listen(sock, 10);
   if (listen_outcome == -1) {
-    fail("socket listen failure: %s.", strerror(errno));
+    fail("socket listen failure: %s", strerror(errno));
     return;
   }
 
@@ -59,7 +59,7 @@ void tcp_server_start (
       (socklen_t*) &socklen_size);
 
     if (signal_received(SIGINT)) {
-      print("Interrupt received.");
+      print("Interrupt received");
       break;
     }
 

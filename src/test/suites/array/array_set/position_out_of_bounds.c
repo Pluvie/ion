@@ -23,7 +23,7 @@ test( array_set, position_out_of_bounds ) {
   must("return NULL and fail with a specific error");
     verify(error.occurred == true);
     verify(address == NULL);
-    verify(error_is("position 5 out of bounds."));
+    verify(error_is("position 5 out of bounds"));
 
 
   success();
