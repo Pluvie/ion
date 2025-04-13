@@ -1,20 +1,19 @@
 test( array_push, increase_length ) {
 
-  given("an array");
-    struct array array;
-    struct memory allocator = memory_init(0);
-    array = array_init(sizeof(u64), 8, &allocator);
-    verify(array.length == 0);
+  given("a declined array");
+    memory allocator = memory_init(0);
+    array(i32) ary = array_init(i32)(0, &allocator);
+    verify(ary.length == 0);
 
 
   calling("array_push()");
-    array_push(&array, &(u64) { 2 });
+    array_push(i32)(&ary, &(i32) { 2 });
 
 
   must("increase the array length");
-    u64 element = as(u64, array_get(&array, 0));
+    i32 element = as(i32, array_get(i32)(&ary, 0));
     verify(element == 2);
-    verify(array.length == 1);
+    verify(ary.length == 1);
 
 
   success();

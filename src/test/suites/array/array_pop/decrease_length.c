@@ -1,26 +1,25 @@
 test( array_pop, decrease_length ) {
 
-  given("an array");
-    struct array array;
-    struct memory allocator = memory_init(0);
-    array = array_init(sizeof(u64), 8, &allocator);
-    verify(array.length == 0);
+  given("a declined array");
+    memory allocator = memory_init(0);
+    array(i32) ary = array_init(i32)(0, &allocator);
+    verify(ary.length == 0);
 
 
   when("the array has some elements in it");
-    for (u64 index = 0; index < 4; index++)
-      array_push(&array, &index);
+    for (i32 index = 0; index < 4; index++)
+      array_push(i32)(&ary, &index);
 
-    verify(array.length == 4);
+    verify(ary.length == 4);
 
 
   calling("array_pop()");
-    u64 element = as(u64, array_pop(&array));
+    i32 element = as(i32, array_pop(i32)(&ary));
 
 
   must("increase the array length");
     verify(element == 3);
-    verify(array.length == 3);
+    verify(ary.length == 3);
 
 
   success();

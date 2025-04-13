@@ -1,8 +1,8 @@
 test( array_init, default_capacity ) {
 
-  given("an array");
-    struct array array;
-    struct memory allocator = memory_init(0);
+  given("a declined array");
+    memory allocator = memory_init(0);
+    array(i32) ary;
 
 
   when("the array is provided a capacity inferior to the default");
@@ -10,11 +10,11 @@ test( array_init, default_capacity ) {
 
 
   calling("array_init()");
-    array = array_init(sizeof(u64), capacity, &allocator);
+    ary = array_init(i32)(capacity, &allocator);
 
 
-  must("initialize the array with #ARRAY_DEFAULT_CAP capacity");
-    verify(array.capacity == ARRAY_DEFAULT_CAP);
+  must("initialize the array with #ARRAY_CAPACITY_DEFAULT capacity");
+    verify(ary.capacity == ARRAY_CAPACITY_DEFAULT);
 
 
   success();

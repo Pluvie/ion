@@ -1,16 +1,16 @@
 test( array_init, immediate_allocation ) {
 
-  given("an array");
-    struct array array;
-    struct memory allocator = memory_init(0);
+  given("a declined array");
+    memory allocator = memory_init(0);
+    array(i32) ary;
 
 
   calling("array_init()");
-    array = array_init(sizeof(u64), 0, &allocator);
+    ary = array_init(i32)(0, &allocator);
 
 
   must("initialize the array and immediately allocate its memory");
-    verify(array.capacity > 0);
+    verify(ary.capacity > 0);
     verify(allocator.data != NULL);
 
 

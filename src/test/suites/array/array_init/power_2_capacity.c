@@ -1,8 +1,8 @@
 test( array_init, power_2_capacity ) {
 
-  given("an array");
-    struct array array;
-    struct memory allocator = memory_init(0);
+  given("a declined array");
+    memory allocator = memory_init(0);
+    array(i32) ary;
 
 
   when("the array is provided a capacity which is not a power of 2");
@@ -10,11 +10,11 @@ test( array_init, power_2_capacity ) {
 
 
   calling("array_init()");
-    array = array_init(sizeof(u64), capacity, &allocator);
+    ary = array_init(i32)(capacity, &allocator);
 
 
   must("initialize the array with the next power of 2 capacity");
-    verify(array.capacity == 128);
+    verify(ary.capacity == 128);
 
 
   success();

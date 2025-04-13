@@ -1,14 +1,13 @@
 test( array_set, element_at_position ) {
 
-  given("an array");
-    struct array array;
-    struct memory allocator = memory_init(0);
-    array = array_init(sizeof(u64), 8, &allocator);
+  given("a declined array");
+    memory allocator = memory_init(0);
+    array(i32) ary = array_init(i32)(0, &allocator);
 
 
   when("the array has some elements in it");
-    for (u64 index = 0; index < 4; index++)
-      array_push(&array, &index);
+    for (i32 index = 0; index < 4; index++)
+      array_push(i32)(&ary, &index);
 
 
   when("an element is requested at a specific position");
@@ -16,12 +15,12 @@ test( array_set, element_at_position ) {
 
 
   calling("array_set()");
-    u64 element = as(u64, array_set(&array, position, &(u64) { 99 }));
+    i32 element = as(i32, array_set(i32)(&ary, position, &(i32) { 99 }));
 
 
   must("set the correct element at that position");
     verify(element == 99);
-    verify(array.length == 4);
+    verify(ary.length == 4);
 
 
   success();
