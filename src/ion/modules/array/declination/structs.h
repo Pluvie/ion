@@ -29,7 +29,7 @@ typedef struct {
 check_sizeof(array(t), 32);
 
 typedef struct {
-  t* element;
+  t* value;
   u64 index;
 } array_iterator(t);
 check_sizeof(array_iterator(t), 16);

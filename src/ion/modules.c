@@ -10,7 +10,7 @@
 
 /* ⚡️ION⚡️ Modules requiring the ARRAY module. */
 //#include "modules/reflection.c"
-//#include "modules/tensor.c"
+#include "modules/tensor.c"
 
 /* ⚡️ION⚡️ Modules requiring the IO and REFLECTION modules. */
 //#include "modules/binary.c"

@@ -1,35 +1,36 @@
 test( tensor_init, correct_offsets ) {
 
-  given("a struct tensor");
-    struct tensor tensor;
-    struct memory allocator = memory_init(0);
+  given("a declined tensor");
+    memory allocator = memory_init(0);
+    tensor(i64) tns;
 
 
-  when("providing a vector with dimensions");
-    struct vector dimensions = vector_of(u64, { 2, 3, 4, 5 });
+  when("providing an array with dimensions");
+    array(u64)* dimensions = &array_of(u64, { 2, 3, 4, 5 });
 
 
   calling("tensor_init()");
-    tensor = tensor_init(sizeof(i32), &dimensions, &allocator);
+    tns = tensor_init(i64)(dimensions, &allocator);
 
 
   must("initialize the tensor with the correct offsets");
-    for vector_each(
-        tensor.dimensions, struct tensor_dimension*, dimension, dimension_index)
-      switch (dimension_index) {
+    array_iterator(u64) offset = { 0 };
+    for array_each(tns.offsets, offset) {
+      switch (offset.index) {
       case 0:
-        verify(dimension->offset == 3 * 4 * 5);
+        verify(*offset.value == 3 * 4 * 5);
         break;
       case 1:
-        verify(dimension->offset == 4 * 5);
+        verify(*offset.value == 4 * 5);
         break;
       case 2:
-        verify(dimension->offset == 5);
+        verify(*offset.value == 5);
         break;
       case 3:
-        verify(dimension->offset == 0);
+        verify(*offset.value == 0);
         break;
       }
+    }
 
 
   success();
