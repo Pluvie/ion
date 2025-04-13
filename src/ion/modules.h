@@ -6,13 +6,11 @@
 //#include "modules/io.h"
 #include "modules/map.h"
 #include "modules/set.h"
-//#include "modules/time.h"
-
-/* ⚡️ION⚡️ Modules requiring the RANGE module. */
-//#include "modules/tensor.h"
+#include "modules/time.h"
 
 /* ⚡️ION⚡️ Modules requiring the ARRAY module. */
 //#include "modules/reflection.h"
+//#include "modules/tensor.h"
 
 /* ⚡️ION⚡️ Modules requiring the IO and REFLECTION modules. */
 //#include "modules/binary.h"

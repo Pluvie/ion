@@ -1,8 +1,4 @@
-#ifdef ION_INCLUDED
-static inline
-#endif
-
-char* date_to_string (
+string date_to_string (
     i64 time
 )
 {
@@ -11,8 +7,8 @@ char* date_to_string (
 
   memzero(__date_string, sizeof(__date_string));
   if (gmtime_r(&time_in_seconds, &time_calendar) == NULL)
-    return NULL;
+    return (string) { 0 };
 
   strftime(__date_string, sizeof(__date_string), "%Y-%m-%d", &time_calendar);
-  return (char*) __date_string;
+  return (string) { .content = __date_string, .length = lengthof(__date_string) };
 }
