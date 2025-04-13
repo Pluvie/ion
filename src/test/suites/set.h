@@ -2,15 +2,7 @@
 
 #include "set/declinations.h"
 
-#include "set/set_add/increase_length.c"
 #include "set/set_add/already_present.c"
-//#include "set/set_each/avoid_empty.c"
-//#include "set/set_get/string_keys.c"
-//#include "set/set_get/value_at_key.c"
-//#include "set/set_init/default_capacity.c"
-//#include "set/set_init/immediate_allocation.c"
-//#include "set/set_init/power_2_capacity.c"
-//#include "set/set_rehash/data_invariance.c"
-//#include "set/set_rehash/doubled_capacity.c"
-//#include "set/set_set/complex_types.c"
-//#include "set/set_set/rehash_trigger.c"
+#include "set/set_add/increase_length.c"
+#include "set/set_has/not_present.c"
+#include "set/set_has/present.c"
