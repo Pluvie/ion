@@ -26,6 +26,7 @@
 #include "declination/functions/map_allocate.c"
 #include "declination/functions/map_init.c"
 #include "declination/functions/map_get.c"
+#include "declination/functions/map_has.c"
 #include "declination/functions/map_set.c"
 #include "declination/functions/map_del.c"
 #include "declination/functions/map_rehash.c"

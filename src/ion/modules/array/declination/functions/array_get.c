@@ -8,5 +8,5 @@ t* array_get(t) (
     return NULL;
   }
 
-  return ary->data + position;
+  return ary->elements + position;
 }

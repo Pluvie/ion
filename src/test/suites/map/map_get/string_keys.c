@@ -12,8 +12,8 @@ test( map_get, string_keys ) {
     map_set(string, string)(&m, &s("Mars"),     &s("Rocky"));
     map_set(string, string)(&m, &s("Jupiter"),  &s("Gas Giant"));
     map_set(string, string)(&m, &s("Saturn"),   &s("Gas Giant"));
-    map_set(string, string)(&m, &s("Neptune"),  &s("Gas Giant"));
     map_set(string, string)(&m, &s("Uranus"),   &s("Gas Giant"));
+    map_set(string, string)(&m, &s("Neptune"),  &s("Gas Giant"));
     map_set(string, string)(&m, &s("Pluto"),    &s("Rocky"));
 
 

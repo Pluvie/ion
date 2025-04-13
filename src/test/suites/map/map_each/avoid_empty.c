@@ -12,8 +12,8 @@ test( map_each, avoid_empty ) {
     map_set(string, string)(&m, &s("Mars"),     &s("Solar System"));
     map_set(string, string)(&m, &s("Jupiter"),  &s("Solar System"));
     map_set(string, string)(&m, &s("Saturn"),   &s("Solar System"));
-    map_set(string, string)(&m, &s("Neptune"),  &s("Solar System"));
     map_set(string, string)(&m, &s("Uranus"),   &s("Solar System"));
+    map_set(string, string)(&m, &s("Neptune"),  &s("Solar System"));
     map_set(string, string)(&m, &s("Pluto"),    &s("Solar System"));
 
 

@@ -13,7 +13,7 @@ initialization:
   array(t) array = {
     .capacity = capacity,
     .length = 0,
-    .data = memory_alloc_zero(allocator, capacity * sizeof(t)),
+    .elements = memory_alloc_zero(allocator, capacity * sizeof(t)),
     .allocator = allocator
   };
 

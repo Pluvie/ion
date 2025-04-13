@@ -5,6 +5,8 @@
 #include "map/map_each/avoid_empty.c"
 #include "map/map_get/string_keys.c"
 #include "map/map_get/value_at_key.c"
+#include "map/map_has/not_present.c"
+#include "map/map_has/present.c"
 #include "map/map_init/default_capacity.c"
 #include "map/map_init/immediate_allocation.c"
 #include "map/map_init/power_2_capacity.c"

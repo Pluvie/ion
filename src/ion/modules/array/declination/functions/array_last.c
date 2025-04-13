@@ -7,5 +7,5 @@ t* array_last(t) (
     return NULL;
   }
 
-  return ary->data + (ary->length - 1);
+  return ary->elements + (ary->length - 1);
 }

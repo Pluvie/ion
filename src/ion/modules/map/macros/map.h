@@ -10,6 +10,8 @@
 #define _map_init(k, v)       map_init__ ## k ## __ ## v
 #define map_get(...)          _map_get(__VA_ARGS__)
 #define _map_get(k, v)        map_get__ ## k ## __ ## v
+#define map_has(...)          _map_has(__VA_ARGS__)
+#define _map_has(k, v)        map_has__ ## k ## __ ## v
 #define map_set(...)          _map_set(__VA_ARGS__)
 #define _map_set(k, v)        map_set__ ## k ## __ ## v
 #define map_del(...)          _map_del(__VA_ARGS__)

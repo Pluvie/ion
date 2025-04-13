@@ -13,6 +13,11 @@ vt* map_get(kt, vt) (
     kt* key
 );
 
+bool map_has(kt, vt) (
+    map(kt, vt)* m,
+    kt* key
+);
+
 vt* map_set(kt, vt) (
     map(kt, vt)* m,
     kt* key,

@@ -8,5 +8,5 @@ t* array_pop(t) (
   }
 
   ary->length--;
-  return ary->data + ary->length;
+  return ary->elements + ary->length;
 }

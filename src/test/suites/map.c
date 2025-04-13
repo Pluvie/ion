@@ -7,6 +7,8 @@ void test_suite__map (
   test_add( map_each, avoid_empty );
   test_add( map_get, string_keys );
   test_add( map_get, value_at_key );
+  test_add( map_has, not_present );
+  test_add( map_has, present );
   test_add( map_init, default_capacity );
   test_add( map_init, immediate_allocation );
   test_add( map_init, power_2_capacity );

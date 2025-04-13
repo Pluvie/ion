@@ -5,7 +5,7 @@
 #include "modules/array.h"
 //#include "modules/io.h"
 #include "modules/map.h"
-//#include "modules/range.h"
+#include "modules/set.h"
 //#include "modules/time.h"
 
 /* ⚡️ION⚡️ Modules requiring the RANGE module. */
@@ -24,7 +24,3 @@
 
 /* ⚡️ION⚡️ Modules requiring the TCP module. */
 //#include "modules/http.h"
-
-
-/* TODO: implement and organize these modules. */
-//#include "modules/set.h"

@@ -9,7 +9,7 @@ t* array_set(t) (
     return NULL;
   }
 
-  t* address = ary->data + position;
+  t* address = ary->elements + position;
   *address = *element;
   return element;
 }

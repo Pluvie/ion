@@ -23,7 +23,7 @@
 typedef struct {
   u64 capacity;
   u64 length;
-  t* data;
+  t* elements;
   memory* allocator;
 } array(t);
 check_sizeof(array(t), 32);

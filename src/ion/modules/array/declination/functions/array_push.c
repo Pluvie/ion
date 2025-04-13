@@ -14,15 +14,15 @@ grow_check:
     goto push;
 
 grow:
-  t* old_data = ary->data;
+  t* old_elements = ary->elements;
   u64 old_capacity = ary->capacity;
 
   ary->capacity *= 2;
-  ary->data = memory_alloc_zero(ary->allocator, ary->capacity * sizeof(t));
-  memcpy(ary->data, old_data, old_capacity * sizeof(t));
+  ary->elements = memory_alloc_zero(ary->allocator, ary->capacity * sizeof(t));
+  memcpy(ary->elements, old_elements, old_capacity * sizeof(t));
 
 push:
-  t* address = ary->data + ary->length;
+  t* address = ary->elements + ary->length;
   *address = *element;
   ary->length++;
 
