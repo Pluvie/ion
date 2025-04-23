@@ -1,8 +1,7 @@
 test( array_init, power_2_capacity ) {
 
   given("a declined array");
-    memory allocator = memory_init(0);
-    array(i32) ary;
+    array(i32) array;
 
 
   when("the array is provided a capacity which is not a power of 2");
@@ -10,13 +9,12 @@ test( array_init, power_2_capacity ) {
 
 
   calling("array_init()");
-    ary = array_init(i32)(capacity, &allocator);
+    array = array_init(i32)(capacity, test_allocator);
 
 
   must("initialize the array with the next power of 2 capacity");
-    verify(ary.capacity == 128);
+    verify(array.capacity == 128);
 
 
   success();
-    memory_release(&allocator);
 }

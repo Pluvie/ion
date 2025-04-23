@@ -1,11 +1,11 @@
 t* array_last(t) (
-    array(t)* ary
+    array(t)* array
 )
 {
-  if (unlikely(ary->length == 0)) {
+  if (unlikely(array->length == 0)) {
     fail("array at 0 length");
     return NULL;
   }
 
-  return ary->elements + (ary->length - 1);
+  return array->elements + (array->length - 1);
 }

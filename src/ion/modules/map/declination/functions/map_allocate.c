@@ -3,7 +3,7 @@ map(kt, vt)* map_allocate(kt, vt) (
     memory* allocator
 )
 {
-  map(kt, vt)* m = memory_alloc(allocator, sizeof(map(kt, vt)));
-  *m = map_init(kt, vt)(initial_capacity, allocator);
-  return m;
+  map(kt, vt)* map = memory_alloc(allocator, sizeof(map(kt, vt)));
+  *map = map_init(kt, vt)(initial_capacity, allocator);
+  return map;
 }

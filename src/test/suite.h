@@ -1,11 +1,13 @@
 i32 suite_pid;
 i32 forked_pid;
+memory* test_allocator;
 
 void suite_run (
     void
 )
 {
   suite_pid = getpid();
+  test_allocator = calloc(1, sizeof(memory));
 
   if (focused_tests[0] == NULL) {
     original_stderr = fdopen(STDERR_FILENO, "w");
@@ -19,6 +21,7 @@ void suite_run (
       fprintf(original_stderr, "%s", registered_test_names[i]);
       fflush(original_stderr);
       registered_tests[i]();
+      memory_release(test_allocator);
       error_reset();
     }
   } else {
@@ -28,6 +31,7 @@ void suite_run (
       focused_tests[i]();
       if (!suite_passed)
         error_print();
+      memory_release(test_allocator);
       error_reset();
     }
   }
@@ -52,4 +56,5 @@ void suite_run (
 
   fclose(original_stderr);
   fclose(stderr);
+  free(test_allocator);
 }

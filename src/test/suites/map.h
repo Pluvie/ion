@@ -1,6 +1,6 @@
 #include "../../ion/modules/map.c"
 
-#include "map/declinations.h"
+#include "map/typedefs.h"
 
 #include "map/map_each/avoid_empty.c"
 #include "map/map_get/string_keys.c"

@@ -1,16 +1,16 @@
 vt* map_set(kt, vt) (
-    map(kt, vt)* m,
+    map(kt, vt)* map,
     kt* key,
     vt* value
 )
 {
   u64 key_hash = map_hasher(kt, vt)(key);
-  u64 probe_index = key_hash & (m->capacity - 1);
-  u64 probe_index_limit = m->capacity + MAP_CAPACITY_PADDING - 1;
+  u64 probe_index = key_hash & (map->capacity - 1);
+  u64 probe_index_limit = map->capacity + MAP_CAPACITY_PADDING - 1;
 
 linear_probing:
-  kt* probed_key = map_key_at(m, probe_index);
-  if (map_entry_is_empty(m, probe_index))
+  kt* probed_key = map_key_at(map, probe_index);
+  if (map_entry_is_empty(map, probe_index))
     goto set_value_new;
 
   if (map_comparer(kt, vt)(key, probed_key))
@@ -24,14 +24,14 @@ linear_probing:
 
 set_value_new:
   *probed_key = *key;
-  map_entry_occupy(m, probe_index, key_hash);
-  m->length++;
+  map_entry_occupy(map, probe_index, key_hash);
+  map->length++;
 
 set_value_existing:
-  *map_value_at(m, probe_index) = *value;
+  *map_value_at(map, probe_index) = *value;
 
-  if (m->length >= m->load_limit)
-    map_rehash(kt, vt)(m);
+  if (map->length >= map->load_limit)
+    map_rehash(kt, vt)(map);
 
   return value;
 }

@@ -1,14 +1,13 @@
 test( map_set, rehash_trigger ) {
 
   given("a declined map");
-    memory allocator = memory_init(0);
-    map(i32, i32) m = map_init(i32, i32)(0, &allocator);
-    i32* original_keys_address = m.keys;
+    map(i32, i32) map = map_init(i32, i32)(0, test_allocator);
+    i32* original_keys_address = map.keys;
 
 
   when("the map has some entries in it, under the load factor");
     for (i32 index = 0; index < 7; index++)
-      map_set(i32, i32)(&m, &index, &index);
+      map_set(i32, i32)(&map, &index, &index);
 
 
   when("adding a new key and surpassing the load factor");
@@ -17,13 +16,12 @@ test( map_set, rehash_trigger ) {
 
 
   calling("map_set()");
-    map_set(i32, i32)(&m, &key, &value);
+    map_set(i32, i32)(&map, &key, &value);
 
 
   must("trigger the map rehash and update the keys");
-    verify(original_keys_address != m.keys);
+    verify(original_keys_address != map.keys);
 
 
   success();
-    memory_release(&allocator);
 }

@@ -9,7 +9,7 @@ map(kt, vt) map_init(kt, vt) (
 
   u64 padded_capacity = capacity + MAP_CAPACITY_PADDING;
 
-  map(kt, vt) m = {
+  map(kt, vt) map = {
     .capacity = capacity,
     .length = 0,
     .hashes = memory_alloc_zero(allocator, padded_capacity * sizeof(u64)),
@@ -18,5 +18,5 @@ map(kt, vt) map_init(kt, vt) (
     .load_limit = map_load_limit(capacity),
     .allocator = allocator,
   };
-  return m;
+  return map;
 }

@@ -4,4 +4,5 @@
 
 #define ION_SET
 
+#include "set/constants.h"
 #include "set/macros.h"

@@ -1,30 +1,30 @@
 t* array_push(t) (
-    array(t)* ary,
+    array(t)* array,
     t* element
 )
 {
-  if (likely(ary->allocator != NULL))
+  if (likely(array->allocator != NULL))
     goto grow_check;
 
   fail("cannot push on a stack allocated array");
   return NULL;
 
 grow_check:
-  if (likely(ary->length < ary->capacity))
+  if (likely(array->length < array->capacity))
     goto push;
 
 grow:
-  t* old_elements = ary->elements;
-  u64 old_capacity = ary->capacity;
+  t* old_elements = array->elements;
+  u64 old_capacity = array->capacity;
 
-  ary->capacity *= 2;
-  ary->elements = memory_alloc_zero(ary->allocator, ary->capacity * sizeof(t));
-  memcpy(ary->elements, old_elements, old_capacity * sizeof(t));
+  array->capacity *= 2;
+  array->elements = memory_alloc_zero(array->allocator, array->capacity * sizeof(t));
+  memcpy(array->elements, old_elements, old_capacity * sizeof(t));
 
 push:
-  t* address = ary->elements + ary->length;
+  t* address = array->elements + array->length;
   *address = *element;
-  ary->length++;
+  array->length++;
 
   return element;
 }

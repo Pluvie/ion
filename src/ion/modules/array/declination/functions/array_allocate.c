@@ -3,7 +3,7 @@ array(t)* array_allocate(t) (
     memory* allocator
 )
 {
-  array(t)* ary = memory_alloc_zero(allocator, sizeof(array(t)));
-  *ary = array_init(t)(initial_capacity, allocator);
-  return ary;
+  array(t)* array = memory_alloc_zero(allocator, sizeof(array(t)));
+  *array = array_init(t)(initial_capacity, allocator);
+  return array;
 }

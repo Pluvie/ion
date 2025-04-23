@@ -1,8 +1,7 @@
 test( map_init, default_capacity ) {
 
   given("a declined map");
-    map(i32, i32) m;
-    memory allocator = memory_init(0);
+    map(i32, i32) map;
 
 
   when("providing a capacity inferior to the default");
@@ -10,13 +9,12 @@ test( map_init, default_capacity ) {
 
 
   calling("map_init()");
-    m = map_init(i32, i32)(capacity, &allocator);
+    map = map_init(i32, i32)(capacity, test_allocator);
 
 
   must("initialize the map with #MAP_CAPACITY_DEFAULT capacity");
-    verify(m.capacity == MAP_CAPACITY_DEFAULT);
+    verify(map.capacity == MAP_CAPACITY_DEFAULT);
 
 
   success();
-    memory_release(&allocator);
 }

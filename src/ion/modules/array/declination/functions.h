@@ -9,25 +9,25 @@ array(t) array_init(t) (
 );
 
 t* array_get(t) (
-    array(t)* ary,
+    array(t)* array,
     u64 position
 );
 
 t* array_last(t) (
-    array(t)* ary
+    array(t)* array
 );
 
 t* array_pop(t) (
-    array(t)* ary
+    array(t)* array
 );
 
 t* array_push(t) (
-    array(t)* ary,
+    array(t)* array,
     t* element
 );
 
 t* array_set(t) (
-    array(t)* ary,
+    array(t)* array,
     u64 position,
     t* element
 );

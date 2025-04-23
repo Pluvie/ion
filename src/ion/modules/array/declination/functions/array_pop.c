@@ -1,12 +1,12 @@
 t* array_pop(t) (
-    array(t)* ary
+    array(t)* array
 )
 {
-  if (unlikely(ary->length == 0)) {
+  if (unlikely(array->length == 0)) {
     fail("array at 0 length");
     return NULL;
   }
 
-  ary->length--;
-  return ary->elements + ary->length;
+  array->length--;
+  return array->elements + array->length;
 }

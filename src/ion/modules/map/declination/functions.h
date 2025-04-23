@@ -9,28 +9,28 @@ map(kt, vt)* map_allocate(kt, vt) (
 );
 
 vt* map_get(kt, vt) (
-    map(kt, vt)* m,
+    map(kt, vt)* map,
     kt* key
 );
 
 bool map_has(kt, vt) (
-    map(kt, vt)* m,
+    map(kt, vt)* map,
     kt* key
 );
 
 vt* map_set(kt, vt) (
-    map(kt, vt)* m,
+    map(kt, vt)* map,
     kt* key,
     vt* value
 );
 
 vt* map_del(kt, vt) (
-    map(kt, vt)* m,
+    map(kt, vt)* map,
     kt* key
 );
 
 void map_rehash(kt, vt) (
-    map(kt, vt)* m
+    map(kt, vt)* map
 );
 
 static inline bool map_comparer(kt, vt) (

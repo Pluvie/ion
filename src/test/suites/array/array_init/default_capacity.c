@@ -1,8 +1,7 @@
 test( array_init, default_capacity ) {
 
   given("a declined array");
-    memory allocator = memory_init(0);
-    array(i32) ary;
+    array(i32) array;
 
 
   when("the array is provided a capacity inferior to the default");
@@ -10,13 +9,12 @@ test( array_init, default_capacity ) {
 
 
   calling("array_init()");
-    ary = array_init(i32)(capacity, &allocator);
+    array = array_init(i32)(capacity, test_allocator);
 
 
   must("initialize the array with #ARRAY_CAPACITY_DEFAULT capacity");
-    verify(ary.capacity == ARRAY_CAPACITY_DEFAULT);
+    verify(array.capacity == ARRAY_CAPACITY_DEFAULT);
 
 
   success();
-    memory_release(&allocator);
 }

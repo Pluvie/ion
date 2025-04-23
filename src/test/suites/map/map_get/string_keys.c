@@ -1,20 +1,19 @@
 test( map_get, string_keys ) {
 
   given("a declined map");
-    memory allocator = memory_init(0);
-    map(string, string) m = map_init(string, string)(0, &allocator);
+    map(string, string) map = map_init(string, string)(0, test_allocator);
 
 
   when("the map has some keys in it");
-    map_set(string, string)(&m, &s("Mercury"),  &s("Rocky"));
-    map_set(string, string)(&m, &s("Venus"),    &s("Rocky"));
-    map_set(string, string)(&m, &s("Earth"),    &s("Rocky"));
-    map_set(string, string)(&m, &s("Mars"),     &s("Rocky"));
-    map_set(string, string)(&m, &s("Jupiter"),  &s("Gas Giant"));
-    map_set(string, string)(&m, &s("Saturn"),   &s("Gas Giant"));
-    map_set(string, string)(&m, &s("Uranus"),   &s("Gas Giant"));
-    map_set(string, string)(&m, &s("Neptune"),  &s("Gas Giant"));
-    map_set(string, string)(&m, &s("Pluto"),    &s("Rocky"));
+    map_set(string, string)(&map, &s("Mercury"),  &s("Rocky"));
+    map_set(string, string)(&map, &s("Venus"),    &s("Rocky"));
+    map_set(string, string)(&map, &s("Earth"),    &s("Rocky"));
+    map_set(string, string)(&map, &s("Mars"),     &s("Rocky"));
+    map_set(string, string)(&map, &s("Jupiter"),  &s("Gas Giant"));
+    map_set(string, string)(&map, &s("Saturn"),   &s("Gas Giant"));
+    map_set(string, string)(&map, &s("Uranus"),   &s("Gas Giant"));
+    map_set(string, string)(&map, &s("Neptune"),  &s("Gas Giant"));
+    map_set(string, string)(&map, &s("Pluto"),    &s("Rocky"));
 
 
   when("an element is requested at a specific key");
@@ -22,7 +21,7 @@ test( map_get, string_keys ) {
 
 
   calling("map_get()");
-    string* surface = map_get(string, string)(&m, &planet);
+    string* surface = map_get(string, string)(&map, &planet);
 
 
   must("return the correct element at that key");
@@ -31,5 +30,4 @@ test( map_get, string_keys ) {
 
 
   success();
-    memory_release(&allocator);
 }

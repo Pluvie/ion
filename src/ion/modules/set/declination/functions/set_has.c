@@ -1,17 +1,17 @@
 bool set_has(t) (
-    set(t)* s,
+    set(t)* set,
     t* element
 )
 {
   u64 element_hash = set_hasher(t)(element);
-  u64 probe_index = element_hash & (s->capacity - 1);
-  u64 probe_index_limit = s->capacity + MAP_CAPACITY_PADDING - 1;
+  u64 probe_index = element_hash & (set->capacity - 1);
+  u64 probe_index_limit = set->capacity + SET_CAPACITY_PADDING - 1;
 
 linear_probing:
-  if (set_comparer(t)(element, set_element_at(s, probe_index)))
+  if (set_comparer(t)(element, set_element_at(set, probe_index)))
     return true;
 
-  if (set_entry_is_empty(s, probe_index))
+  if (set_entry_is_empty(set, probe_index))
     return false;
 
   probe_index++;

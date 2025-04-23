@@ -1,15 +1,14 @@
 test( array_get, position_out_of_bounds ) {
 
   given("a declined array");
-    memory allocator = memory_init(0);
-    array(i32) ary = array_init(i32)(0, &allocator);
+    array(i32) array = array_init(i32)(0, test_allocator);
 
 
   when("the array has some elements in it");
     i32 element = 3;
-    array_push(i32)(&ary, &element);
-    array_push(i32)(&ary, &element);
-    array_push(i32)(&ary, &element);
+    array_push(i32)(&array, &element);
+    array_push(i32)(&array, &element);
+    array_push(i32)(&array, &element);
 
 
   when("an element is requested at position that is outside the bounds of the array");
@@ -17,7 +16,7 @@ test( array_get, position_out_of_bounds ) {
 
 
   calling("array_get()");
-    i32* address = array_get(i32)(&ary, position);
+    i32* address = array_get(i32)(&array, position);
 
 
   must("return NULL and fail with a specific error");
@@ -27,5 +26,4 @@ test( array_get, position_out_of_bounds ) {
 
 
   success();
-    memory_release(&allocator);
 }

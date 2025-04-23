@@ -17,6 +17,6 @@
 #define array_push(...)         _array_push(__VA_ARGS__)
 #define _array_push(t)          array_push__ ## t
 #define array_last(...)         _array_last(__VA_ARGS__)
-#define _array_last(t)          array_last ## t
+#define _array_last(t)          array_last__ ## t
 #define array_iterator(...)     _array_iterator(__VA_ARGS__)
-#define _array_iterator(t)      array_iterator ## t
+#define _array_iterator(t)      array_iterator__ ## t

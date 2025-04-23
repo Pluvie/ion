@@ -1,6 +1,6 @@
 #include "../../ion/modules/set.c"
 
-#include "set/declinations.h"
+#include "set/typedefs.h"
 
 #include "set/set_add/already_present.c"
 #include "set/set_add/increase_length.c"

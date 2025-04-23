@@ -1,8 +1,7 @@
 test( map_init, power_2_capacity ) {
 
   given("a declined map");
-    map(i32, i32) m;
-    memory allocator = memory_init(0);
+    map(i32, i32) map;
 
 
   when("providing a capacity which is not a power of 2");
@@ -10,13 +9,12 @@ test( map_init, power_2_capacity ) {
 
 
   calling("map_init()");
-    m = map_init(i32, i32)(capacity, &allocator);
+    map = map_init(i32, i32)(capacity, test_allocator);
 
 
   must("initialize the map with the next power of 2 capacity");
-    verify(m.capacity == 128);
+    verify(map.capacity == 128);
 
 
   success();
-    memory_release(&allocator);
 }

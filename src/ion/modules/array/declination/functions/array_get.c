@@ -1,12 +1,12 @@
 t* array_get(t) (
-    array(t)* ary,
+    array(t)* array,
     u64 position
 )
 {
-  if (unlikely(position >= ary->length)) {
+  if (unlikely(position >= array->length)) {
     fail("position %li out of bounds", position);
     return NULL;
   }
 
-  return ary->elements + position;
+  return array->elements + position;
 }

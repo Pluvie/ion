@@ -1,20 +1,20 @@
 vt* map_del(kt, vt) (
-    map(kt, vt)* m,
+    map(kt, vt)* map,
     kt* key
 )
 {
   u64 key_hash = map_hasher(kt, vt)(key);
-  u64 probe_index = key_hash & (m->capacity - 1);
-  u64 probe_index_limit = m->capacity + MAP_CAPACITY_PADDING - 1;
+  u64 probe_index = key_hash & (map->capacity - 1);
+  u64 probe_index_limit = map->capacity + MAP_CAPACITY_PADDING - 1;
 
 linear_probing:
-  if (map_comparer(kt, vt)(key, map_key_at(m, probe_index))) {
-    map_entry_free(m, probe_index);
-    m->length--;
-    return map_value_at(m, probe_index);
+  if (map_comparer(kt, vt)(key, map_key_at(map, probe_index))) {
+    map_entry_free(map, probe_index);
+    map->length--;
+    return map_value_at(map, probe_index);
   }
 
-  if (map_entry_is_empty(m, probe_index))
+  if (map_entry_is_empty(map, probe_index))
     return NULL;
 
   probe_index++;

@@ -1,13 +1,12 @@
 test( array_get, element_at_position ) {
 
   given("a declined array");
-    memory allocator = memory_init(0);
-    array(i32) ary = array_init(i32)(0, &allocator);
+    array(i32) array = array_init(i32)(0, test_allocator);
 
 
   when("the array has some elements in it");
     for (i32 index = 0; index < 4; index++)
-      array_push(i32)(&ary, &index);
+      array_push(i32)(&array, &index);
 
 
   when("an element is requested at a specific position");
@@ -15,7 +14,7 @@ test( array_get, element_at_position ) {
 
 
   calling("array_get()");
-    i32 element = as(i32, array_get(i32)(&ary, position));
+    i32 element = as(i32, array_get(i32)(&array, position));
 
 
   must("return the correct element at that position");
@@ -23,5 +22,4 @@ test( array_get, element_at_position ) {
 
 
   success();
-    memory_release(&allocator);
 }

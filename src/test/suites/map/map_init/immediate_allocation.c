@@ -1,19 +1,18 @@
 test( map_init, immediate_allocation ) {
 
   given("a declined map");
-    map(i32, i32) m;
-    memory allocator = memory_init(0);
+    map(i32, i32) map;
+    verify(test_allocator->data == NULL);
 
 
   calling("map_init()");
-    m = map_init(i32, i32)(0, &allocator);
+    map = map_init(i32, i32)(0, test_allocator);
 
 
   must("initialize the map and immediately allocate its memory");
-    verify(m.capacity > 0);
-    verify(allocator.data != NULL);
+    verify(map.capacity > 0);
+    verify(test_allocator->data != NULL);
 
 
   success();
-    memory_release(&allocator);
 }

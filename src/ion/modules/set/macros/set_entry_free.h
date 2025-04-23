@@ -1,4 +1,4 @@
 /**
  * Frees a set entry. */
-#define set_entry_free(s, index) \
-  (s)->hashes[index] = 0
+#define set_entry_free(set, index) \
+  (set)->hashes[index] = 0

@@ -1,22 +1,22 @@
 void map_rehash(kt, vt) (
-    map(kt, vt)* m
+    map(kt, vt)* map
 )
 {
-  u64 new_capacity = m->capacity * 2;
-  map(kt, vt) rehashed_map = map_init(kt, vt)(new_capacity, m->allocator);
+  u64 new_capacity = map->capacity * 2;
+  map(kt, vt) rehashed_map = map_init(kt, vt)(new_capacity, map->allocator);
 
-  for (u64 i = 0; i < m->capacity + MAP_CAPACITY_PADDING; i++) {
-    if (map_entry_is_empty(m, i))
+  for (u64 i = 0; i < map->capacity + MAP_CAPACITY_PADDING; i++) {
+    if (map_entry_is_empty(map, i))
       continue;
 
-    kt* key = map_key_at(m, i);
-    vt* value = map_value_at(m, i);
+    kt* key = map_key_at(map, i);
+    vt* value = map_value_at(map, i);
     map_set(kt, vt)(&rehashed_map, key, value);
   }
 
-  m->capacity = new_capacity;
-  m->hashes = rehashed_map.hashes;
-  m->keys = rehashed_map.keys;
-  m->values = rehashed_map.values;
-  m->load_limit = map_load_limit(new_capacity);
+  map->capacity = new_capacity;
+  map->hashes = rehashed_map.hashes;
+  map->keys = rehashed_map.keys;
+  map->values = rehashed_map.values;
+  map->load_limit = map_load_limit(new_capacity);
 }

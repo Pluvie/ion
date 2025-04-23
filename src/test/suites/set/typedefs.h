@@ -1,5 +1,5 @@
 /**
- * Declines the set on the `string` element type. Used for some tests. */
+ * Declines the set on the `string` element type. */
 #define   set_declination string
 #define   set_use_comparer
 static inline bool set_comparer(string) (

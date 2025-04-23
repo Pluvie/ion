@@ -1,15 +1,15 @@
 t* set_add(t) (
-    set(t)* s,
+    set(t)* set,
     t* element
 )
 {
   u64 element_hash = set_hasher(t)(element);
-  u64 probe_index = element_hash & (s->capacity - 1);
-  u64 probe_index_limit = s->capacity + MAP_CAPACITY_PADDING - 1;
+  u64 probe_index = element_hash & (set->capacity - 1);
+  u64 probe_index_limit = set->capacity + SET_CAPACITY_PADDING - 1;
 
 linear_probing:
-  t* probed_element = set_element_at(s, probe_index);
-  if (set_entry_is_empty(s, probe_index))
+  t* probed_element = set_element_at(set, probe_index);
+  if (set_entry_is_empty(set, probe_index))
     goto set_element_new;
 
   if (set_comparer(t)(element, probed_element))
@@ -23,14 +23,14 @@ linear_probing:
 
 set_element_new:
   *probed_element = *element;
-  set_entry_occupy(s, probe_index, element_hash);
-  s->length++;
+  set_entry_occupy(set, probe_index, element_hash);
+  set->length++;
 
 set_element_existing:
   /* Nothing to do. */
 
-  if (s->length >= s->load_limit)
-    set_rehash(t)(s);
+  if (set->length >= set->load_limit)
+    set_rehash(t)(set);
 
   return element;
 }

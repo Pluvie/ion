@@ -1,19 +1,18 @@
 test( array_init, immediate_allocation ) {
 
   given("a declined array");
-    memory allocator = memory_init(0);
-    array(i32) ary;
+    array(i32) array;
+    verify(test_allocator->data == NULL);
 
 
   calling("array_init()");
-    ary = array_init(i32)(0, &allocator);
+    array = array_init(i32)(0, test_allocator);
 
 
   must("initialize the array and immediately allocate its memory");
-    verify(ary.capacity > 0);
-    verify(allocator.data != NULL);
+    verify(array.capacity > 0);
+    verify(test_allocator->data != NULL);
 
 
   success();
-    memory_release(&allocator);
 }
