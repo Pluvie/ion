@@ -1,8 +1,7 @@
 test( set_add, increase_length ) {
 
   given("a declined set");
-    memory allocator = memory_init(0);
-    set(string) set = set_init(string)(0, &allocator);
+    set(string) set = set_init(string)(0, test_allocator);
     verify(set.length == 0);
 
 
@@ -19,5 +18,4 @@ test( set_add, increase_length ) {
 
 
   success();
-    memory_release(&allocator);
 }

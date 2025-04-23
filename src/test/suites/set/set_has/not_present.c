@@ -1,8 +1,7 @@
 test( set_has, not_present ) {
 
   given("a declined set");
-    memory allocator = memory_init(0);
-    set(string) set = set_init(string)(0, &allocator);
+    set(string) set = set_init(string)(0, test_allocator);
 
 
   when("the set has some elements in it");
@@ -24,5 +23,4 @@ test( set_has, not_present ) {
 
 
   success();
-    memory_release(&allocator);
 }
