@@ -1,8 +1,7 @@
 test( tensor_init, correct_dimensions ) {
 
   given("a declined tensor");
-    memory allocator = memory_init(0);
-    tensor(i64) tns;
+    tensor(i64) tensor;
 
 
   when("providing an array with dimensions");
@@ -10,13 +9,12 @@ test( tensor_init, correct_dimensions ) {
 
 
   calling("tensor_init()");
-    tns = tensor_init(i64)(dimensions, &allocator);
+    tensor = tensor_init(i64)(dimensions, test_allocator);
 
 
   must("initialize the tensor with the correct dimensions");
-    verify(tns.offsets->length == dimensions->length);
+    verify(tensor.offsets->length == dimensions->length);
 
 
   success();
-    memory_release(&allocator);
 }

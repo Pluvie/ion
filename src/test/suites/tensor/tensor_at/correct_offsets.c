@@ -1,41 +1,31 @@
 test( tensor_at, correct_offsets ) {
 
-  given("a struct tensor");
-    struct memory allocator = memory_init(0);
-    struct tensor tensor = tensor_init(
-      sizeof(i32), &vector_of(u64, { 1, 2, 3, 4 }), &allocator);
+  given("a declined tensor");
+    tensor(i64) tensor = tensor_init(i64)(
+      &array_of(u64, { 2, 3, 4, 5 }), test_allocator);
 
 
-  when("providing a vector with positions");
-    struct vector positions = vector_of(u64, { 0, 1, 2, 2, });
+  when("providing an array with positions");
+    array(u64)* positions = &array_of(u64, { 1, 2, 3, 4 });
 
 
   calling("tensor_at()");
-    void* position = tensor_at(&tensor, &positions);
+    i64* position = tensor_at(i64)(&tensor, positions);
+    u64 position_offset = 0;
 
 
   must("correctly retrieve the tensor position determined by the positions");
-    u64 offsets[4] = {
-      ((struct tensor_dimension*) vector_get(tensor.dimensions, 0))->offset,
-      ((struct tensor_dimension*) vector_get(tensor.dimensions, 1))->offset,
-      ((struct tensor_dimension*) vector_get(tensor.dimensions, 2))->offset,
-      ((struct tensor_dimension*) vector_get(tensor.dimensions, 3))->offset,
-    };
-    u64 offsets_multiplicators[4] = {
-      offsets[0] == 0 ? 1 : offsets[0],
-      offsets[1] == 0 ? 1 : offsets[1],
-      offsets[2] == 0 ? 1 : offsets[2],
-      offsets[3] == 0 ? 1 : offsets[3],
-    };
+    array_iterator(u64) iter = { 0 };
+    for array_each(tensor.offsets, iter) {
+      u64 offset = *iter.value;
+      if (offset == 0) offset = 1;
+      u64 position = as(u64, array_get(u64)(positions, iter.index));
+      position_offset += position * offset;
+    }
 
     verify(position != NULL);
-    verify((position - tensor.data) / sizeof(i32) ==
-      0 * offsets_multiplicators[0] +
-      1 * offsets_multiplicators[1] +
-      2 * offsets_multiplicators[2] +
-      2 * offsets_multiplicators[3]);
+    verify(position - tensor.data == position_offset);
 
 
   success();
-    memory_release(&allocator);
 }

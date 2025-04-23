@@ -3,11 +3,11 @@ tensor(t)* tensor_allocate(t) (
     memory* allocator
 )
 {
-  tensor(t)* tns = memory_alloc_zero(allocator, sizeof(tensor(t)));
-  *tns = tensor_init(t)(dimensions, allocator);
+  tensor(t)* tensor = memory_alloc_zero(allocator, sizeof(tensor(t)));
+  *tensor = tensor_init(t)(dimensions, allocator);
 
   if (error.occurred)
     return NULL;
   else
-    return tns;
+    return tensor;
 }

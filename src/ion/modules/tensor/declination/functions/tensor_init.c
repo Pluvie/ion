@@ -3,16 +3,16 @@ tensor(t) tensor_init(t) (
     memory* allocator
 )
 {
-  tensor(t) tns = { 0 };
+  tensor(t) tensor = { 0 };
 
   if (unlikely(dimensions->length == 0)) {
     fail("cannot initialize tensor: no dimensions given");
-    return tns;
+    return tensor;
   }
 
-  tns.length = 1;
-  tns.allocator = allocator;
-  tns.offsets = array_allocate(u64)(dimensions->length, allocator);
+  tensor.length = 1;
+  tensor.allocator = allocator;
+  tensor.offsets = array_allocate(u64)(dimensions->length, allocator);
 
   array_iterator(u64) dimension = { 0 };
   for array_each(dimensions, dimension) {
@@ -22,11 +22,11 @@ tensor(t) tensor_init(t) (
      *
      * Also, calculates each dimension offset by multiplying sequentially all its
      * next dimensions. The last dimension shall always have offset equal to 0. */
-    tns.length *= *dimension.value;
+    tensor.length *= *dimension.value;
 
     /* Last dimension has always offset equal to 0. */
     if (dimension.index == dimensions->length - 1) {
-      array_push(u64)(tns.offsets, &(u64) { 0 });
+      array_push(u64)(tensor.offsets, &(u64) { 0 });
       break;
     }
 
@@ -37,10 +37,10 @@ tensor(t) tensor_init(t) (
     for array_each(dimensions, next_dimension)
       offset *= *next_dimension.value;
 
-    array_push(u64)(tns.offsets, &offset);
+    array_push(u64)(tensor.offsets, &offset);
   }
 
-  tns.data = memory_alloc_zero(allocator, tns.length * sizeof(t));
+  tensor.data = memory_alloc_zero(allocator, tensor.length * sizeof(t));
 
-  return tns;
+  return tensor;
 }

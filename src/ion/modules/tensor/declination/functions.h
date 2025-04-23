@@ -9,6 +9,6 @@ tensor(t) tensor_init(t) (
 );
 
 t* tensor_at(t) (
-    tensor(t)* tns,
+    tensor(t)* tensor,
     array(u64)* positions
 );
