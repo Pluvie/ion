@@ -58,9 +58,9 @@ way possible.
 
 However, back in the 1970s, when C was born, computers were not as widespread as they
 are now, and a lot of research had yet to be done. Over the following years, it became
-more and more evident how they could rapidly solve complex computational problems by
-simply implementing the correct -- and mathematically already well-defined -- algorithms
-and data structures.
+more and more evident how we could rapidly solve complex computational problems by
+simply implementing the correct -- and mathematically already well-defined -- algorithm
+and/or data structure.
 
 This is why C lags behind in this compartment compared to newer languages. It is not
 the fact that it's not possible to *implement* these things in C -- it is of course
@@ -77,6 +77,11 @@ map<char*, int> oceans = map(char*, int, {
   { "Atlantic", 120000000 },
   { "Indian", 73600000 },
 });
+
+int* pacific_sqm_size = map_get(oceans, "Pacific"); // points to 179000000
+int* arctic_sqm_size = map_get(oceans, "Arctic");   // NULL
+map_set(oceans, "Arctic", 5400000);
+arctic_sqm_size = map_get(oceans, "Arctic");        // points to 5400000
 ```
 
 Or even:
@@ -99,6 +104,9 @@ list<struct roulette_number> roulette = list(struct roulette_number, {
   { 2, BLACK },
   ...
 });
+
+struct roulette_number first_roulette_number = list_get(roulette, 0);
+// equals to { 0, GREEN }
 ```
 
 This is made possible by adding a preprocessing step that injects just after the
@@ -106,7 +114,7 @@ standard preprocessor and before the actual compilation. The step is very
 straightforward: finds all occurrences of `[a-z]<...>` and replaces them with the
 inflected version following these simple rules:
 
-  1. All spaces become undersores.
+  1. All spaces become underscores.
   2. All occurrences of `*` become `_p`.
   3. All alphanumeric character are left unchanged.
   4. Every other special character is removed.
