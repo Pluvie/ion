@@ -10,4 +10,6 @@ spec( date ) {
   must("return the milliseconds elapsed since the Unix epoch up until the date");
     int elapsed_ms_unix_epoch = date(day, month, year);
     verify(elapsed_ms_unix_epoch == 938217600000);
+
+  success();
 }

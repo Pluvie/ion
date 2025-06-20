@@ -7,8 +7,6 @@ enum spec_commands {
   SPEC__WHEN,
   SPEC__MUST,
   SPEC__PRECONDITION,
-  SPEC__VERIFY,
-  SPEC__SUCCESS,
 };
 
 /* Holds the last given spec command. */
@@ -76,19 +74,17 @@ memory* spec_allocator;
 
 /* Defines a function specification condition that must be verified. */
 #define must(cond) \
-  if (spec_last_command != SPEC__VERIFY) { spec_indentation++; } \
+  if (spec_last_command != SPEC__MUST) { spec_indentation++; } \
   spec_print("must " cond " "); \
   spec_last_command = SPEC__MUST;
 
 /* Verifies a condition. */
 #define verify(cond) \
-  if (!(cond)) { spec_failed(#cond, __FILE__, __LINE__ ); } else { spec_verified(); } \
-  spec_last_command = SPEC__VERIFY;
+  if (!(cond)) { spec_failed(#cond, __FILE__, __LINE__ ); } else { spec_verified(); }
 
 /* Defines a function specification codepath success. */
 #define success() \
-  spec_indentation -= 2; \
-  spec_last_command = SPEC__SUCCESS;
+  spec_indentation -= 2;
 
 
 /* Prints a spec text with indentation. */
@@ -128,6 +124,7 @@ void spec_verified (
     void
 )
 {
+  if (spec_last_command == SPEC__WHEN) return;
   fprintf(original_stderr, PRINT_COLOR_GREEN);
   fprintf(original_stderr, "█");
   fprintf(original_stderr, PRINT_COLOR_NONE);

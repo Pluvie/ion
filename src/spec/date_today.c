@@ -13,4 +13,6 @@ spec( date_today ) {
     int today_number = (int) timegm(&tmp) * 1000;
 
     verify(today_number == today);
+
+  success();
 }

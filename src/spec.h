@@ -9,5 +9,6 @@
 #include "spec/io_read.c"
 #include "spec/list.c"
 #include "spec/list_init.c"
+#include "spec/list_push.c"
 #include "spec/time_now.c"
 #include "spec/time_to_string.c"

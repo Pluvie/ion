@@ -11,4 +11,6 @@ spec( date_to_string ) {
 
   must("utilize the global variable `__date_string` to hold the resulting string");
     verify(date_string.content == __date_string);
+
+  success();
 }

@@ -22,6 +22,8 @@ spec( list ) {
     verify(squad.capacity == 3);
     verify(squad.length == 3);
 
+  success();
+
   #undef valid_type
   #undef valid_elements
 }

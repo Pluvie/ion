@@ -18,6 +18,8 @@ spec( list_init ) {
     verify(list.capacity == valid_capacity);
     verify(list.length == 0);
 
+  success();
+
   #undef valid_type
   #undef valid_capacity
 }

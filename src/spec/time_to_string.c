@@ -11,4 +11,6 @@ spec( time_to_string ) {
 
   must("utilize the global variable `__time_string` to hold the resulting string");
     verify(time_string.content == __time_string);
+
+  success();
 }

@@ -10,4 +10,6 @@ spec( time_now ) {
     int time_now_result = time_now();
     verify(time_now_result <= upper_threshold);
     verify(time_now_result >= lower_threshold);
+
+  success();
 }

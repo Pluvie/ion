@@ -13,6 +13,7 @@ int32 main (
   spec_add( io_read );
   spec_add( list );
   spec_add( list_init );
+  spec_add( list_push );
   spec_add( time_now );
   spec_add( time_to_string );
 
