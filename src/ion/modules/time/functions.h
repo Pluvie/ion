@@ -1,5 +1,0 @@
-#include "functions/date.h"
-#include "functions/date_to_string.h"
-#include "functions/date_today.h"
-#include "functions/time_now.h"
-#include "functions/time_to_string.h"

@@ -31,11 +31,30 @@ fi
 # Ion
 if [ $# -eq 0 ] || [[ $1 == "ion" ]]; then
   cd ../..
-  bin/compile prf/map/src/ion/ion.c   \
-    -D ION_INCLUDED                   \
-    -O3 -march=native                 \
+  mkdir -p tmp
+  gcc prf/map/src/ion/ion.c -I ./src -Wall -Werror -E  | \
+  python3 bin/ion.py > tmp/ion.c                &&
+  gcc tmp/ion.c -I ./src -Wall -Werror             \
+    -O3 -march=native                           \
     -o prf/map/exe/ion
+  rm tmp/ion.c
   cd -
+fi
+
+# Python
+if [ $# -eq 0 ] || [[ $1 == "python" ]]; then
+  rm -rf exe/python
+  echo "#!/bin/bash" >> exe/python
+  echo "python3 src/python/python.py" >> exe/python
+  chmod +x exe/python
+fi
+
+# Ruby
+if [ $# -eq 0 ] || [[ $1 == "ruby" ]]; then
+  rm -rf exe/ruby
+  echo "#!/bin/bash" >> exe/ruby
+  echo "ruby src/ruby/ruby.rb" >> exe/ruby
+  chmod +x exe/ruby
 fi
 
 # Rust

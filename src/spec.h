@@ -1,0 +1,13 @@
+#include "ion.h"
+#include "spec/framework.h"
+#include "spec/types.h"
+
+#include "spec/date.c"
+#include "spec/date_to_string.c"
+#include "spec/date_today.c"
+#include "spec/io_buffer_read.c"
+#include "spec/io_read.c"
+#include "spec/list.c"
+#include "spec/list_init.c"
+#include "spec/time_now.c"
+#include "spec/time_to_string.c"

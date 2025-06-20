@@ -1,5 +1,0 @@
-#include "functions/http_parse_header.h"
-#include "functions/http_parse_request_line.h"
-#include "functions/http_reason_phrase.h"
-#include "functions/is_httptoken.h"
-#include "functions/is_httpwspace.h"

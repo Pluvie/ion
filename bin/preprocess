@@ -1,4 +1,5 @@
 #!/bin/bash
 
 mkdir -p tmp
-bin/compile src/$1.c -E > tmp/preprocess.txt
+gcc src/$1.c -I ./src -Wall -Werror -E |      \
+python3 bin/ion.py > tmp/$1.c

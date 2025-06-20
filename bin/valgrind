@@ -1,8 +1,9 @@
 #!/bin/bash
-bin/compile src/$1.c -g3 -o exe/$1  &&
-valgrind                            \
-  --track-origins=yes               \
-  --leak-check=full                 \
-  --show-leak-kinds=all             \
+
+bin/compile $1 -g3 -o exe/$1    &&
+valgrind                        \
+  --track-origins=yes           \
+  --leak-check=full             \
+  --show-leak-kinds=all         \
   exe/$1 ${@:2}
 echo

@@ -1,77 +1,64 @@
-#include "../../../../src/ion.h"
-#include "../../../../src/ion.c"
+#include "../src/ion.h"
+#include "../src/ion.c"
 
-extern u64 numbers[];
+extern int numbers[];
 
-void map_inspect(struct map* map) {
-  for (u64 i = 0; i < map->capacity + MAP_PADDED_CAP; i++) {
-    u64 key = as(u64, map_key_at(map, i));
-    u64 value = as(u64, map_value_at(map, i));
+void insert (
+    void
+)
+{
+  memory allocator = memory_init(0);
+  map<int, int>* map = map_alloc(int, int, 0, &allocator);
 
-    if (map_entry_is_empty(map, i)) {
-      print("index: %lu,--", i);
-    } else {
-      print("index: %lu, key: %lu, value: %lu", i, key, value);
-    }
+  for (int i = 0; i < 1000000; i++) {
+    map_set(map, i, i);
   }
-}
 
-//void insert (
-//    void
-//)
-//{
-//  struct memory allocator = memory_init(0);
-//  struct map* map = map_allocate(sizeof(i32), sizeof(i32), 0, &allocator);
-//
-//  for (i32 i = 0; i < 1000000; i++) {
-//    map_set(map, &i, &i);
-//  }
-//
-//  print("Done: %i", as(i32, map_get(map, &(i32) { 999999 })));
-//  memory_release(&allocator);
-//}
+  print("Done: %li", *map_get(map, 999999));
+  memory_release(&allocator);
+}
 
 void lookup (
     void
 )
 {
-  struct memory allocator = memory_init(1024*1024);
-  struct map* map = map_allocate(sizeof(u64), sizeof(u64), 1024*1024, &allocator);
+  memory allocator = memory_init(1024*1024);
+  map<int, int>* map = map_alloc(int, int, 1024*1024, &allocator);
 
-  for (u64 j = 0; j < 1000; j++) {
-    for (u64 i = 0; i < 1000; i++) {
-      u64 number = numbers[i] + j;
-      map_set(map, &number, &i);
+  for (int j = 0; j < 1000; j++) {
+    for (int i = 0; i < 1000; i++) {
+      map_set(map, numbers[i] + j, i);
     }
   }
 
-  u64* v;
-  for (u64 j = 0; j < 1000; j++) {
-    for (u64 i = 0; i < 1000; i++) {
-      u64 number = numbers[i] + j;
-      v = map_get(map, &number);
+  int* v;
+  for (int j = 0; j < 1000; j++) {
+    for (int i = 0; i < 1000; i++) {
+      v = map_get(map, numbers[i] + j);
     }
   }
 
   print("Size: %li", map->length);
-  print("LF: %f", (d64) map->length / (d64) map->capacity);
-  print("Buckets: %li", map->capacity);
+  print("LF: %Lf", (dec) map->keys.length / (dec) map->keys.capacity);
+  print("Buckets: %li", map->keys.capacity);
   print("Done: %li", *v);
-  //map_inspect(map);
   memory_release(&allocator);
 }
 
-i32 main (
-    i32 argc,
+int32 main (
+    int32 argc,
     char** argv
 )
 {
   //insert();
   lookup();
-  return EXIT_SUCCESS;
+  if (error.occurred)
+    return EXIT_FAILURE;
+  else
+    return EXIT_SUCCESS;
 }
 
-u64 numbers[] = {
+int numbers[] = {
  660243, 183487, 349829, 723521, 869182, 855900, 631825, 762097,  88760, 877229, 211180,
  184250, 938476, 879995, 478638, 941064,  95831, 106271, 585635, 900241, 636978, 819282,
  200357, 744761, 704975, 984066, 361726, 417089, 342256, 173680, 709161, 951830, 120277,

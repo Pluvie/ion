@@ -4,23 +4,6 @@
 
 extern int numbers[];
 
-void map_inspect(ska::flat_hash_map<int, int>* map) {
-  int total_dfd = 0;
-  for (int i = 0; i < map->bucket_count() * 3; i+=3) {
-    int* dfd = ((int*) map->entries) + i;
-    int* key = ((int*) map->entries) + i + 1;
-    int* val = ((int*) map->entries) + i + 2;
-    if (*dfd == 255) {
-      std::cout << "index: " << i << "--" <<  std::endl;
-    } else {
-      std::cout << "index: " << i << ", dfd: " << *dfd << ", key: " << *key << ", val: " << *val << std::endl;
-      total_dfd += *dfd;
-    }
-
-    std::cout << "total dfd: " << total_dfd << std::endl;
-  }
-}
-
 void insert () {
   ska::flat_hash_map<int, int> map = {};
 
@@ -53,7 +36,6 @@ void lookup() {
   std::cout << "LF: " << map.load_factor() << std::endl;
   std::cout << "Buckets: " << map.bucket_count() << std::endl;
   std::cout << "Done: " << v << std::endl;
-  //map_inspect(&map);
 }
 
 int main() {
