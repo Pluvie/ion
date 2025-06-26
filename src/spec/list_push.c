@@ -24,6 +24,9 @@ spec( list_push ) {
 
       bool result = list_push(list, element);
 
+      must("not fail");
+        verify(error.occurred == false);
+
       must("return true");
         verify(result == true);
 
@@ -118,6 +121,9 @@ spec( list_push ) {
 
       bool result = list_push(list, element);
 
+      must("not fail");
+        verify(error.occurred == false);
+
       must("return true");
         verify(result == true);
 
@@ -141,6 +147,5 @@ spec( list_push ) {
     #undef heap_allocated_list_condition
   }
 
-  #undef valid_type_precondition
-  #undef valid_elements_precondition
+  #undef valid_element_precondition
 }
