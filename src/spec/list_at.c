@@ -49,8 +49,9 @@ spec( list_at ) {
 
       int* result = list_at(list, position);
 
-      must("not fail");
-        verify(error.occurred == false);
+      must("fail with a specific error");
+        verify(error.occurred == true);
+        verify(streq(error.message, "3: overbound list position"));
 
       must("return NULL");
         verify(result == NULL);
@@ -104,8 +105,9 @@ spec( list_at ) {
 
       int* result = list_at(list, position);
 
-      must("not fail");
-        verify(error.occurred == false);
+      must("fail with a specific error");
+        verify(error.occurred == true);
+        verify(streq(error.message, "3: overbound list position"));
 
       must("return NULL");
         verify(result == NULL);

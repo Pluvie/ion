@@ -6,5 +6,6 @@ T* list<T>_at (
   if (position >= 0 && position < list->length)
     return list->data + position;
 
+  fail("%li: overbound list position", position);
   return NULL;
 }

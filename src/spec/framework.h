@@ -84,6 +84,7 @@ memory* spec_allocator;
 
 /* Defines a function specification codepath success. */
 #define success() \
+  error_reset(); \
   spec_indentation -= 2;
 
 
