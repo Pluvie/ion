@@ -13,6 +13,7 @@ int32 main (
   spec_add( io_read );
   spec_add( list );
   spec_add( list_alloc );
+  spec_add( list_at );
   spec_add( list_each );
   spec_add( list_init );
   spec_add( list_pop );

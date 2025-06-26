@@ -7,7 +7,7 @@ spec( list_pop ) {
       list<int> stack_list = list_init(int, 16); \
       list = &stack_list;
 
-    when("the list has at least one element") {
+    and_when("the list has at least one element") {
       #define list_not_empty_condition \
         list_push(list, 7); \
         list_push(list, 8); \
@@ -34,9 +34,11 @@ spec( list_pop ) {
         verify(list->capacity == original_list_capacity);
 
       success();
+
+      #undef list_not_empty_condition
     }
 
-    when("the list has no elements") {
+    and_when("the list has no elements") {
       #define empty_list_condition \
         list->length = 0;
 
@@ -60,6 +62,8 @@ spec( list_pop ) {
         verify(list->capacity == original_list_capacity);
 
       success();
+
+      #undef empty_list_condition
     }
 
     #undef stack_allocated_list_condition
@@ -69,7 +73,7 @@ spec( list_pop ) {
     #define heap_allocated_list_condition \
       list = list_alloc(int, 16, spec_allocator);
 
-    when("the list has at least one element") {
+    and_when("the list has at least one element") {
       #define list_not_empty_condition \
         list_push(list, 7); \
         list_push(list, 8); \
@@ -96,9 +100,11 @@ spec( list_pop ) {
         verify(list->capacity == original_list_capacity);
 
       success();
+
+      #undef list_not_empty_condition
     }
 
-    when("the list has no elements") {
+    and_when("the list has no elements") {
       #define empty_list_condition \
         list->length = 0;
 
@@ -122,6 +128,8 @@ spec( list_pop ) {
         verify(list->capacity == original_list_capacity);
 
       success();
+
+      #undef empty_list_condition
     }
 
     #undef heap_allocated_list_condition

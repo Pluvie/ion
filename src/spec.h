@@ -9,6 +9,7 @@
 #include "spec/io_read.c"
 #include "spec/list.c"
 #include "spec/list_alloc.c"
+#include "spec/list_at.c"
 #include "spec/list_each.c"
 #include "spec/list_init.c"
 #include "spec/list_pop.c"

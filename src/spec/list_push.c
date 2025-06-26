@@ -12,7 +12,7 @@ spec( list_push ) {
       list<int> stack_list = list_init(int, 16); \
       list = &stack_list;
 
-    when("the list length is inferior to its capacity") {
+    and_when("the list length is inferior to its capacity") {
       #define list_length_condition \
         list->length = list->capacity - 3; \
         int original_list_length = list->length; \
@@ -44,7 +44,7 @@ spec( list_push ) {
       #undef list_length_condition
     }
 
-    when("the list length is equal to its capacity") {
+    and_when("the list length is equal to its capacity") {
       #define list_length_condition \
         list->length = list->capacity; \
         int original_list_length = list->length; \
@@ -79,7 +79,7 @@ spec( list_push ) {
     #define heap_allocated_list_condition \
       list = list_alloc(int, 16, spec_allocator);
 
-    when("the list length is inferior to its capacity") {
+    and_when("the list length is inferior to its capacity") {
       #define list_length_condition \
         list->length = list->capacity - 3; \
         int original_list_length = list->length; \
@@ -108,7 +108,7 @@ spec( list_push ) {
       #undef list_length_condition
     }
 
-    when("the list length is equal to its capacity") {
+    and_when("the list length is equal to its capacity") {
       #define list_length_condition \
         list->length = list->capacity; \
         int original_list_length = list->length; \
