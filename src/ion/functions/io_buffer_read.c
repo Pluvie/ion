@@ -38,24 +38,7 @@ read_from_channel:
                    ▼      ▼          ▼
                 cursor   end      capacity */
 
-  int copy_begin = 0;
-  int copy_end = io->buffer.end;
-  int copy_amount = copy_end - copy_begin;
-
-  int new_capacity = io->buffer.end + io->buffer.size;
-  if (amount > io->buffer.size)
-    new_capacity = io->buffer.end + amount;
-
-  void* old_data = io->buffer.data;
-  void* new_data = malloc(new_capacity);
-  if (unlikely(new_data == NULL))
-    fatal("%li, not enough memory", new_capacity);
-
-  memcpy(new_data, old_data, copy_amount);
-  free(old_data);
-  io->buffer.data = new_data;
-  io->buffer.capacity = new_capacity;
-
+  io_buffer_extend(io, amount);
   void* storage = io->buffer.data + io->buffer.end; 
   int channel_amount = io->buffer.capacity - io->buffer.end;
   slice channel_result = io_read_channel(io, channel_amount, storage);

@@ -9,6 +9,7 @@ int32 main (
   spec_add( date );
   spec_add( date_to_string );
   spec_add( date_today );
+  spec_focus( io_buffer_extend );
   spec_add( io_buffer_read );
   spec_add( io_read );
   spec_add( list );
