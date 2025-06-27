@@ -49,8 +49,9 @@ spec( list_pop ) {
 
       int* result = list_pop(list);
 
-      must("not fail");
-        verify(error.occurred == false);
+      must("fail with a specific error");
+        verify(error.occurred == true);
+        verify(streq(error.message, "pop: empty list"));
 
       must("return NULL");
         verify(result == NULL);
@@ -115,8 +116,9 @@ spec( list_pop ) {
 
       int* result = list_pop(list);
 
-      must("not fail");
-        verify(error.occurred == false);
+      must("fail with a specific error");
+        verify(error.occurred == true);
+        verify(streq(error.message, "pop: empty list"));
 
       must("return NULL");
         verify(result == NULL);

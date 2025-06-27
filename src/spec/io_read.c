@@ -42,7 +42,7 @@ spec( io_read ) {
       must("store the data in the io buffer");
         verify(result.data == io->buffer.data);
 
-      must("advance the io cursor of the buffer size");
+      must("advance the io cursor by the io buffer size");
         verify(io->cursor == io->buffer.size);
 
       must("return a slice of data of the given amount");
@@ -112,7 +112,7 @@ spec( io_read ) {
       verify(io->storage != NULL);
       verify(result.data == io->storage);
 
-    must("advance the io cursor of the given amount");
+    must("advance the io cursor by the given amount");
       verify(io->cursor == amount);
 
     must("return a slice of data of the given amount");

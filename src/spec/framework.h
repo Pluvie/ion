@@ -155,7 +155,6 @@ void specs_run (
       spec_last_command = SPEC__NONE;
       registered_specs[i]();
       memory_release(spec_allocator);
-      error_reset();
     }
   } else {
     for (int i = 0; i < focused_specs_count; i++) {
@@ -167,7 +166,6 @@ void specs_run (
       spec_last_command = SPEC__NONE;
       focused_specs[i]();
       memory_release(spec_allocator);
-      error_reset();
     }
   }
 

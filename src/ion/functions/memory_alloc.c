@@ -83,13 +83,10 @@ increase_capacity:
 os_error:
   switch (os_result) {
   case ENOMEM:
-    fprintf(stderr, "fatal: %li, not enough memory\n", allocator->capacity);
-    break;
+    fatal("%li, not enough memory", allocator->capacity);
   default:
-    fprintf(stderr, "fatal: memalign returned %li\n", os_result);
-    break;
+    fatal("memalign returned %li", os_result);
   }
-  abort();
 
 allocate:
   void* address = allocator->data + allocator->position;

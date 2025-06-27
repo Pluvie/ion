@@ -9,11 +9,10 @@ slice io_read (
     goto read_without_buffer;
 
 read_with_buffer:
-  if (unlikely(io->buffer.data == NULL))
+  if (io->buffer.data != NULL)
+    return io_buffer_read(io, amount);
+  else
     return io_buffer_init(io, amount);
-
-  //io_buffer_compact(io, amount);
-  return io_buffer_read(io, amount);
 
 read_without_buffer:
   switch (io->channel) {
@@ -27,7 +26,10 @@ read_without_buffer:
   case IO_STREAM:
     free(io->storage);
     io->storage = malloc(amount);
-    return io_read_channel(io, amount, io->storage);
+    if (io->storage != NULL)
+      return io_read_channel(io, amount, io->storage);
+
+    fatal("%li, not enough memory", amount);
 
   default:
     return (slice) { 0 };

@@ -48,10 +48,8 @@ read_from_channel:
 
   void* old_data = io->buffer.data;
   void* new_data = malloc(new_capacity);
-  if (unlikely(new_data == NULL)) {
-    fail("malloc: %li, not enough memory\n", new_capacity);
-    return result;
-  }
+  if (unlikely(new_data == NULL))
+    fatal("%li, not enough memory", new_capacity);
 
   memcpy(new_data, old_data, copy_amount);
   free(old_data);

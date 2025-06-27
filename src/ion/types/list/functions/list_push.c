@@ -9,8 +9,10 @@ bool list<T>_push (
     goto grow;
 
 grow:
-  if (list->allocator == NULL)
+  if (list->allocator == NULL) {
+    fail("push: stack allocated list is full");
     return false;
+  }
 
   list->capacity *= 2;
   T* new_data = memory_alloc_zero(list->allocator, list->capacity * sizeof(T));

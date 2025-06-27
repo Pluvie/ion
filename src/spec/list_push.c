@@ -56,6 +56,10 @@ spec( list_push ) {
 
       bool result = list_push(list, element);
 
+      must("fail with a specific error");
+        verify(error.occurred == true);
+        verify(streq(error.message, "push: stack allocated list is full"));
+
       must("return false");
         verify(result == false);
 

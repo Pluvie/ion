@@ -5,6 +5,7 @@ T* list<T>_pop (
   if (list->length > 0)
     goto pop;
 
+  fail("pop: empty list");
   return NULL;
 
 pop:
