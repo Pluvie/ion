@@ -81,8 +81,14 @@ read_from_channel:
   result.data = io->buffer.data + io->buffer.cursor;
   result.length = amount;
 
-  io->buffer.end += channel_result.length;
-  io->buffer.cursor += amount;
+  if (channel_result.length < exceeding_quantity) {
+    io->buffer.end += channel_result.length;
+    io->buffer.cursor = io->buffer.end;
+
+  } else {
+    io->buffer.end += exceeding_quantity;
+    io->buffer.cursor += amount;
+  }
 
   return result;
 }
