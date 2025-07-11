@@ -5,7 +5,6 @@
 #include "spec/date.c"
 #include "spec/date_to_string.c"
 #include "spec/date_today.c"
-//#include "spec/io_buffer_extend.c"
 #include "spec/io_buffer_read.c"
 #include "spec/io_read.c"
 #include "spec/list.c"
