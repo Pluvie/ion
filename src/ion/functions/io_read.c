@@ -9,10 +9,7 @@ slice io_read (
     goto read_without_buffer;
 
 read_with_buffer:
-  if (io->buffer.data != NULL)
-    return io_buffer_read(io, amount);
-  else
-    return io_buffer_init(io, amount);
+  return io_buffer_read(io, amount);
 
 read_without_buffer:
   switch (io->channel) {

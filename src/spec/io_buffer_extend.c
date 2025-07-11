@@ -7,23 +7,23 @@ spec( io_buffer_extend ) {
     #define io_buffer_enabled_precondition \
       io = memory_alloc(spec_allocator, sizeof(struct io)); \
       *io = io(s("1111111122222222333333334444444455555555")); \
-      io->buffer.enabled = true;
+      io->buffer.enabled = true; \
+      io->buffer.size = 12;
 
-  precondition("the io buffer has already been initialized");
-    #define io_buffer_initialized_precondition \
-      io->buffer.size = 16; \
-      io->buffer.capacity = 16; \
-      io_buffer_init(io, 4); \
+  precondition("an amount to read that is not fully available in the buffer data "
+               "and thus forces the buffer to read from the io channel");
+    #define io_buffer_must_read_from_channel_precondition \
+      verify(io->buffer.cursor + amount > io->buffer.end);
  
-  when("the io buffer cursor is inferior to the io buffer size") {
-    #define io_buffer_cursor_before_size_condition \
-      io_buffer_read(io, 4);
+  when("the io buffer has not yet grown past 2 times the buffer size") {
+    #define io_buffer_undersize_condition \
+      io_buffer_init(io, 8);
 
-    and_when("the amount fits into the buffer size") {
+    and_when("the amount to read is lesser or equal than the buffer size") {
       amount = 14;
       apply(io_buffer_enabled_precondition);
-      apply(io_buffer_initialized_precondition);
-      apply(io_buffer_cursor_before_size_condition);
+      apply(io_buffer_must_read_from_channel_precondition);
+      apply(io_buffer_undersize_condition);
       io_buffer_extend(io, amount);
 
       /* 
@@ -32,10 +32,10 @@ spec( io_buffer_extend ) {
                 └────────────────────────────────────────┘
         amount:      ■■■■■■■■■■■■■■
                 ┌────────────────────────────────────────┐
-        buffer: │▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒               │        │
-                └────────┬──────┬───────────────┬────────┘
-                         ▼      ▼               ▼
-                      cursor   end            size */
+        buffer: │▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒       |                │
+                └────────┬──────┬───────┬────────────────┘
+                         ▼      ▼       ▼
+                      cursor   size    capacity */
 
       must("not fail");
         verify(error.occurred == false);
@@ -47,7 +47,7 @@ spec( io_buffer_extend ) {
         io_close(io);
     }
 
-    and_when("the amount exceeds the buffer size") {
+    and_when("the amount to read is greater than the buffer size") {
       amount = 30;
       apply(io_buffer_enabled_precondition);
       apply(io_buffer_initialized_precondition);
@@ -59,10 +59,10 @@ spec( io_buffer_extend ) {
                 └────────────────────────────────────────┘
         amount:      ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
                 ┌────────────────────────────────────────┐
-        buffer: │▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒               │        │
-                └────────┬──────┬───────────────┬────────┘
-                         ▼      ▼               ▼
-                      cursor   end            size */
+        buffer: │▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒       |                │
+                └────────┬──────┬───────┬────────────────┘
+                         ▼      ▼       ▼
+                      cursor   size    capacity */
 
       must("not fail");
         verify(error.occurred == false);
@@ -74,31 +74,30 @@ spec( io_buffer_extend ) {
         io_close(io);
     }
 
-    #undef io_buffer_cursor_before_size_condition
+    #undef io_buffer_undersize_condition
   }
 
-  when("the io buffer cursor is inferior to the io buffer size") {
-    #define io_buffer_cursor_after_size_condition \
-      io_buffer_read(io, 14); \
-      int original_buffer_capacity = io->buffer.capacity;
+  when("the io buffer capacity is greater or equal than 2 times the buffer size") {
+    #define io_buffer_oversize_condition \
+      io->buffer.capacity = 34;
 
-    and_when("the amount fits into the buffer size") {
+    and_when("the amount to read is lesser or equal than the buffer size") {
       amount = 14;
       apply(io_buffer_enabled_precondition);
       apply(io_buffer_initialized_precondition);
-      apply(io_buffer_cursor_after_size_condition);
+      apply(io_buffer_oversize_condition);
       io_buffer_extend(io, amount);
 
       /* 
                 ┌────────────────────────────────────────┐
         io:     │1111111122222222333333334444444455555555│
                 └────────────────────────────────────────┘
-        amount:                    ■■■■■■■■■■■■■■
+        amount:          ■■■■■■■■■■■■■■
                 ┌────────────────────────────────────────┐
-        buffer: │▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒        │       │
-                └───────────────┬─┬─────────────┬────────┘
-                                ▼ ▼             ▼                ▼
-                             size cursor       end            capacity  */
+        buffer: │▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒                  |     │
+                └────────┬──────┬──────────────────┬─────┘
+                         ▼      ▼                  ▼
+                      cursor   size             capacity */
 
       must("not fail");
         verify(error.occurred == false);
@@ -113,23 +112,23 @@ spec( io_buffer_extend ) {
         io_close(io);
     }
 
-    and_when("the amount exceeds the buffer size") {
+    and_when("the amount to read is greater than the buffer size") {
       amount = 28;
       apply(io_buffer_enabled_precondition);
       apply(io_buffer_initialized_precondition);
-      apply(io_buffer_cursor_after_size_condition);
+      apply(io_buffer_oversize_condition);
       io_buffer_extend(io, amount);
 
       /* 
                 ┌────────────────────────────────────────┐
         io:     │1111111122222222333333334444444455555555│
                 └────────────────────────────────────────┘
-        amount:                    ■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+        amount:          ■■■■■■■■■■■■■■■■■■■■■■■■■■■■
                 ┌────────────────────────────────────────┐
-        buffer: │▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒        │       │
-                └───────────────┬─┬─────────────┬────────┘
-                                ▼ ▼             ▼                ▼
-                             size cursor       end            capacity  */
+        buffer: │▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒                  |     │
+                └────────┬──────┬──────────────────┬─────┘
+                         ▼      ▼                  ▼
+                      cursor   size             capacity */
 
       must("not fail");
         verify(error.occurred == false);
@@ -144,7 +143,7 @@ spec( io_buffer_extend ) {
         io_close(io);
     }
 
-    #undef io_buffer_cursor_after_size_condition
+    #undef io_buffer_oversize_condition
   }
 
   #undef io_buffer_enabled_precondition

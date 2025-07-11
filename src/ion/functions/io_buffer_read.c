@@ -3,6 +3,9 @@ static inline slice io_buffer_read (
     int amount
 )
 {
+  if (unlikely(io->buffer.data == NULL))
+    return io_buffer_init(io, amount);
+
   slice result = { 0 };
 
   if (io->buffer.cursor + amount <= io->buffer.end)

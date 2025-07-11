@@ -4,13 +4,21 @@ int spec_indentation = 0;
 /* Defines the spec commands. */
 enum spec_commands {
   SPEC__NONE,
-  SPEC__WHEN,
-  SPEC__MUST,
+  SPEC__ARGUMENT,
   SPEC__PRECONDITION,
+  SPEC__WHEN,
+  SPEC__WHEN_OR,
+  SPEC__APPLY,
+  SPEC__MUST,
+  SPEC__VERIFY,
+  SPEC__SUCCESS,
 };
 
 /* Holds the last given spec command. */
-enum spec_commands spec_last_command;
+enum spec_commands spec_last_command = SPEC__NONE;
+
+/* Holds the last given spec condition. */
+enum spec_commands spec_last_condition = SPEC__NONE;
 
 /* Tracks the original stderr stream to allow printing. */
 FILE* original_stderr;
@@ -49,22 +57,32 @@ memory* spec_allocator;
 
 /* Defines a function specification argument. */
 #define argument(arg) \
-  arg
+  arg; \
+  spec_last_command = SPEC__ARGUMENT;
 
 /* Defines a function specification precondition. */
 #define precondition(cond) \
-  spec_indentation = 1; \
-  spec_print("given " cond);
+  spec_print("given " cond); \
+  spec_last_command = SPEC__PRECONDITION;
 
 /* Applies a function specification precondition. */
 #define apply(precond, ...) \
-  precond __VA_OPT__(; __VA_ARGS__)
+  precond __VA_OPT__(; __VA_ARGS__); \
+  spec_last_command = SPEC__APPLY;
 
 /* Defines a function specification codepath. */
 #define when(cond) \
-  spec_indentation = 1; \
   spec_print("when " cond); \
-  spec_last_command = SPEC__WHEN;
+  spec_indentation++; \
+  spec_last_command = SPEC__WHEN; \
+  spec_last_condition = SPEC__WHEN;
+
+/* Defines a function specification branched codepath. */
+#define or_when(cond) \
+  spec_print("when " cond); \
+  spec_indentation++; \
+  spec_last_command = SPEC__WHEN_OR; \
+  spec_last_condition = SPEC__WHEN_OR;
 
 /* Defines a function specification nested codepath. */
 #define and_when(cond) \
@@ -74,18 +92,20 @@ memory* spec_allocator;
 
 /* Defines a function specification condition that must be verified. */
 #define must(cond) \
-  if (spec_last_command != SPEC__MUST) { spec_indentation++; } \
   spec_print("must " cond " "); \
   spec_last_command = SPEC__MUST;
 
 /* Verifies a condition. */
 #define verify(cond) \
-  if (!(cond)) { spec_failed(#cond, __FILE__, __LINE__ ); } else { spec_verified(); }
+  if (!(cond)) { spec_failed(#cond, __FILE__, __LINE__ ); } else { spec_verified(); } \
+  spec_last_command = SPEC__VERIFY;
 
 /* Defines a function specification codepath success. */
 #define success() \
   error_reset(); \
-  spec_indentation -= 2;
+  spec_indentation--; \
+  if (spec_last_condition == SPEC__WHEN_OR) { spec_indentation--; } \
+  spec_last_command = SPEC__SUCCESS;
 
 
 /* Prints a spec text with indentation. */
@@ -153,6 +173,7 @@ void specs_run (
       fprintf(original_stderr, PRINT_COLOR_NONE);
       fflush(original_stderr);
       spec_last_command = SPEC__NONE;
+      spec_indentation = 1;
       registered_specs[i]();
       memory_release(spec_allocator);
     }
