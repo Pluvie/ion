@@ -55,4 +55,5 @@
   bool : cmp<bool>,       \
   char : cmp<char>,       \
   char* : cmp<char*>,     \
+  slice : cmp<slice>,     \
   string : cmp<string>

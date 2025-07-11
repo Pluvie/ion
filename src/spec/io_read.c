@@ -17,15 +17,29 @@ spec( io_read ) {
     apply(preconditions);
     io->buffer.enabled = true;
     slice result_of_read = io_read(io, amount);
-    struct io io_with_read = *io;
+    struct io io_with_read = * io;
 
     apply(preconditions);
     io->buffer.enabled = true;
     slice result_of_buffer_read = io_buffer_read(io, amount);
-    struct io io_with_buffer_read = *io;
+    struct io io_with_buffer_read = * io;
 
-    verify(memeq(&result_of_read, &result_of_buffer_read, sizeof(slice)));
-    verify(memeq(&io_with_read, &io_with_buffer_read, sizeof(struct io)));
+    verify(io_with_read.memory == io_with_buffer_read.memory);
+    verify(io_with_read.channel == io_with_buffer_read.channel);
+    verify(io_with_read.length == io_with_buffer_read.cursor);
+    verify(io_with_read.storage == io_with_buffer_read.storage);
+    verify(io_with_read.read.count == io_with_buffer_read.read.count);
+    verify(io_with_read.buffer.enabled == io_with_buffer_read.buffer.enabled);
+    verify(io_with_read.buffer.retained == io_with_buffer_read.buffer.retained);
+    verify(io_with_read.buffer.size == io_with_buffer_read.buffer.size);
+    verify(io_with_read.buffer.end == io_with_buffer_read.buffer.end);
+    verify(io_with_read.buffer.cursor == io_with_buffer_read.buffer.cursor);
+    verify(io_with_read.buffer.capacity == io_with_buffer_read.buffer.capacity);
+    verify(eq(result_of_read, result_of_buffer_read));
+
+    success();
+      io_close(&io_with_read);
+      io_close(&io_with_buffer_read);
   }
 
   when("the io is not buffered") {

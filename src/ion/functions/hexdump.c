@@ -4,8 +4,8 @@ void hexdump (
 )
 {
   char* data = generic_data;
-  char hex = 0;
   char ascii = 0;
+  unsigned char hex = 0;
 
   int line_length = 8;
   int groups = length / line_length;
@@ -33,7 +33,7 @@ void hexdump (
         fprintf(stderr, "  ");
         continue;
       }
-      ascii = (char) data[index];
+      ascii = data[index];
 
 /**
  * NOTE(Pluvie): this ugly hack is required because <ctype.h> does not use standard
