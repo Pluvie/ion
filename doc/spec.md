@@ -5,8 +5,8 @@
 
 ## Spec
 
-⚡️ION⚡️ introduces a framework to define function specifications in a rigorous but
-also readable way.
+⚡️ION⚡️ introduces a [framework](../src/spec/framework.h) to define function
+specifications in a rigorous but also readable way.
 
 A function spec enables the programmer to be more confident about its implementations,
 and guarantees any function to:
@@ -18,7 +18,7 @@ and guarantees any function to:
 ### Example
 
 Suppose we have a function called `is_even()` which takes a number and returns `true`
-if the number is even, and false otherwise.
+if the number is even, and `false` otherwise.
 
 With ⚡️ION⚡️, we can write a spec for this function in the following way:
 
