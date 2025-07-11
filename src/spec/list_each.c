@@ -1,11 +1,11 @@
 spec( list_each ) {
 
   precondition("a valid list");
-    #define valid_list \
+    #define preconditions \
       list<int> list = list(int, { 3, 4, 5 });
 
   when("a custom index name is not given") {
-    apply(valid_list);
+    apply(preconditions);
 
     must("iterate over all elements of the list");
       int index = 0;
@@ -25,7 +25,7 @@ spec( list_each ) {
   }
 
   when("a custom index name is given") {
-    apply(valid_list);
+    apply(preconditions);
 
     must("iterate over all elements of the list using the provided index name");
       int index = 0;
@@ -46,5 +46,5 @@ spec( list_each ) {
     success();
   }
 
-  #undef valid_list
+  #undef preconditions
 }

@@ -84,12 +84,6 @@ memory* spec_allocator;
   spec_last_command = SPEC__WHEN_OR; \
   spec_last_condition = SPEC__WHEN_OR;
 
-/* Defines a function specification nested codepath. */
-#define and_when(cond) \
-  spec_indentation++; \
-  spec_print("when " cond); \
-  spec_last_command = SPEC__WHEN;
-
 /* Defines a function specification condition that must be verified. */
 #define must(cond) \
   spec_print("must " cond " "); \

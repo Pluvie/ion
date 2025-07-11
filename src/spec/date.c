@@ -4,7 +4,9 @@ spec( date ) {
   argument(int month);
   argument(int year);
 
-  precondition("a valid calendar day, month and year representing a date");
+  precondition("an integer representing a valid calendar day");
+  precondition("an integer representing a valid calendar month");
+  precondition("an integer representing a valid calendar year");
     day = 25; month = 9; year = 1999;
 
   must("return the milliseconds elapsed since the Unix epoch up until that date");
