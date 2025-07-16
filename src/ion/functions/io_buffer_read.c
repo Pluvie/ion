@@ -42,6 +42,7 @@ read_from_channel:
                 cursor   end      capacity */
 
   int exceeding_quantity = (io->buffer.cursor + amount) - io->buffer.end;
+  int available_quantity = io->buffer.end - io->buffer.cursor;
 
   int copy_begin = 0;
   int copy_end = io->buffer.end;
@@ -79,17 +80,18 @@ read_from_channel:
     return result;
 
   result.data = io->buffer.data + io->buffer.cursor;
-  result.length = amount;
 
   /* If the underlying channel returns less data than the amount asked, we must update
    * the buffer pointers accordingly. */
   if (channel_result.length < exceeding_quantity) {
     io->buffer.end += channel_result.length;
     io->buffer.cursor = io->buffer.end;
+    result.length = available_quantity + channel_result.length;
 
   } else {
     io->buffer.end += exceeding_quantity;
     io->buffer.cursor += amount;
+    result.length = amount;
   }
 
   return result;
