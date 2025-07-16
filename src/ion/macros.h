@@ -25,6 +25,8 @@
 #include "macros/memzero.h"
 #include "macros/next_pow2.h"
 #include "macros/padding.h"
+#include "macros/pipe_close.h"
+#include "macros/pipe_open.h"
 #include "macros/print.h"
 #include "macros/print_c.h"
 #include "macros/print_sizeof.h"

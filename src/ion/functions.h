@@ -5,7 +5,6 @@
 #include "functions/hash.h"
 #include "functions/hash_djb2.h"
 #include "functions/hexdump.h"
-#include "functions/io_buffer_extend.h"
 #include "functions/io_buffer_init.h"
 #include "functions/io_buffer_read.h"
 #include "functions/io_close.h"

@@ -81,6 +81,8 @@ read_from_channel:
   result.data = io->buffer.data + io->buffer.cursor;
   result.length = amount;
 
+  /* If the underlying channel returns less data than the amount asked, we must update
+   * the buffer pointers accordingly. */
   if (channel_result.length < exceeding_quantity) {
     io->buffer.end += channel_result.length;
     io->buffer.cursor = io->buffer.end;
