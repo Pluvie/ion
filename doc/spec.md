@@ -11,9 +11,9 @@ specifications in a rigorous but also readable way.
 A function spec enables the programmer to be more confident about its implementations,
 and guarantees any function to:
 
-- be well-defined on what it is expected to return (*clarity*)
+- be well-defined on what is its expected input and output (*clarity*)
 - leave no gray-areas or undefined behaviours (*completeness*)
-- do exactly what it is supposed to (*correctness*)
+- do exactly what it is supposed to do (*correctness*)
 
 ### Example
 
@@ -72,7 +72,13 @@ data loss.
 The `io_buffer_read` function does exactly this: it must account for all edge cases
 where we may be asking for data that exceeds the buffer, or when the channel returns
 less data that what was expected (imagine partial info on a socket or pipe), while
-managing the memory and the buffer cursor for us.
+managing the memory and the buffer cursor for us. All of this while maintaining a
+"window" of data which is configurable in size. Below there is a visual example of a
+buffered read of an IO:
+
+<div align="center">
+  <img src="pics/io_buffer_read.gif" title="io_buffer_read"/>
+</div>
 
 In order to be extremely confident that our implementation satisfies these needs, we
 decided to introduce the spec framework to:
