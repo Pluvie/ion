@@ -77,7 +77,7 @@ managing the memory and the buffer cursor for us. All of this while maintaining 
 buffered read of an IO:
 
 <div align="center">
-  <img src="pics/io_buffer_read.gif" title="io_buffer_read"/>
+  <img src="io_buffer_read.gif" title="io_buffer_read"/>
 </div>
 
 In order to be extremely confident that our implementation satisfies these needs, we
