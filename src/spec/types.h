@@ -59,8 +59,17 @@ int cmp<struct squadmate> (
 #define list_of struct squadmate
 #include "ion/types/list.h"
 
+#define set_of char*
+#include "ion/types/set.h"
+
 #define set_of struct squadmate
 #include "ion/types/set.h"
+
+#define map_of char*, int
+#include "ion/types/map.h"
+
+#define map_of char*, struct squadmate
+#include "ion/types/map.h"
 
 #define map_of string, struct squadmate
 #include "ion/types/map.h"
@@ -75,6 +84,7 @@ int cmp<struct squadmate> (
 #undef set_function
 #define set_function(s, f, ...)                           \
   _Generic(*(s),                                          \
+    set<char*> : set<char*>_ ## f,                        \
     set<struct squadmate> : set<struct squadmate>_ ## f,  \
     _set_function(v, f, __VA_ARGS__)                      \
   )
@@ -82,6 +92,8 @@ int cmp<struct squadmate> (
 #undef map_function
 #define map_function(s, f, ...)                                           \
   _Generic(*(s),                                                          \
+    map<char*, int> : map<char*, int>_ ## f,                              \
+    map<char*, struct squadmate> : map<char*, struct squadmate>_ ## f,    \
     map<string, struct squadmate> : map<string, struct squadmate>_ ## f,  \
     _map_function(v, f, __VA_ARGS__)                                      \
   )

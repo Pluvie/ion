@@ -56,8 +56,8 @@ memory* spec_allocator;
   focused_specs_count++;
 
 /* Defines a function specification argument. */
-#define argument(arg) \
-  arg; \
+#define argument(...) \
+  __VA_OPT__(__VA_ARGS__;) \
   spec_last_command = SPEC__ARGUMENT;
 
 /* Defines a function specification precondition. */

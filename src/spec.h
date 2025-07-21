@@ -14,5 +14,7 @@
 #include "spec/list_init.c"
 #include "spec/list_pop.c"
 #include "spec/list_push.c"
+#include "spec/map.c"
+#include "spec/map_del.c"
 #include "spec/time_now.c"
 #include "spec/time_to_string.c"

@@ -18,6 +18,8 @@ int32 main (
   spec_add( list_init );
   spec_add( list_pop );
   spec_add( list_push );
+  spec_add( map );
+  spec_add( map_del );
   spec_add( time_now );
   spec_add( time_to_string );
 
