@@ -76,7 +76,9 @@ managing the memory and the buffer cursor for us. All of this while maintaining 
 "window" of data which is configurable in size. Below there is a visual example of a
 buffered read of an IO:
 
-![io_buffer_read](/io_buffer_read.gif)
+<div align="center">
+  <img src="spec/io_buffer_read.gif" title="io_buffer_read"/>
+</div>
 
 In order to be extremely confident that our implementation satisfies these needs, we
 decided to introduce the spec framework to:
