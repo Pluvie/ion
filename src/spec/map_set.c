@@ -1,7 +1,8 @@
-spec( map_get ) {
+spec( map_set ) {
 
   argument(map<char*, int>* map);
   argument(char* key);
+  argument(int value);
 
   when("the map is stack allocated") {
     #define stack_allocated_map_condition \
@@ -13,16 +14,20 @@ spec( map_get ) {
 
     when("the key is present in the map") {
       key = "a";
+      value = 10;
       apply(stack_allocated_map_condition);
       int original_map_length = map->length;
       int original_map_capacity = map->keys.capacity;
-      int* result = map_get(map, key);
+      int result = map_set(map, key, value);
 
       must("not fail");
         verify(error.occurred == false);
 
-      must("return the value associated with the key");
-        verify(*result == 7);
+      must("return a valid inserted position");
+        verify(result > 0);
+
+      must("overwrite the previous value at that position");
+        verify(map->values[result] == value);
 
       must("leave the map length unchanged");
         verify(map->length == original_map_length);
@@ -38,16 +43,19 @@ spec( map_get ) {
       apply(stack_allocated_map_condition);
       int original_map_length = map->length;
       int original_map_capacity = map->keys.capacity;
-      int* result = map_get(map, key);
+      int result = map_set(map, key, value);
 
       must("not fail");
         verify(error.occurred == false);
 
-      must("return null");
-        verify(result == NULL);
+      must("return a valid inserted position");
+        verify(result > 0);
 
-      must("leave the map length unchanged");
-        verify(map->length == original_map_length);
+      must("insert the value at that position");
+        verify(map->values[result] == value);
+
+      must("increase the map length by one");
+        verify(map->length == original_map_length + 1);
 
       must("leave the map capacity unchanged");
         verify(map->keys.capacity == original_map_capacity);
@@ -69,13 +77,16 @@ spec( map_get ) {
       apply(heap_allocated_map_condition);
       int original_map_length = map->length;
       int original_map_capacity = map->keys.capacity;
-      int* result = map_get(map, key);
+      int result = map_set(map, key, value);
 
       must("not fail");
         verify(error.occurred == false);
 
-      must("return the value associated with the key");
-        verify(*result == 7);
+      must("return a valid inserted position");
+        verify(result > 0);
+
+      must("overwrite the previous value at that position");
+        verify(map->values[result] == value);
 
       must("leave the map length unchanged");
         verify(map->length == original_map_length);
@@ -91,16 +102,19 @@ spec( map_get ) {
       apply(heap_allocated_map_condition);
       int original_map_length = map->length;
       int original_map_capacity = map->keys.capacity;
-      int* result = map_get(map, key);
+      int result = map_set(map, key, value);
 
       must("not fail");
         verify(error.occurred == false);
 
-      must("return null");
-        verify(result == NULL);
+      must("return a valid inserted position");
+        verify(result > 0);
 
-      must("leave the map length unchanged");
-        verify(map->length == original_map_length);
+      must("insert the value at that position");
+        verify(map->values[result] == value);
+
+      must("increase the map length by one");
+        verify(map->length == original_map_length + 1);
 
       must("leave the map capacity unchanged");
         verify(map->keys.capacity == original_map_capacity);

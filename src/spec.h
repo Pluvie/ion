@@ -20,5 +20,6 @@
 #include "spec/map_get.c"
 #include "spec/map_has.c"
 #include "spec/map_init.c"
+#include "spec/map_set.c"
 #include "spec/time_now.c"
 #include "spec/time_to_string.c"

@@ -24,7 +24,7 @@ int32 main (
   spec_add( map_get );
   spec_add( map_has );
   spec_add( map_init );
-  //spec_add( map_set );
+  spec_add( map_set );
   spec_add( time_now );
   spec_add( time_to_string );
 
