@@ -6,6 +6,7 @@
 #include "macros/compile_time_check.h"
 #include "macros/countof.h"
 #include "macros/cvar.h"
+#include "macros/debug.h"
 #include "macros/emit.h"
 #include "macros/emit_c.h"
 #include "macros/eq.h"

@@ -20,6 +20,11 @@ int32 main (
   spec_add( list_push );
   spec_add( map );
   spec_add( map_del );
+  spec_add( map_each );
+  spec_add( map_get );
+  spec_add( map_has );
+  spec_add( map_init );
+  //spec_add( map_set );
   spec_add( time_now );
   spec_add( time_to_string );
 
