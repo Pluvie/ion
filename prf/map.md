@@ -33,7 +33,7 @@ imperative syntax, resulting in what we believe the best option so far.
 with real type containers. It outperforms C++ implementation like [abseil](
 https://abseil.io/docs/cpp/guides/container) from Google, and Malte Skarupke's
 [I wrote the fastest hash table](
-https://probablydance.com/2018/02/26/i-wrote-the-fastest-hashtable/).
+https://probablydance.com/2017/02/26/i-wrote-the-fastest-hashtable/).
 
 <div align="center">
   <img src="map/benchmark.png" title="⚡️ION⚡️ hash map benchmarks"/>

@@ -7,5 +7,5 @@
 
 Landing page for all performance benchmarks of ⚡️ION⚡️ features.
 
-- [map](spec.md) type container
+- [map](map.md) type container
 - More to come
