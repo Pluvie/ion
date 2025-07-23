@@ -4,19 +4,12 @@ int map<K, V>_set (
     V value
 )
 {
-  if (map->keys.length < map->keys.load_limit)
-    goto set;
-  else
-    goto rehash;
-
-rehash:
-  if (map->keys.allocator != NULL)
-    set<K>_rehash(&map->keys);
-  else
-    return -1;
-
-set:
   int position = set<K>_add(&map->keys, key);
+  if (position == -1) {
+    fail("set: stack allocated map is full");
+    return -1;
+  }
+
   map->values[position] = value;
   map->length = map->keys.length;
 
