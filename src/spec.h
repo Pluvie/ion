@@ -28,5 +28,6 @@
 #include "spec/set_del.c"
 #include "spec/set_has.c"
 #include "spec/set_init.c"
+#include "spec/set_pos.c"
 #include "spec/time_now.c"
 #include "spec/time_to_string.c"

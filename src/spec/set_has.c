@@ -1,7 +1,7 @@
 spec( set_has ) {
 
   argument(set<char*>* set);
-  argument(char* key);
+  argument(char* element);
 
   when("the set is stack allocated") {
     #define stack_allocated_set_condition \
@@ -11,10 +11,10 @@ spec( set_has ) {
       set_add(set, "b"); \
       set_add(set, "c");
 
-    when("the key is present in the set") {
-      key = "a";
+    when("the element is present in the set") {
+      element = "a";
       apply(stack_allocated_set_condition);
-      bool result = set_has(set, key);
+      bool result = set_has(set, element);
 
       must("not fail");
         verify(error.occurred == false);
@@ -25,10 +25,10 @@ spec( set_has ) {
       success();
     }
 
-    or_when("the key is not present in the set") {
-      key = "f";
+    or_when("the element is not present in the set") {
+      element = "f";
       apply(stack_allocated_set_condition);
-      bool result = set_has(set, key);
+      bool result = set_has(set, element);
 
       must("not fail");
         verify(error.occurred == false);
@@ -48,10 +48,10 @@ spec( set_has ) {
       set_add(set, "b"); \
       set_add(set, "c");
 
-    when("the key is present in the set") {
-      key = "a";
+    when("the element is present in the set") {
+      element = "a";
       apply(heap_allocated_set_condition);
-      bool result = set_has(set, key);
+      bool result = set_has(set, element);
 
       must("not fail");
         verify(error.occurred == false);
@@ -62,10 +62,10 @@ spec( set_has ) {
       success();
     }
 
-    or_when("the key is not present in the set") {
-      key = "f";
+    or_when("the element is not present in the set") {
+      element = "f";
       apply(heap_allocated_set_condition);
-      bool result = set_has(set, key);
+      bool result = set_has(set, element);
 
       must("not fail");
         verify(error.occurred == false);
