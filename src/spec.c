@@ -27,7 +27,11 @@ int32 main (
   spec_add( map_init );
   spec_add( map_set );
   spec_add( set );
+  spec_add( set_add );
   spec_add( set_alloc );
+  spec_add( set_del );
+  spec_add( set_has );
+  spec_add( set_init );
   spec_add( time_now );
   spec_add( time_to_string );
 

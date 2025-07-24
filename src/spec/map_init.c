@@ -27,5 +27,5 @@ spec( map_init ) {
 
   #undef valid_key_type
   #undef valid_value_type
-  #undef valid_key_value_pairs
+  #undef valid_capacity
 }

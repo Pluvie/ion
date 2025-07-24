@@ -9,13 +9,13 @@ int set<T>_add (
   if (set->allocator != NULL)
     goto rehash;
 
-  /* This code tries to find if the element is already present in this stack-allocated
-   * (set->allocator == NULL) and fully-loaded (set->length >= set->load_limit) set.
-   * If the element is already present, then the `set_add` function is allowed to
-   * return its valid position, effectively doing nothing, but without triggering a
-   * failure. */
+  /* If the set is stack-allocated (set->allocator == NULL) and fully-loaded
+   * (set->length >= set->load_limit), and the element to be added is already present
+   * in the set, we want the `set_add` function to allow this operation without failing.
+   * Of course, adding an already present element to a set means, in reality, doing
+   * exactly nothing. */
   int position = set<T>_pos(set, element);
-  if (position > 0)
+  if (position >= 0)
     return position;
 
   fail("add: stack allocated set is full");

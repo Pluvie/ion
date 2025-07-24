@@ -6,7 +6,7 @@ spec( map_set ) {
 
   when("the map is stack allocated") {
     #define stack_allocated_map_condition \
-      map<char*,int> stack_map = map_init(char*, int, 8); \
+      map<char*, int> stack_map = map_init(char*, int, 8); \
       map = &stack_map;
 
     when("the map length is inferior to its load limit") {

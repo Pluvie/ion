@@ -5,7 +5,7 @@ spec( map_has ) {
 
   when("the map is stack allocated") {
     #define stack_allocated_map_condition \
-      map<char*,int> stack_map = map_init(char*, int, 16); \
+      map<char*, int> stack_map = map_init(char*, int, 16); \
       map = &stack_map; \
       map_set(map, "a", 7); \
       map_set(map, "b", 8); \
