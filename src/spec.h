@@ -27,6 +27,7 @@
 #include "spec/set_add.c"
 #include "spec/set_alloc.c"
 #include "spec/set_del.c"
+#include "spec/set_each.c"
 #include "spec/set_has.c"
 #include "spec/set_init.c"
 #include "spec/set_pos.c"

@@ -30,9 +30,9 @@ spec( io_read ) {
 
     success();
       io_close(io);
-  }
+  } end();
 
-  or_when("the io is buffered") {
+  when("the io is buffered") {
     must("behave exactly like the `io_buffer_read` function");
     /* Refer to the `io_buffer_read` spec for more details on its behaviour. */
 
@@ -62,7 +62,7 @@ spec( io_read ) {
       io_with_buffer_read.buffer.data = io_with_buffer_read_data;
       io_close(&io_with_read);
       io_close(&io_with_buffer_read);
-  }
+  } end();
 
   #undef preconditions
 }

@@ -24,7 +24,7 @@ spec( map_alloc ) {
       verify(map->keys.capacity == 16);
 
     success();
-  }
+  } end();
 
   when("the capacity is greater than 16") {
     capacity = 24;
@@ -39,7 +39,7 @@ spec( map_alloc ) {
       verify(map->keys.capacity == next_pow2(capacity));
 
     success();
-  }
+  } end();
 
   #undef valid_key_type
   #undef valid_value_type

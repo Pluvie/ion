@@ -26,9 +26,9 @@ spec( list_pop ) {
         verify(list->capacity == original_list_capacity);
 
       success();
-    }
+    } end();
 
-    or_when("the list has no elements") {
+    when("the list has no elements") {
       list<int> stack_list = list_init(int, 16);
       list = &stack_list;
       list->length = 0;
@@ -49,10 +49,10 @@ spec( list_pop ) {
         verify(list->capacity == original_list_capacity);
 
       success();
-    }
-  }
+    } end();
+  } end();
 
-  or_when("the list is heap allocated") {
+  when("the list is heap allocated") {
     when("the list has at least one element") {
       list = list_alloc(int, 16, spec_allocator);
       list_push(list, 7);
@@ -75,9 +75,9 @@ spec( list_pop ) {
         verify(list->capacity == original_list_capacity);
 
       success();
-    }
+    } end();
 
-    or_when("the list has no elements") {
+    when("the list has no elements") {
       list = list_alloc(int, 16, spec_allocator);
       list->length = 0;
       int original_list_capacity = list->capacity;
@@ -97,6 +97,6 @@ spec( list_pop ) {
         verify(list->capacity == original_list_capacity);
 
       success();
-    }
-  }
+    } end();
+  } end();
 }

@@ -1,10 +1,11 @@
 /**
  * NOTE(Pluvie): this struct definition is a placeholder, since it is not possible to
- * define the `list<struct reflection>` here without incurring in circular type
+ * define the `list<struct reflection>` type here without incurring in circular
  * application of `sizeof`.
  *
- * The full type shall be defined at the end of `src/ion.h` file, along with all
- * prebuilt inflected data structure types. */
+ * This struct is the inflected name of a `list<struct reflection>` pointer,
+ * effectively anticipating what shall be the final name after the inclusion of the
+ * file `src/ion/containers.h`, where all prebuilt data structures are defined. */
 struct list_struct_reflection;
 
 

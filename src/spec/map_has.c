@@ -23,9 +23,9 @@ spec( map_has ) {
         verify(result == true);
 
       success();
-    }
+    } end();
 
-    or_when("the key is not present in the map") {
+    when("the key is not present in the map") {
       key = "f";
       apply(stack_allocated_map_condition);
       bool result = map_has(map, key);
@@ -37,11 +37,11 @@ spec( map_has ) {
         verify(result == false);
 
       success();
-    }
-  }
+    } end();
+  } end();
   #undef stack_allocated_map_condition
 
-  or_when("the map is heap allocated") {
+  when("the map is heap allocated") {
     #define heap_allocated_map_condition \
       map<char*, int>* map = map_alloc(char*, int, 16, spec_allocator); \
       map_set(map, "a", 7); \
@@ -60,9 +60,9 @@ spec( map_has ) {
         verify(result == true);
 
       success();
-    }
+    } end();
 
-    or_when("the key is not present in the map") {
+    when("the key is not present in the map") {
       key = "f";
       apply(heap_allocated_map_condition);
       bool result = map_has(map, key);
@@ -74,7 +74,7 @@ spec( map_has ) {
         verify(result == false);
 
       success();
-    }
-  }
+    } end();
+  } end();
   #undef heap_allocated_map_condition
 }

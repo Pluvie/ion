@@ -33,9 +33,9 @@ spec( list_push ) {
         verify(list->capacity == original_list_capacity);
 
       success();
-    }
+    } end();
 
-    or_when("the list length is equal to its capacity") {
+    when("the list length is equal to its capacity") {
       apply(preconditions);
       list<int> stack_list = list_init(int, 16);
       list = &stack_list;
@@ -60,10 +60,10 @@ spec( list_push ) {
 
 
       success();
-    }
-  }
+    } end();
+  } end();
 
-  or_when("the list is heap allocated") {
+  when("the list is heap allocated") {
     when("the list length is inferior to its capacity") {
       apply(preconditions);
       list = list_alloc(int, 16, spec_allocator);
@@ -87,9 +87,9 @@ spec( list_push ) {
       success();
 
       #undef list_length_condition
-    }
+    } end();
 
-    or_when("the list length is equal to its capacity") {
+    when("the list length is equal to its capacity") {
       apply(preconditions);
       list = list_alloc(int, 16, spec_allocator);
       list->length = list->capacity;
@@ -117,8 +117,8 @@ spec( list_push ) {
         verify(list->data != original_list_data);
 
       success();
-    }
-  }
+    } end();
+  } end();
 
   #undef preconditions
 }

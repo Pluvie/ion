@@ -28,7 +28,7 @@ spec( map_each ) {
       }
 
     success();
-  }
+  } end();
 
   when("a custom index name is given") {
     apply(preconditions);
@@ -55,7 +55,7 @@ spec( map_each ) {
       }
 
     success();
-  }
+  } end();
 
   #undef preconditions
 }

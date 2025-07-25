@@ -31,9 +31,9 @@ spec( set_del ) {
         verify(set->capacity == original_set_capacity);
 
       success();
-    }
+    } end();
 
-    or_when("the element is not present in the set") {
+    when("the element is not present in the set") {
       element = "f";
       apply(stack_allocated_set_condition);
       int original_set_length = set->length;
@@ -53,11 +53,11 @@ spec( set_del ) {
         verify(set->capacity == original_set_capacity);
 
       success();
-    }
-  }
+    } end();
+  } end();
   #undef stack_allocated_set_condition
 
-  or_when("the set is heap allocated") {
+  when("the set is heap allocated") {
     #define heap_allocated_set_condition \
       set<char*>* set = set_alloc(char*, 16, spec_allocator); \
       set_add(set, "a"); \
@@ -84,9 +84,9 @@ spec( set_del ) {
         verify(set->capacity == original_set_capacity);
 
       success();
-    }
+    } end();
 
-    or_when("the element is not present in the set") {
+    when("the element is not present in the set") {
       element = "f";
       apply(heap_allocated_set_condition);
       int original_set_length = set->length;
@@ -106,7 +106,7 @@ spec( set_del ) {
         verify(set->capacity == original_set_capacity);
 
       success();
-    }
-  }
+    } end();
+  } end();
   #undef heap_allocated_set_condition
 }

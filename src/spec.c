@@ -31,6 +31,7 @@ int32 main (
   spec_add( set_add );
   spec_add( set_alloc );
   spec_add( set_del );
+  spec_add( set_each );
   spec_add( set_has );
   spec_add( set_init );
   spec_add( set_pos );

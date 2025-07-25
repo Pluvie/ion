@@ -14,12 +14,6 @@ enum spec_commands {
   SPEC__SUCCESS,
 };
 
-/* Holds the last given spec command. */
-enum spec_commands spec_last_command = SPEC__NONE;
-
-/* Holds the last given spec condition. */
-enum spec_commands spec_last_condition = SPEC__NONE;
-
 /* Tracks the original stderr stream to allow printing. */
 FILE* original_stderr;
 
@@ -32,6 +26,9 @@ char* registered_spec_names[8192] = { 0 };
 int focused_specs_count = 0;
 void (*focused_specs[16])(void) = { 0 };
 char* focused_spec_names[16] = { 0 };
+
+/* Global variable that enables/disables the printing of spec verifications. */
+bool spec_print_verification_enabled = false;
 
 /* Global variable that stores the final result of all specs. */
 bool specs_passed = true;
@@ -57,50 +54,38 @@ memory* spec_allocator;
 
 /* Defines a function specification argument. */
 #define argument(...) \
-  __VA_OPT__(__VA_ARGS__;) \
-  spec_last_command = SPEC__ARGUMENT;
+  __VA_OPT__(__VA_ARGS__;)
 
 /* Defines a function specification precondition. */
 #define precondition(cond) \
-  spec_print("given " cond); \
-  spec_last_command = SPEC__PRECONDITION;
+  spec_print("given " cond);
 
 /* Applies a function specification precondition. */
 #define apply(precond, ...) \
-  precond __VA_OPT__(; __VA_ARGS__); \
-  spec_last_command = SPEC__APPLY;
+  precond __VA_OPT__(; __VA_ARGS__);
 
 /* Defines a function specification codepath. */
 #define when(cond) \
   spec_print("when " cond); \
-  spec_indentation++; \
-  spec_last_command = SPEC__WHEN; \
-  spec_last_condition = SPEC__WHEN;
-
-/* Defines a function specification branched codepath. */
-#define or_when(cond) \
-  spec_print("when " cond); \
-  spec_indentation++; \
-  spec_last_command = SPEC__WHEN_OR; \
-  spec_last_condition = SPEC__WHEN_OR;
+  spec_indentation++;
 
 /* Defines a function specification condition that must be verified. */
 #define must(cond) \
   spec_print("must " cond " "); \
-  spec_last_command = SPEC__MUST;
+  spec_print_verification_enabled = true;
 
 /* Verifies a condition. */
 #define verify(cond) \
-  if (!(cond)) { spec_failed(#cond, __FILE__, __LINE__ ); } else { spec_verified(); } \
-  spec_last_command = SPEC__VERIFY;
+  if (!(cond)) { spec_failed(#cond, __FILE__, __LINE__ ); } else { spec_verified(); }
 
 /* Defines a function specification codepath success. */
 #define success() \
   error_reset(); \
-  spec_indentation--; \
-  if (spec_last_condition == SPEC__WHEN_OR) { spec_indentation--; } \
-  spec_last_command = SPEC__SUCCESS;
+  spec_print_verification_enabled = false;
 
+/* Ends a specification codepath. */
+#define end() \
+  spec_indentation--;
 
 /* Prints a spec text with indentation. */
 void spec_print (
@@ -139,10 +124,11 @@ void spec_verified (
     void
 )
 {
-  if (spec_last_command == SPEC__WHEN) return;
-  fprintf(original_stderr, PRINT_COLOR_GREEN);
-  fprintf(original_stderr, "█");
-  fprintf(original_stderr, PRINT_COLOR_NONE);
+  if (spec_print_verification_enabled) {
+    fprintf(original_stderr, PRINT_COLOR_GREEN);
+    fprintf(original_stderr, "█");
+    fprintf(original_stderr, PRINT_COLOR_NONE);
+  }
 }
 
 /* Runs the registered -- or focused -- specs. */
@@ -166,7 +152,6 @@ void specs_run (
       fprintf(original_stderr, "\n%s", registered_spec_names[i]);
       fprintf(original_stderr, PRINT_COLOR_NONE);
       fflush(original_stderr);
-      spec_last_command = SPEC__NONE;
       spec_indentation = 1;
       registered_specs[i]();
       memory_release(spec_allocator);
@@ -178,7 +163,6 @@ void specs_run (
       fprintf(original_stderr, "\n%s", focused_spec_names[i]);
       fprintf(original_stderr, PRINT_COLOR_NONE);
       fflush(original_stderr);
-      spec_last_command = SPEC__NONE;
       focused_specs[i]();
       memory_release(spec_allocator);
     }

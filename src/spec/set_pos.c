@@ -30,9 +30,9 @@ spec( set_pos ) {
       verify(result == positions[i]);
     }
     success();
-  }
+  } end();
 
-  or_when("the element is not present in the set") {
+  when("the element is not present in the set") {
     element = "z";
 
     when("the set has free positions") {
@@ -49,7 +49,7 @@ spec( set_pos ) {
       success();
     }
 
-    or_when("the set is full") {
+    when("the set is full") {
       apply(preconditions);
       set_add(set, "h");
       set_add(set, "i");
@@ -70,8 +70,8 @@ spec( set_pos ) {
         verify(result == -1);
 
       success();
-    }
-  }
+    } end();
+  } end();
 
   #undef preconditions
 }

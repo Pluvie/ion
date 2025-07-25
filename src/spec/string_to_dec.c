@@ -13,9 +13,9 @@ spec( string_to_dec ) {
       verify((dec) 177.88 == result);
 
     success();
-  }
+  } end();
 
-  or_when("the source string does not contain a valid decimal number") {
+  when("the source string does not contain a valid decimal number") {
     source = s("17aaa:0");
     dec result = string_to_dec(source);
 
@@ -28,5 +28,5 @@ spec( string_to_dec ) {
       verify((dec) 0 == result);
 
     success();
-  }
+  } end();
 }

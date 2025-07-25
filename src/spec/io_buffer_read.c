@@ -54,10 +54,9 @@ spec( io_buffer_read ) {
         success();
           io_close(io);
           pipe_close(&channel);
-      }
+      } end();
 
-      or_when("the underlying channel contains equal or more data than the amount "\
-              "to read") {
+      when("the underlying channel contains equal or more data than the amount to read") {
         int channel_available_data = 15;
         apply(preconditions(channel_available_data));
         apply(buffer_not_initialized_condition);
@@ -89,11 +88,11 @@ spec( io_buffer_read ) {
         success();
           io_close(io);
           pipe_close(&channel);
-      }
-    }
+      } end();
+    } end();
 
     // in: "the io buffer is not initialized"
-    or_when("the amount to read is lesser or equal than the buffer size") {
+    when("the amount to read is lesser or equal than the buffer size") {
       amount = 4;
 
       when("the underlying channel contains less data than the amount to read") {
@@ -130,11 +129,11 @@ spec( io_buffer_read ) {
         success();
           io_close(io);
           pipe_close(&channel);
-      }
+      } end();
 
       // in: "the io buffer is not initialized"
       // in: "the amount to read is lesser or equal than the buffer size"
-      or_when("the underlying channel contains equal or more data than the amount "\
+      when("the underlying channel contains equal or more data than the amount "\
               "to read") {
         int channel_available_data = 7;
         apply(preconditions(channel_available_data));
@@ -167,12 +166,12 @@ spec( io_buffer_read ) {
         success();
           io_close(io);
           pipe_close(&channel);
-      }
-    }
-  }
+      } end();
+    } end();
+  } end();
   #undef buffer_not_initialized_condition
 
-  or_when("the io buffer is already initialized") {
+  when("the io buffer is already initialized") {
     #define buffer_already_initialized_condition \
       io->buffer.data = malloc(io->buffer.end); \
       memcpy(io->buffer.data, data.content, io->buffer.end); \
@@ -221,12 +220,12 @@ spec( io_buffer_read ) {
             success();
               io_close(io);
               pipe_close(&channel);
-          }
+          } end();
 
           // in: "the amount to read exceeds the buffer end"
           // in: "the amount to read is lesser or equal than the buffer size"
           // in: "the io buffer contains data for less than 2 times the buffer size"
-          or_when("the underlying channel contains equal or more data than the amount "\
+          when("the underlying channel contains equal or more data than the amount "\
                   "to read") {
             int channel_available_data = 20;
             apply(preconditions(channel_available_data));
@@ -259,12 +258,12 @@ spec( io_buffer_read ) {
             success();
               io_close(io);
               pipe_close(&channel);
-          }
-        }
+          } end();
+        } end();
 
         // in: "the amount to read exceeds the buffer end"
         // in: "the amount to read is lesser or equal than the buffer size"
-        or_when("the io buffer contains data for equal or more than 2 times the "\
+        when("the io buffer contains data for equal or more than 2 times the "\
                 "buffer size") {
           when("the underlying channel contains less data than the amount to read") {
             int channel_available_data = 25;
@@ -305,12 +304,12 @@ spec( io_buffer_read ) {
             success();
               io_close(io);
               pipe_close(&channel);
-          }
+          } end();
 
           // in: "the amount to read exceeds the buffer end"
           // in: "the amount to read is lesser or equal than the buffer size"
           // in: "the io buffer contains data for equal or more than 2 times the buffer size"
-          or_when("the underlying channel contains equal or more data than the amount "\
+          when("the underlying channel contains equal or more data than the amount "\
                   "to read") {
             int channel_available_data = 28;
             apply(preconditions(channel_available_data));
@@ -347,11 +346,11 @@ spec( io_buffer_read ) {
             success();
               io_close(io);
               pipe_close(&channel);
-          }
-        }
-      }
+          } end();
+        } end();
+      } end();
 
-      or_when("the amount to read is greater than the buffer size") {
+      when("the amount to read is greater than the buffer size") {
         amount = 12;
 
         when("the io buffer contains data for less than 2 times the buffer size") {
@@ -390,13 +389,12 @@ spec( io_buffer_read ) {
             success();
               io_close(io);
               pipe_close(&channel);
-          }
+          } end();
 
           // in: "the amount to read exceeds the buffer end"
           // in: "the amount to read is greater than the buffer size"
           // in: "the io buffer contains data for less than 2 times the buffer size"
-          or_when("the underlying channel contains equal or more data than the amount "\
-                  "to read") {
+          when("the underlying channel contains equal or more data than the amount to read") {
             int channel_available_data = 26;
             apply(preconditions(channel_available_data));
             io->buffer.end = 14;
@@ -428,13 +426,12 @@ spec( io_buffer_read ) {
             success();
               io_close(io);
               pipe_close(&channel);
-          }
-        }
+          } end();
+        } end();
 
         // in: "the amount to read exceeds the buffer end"
         // in: "the amount to read is greater than the buffer size"
-        or_when("the io buffer contains data for equal or more than 2 times the "\
-                "buffer size") {
+        when("the io buffer contains data for equal or more than 2 times the buffer size") {
           when("the underlying channel contains less data than the amount to read") {
             int channel_available_data = 27;
             apply(preconditions(channel_available_data));
@@ -474,13 +471,12 @@ spec( io_buffer_read ) {
             success();
               io_close(io);
               pipe_close(&channel);
-          }
+          } end();
 
           // in: "the amount to read exceeds the buffer end"
           // in: "the amount to read is greater than the buffer size"
           // in: "the io buffer contains data for equal or more than 2 times the buffer size"
-          or_when("the underlying channel contains equal or more data than the amount "\
-                  "to read") {
+          when("the underlying channel contains equal or more data than the amount to read") {
             int channel_available_data = 36;
             apply(preconditions(channel_available_data));
             io->buffer.end = 24;
@@ -516,13 +512,13 @@ spec( io_buffer_read ) {
             success();
               io_close(io);
               pipe_close(&channel);
-          }
-        }
-      }
-    }
+          } end();
+        } end();
+      } end();
+    } end();
 
     // in: "the io buffer is already initialized"
-    or_when("the amount to read does not exceed the buffer end") {
+    when("the amount to read does not exceed the buffer end") {
       amount = 4;
 
       when("the io buffer contains data for less than 2 times the buffer size") {
@@ -558,12 +554,11 @@ spec( io_buffer_read ) {
         success();
           io_close(io);
           pipe_close(&channel);
-      }
+      } end();
 
       // in: "the io buffer is already initialized"
       // in: "the amount to read does not exceed the buffer end"
-      or_when("the io buffer contains data for equal or more than 2 times the "\
-            "buffer size") {
+      when("the io buffer contains data for equal or more than 2 times the buffer size") {
         int channel_available_data = 25;
         apply(preconditions(channel_available_data));
         io->buffer.end = 24;
@@ -596,9 +591,9 @@ spec( io_buffer_read ) {
         success();
           io_close(io);
           pipe_close(&channel);
-      }
-    }
-  }
+      } end();
+    } end();
+  } end();
   #undef buffer_already_initialized_condition
 
   #undef preconditions

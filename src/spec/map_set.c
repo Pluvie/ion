@@ -40,9 +40,9 @@ spec( map_set ) {
           verify(map->keys.capacity == original_map_capacity);
 
         success();
-      }
+      } end();
 
-      or_when("the key is not present in the map") {
+      when("the key is not present in the map") {
         key = "z";
         apply(stack_allocated_map_condition);
         apply(map_length_condition);
@@ -66,12 +66,12 @@ spec( map_set ) {
           verify(map->keys.capacity == original_map_capacity);
 
         success();
-      }
-    }
+      } end();
+    } end();
     #undef map_length_condition
 
     // in: "the map is stack allocated"
-    or_when("the map length is equal or greater than its load limit") {
+    when("the map length is equal or greater than its load limit") {
       #define map_length_condition \
         map_set(map, "a", 1); \
         map_set(map, "b", 2); \
@@ -107,9 +107,9 @@ spec( map_set ) {
           verify(map->keys.capacity == original_map_capacity);
 
         success();
-      }
+      } end();
 
-      or_when("the key is not present in the map") {
+      when("the key is not present in the map") {
         key = "z";
         apply(stack_allocated_map_condition);
         apply(map_length_condition);
@@ -131,13 +131,13 @@ spec( map_set ) {
           verify(map->keys.capacity == original_map_capacity);
 
         success();
-      }
-    }
+      } end();
+    } end();
     #undef map_length_condition
-  }
+  } end();
   #undef stack_allocated_map_condition
 
-  or_when("the map is heap allocated") {
+  when("the map is heap allocated") {
     #define heap_allocated_map_condition \
       map<char*, int>* map = map_alloc(char*, int, 16, spec_allocator); \
       map_set(map, "a", 7); \
@@ -175,9 +175,9 @@ spec( map_set ) {
           verify(map->keys.capacity == original_map_capacity);
 
         success();
-      }
+      } end();
 
-      or_when("the key is not present in the map") {
+      when("the key is not present in the map") {
         key = "z";
         apply(heap_allocated_map_condition);
         apply(map_length_condition);
@@ -201,12 +201,12 @@ spec( map_set ) {
           verify(map->keys.capacity == original_map_capacity);
 
         success();
-      }
-    }
+      } end();
+    } end();
     #undef map_length_condition
 
     // in: "the map is heap allocated"
-    or_when("the map length is equal or greater than its load limit") {
+    when("the map length is equal or greater than its load limit") {
       #define map_length_condition \
         char* keys[] = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k" }; \
         int values[] = {  1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11 }; \
@@ -238,9 +238,9 @@ spec( map_set ) {
           verify(map->keys.capacity == 2 * original_map_capacity);
 
         success();
-      }
+      } end();
 
-      or_when("the key is not present in the map") {
+      when("the key is not present in the map") {
         key = "z";
         apply(heap_allocated_map_condition);
         apply(map_length_condition);
@@ -264,9 +264,9 @@ spec( map_set ) {
           verify(map->keys.capacity == 2 * original_map_capacity);
 
         success();
-      }
-    }
+      } end();
+    } end();
     #undef map_length_condition
-  }
+  } end();
   #undef heap_allocated_map_condition
 }

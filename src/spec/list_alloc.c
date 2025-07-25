@@ -21,7 +21,7 @@ spec( list_alloc ) {
       verify(list->capacity == 16);
 
     success();
-  }
+  } end();
 
   when("the capacity is greater than 16") {
     capacity = 24;
@@ -35,7 +35,7 @@ spec( list_alloc ) {
       verify(list->capacity == next_pow2(capacity));
 
     success();
-  }
+  } end();
 
   #undef valid_type
   #undef valid_allocator

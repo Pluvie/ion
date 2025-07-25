@@ -26,9 +26,9 @@ spec( list_at ) {
         verify(*result == 4);
 
       success();
-    }
+    } end();
 
-    or_when("the position is greater or equal than the list length") {
+    when("the position is greater or equal than the list length") {
       apply(preconditions);
       list<int> stack_list = list_init(int, 16);
       list = &stack_list;
@@ -45,10 +45,10 @@ spec( list_at ) {
         verify(result == NULL);
 
       success();
-    }
-  }
+    } end();
+  } end();
 
-  or_when("the list is heap allocated") {
+  when("the list is heap allocated") {
     when("the position is inferior to the list length") {
       apply(preconditions);
       list = list_alloc(int, 16, spec_allocator);
@@ -66,9 +66,9 @@ spec( list_at ) {
         verify(*result == 4);
 
       success();
-    }
+    } end();
 
-    or_when("the position is greater or equal than the list length") {
+    when("the position is greater or equal than the list length") {
       apply(preconditions);
       list = list_alloc(int, 16, spec_allocator);
       list_push(list, 1);
@@ -84,8 +84,8 @@ spec( list_at ) {
         verify(result == NULL);
 
       success();
-    }
-  }
+    } end();
+  } end();
 
   #undef preconditions
 }

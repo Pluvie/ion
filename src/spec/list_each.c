@@ -22,7 +22,7 @@ spec( list_each ) {
       }
 
     success();
-  }
+  } end();
 
   when("a custom index name is given") {
     apply(preconditions);
@@ -44,7 +44,7 @@ spec( list_each ) {
       }
 
     success();
-  }
+  } end();
 
   #undef preconditions
 }

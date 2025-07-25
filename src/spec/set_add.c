@@ -35,9 +35,9 @@ spec( set_add ) {
           verify(set->capacity == original_set_capacity);
 
         success();
-      }
+      } end();
 
-      or_when("the element is not present in the set") {
+      when("the element is not present in the set") {
         element = "z";
         apply(stack_allocated_set_condition);
         apply(set_length_condition);
@@ -58,12 +58,12 @@ spec( set_add ) {
           verify(set->capacity == original_set_capacity);
 
         success();
-      }
-    }
+      } end();
+    } end();
     #undef set_length_condition
 
     // in: "the set is stack allocated"
-    or_when("the set length is equal or greater than its load limit") {
+    when("the set length is equal or greater than its load limit") {
       #define set_length_condition \
         set_add(set, "a"); \
         set_add(set, "b"); \
@@ -95,9 +95,9 @@ spec( set_add ) {
           verify(set->capacity == original_set_capacity);
 
         success();
-      }
+      } end();
 
-      or_when("the element is not present in the set") {
+      when("the element is not present in the set") {
         element = "z";
         apply(stack_allocated_set_condition);
         apply(set_length_condition);
@@ -119,13 +119,13 @@ spec( set_add ) {
           verify(set->capacity == original_set_capacity);
 
         success();
-      }
-    }
+      } end();
+    } end();
     #undef set_length_condition
-  }
+  } end();
   #undef stack_allocated_set_condition
 
-  or_when("the set is heap allocated") {
+  when("the set is heap allocated") {
     #define heap_allocated_set_condition \
       set<char*>* set = set_alloc(char*, 16, spec_allocator); \
       set_add(set, "a"); \
@@ -159,9 +159,9 @@ spec( set_add ) {
           verify(set->capacity == original_set_capacity);
 
         success();
-      }
+      } end();
 
-      or_when("the element is not present in the set") {
+      when("the element is not present in the set") {
         element = "z";
         apply(heap_allocated_set_condition);
         apply(set_length_condition);
@@ -182,12 +182,12 @@ spec( set_add ) {
           verify(set->capacity == original_set_capacity);
 
         success();
-      }
-    }
+      } end();
+    } end();
     #undef set_length_condition
 
     // in: "the set is heap allocated"
-    or_when("the set length is equal or greater than its load limit") {
+    when("the set length is equal or greater than its load limit") {
       #define set_length_condition \
         char* elements[] = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k" }; \
         for (int i = 0; i < set->load_limit; i++) \
@@ -214,9 +214,9 @@ spec( set_add ) {
           verify(set->capacity == 2 * original_set_capacity);
 
         success();
-      }
+      } end();
 
-      or_when("the element is not present in the set") {
+      when("the element is not present in the set") {
         element = "z";
         apply(heap_allocated_set_condition);
         apply(set_length_condition);
@@ -237,9 +237,9 @@ spec( set_add ) {
           verify(set->capacity == 2 * original_set_capacity);
 
         success();
-      }
-    }
+      } end();
+    } end();
     #undef set_length_condition
-  }
+  } end();
   #undef heap_allocated_set_condition
 }

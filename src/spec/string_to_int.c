@@ -13,9 +13,9 @@ spec( string_to_int ) {
       verify((int) 17788 == result);
 
     success();
-  }
+  } end();
 
-  or_when("the source string does not contain a valid integer number") {
+  when("the source string does not contain a valid integer number") {
     source = s("17aaa:0");
     int result = string_to_int(source);
 
@@ -28,5 +28,5 @@ spec( string_to_int ) {
       verify((int) 0 == result);
 
     success();
-  }
+  } end();
 }
