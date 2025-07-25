@@ -29,6 +29,7 @@ read_without_buffer:
     fatal("%li, not enough memory", amount);
 
   default:
+    fail("invalid channel");
     return (slice) { 0 };
   }
 }
