@@ -1,4 +1,0 @@
-Sample file used
-to test the
-descriptor and stream
-io opening
