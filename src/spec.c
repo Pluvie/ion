@@ -26,6 +26,7 @@ int32 main (
   spec_add( map_has );
   spec_add( map_init );
   spec_add( map_set );
+  spec_add( reflection );
   spec_add( set );
   spec_add( set_add );
   spec_add( set_alloc );
@@ -34,6 +35,8 @@ int32 main (
   spec_add( set_init );
   spec_add( set_pos );
   spec_add( set_rehash );
+  spec_add( string_to_dec );
+  spec_add( string_to_int );
   spec_add( time_now );
   spec_add( time_to_string );
 
