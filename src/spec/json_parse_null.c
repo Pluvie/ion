@@ -1,17 +1,17 @@
-spec( json_parse_bool ) {
+spec( json_parse_null ) {
 
   argument(struct io* io);
 
   precondition("valid io");
     #define preconditions \
       io = memory_alloc(spec_allocator, sizeof(struct io)); \
-      *io = io(s("  { \"a\":   true,   \"b\": false } "));
+      *io = io(s("  { \"a\":   null } "));
 
   when("the io reads a string equal to `true`") {
     apply(preconditions);
     int io_cursor_starting_position = 11;
     io->cursor = io_cursor_starting_position;
-    int result = json_parse_bool(io);
+    int result = json_parse_null(io);
 
     must("not fail");
       verify(error.occurred == false);
@@ -27,37 +27,17 @@ spec( json_parse_bool ) {
 
   } end();
 
-  when("the io reads a string equal to `false`") {
+  when("the io reads other strings") {
     apply(preconditions);
-    int io_cursor_starting_position = 24;
+    int io_cursor_starting_position = 3;
     io->cursor = io_cursor_starting_position;
-    int result = json_parse_bool(io);
+    int result = json_parse_null(io);
 
     must("not fail");
       verify(error.occurred == false);
 
     must("return 0");
       verify(result == 0);
-
-    must("restore the io cursor to the original position");
-      verify(io->cursor == io_cursor_starting_position);
-
-    success();
-      io_close(io);
-
-  } end();
-
-  when("the io reads other strings") {
-    apply(preconditions);
-    int io_cursor_starting_position = 3;
-    io->cursor = io_cursor_starting_position;
-    int result = json_parse_bool(io);
-
-    must("not fail");
-      verify(error.occurred == false);
-
-    must("return -1");
-      verify(result == -1);
 
     must("restore the io cursor to the original position");
       verify(io->cursor == io_cursor_starting_position);
@@ -74,7 +54,7 @@ spec( json_parse_bool ) {
 
     int io_cursor_starting_position = 3;
     io->cursor = io_cursor_starting_position;
-    int result = json_parse_bool(io);
+    int result = json_parse_null(io);
 
     must("fail with a specific error");
       verify(error.occurred == true);

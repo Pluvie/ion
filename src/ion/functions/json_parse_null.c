@@ -1,18 +1,17 @@
-static inline u64 json_parse_null (
-    struct io* source
+static inline int json_parse_null (
+    struct io* io
 )
 {
-  io_cursor_save(source);
+  int cursor = io_cursor_save(io);
+  slice result = io_read(io, 5);
+  io_cursor_restore(io, cursor);
 
-  char* value = io_read(source, lengthof("null"));
   if (error.occurred)
-    return 0;
+    return -1;
 
-  if (strneq("null", value, lengthof("null"))) {
-    io_cursor_restore(source);
-    return lengthof("null"); 
-  }
+  string null_str = (string) { result.data, lengthof("null") };
+  if (streq("null", null_str))
+    return 1;
 
-  io_cursor_restore(source);
   return 0;
 }

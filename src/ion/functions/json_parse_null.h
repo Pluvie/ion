@@ -1,3 +1,3 @@
-static inline u64 json_parse_null (
-    struct io* source
+static inline int json_parse_null (
+    struct io* io
 );

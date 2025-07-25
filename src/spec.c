@@ -12,6 +12,7 @@ int32 main (
   spec_add( io_buffer_read );
   spec_add( io_read );
   spec_add( json_parse_bool );
+  spec_add( json_parse_null );
   spec_add( list );
   spec_add( list_alloc );
   spec_add( list_at );

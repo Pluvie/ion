@@ -1,28 +1,31 @@
-static inline u64 json_parse_number (
-    struct io* source
+static inline int json_parse_number (
+    struct io* io
 )
 {
-  io_cursor_save(source);
-
-  char* digit;
-  u64 length = 0;
+  int cursor = io_cursor_save(io);
+  int length = 0;
+  slice result;
+  #define digit ((char*) result.data)[0]
 
 check_sign:
-  digit = io_read(source, sizeof(char));
+  result = io_read(io, sizeof(char));
   if (error.occurred)
+    goto error;
+
+  if (result.length == 0)
     return 0;
 
-  if (*digit == '-') {
+  if (digit == '-') {
     length++;
     goto integral_part;
   }
 
-  if (*digit == '0') {
+  if (digit == '0') {
     length++;
     goto check_after_zero;
   }
 
-  if (isdigit(*digit)) {
+  if (isdigit(digit)) {
     length++;
     goto integral_part;
   }
@@ -30,11 +33,14 @@ check_sign:
   goto error;
 
 check_after_zero:
-  digit = io_read(source, sizeof(char));
+  result = io_read(io, sizeof(char));
   if (error.occurred)
-    return 0;
+    goto error;
 
-  switch(*digit) {
+  if (result.length == 0)
+    goto terminate;
+
+  switch(digit) {
   case '.':
     length++;
     goto fractional_part;
@@ -65,24 +71,24 @@ check_after_zero:
   }
 
 integral_part:
-  if (io_exhausted(source))
+  result = io_read(io, sizeof(char));
+  if (error.occurred)
+    goto error;
+
+  if (result.length == 0)
     goto terminate;
 
-  digit = io_read(source, sizeof(char));
-  if (error.occurred)
-    return 0;
-
-  if (isdigit(*digit)) {
+  if (isdigit(digit)) {
     length++;
     goto integral_part;
   }
 
-  if (*digit == '.') {
+  if (digit == '.') {
     length++;
     goto check_after_decimal_separator;
   }
 
-  if (*digit == 'e' || *digit == 'E') {
+  if (digit == 'e' || digit == 'E') {
     length++;
     goto exponent_sign;
   }
@@ -90,32 +96,34 @@ integral_part:
   goto terminate;
 
 check_after_decimal_separator:
-  digit = io_read(source, sizeof(char));
+  result = io_read(io, sizeof(char));
   if (error.occurred)
+    goto error;
+
+  if (result.length == 0)
     return 0;
 
-  if (isdigit(*digit)) {
+  if (isdigit(digit)) {
     length++;
     goto fractional_part;
   }
 
-  fail("expected a digit after the decimal separator");
-  goto error;
+  return 0;
 
 fractional_part:
-  if (io_exhausted(source))
+  result = io_read(io, sizeof(char));
+  if (error.occurred)
+    goto error;
+
+  if (result.length == 0)
     goto terminate;
 
-  digit = io_read(source, sizeof(char));
-  if (error.occurred)
-    return 0;
-
-  if (isdigit(*digit)) {
+  if (isdigit(digit)) {
     length++;
     goto fractional_part;
   }
 
-  if (*digit == 'e' || *digit == 'E') {
+  if (digit == 'e' || digit == 'E') {
     length++;
     goto exponent_sign;
   }
@@ -123,17 +131,20 @@ fractional_part:
   goto terminate;
 
 exponent_sign:
-  digit = io_read(source, sizeof(char));
+  result = io_read(io, sizeof(char));
   if (error.occurred)
-    return 0;
+    goto error;
 
-  switch (*digit) {
+  if (result.length == 0)
+    goto error;
+
+  switch (digit) {
   case '-':
   case '+':
     length++;
     goto exponent_part;
   default:
-    if (isdigit(*digit)) {
+    if (isdigit(digit)) {
       length++;
       goto exponent_part;
     }
@@ -143,23 +154,25 @@ exponent_sign:
   }
 
 exponent_part:
-  if (io_exhausted(source))
+  result = io_read(io, sizeof(char));
+  if (error.occurred)
+    goto error;
+
+  if (result.length == 0)
     goto terminate;
 
-  digit = io_read(source, sizeof(char));
-  if (error.occurred)
-    return 0;
-
-  if (isdigit(*digit)) {
+  if (isdigit(digit)) {
     length++;
     goto exponent_part;
   }
 
 terminate:
-  io_cursor_restore(source);
+  io_cursor_restore(io, cursor);
   return length;
 
 error:
-  io_cursor_restore(source);
-  return 0;
+  io_cursor_restore(io, cursor);
+  return -1;
+
+  #undef digit
 }

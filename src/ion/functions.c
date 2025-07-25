@@ -38,7 +38,7 @@
 //#include "functions/json_encode_struct.c"
 //#include "functions/json_encode_vector.c"
 #include "functions/json_parse_bool.c"
-//#include "functions/json_parse_null.c"
+#include "functions/json_parse_null.c"
 //#include "functions/json_parse_number.c"
 //#include "functions/json_parse_spaces.c"
 //#include "functions/json_parse_string.c"
