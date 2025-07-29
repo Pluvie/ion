@@ -63,15 +63,55 @@ spec( json_parse_number ) {
 
     when("the io contains a negative number") {
       when("the number is integer") {
+        apply(preconditions);
+        *io = io(s("-123"));
+        int result = json_parse_number(io);
+
+        must("return the length of the number");
+          verify(result == 4);
+        must("restore the cursor position");
+          verify(io->cursor == 0);
+        success();
+          io_close(io);
       } end();
 
       when("the number is decimal") {
+        apply(preconditions);
+        *io = io(s("-123.77"));
+        int result = json_parse_number(io);
+
+        must("return the length of the number");
+          verify(result == 7);
+        must("restore the cursor position");
+          verify(io->cursor == 0);
+        success();
+          io_close(io);
       } end();
 
       when("the number is exponential integer") {
+        apply(preconditions);
+        *io = io(s("-123e+04"));
+        int result = json_parse_number(io);
+
+        must("return the length of the number");
+          verify(result == 8);
+        must("restore the cursor position");
+          verify(io->cursor == 0);
+        success();
+          io_close(io);
       } end();
 
       when("the number is exponential decimal") {
+        apply(preconditions);
+        *io = io(s("-123.77e-3"));
+        int result = json_parse_number(io);
+
+        must("return the length of the number");
+          verify(result == 10);
+        must("restore the cursor position");
+          verify(io->cursor == 0);
+        success();
+          io_close(io);
       } end();
     } end();
 
