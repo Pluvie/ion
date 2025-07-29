@@ -7,7 +7,6 @@ static inline int json_parse_number (
   slice result;
   #define digit ((char*) result.data)[0]
 
-check_sign:
   result = io_read(io, sizeof(char));
   if (error.occurred)
     goto error;
@@ -101,14 +100,14 @@ check_after_decimal_separator:
     goto error;
 
   if (result.length == 0)
-    return 0;
+    goto error;
 
   if (isdigit(digit)) {
     length++;
     goto fractional_part;
   }
 
-  return 0;
+  goto error;
 
 fractional_part:
   result = io_read(io, sizeof(char));
@@ -149,7 +148,6 @@ exponent_sign:
       goto exponent_part;
     }
 
-    fail("expected sign or digit after exponent");
     goto error;
   }
 

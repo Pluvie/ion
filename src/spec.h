@@ -9,6 +9,7 @@
 #include "spec/io_read.c"
 #include "spec/json_parse_bool.c"
 #include "spec/json_parse_null.c"
+#include "spec/json_parse_number.c"
 #include "spec/list.c"
 #include "spec/list_alloc.c"
 #include "spec/list_at.c"

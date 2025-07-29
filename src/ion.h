@@ -5,7 +5,6 @@
  *
  */
 
-#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
@@ -20,6 +19,7 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "ion/libraries.h"
 #include "ion/macros.h"
 #include "ion/types.h"
 #include "ion/constants.h"
