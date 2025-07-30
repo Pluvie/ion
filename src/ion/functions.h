@@ -40,7 +40,7 @@
 #include "functions/json_parse_bool.h"
 #include "functions/json_parse_null.h"
 #include "functions/json_parse_number.h"
-//#include "functions/json_parse_spaces.h"
+#include "functions/json_parse_spaces.h"
 //#include "functions/json_parse_string.h"
 #include "functions/memory_alloc.h"
 #include "functions/memory_alloc_zero.h"

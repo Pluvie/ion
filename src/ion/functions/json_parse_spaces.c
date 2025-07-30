@@ -1,35 +1,32 @@
-static inline bool json_parse_spaces (
-    struct io* source
+static inline int json_parse_spaces (
+    struct io* io
 )
 {
-  u64 initial_cursor_position = source->cursor;
-  u64 position = 0;
-  u64 peek_window = 1024;
-
-  char* spaces = NULL;
-  char character;
-
-read_source:
-  spaces = io_read(source, peek_window);
-  if (error.occurred)
-    return false;
+  int cursor = io_cursor_save(io);
+  int length = 0;
+  slice result;
+  #define character ((char*) result.data)[0]
 
 read_character:
-  character = spaces[position];
+  result = io_read(io, sizeof(char));
+  if (error.occurred)
+    goto error;
 
-  if (!isspace(character))
+  if (result.length == 0)
     goto terminate;
 
-next_character:
-  position++;
-
-  if (position < source->length)
+  if (isspace(character)) {
+    length++;
     goto read_character;
-
-  peek_window *= 2;
-  goto read_source;
+  }
 
 terminate:
-  source->cursor = initial_cursor_position + position;
-  return position > 0;
+  io_cursor_restore(io, cursor);
+  return length;
+
+error:
+  io_cursor_restore(io, cursor);
+  return -1;
+
+  #undef character
 }
