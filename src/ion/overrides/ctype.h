@@ -1,7 +1,9 @@
-/* ⚡️ION⚡️ : <ctype.h> modifications to allow int type redefinition.
-   The only required change was to replace all `int` type occurrences with
-   their corresponding <stdint.h> type, i.e. replacing `unsigned short int`
-   with `uint16_t`. */
+/* ⚡️ION⚡️ : <ctype.h> override to allow int type redefinition.
+   The only required change was to replace all `unsigned short int` type occurrences
+   with their corresponding <stdint.h> type, `uint16_t`.
+
+   NOTE(Pluvie): I wonder why the maintainers of this header used the <stdint.h>
+   type `__int32_t` (see line 88 and 90) but failed to do the same two lines before. */
 
 /* Copyright (C) 1991-2024 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
