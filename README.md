@@ -9,10 +9,14 @@
 elegance* and *semantic cohesion*.
 
 It is designed to be a single library to be included directly in your source code or
-to be linked in dynamic loading. It shall provide efficient language constructs to:
+to be linked in dynamic loading.
 
-  - offer ready to use data structures like [lists](#list), [maps](#map) and
-    [sets](#set) which can hold any type.
+## Features
+
+⚡️ION⚡️ shall provide efficient language constructs to:
+
+  - offer ready to use data structures like [lists](#data-structures),
+    [maps](#data-structures) and [sets](#data-structures) which can hold any type.
   - [serialize](#serialization) to / from many data formats like JSON, XML, CSV,
     etc. and provide an easy way to create your serialization in any other new format.
   - enable the introspection of any C language struct through [reflection](#reflection).
@@ -23,62 +27,6 @@ and many other minor improvements like:
 
   - normalize [io operations](#io) on files, sockets, and memory objects.
   - [standardize data types](#types): integers, decimals, strings, etc.
-
-## Features
-
-A brief overview of ⚡️ION⚡️ features. To know more, read the full [documentation](
-doc/README.md).
-
-### List
-
-```c
-list<char*> fruits = list(char*, { "Apple", "Banana", "Cherry" });
-print(fruits.length); // 3
-
-char* fruit = list_pop(&fruits);
-print(fruit);         // "Cherry"
-print(fruits.length); // 2
-
-list_push("Orange");
-print(fruits.length); // 3
-```
-
-### Map
-
-```c
-map<char*, struct rgb> colors = map_init(char*, struct rgb, 8);
-
-map_set(&colors, "Violet", { 127, 0, 255 });
-map_set(&colors, "Pink", { 255, 192, 203 });
-
-print(colors.length); // 2
-struct rgb violet = map_get(&colors, "Violet");
-print(violet);        // { 127, 0, 255 }
-
-bool has_lime = map_has(&colors, "Lime");
-print(has_lime);      // false
-map_set(&colors, "Lime", { 32, 205, 32 });
-print(colors.length); // 3
-has_lime = map_has(&colors, "Lime");
-print(has_lime);      // true
-```
-
-### Set
-
-```c
-set<char*> names = set_init(char*, 8);
-
-set_add(&names, "Alpha");
-set_add(&names, "Bravo");
-set_add(&names, "Charlie");
-print(names.length);  // 3
-
-set_add(&names, "Alpha");
-print(names.length);  // 3, no duplicates!
-
-set_del(&names, "Bravo");
-print(names.length);  // 2
-```
 
 ## Motivation
 
@@ -103,3 +51,120 @@ We hope to show that achieving code clarity and efficiency is not only still pos
 but it has been so since the early days. Only by choosing the wrong evolution path did
 we reach this stagnation point. We need to return to our roots and build again from
 there: this is why ⚡️ION⚡️ is born.
+
+## Data Structures
+
+A big part of computer science theory revolves around algorithms and data structures.
+They have been extensively used to [solve real-world problems](
+https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg) in the most efficient
+way possible.
+
+However, back in the 1970s, when C was born, computers were not as widespread as they
+are now, and a lot of research had yet to be done. Over the following years, it became
+more and more evident how we could rapidly solve complex computational problems by
+simply implementing the correct -- and mathematically already well-defined -- algorithm
+and/or data structure.
+
+This is why C lags behind in this compartment compared to newer languages. It is not
+the fact that it's not possible to *implement* these things in C -- it is of course
+[Turing Complete](https://en.wikipedia.org/wiki/Turing_completeness) -- but rather the
+fact that it does not expose a syntactical and type-safe way to do so.
+
+We posit that all that is required to achieve this is a __symbol inflection__ directly
+[integrated in the preprocessor](bin/ion.py). Using ⚡️ION⚡️, it is possible to do things
+like:
+
+```c
+list<char*> fruits = list(char*, { "Apple", "Banana", "Cherry" });
+
+list_at(&fruits, 1);  // "Banana"
+list_pop(&fruits);    // Returns an always valid reference to "Cherry"
+list_push(&fruits, "Orange");
+```
+
+⚡️ION⚡️ data structures work with any type. Suppose a:
+
+```c
+struct rgb {
+  int red;
+  int green;
+  int blue;
+};
+```
+
+It is possible to do:
+
+```c
+map<char*, struct rgb> colors = map(char*, struct rgb, {
+  { "Violet", { 127, 0, 255 } },
+  { "Pink", { 255, 192, 203 } },
+  { "Lime", { 32, 205, 32 } };
+});
+
+map_get(&colors, "Pink");     // { 255, 192, 203 }
+map_has(&colors, "Orange");   // false
+map_set(&colors, "Orange", { 255, 165, 0 });
+map_has(&colors, "Orange");   // true
+```
+
+## Serialization
+
+Converting to and from various data formats has become a very important task that
+programmers must do in order to integrate their software with others. ⚡️ION⚡️ ships
+with ready to use conversion in JSON, CSV, XML and gRPC formats, in order to accomodate
+the most real world scenarios possible.
+
+If the format you need is not one of those, do not worry: the good thing is that,
+through ⚡️ION⚡️ [reflection](#reflection) you can implement it so easily like has never
+seen before in C language.
+
+Let's see a JSON example:
+
+```json
+{
+  "title": "Landline Positions",
+  "names": [ "Alpha", "Bravo", "Charlie" ],
+  "positions": {
+    "Alpha": [ 12.0, 12.0 ],
+    "Bravo": [ -12.0, 8.0 ],
+    "Charlie": [ -8.0, -8.0 ]
+  },
+}
+```
+
+```c
+char* json = ... // See above
+
+struct data {
+  set<string> names;
+  map<string, int[2]> positions;
+  int last_update;
+};
+
+// Here we define the reflection that we want to apply to this struct.
+struct reflection rfx = {
+  type(STRUCT, struct data), fields({
+    // We are not interested in the "title" field, so we just omit it!.
+
+    { field(names, SET, struct data), of({ type(STRING) }) },
+    // The "names" field is a JSON array, but we want a set to ensure that there
+    // are no duplicates.
+
+    { field(positions, MAP, struct data), of({ type(STRING),
+        of({ type(ARRAY, int[2]), of({ type(INT) }) })
+      })
+    },
+    // The "positions" field is a dynamic map with strings and a pair of coordinates.
+    // We could have used the `list<int>` type, but instead we use an array `int[2]`
+    // to clarify that we expect only 2 values.
+
+    { field(last_update, INT, struct data) },
+    // This field is missing in the JSON, but no worries: it shall be initialized to 0.
+  })
+};
+
+json_decode(json, &data, &rfx, allocator);
+print(data.names);        // [ "Alpha", "Bravo", "Charlie" ]
+print(data.positions);    // { "Alpha": [ 12.0, 12.0 ], ... }
+print(data.last_update);  // 0, field was missing.
+```

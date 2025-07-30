@@ -5,26 +5,6 @@
 
 ## Data Structures
 
-A big part of computer science theory revolves around algorithms and data structures.
-They have been extensively used to [solve real-world problems](
-https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg) in the most efficient
-way possible.
-
-However, back in the 1970s, when C was born, computers were not as widespread as they
-are now, and a lot of research had yet to be done. Over the following years, it became
-more and more evident how we could rapidly solve complex computational problems by
-simply implementing the correct -- and mathematically already well-defined -- algorithm
-and/or data structure.
-
-This is why C lags behind in this compartment compared to newer languages. It is not
-the fact that it's not possible to *implement* these things in C -- it is of course
-[Turing Complete](https://en.wikipedia.org/wiki/Turing_completeness) -- but rather the
-fact that it does not expose a syntactical and type-safe way to do so.
-
-We posit that all that is required to achieve this is a __symbol inflection__ directly
-[integrated in the preprocessor](bin/ion.py). Using ⚡️ION⚡️, it is possible to do things
-like:
-
 ```c
 map<char*, int> oceans = map(char*, int, {
   { "Pacific", 179000000 },
