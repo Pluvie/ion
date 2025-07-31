@@ -226,5 +226,23 @@ spec( json_parse_number ) {
     } end();
   } end();
 
+  when("the io read fails") {
+    apply(preconditions);
+    /* An invalid io channel. Shall fail upon calling the `io_read` function. */
+    io->channel = -1;
+    int result = json_parse_number(io);
+
+    must("fail with a specific error");
+      verify(error.occurred == true);
+      verify(streq(error.message, "io: invalid channel"));
+
+    must("return -1");
+      verify(result == -1);
+
+    success();
+      io_close(io);
+
+  } end();
+
   #undef preconditions
 }

@@ -2,8 +2,10 @@ static inline int io_cursor_save (
     struct io* io
 )
 {
-  if (io->buffer.enabled)
+  if (io->buffer.enabled) {
+    io->buffer.retained = true;
     return io->buffer.cursor;
-  else
-    return io->cursor;
+  }
+
+  return io->cursor;
 }

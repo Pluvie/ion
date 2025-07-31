@@ -3,8 +3,11 @@ static inline void io_cursor_restore (
     int position
 )
 {
-  if (io->buffer.enabled)
+  if (io->buffer.enabled) {
+    io->buffer.retained = false;
     io->buffer.cursor = position;
-  else
-    io->cursor = position;
+    return;
+  }
+
+  io->cursor = position;
 }

@@ -52,10 +52,11 @@ read_from_channel:
   if (amount > io->buffer.size)
     new_capacity = io->buffer.end + amount;
 
-  if (io->buffer.end >= 2*io->buffer.size) {
-    /* If the buffer contains data for more than 2 times the buffer size, when copying
-     * the data over to the extended buffer, retains only a portion of the data, in
-     * order to spare memory usage. */
+  if (!io->buffer.retained &&
+      io->buffer.end >= 2*io->buffer.size) {
+    /* If the buffer is not retained and contains data for more than 2 times the buffer
+     * size, when copying the data over to the extended buffer, retains only a portion
+     * of the data, in order to spare memory usage. */
     copy_begin = io->buffer.end - io->buffer.size;
     copy_amount -= copy_begin;
     io->buffer.end -= copy_begin;

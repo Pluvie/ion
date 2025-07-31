@@ -1,4 +1,4 @@
-spec( json_parse_spaces ) {
+spec( json_parse_string ) {
 
   argument(struct io* io);
 
@@ -7,12 +7,12 @@ spec( json_parse_spaces ) {
       io = memory_alloc(spec_allocator, sizeof(struct io));
 
   when("the parsing reaches the end of input") {
-    when("the io starts with spaces") {
+    when("the io starts with string") {
       apply(preconditions);
       *io = io(s(" \t  \n  "));
-      int result = json_parse_spaces(io);
+      int result = json_parse_string(io);
 
-      must("return the length of the spaces");
+      must("return the length of the string");
         verify(result == 7);
       must("restore the cursor position");
         verify(io->cursor == 0);
@@ -20,10 +20,10 @@ spec( json_parse_spaces ) {
         io_close(io);
     } end();
 
-    when("the io does not start with spaces") {
+    when("the io does not start with string") {
       apply(preconditions);
       *io = io(s("123    "));
-      int result = json_parse_spaces(io);
+      int result = json_parse_string(io);
 
       must("return 0");
         verify(result == 0);
@@ -35,12 +35,12 @@ spec( json_parse_spaces ) {
   } end();
 
   when("the parsing does not reach the end of input") {
-    when("the io starts with spaces") {
+    when("the io starts with string") {
       apply(preconditions);
       *io = io(s(" \t  \n  , \"abc\": 123"));
-      int result = json_parse_spaces(io);
+      int result = json_parse_string(io);
 
-      must("return the length of the spaces");
+      must("return the length of the string");
         verify(result == 7);
       must("restore the cursor position");
         verify(io->cursor == 0);
@@ -48,10 +48,10 @@ spec( json_parse_spaces ) {
         io_close(io);
     } end();
 
-    when("the io does not start with spaces") {
+    when("the io does not start with string") {
       apply(preconditions);
       *io = io(s("123    , 123"));
-      int result = json_parse_spaces(io);
+      int result = json_parse_string(io);
 
       must("return 0");
         verify(result == 0);
@@ -66,7 +66,7 @@ spec( json_parse_spaces ) {
     apply(preconditions);
     /* An invalid io channel. Shall fail upon calling the `io_read` function. */
     io->channel = -1;
-    int result = json_parse_spaces(io);
+    int result = json_parse_string(io);
 
     must("fail with a specific error");
       verify(error.occurred == true);
