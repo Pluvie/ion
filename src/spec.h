@@ -5,6 +5,7 @@
 #include "spec/date.c"
 #include "spec/date_to_string.c"
 #include "spec/date_today.c"
+#include "spec/io_buffer_init.c"
 #include "spec/io_buffer_read.c"
 #include "spec/io_read.c"
 #include "spec/json_parse_bool.c"

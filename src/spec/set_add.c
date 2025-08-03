@@ -62,7 +62,7 @@ spec( set_add ) {
     } end();
     #undef set_length_condition
 
-    // in: "the set is stack allocated"
+    // when("the set is stack allocated")
     when("the set length is equal or greater than its load limit") {
       #define set_length_condition \
         set_add(set, "a"); \
@@ -186,7 +186,7 @@ spec( set_add ) {
     } end();
     #undef set_length_condition
 
-    // in: "the set is heap allocated"
+    // when("the set is heap allocated")
     when("the set length is equal or greater than its load limit") {
       #define set_length_condition \
         char* elements[] = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k" }; \

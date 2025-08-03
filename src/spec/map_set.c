@@ -70,7 +70,7 @@ spec( map_set ) {
     } end();
     #undef map_length_condition
 
-    // in: "the map is stack allocated"
+    // when("the map is stack allocated")
     when("the map length is equal or greater than its load limit") {
       #define map_length_condition \
         map_set(map, "a", 1); \
@@ -205,7 +205,7 @@ spec( map_set ) {
     } end();
     #undef map_length_condition
 
-    // in: "the map is heap allocated"
+    // when("the map is heap allocated")
     when("the map length is equal or greater than its load limit") {
       #define map_length_condition \
         char* keys[] = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k" }; \

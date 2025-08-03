@@ -8,7 +8,7 @@ static inline slice io_buffer_init (
 
   int alloc_amount = io->buffer.size;
   if (amount > alloc_amount)
-    alloc_amount = amount;
+    alloc_amount = io->buffer.size + amount;
 
   io->buffer.data = malloc(alloc_amount);
   io->buffer.capacity = alloc_amount;
