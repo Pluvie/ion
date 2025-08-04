@@ -48,8 +48,8 @@ spec( io_buffer_init ) {
 
         must("initialize the buffer data");
           verify(io->buffer.data != NULL);
-        must("set the buffer capacity equal to the buffer size plus the amount to read");
-          verify(io->buffer.capacity == io->buffer.size + amount);
+        must("allocate buffer data equal to the buffer size plus the amount to read");
+          verify(io->buffer.end == io->buffer.size + amount);
         must("read data from the io channel");
           verify(io->read.count == 1);
         must("advance the buffer cursor by a quantity equal to the available data "\
@@ -83,8 +83,8 @@ spec( io_buffer_init ) {
 
         must("initialize the buffer data");
           verify(io->buffer.data != NULL);
-        must("set the buffer capacity equal to the buffer size plus the amount to read");
-          verify(io->buffer.capacity == io->buffer.size + amount);
+        must("allocate buffer data equal to the buffer size plus the amount to read");
+          verify(io->buffer.end == io->buffer.size + amount);
         must("read data from the io channel");
           verify(io->read.count == 1);
         must("advance the buffer cursor by a quantity equal to the amount to read");
@@ -120,8 +120,8 @@ spec( io_buffer_init ) {
 
         must("initialize the buffer data");
           verify(io->buffer.data != NULL);
-        must("set the buffer capacity equal to the buffer size");
-          verify(io->buffer.capacity == io->buffer.size);
+        must("allocate buffer data equal to the buffer size");
+          verify(io->buffer.end == io->buffer.size);
         must("read data from the io channel");
           verify(io->read.count == 1);
         must("advance the buffer cursor by a quantity equal to the available data "\
@@ -157,8 +157,8 @@ spec( io_buffer_init ) {
 
         must("initialize the buffer data");
           verify(io->buffer.data != NULL);
-        must("set the buffer capacity equal to the buffer size");
-          verify(io->buffer.capacity == io->buffer.size);
+        must("allocate buffer data equal to the buffer size");
+          verify(io->buffer.end == io->buffer.size);
         must("read data from the io channel");
           verify(io->read.count == 1);
         must("advance the buffer cursor by a quantity equal to the amount to read");

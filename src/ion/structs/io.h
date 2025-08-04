@@ -24,9 +24,9 @@ struct io {
     padding(2);
     void* data;
     int size;
-    int end;
     int cursor;
-    int capacity;
+    int end;
+    padding(8);
   } buffer;
 };
 check_sizeof(128, struct io);

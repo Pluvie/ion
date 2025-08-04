@@ -19,14 +19,36 @@ read_from_buffer:
 
       amount:      ■■■■■■
               ┌────────────────────────────────────────┐
-      buffer: │▓▓▓▓▒▒▒▒▒▒▒▒          │                 │
-              └────┬──────┬──────────┬─────────────────┘
-                   ▼      ▼          ▼
-                cursor   end      capacity */
+      buffer: │▓▓▓▓▒▒▒▒▒▒▒▒                            │
+              └────┬──────┬────────────────────────────┘
+                   ▼      ▼           
+                cursor   end */
+
+  int window_size = 2*io->buffer.size;
+
+  if (!io->buffer.retained && io->buffer.end > window_size) {
+    /* If the buffer is not retained and contains data for more than 2 times the buffer
+     * size, chips away a portion of the buffer in order to reduce memory usage. */
+    int chip_begin = io->buffer.end - window_size;
+    int chipped_capacity = io->buffer.end - chip_begin;
+
+    void* old_data = io->buffer.data;
+    void* new_data = malloc(chipped_capacity);
+    if (unlikely(new_data == NULL))
+      fatal("%li, malloc failed", chipped_capacity);
+
+    memcpy(new_data, old_data + chip_begin, chipped_capacity);
+    free(old_data);
+    io->buffer.data = new_data;
+
+    io->buffer.end = chipped_capacity;
+    io->buffer.cursor -= chip_begin;
+  }
 
   result.data = io->buffer.data + io->buffer.cursor;
   result.length = amount;
   io->buffer.cursor += amount;
+
   return result;
 
 read_from_channel:
@@ -36,47 +58,23 @@ read_from_channel:
 
       amount:      ■■■■■■■■■■■■■■
               ┌────────────────────────────────────────┐
-      buffer: │▓▓▓▓▒▒▒▒▒▒▒▒          │                 │
-              └────┬──────┬──────────┬─────────────────┘
-                   ▼      ▼          ▼
-                cursor   end      capacity */
+      buffer: │▓▓▓▓▒▒▒▒▒▒▒▒                            │
+              └────┬──────┬────────────────────────────┘
+                   ▼      ▼           
+                cursor   end */
 
-  int exceeding_quantity = (io->buffer.cursor + amount) - io->buffer.end;
-  int available_quantity = io->buffer.end - io->buffer.cursor;
-
-  int copy_begin = 0;
-  int copy_end = io->buffer.end;
-  int copy_amount = copy_end - copy_begin;
-
-  int new_capacity = io->buffer.end + io->buffer.size;
+  int buffer_available_quantity = io->buffer.end - io->buffer.cursor;
+  int extended_capacity = io->buffer.end + io->buffer.size;
   if (amount > io->buffer.size)
-    new_capacity = io->buffer.end + amount;
+    extended_capacity += amount;
 
-  if (!io->buffer.retained &&
-      io->buffer.end >= 2*io->buffer.size) {
-    /* If the buffer is not retained and contains data for more than 2 times the buffer
-     * size, when copying the data over to the extended buffer, retains only a portion
-     * of the data, in order to spare memory usage. */
-    copy_begin = io->buffer.end - io->buffer.size;
-    copy_amount -= copy_begin;
-    io->buffer.end -= copy_begin;
-    io->buffer.cursor -= copy_begin;
-    new_capacity -= copy_begin;
-  }
-
-  void* old_data = io->buffer.data;
-  void* new_data = malloc(new_capacity);
-  if (unlikely(new_data == NULL))
-    fatal("%li, not enough memory", new_capacity);
-
-  memcpy(new_data, old_data + copy_begin, copy_amount);
-  free(old_data);
-
-  io->buffer.data = new_data;
-  io->buffer.capacity = new_capacity;
+  io->buffer.data = realloc(io->buffer.data, extended_capacity);
+  if (unlikely(io->buffer.data == NULL))
+    fatal("%li, realloc failed", extended_capacity);
 
   void* storage = io->buffer.data + io->buffer.end; 
-  slice channel_result = io_read_channel(io, exceeding_quantity, storage);
+  int channel_read_quantity = extended_capacity - io->buffer.end;
+  slice channel_result = io_read_channel(io, channel_read_quantity, storage);
   if (unlikely(error.occurred))
     return result;
 
@@ -84,13 +82,13 @@ read_from_channel:
 
   /* If the underlying channel returns less data than the amount asked, we must update
    * the buffer pointers accordingly. */
-  if (channel_result.length < exceeding_quantity) {
+  if (channel_result.length < channel_read_quantity) {
     io->buffer.end += channel_result.length;
     io->buffer.cursor = io->buffer.end;
-    result.length = available_quantity + channel_result.length;
+    result.length = buffer_available_quantity + channel_result.length;
 
   } else {
-    io->buffer.end += exceeding_quantity;
+    io->buffer.end = extended_capacity;
     io->buffer.cursor += amount;
     result.length = amount;
   }

@@ -11,7 +11,7 @@ static inline slice io_buffer_init (
     alloc_amount = io->buffer.size + amount;
 
   io->buffer.data = malloc(alloc_amount);
-  io->buffer.capacity = alloc_amount;
+  io->buffer.end = alloc_amount;
 
   slice result = io_read_channel(io, alloc_amount, io->buffer.data);
 
@@ -21,7 +21,6 @@ static inline slice io_buffer_init (
     return (slice) { io->buffer.data, result.length };
 
   } else {
-    io->buffer.end = result.length;
     io->buffer.cursor = amount;
     return (slice) { io->buffer.data, amount };
   }
