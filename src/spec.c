@@ -35,6 +35,7 @@ int32 main (
   spec_add( map_init );
   spec_add( map_set );
   spec_add( reflection );
+  spec_focus( reflection_path_print );
   spec_add( set );
   spec_add( set_add );
   spec_add( set_alloc );

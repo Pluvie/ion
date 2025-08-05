@@ -10,6 +10,6 @@ enum types {
   POINTER,    /* 64bit pointer */
   SELF,       /* 64bit pointer to same type */
   LIST,       /* list data structure */
-  MAP,        /* map data structure */
   SET,        /* set data structure */
+  MAP,        /* map data structure */
 };

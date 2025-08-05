@@ -68,6 +68,9 @@ int cmp<struct squadmate> (
 #define map_of char*, int
 #include "ion/types/map.h"
 
+#define map_of string, int
+#include "ion/types/map.h"
+
 #define map_of char*, struct squadmate
 #include "ion/types/map.h"
 
@@ -93,7 +96,51 @@ int cmp<struct squadmate> (
 #define map_function(s, f, ...)                                           \
   _Generic(*(s),                                                          \
     map<char*, int> : map<char*, int>_ ## f,                              \
+    map<string, int> : map<string, int>_ ## f,                            \
     map<char*, struct squadmate> : map<char*, struct squadmate>_ ## f,    \
     map<string, struct squadmate> : map<string, struct squadmate>_ ## f,  \
     _map_function(v, f, __VA_ARGS__)                                      \
   )
+
+/**
+ * Let's now create the definitive struct to handle all possible reflection scenarios. */
+struct rfx_blueprint {
+  int v_int;
+  dec v_dec;
+  char v_char;
+  bool v_bool;
+  enum classes v_enum;
+  string v_string;
+  struct {
+    int v_int;
+  } v_struct;
+  int v_array[2];
+  char* v_pointer;
+  struct rfx_blueprint* v_self;
+  list<string> v_list;
+  set<string> v_set;
+  map<string, int> v_map;
+};
+
+#define b struct rfx_blueprint
+struct reflection rfx_blueprint = {
+  type(STRUCT, b), fields({
+    { field(v_int, INT, b) },
+    { field(v_dec, DEC, b) },
+    { field(v_char, CHAR, b) },
+    { field(v_bool, BOOL, b) },
+    { field(v_enum, ENUM, b) },
+    { field(v_string, STRING, b) },
+    { field(v_struct, STRUCT, b), fields({
+        { field(v_int, INT, b, v_struct) }
+      })
+    },
+    { field(v_array, ARRAY, b) },
+    { field(v_pointer, POINTER, b) },
+    { field(v_self, SELF, b) },
+    { field(v_list, LIST, b), of({ type(STRING) }) },
+    { field(v_set, SET, b), of({ type(STRING) }) },
+    { field(v_map, MAP, b), of({ type(STRING), of({ type(INT) }) }) },
+  })
+};
+#undef b

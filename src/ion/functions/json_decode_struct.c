@@ -6,9 +6,7 @@ static inline void json_decode_struct (
 )
 {
   struct reflection* field_rfx = NULL;
-  char* field_name = NULL;
   int field_name_length = 0;
-  int field_index = 0;
   slice result;
 
   #define character ((char*) result.data)[0]
@@ -25,11 +23,12 @@ static inline void json_decode_struct (
     return;
 
   if (character != '{') {
-    fail("expected `{` to begin object");
-    error_add_io_extraction(io);
+    fail("expected object begin '{'");
+    io_error_extract(io);
     return;
   }
 
+parse_field:
   json_parse_spaces(io);
   if (error.occurred)
     return;
@@ -38,13 +37,10 @@ static inline void json_decode_struct (
   if (error.occurred)
     return;
 
-  if (field_name_length == 0) {
-    fail("expected a string as object key");
-    error_add_io_extraction(io);
-    return;
-  }
+  if (field_name_length == 0)
+    goto check_object_end;
 
-  field_name = io_read(io, field_name_length);
+  result = io_read(io, field_name_length);
   if (error.occurred)
     return;
 
@@ -53,11 +49,7 @@ static inline void json_decode_struct (
     goto check_colon;
   }
 
-  struct string field_name_no_quotes = {
-    .content = field_name + 1,
-    .length = field_name_length - 2
-  };
-
+  string field_name_no_quotes = { result.data + 1, result.length - 2 };
   field_rfx = reflection_field_find(rfx, &field_name_no_quotes);
   if (field_rfx != NULL)
     goto check_colon;
@@ -67,13 +59,16 @@ check_colon:
   if (error.occurred)
     return;
 
-  character = io_read(io, sizeof(char));
+  result = io_read(io, sizeof(char));
   if (error.occurred)
     return;
 
-  if (*character != ':') {
+  if (result.length == 0)
+    return;
+
+  if (character != ':') {
     fail("expected a `:` after the field name");
-    error_add_io_extraction(io);
+    io_error_extract(io);
     return;
   }
 
@@ -98,8 +93,11 @@ check_comma:
   if (error.occurred)
     return;
 
-  character = io_read(io, sizeof(char));
+  result = io_read(io, sizeof(char));
   if (error.occurred)
+    return;
+
+  if (result.length == 0)
     return;
 
   switch (*character) {
@@ -107,14 +105,25 @@ check_comma:
     goto terminate;
 
   case ',':
-    field_index++;
-    goto next_field;
+    goto parse_field;
 
   default:
-    fail("expected comma or object end after field value");
-    error_add_io_extraction(io);
+    fail("expected comma, or object end '}'");
+    io_error_extract(io);
     return;
   }
+
+check_object_end:
+  character = io_read(io, sizeof(char));
+  if (error.occurred)
+    return;
+
+  if (result.length == 0 || character != '}')
+    fail("expected an object field, or object end '}'");
+    io_error_extract(io);
+    return;
+  }
+
 
 terminate:
   if (rfx == NULL)

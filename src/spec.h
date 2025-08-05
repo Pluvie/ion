@@ -31,6 +31,7 @@
 #include "spec/map_init.c"
 #include "spec/map_set.c"
 #include "spec/reflection.c"
+#include "spec/reflection_path_print.c"
 #include "spec/set.c"
 #include "spec/set_add.c"
 #include "spec/set_alloc.c"
