@@ -7,51 +7,33 @@ static inline void json_decode_struct (
 {
   struct reflection* field_rfx = NULL;
   char* field_name = NULL;
-  u64 field_name_length = 0;
-  u64 field_index = 0;
+  int field_name_length = 0;
+  int field_index = 0;
+  slice result;
 
-  char* character;
+  #define character ((char*) result.data)[0]
 
-object_begin:
   json_parse_spaces(io);
   if (error.occurred)
     return;
 
-  character = io_read(io, sizeof(char));
+  result = io_read(io, sizeof(char));
   if (error.occurred)
     return;
 
-  if (*character != '{') {
+  if (result.length == 0)
+    return;
+
+  if (character != '{') {
     fail("expected `{` to begin object");
     error_add_io_extraction(io);
     return;
   }
 
-check_empty_object:
   json_parse_spaces(io);
   if (error.occurred)
     return;
 
-  character = io_peek(io, sizeof(char));
-  if (error.occurred)
-    return;
-
-  if (*character == '}') {
-    io_read(io, sizeof(char));
-    if (error.occurred)
-      return;
-
-    goto terminate;
-  }
-
-  goto parse_field;
-
-next_field:
-  json_parse_spaces(io);
-  if (error.occurred)
-    return;
-
-parse_field:
   field_name_length = json_parse_string(io);
   if (error.occurred)
     return;
@@ -62,7 +44,6 @@ parse_field:
     return;
   }
 
-read_field:
   field_name = io_read(io, field_name_length);
   if (error.occurred)
     return;
@@ -142,4 +123,6 @@ terminate:
   reflection_validate(rfx, obj);
   if (error.occurred)
     return error_add_reflection_path(rfx);
+
+  #undef character
 }

@@ -72,5 +72,5 @@ static inline bool streq<char*, char*> (
     char* s2
 )
 {
-  return strcmp(s1, s1) == 0;
+  return strcmp(s1, s2) == 0;
 }

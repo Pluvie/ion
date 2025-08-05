@@ -22,6 +22,10 @@ read_character:
 
 terminate:
   io_cursor_restore(io, cursor);
+  io_read(io, length);
+  if (error.occurred)
+    goto error;
+
   return length;
 
 error:

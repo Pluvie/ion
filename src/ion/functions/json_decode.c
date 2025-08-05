@@ -11,28 +11,19 @@ void json_decode (
     goto decode_and_discard;
 
 decode_with_reflection:
-  int null_length = json_parse_null(io);
-  if (error.occurred)
+  if (json_decode_null(obj, io, rfx))
     return;
-
-  if (null_length > 0) {
-    io_read(io, null_length);
-    if (error.occurred)
-      return;
-
-    memzero(obj, rfx->size);
-    return;
-  }
 
   switch (rfx->type) {
   case INT:
-    return json_decode_int(obj, io, rfx, allocator);
+    //return json_decode_int(obj, io, rfx, allocator);
   case DEC:
   case CHAR:
   case BOOL:
   case ENUM:
   case STRING:
   case STRUCT:
+    //return json_decode_struct(obj, io, rfx, allocator);
   case ARRAY:
   case POINTER:
   case SELF:

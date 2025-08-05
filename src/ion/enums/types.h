@@ -12,6 +12,4 @@ enum types {
   LIST,       /* list data structure */
   MAP,        /* map data structure */
   SET,        /* set data structure */
-
-  TYPES_COUNT,
 };

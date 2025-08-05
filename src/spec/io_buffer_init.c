@@ -136,10 +136,10 @@ spec( io_buffer_init ) {
       // when("the io buffer is not initialized")
       // when("the amount to read is lesser or equal than the buffer size")
       when("the underlying channel contains equal or more data than the amount to read") {
-        int channel_available_data = amount + 3;
+        int channel_available_data = amount + 12;
         apply(preconditions(channel_available_data));
         /*        ┌────────────────────────────────────────┐
-          channel:│1111111                                 │
+          channel:│1111111122222222                        │
                   └────────────────────────────────────────┘
           amount:  ■■■■
                   ┌────────────────────────────────────────┐

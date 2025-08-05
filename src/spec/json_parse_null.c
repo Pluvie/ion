@@ -4,7 +4,7 @@ spec( json_parse_null ) {
 
   precondition("valid io");
     #define preconditions \
-      io = memory_alloc(spec_allocator, sizeof(struct io)); \
+      io = memory_alloc_zero(spec_allocator, sizeof(struct io)); \
       *io = io(s("  { \"a\":   null } "));
 
   when("the io reads a string equal to `true`") {
@@ -16,8 +16,8 @@ spec( json_parse_null ) {
     must("not fail");
       verify(error.occurred == false);
 
-    must("return 1");
-      verify(result == 1);
+    must("return lengthof(\"null\")");
+      verify(result == lengthof("null"));
 
     must("restore the io cursor to the original position");
       verify(io->cursor == io_cursor_starting_position);

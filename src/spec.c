@@ -9,9 +9,11 @@ int32 main (
   spec_add( date );
   spec_add( date_to_string );
   spec_add( date_today );
+  spec_add( io_error_extract );
   spec_add( io_buffer_init );
   spec_add( io_buffer_read );
   spec_add( io_read );
+  spec_add( json_decode );
   spec_add( json_parse_bool );
   spec_add( json_parse_null );
   spec_add( json_parse_number );

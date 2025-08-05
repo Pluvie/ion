@@ -11,7 +11,7 @@ static inline int json_parse_null (
 
   string null_str = (string) { result.data, lengthof("null") };
   if (streq("null", null_str))
-    return 1;
+    return lengthof("null");
 
   return 0;
 }

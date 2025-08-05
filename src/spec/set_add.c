@@ -107,7 +107,7 @@ spec( set_add ) {
 
         must("fail with a specific error");
           verify(error.occurred == true);
-          verify(streq(error.message, "set: stack allocated set is full"));
+          verify(streq(error.message, "add: stack allocated set is full"));
 
         must("return -1");
           verify(result == -1);

@@ -10,12 +10,13 @@ spec( json_parse_spaces ) {
     when("the io starts with spaces") {
       apply(preconditions);
       *io = io(s(" \t  \n  "));
+      int original_cursor_position = io->cursor;
       int result = json_parse_spaces(io);
 
       must("return the length of the spaces");
         verify(result == 7);
-      must("restore the cursor position");
-        verify(io->cursor == 0);
+      must("advance the cursor position");
+        verify(io->cursor == original_cursor_position + result);
       success();
         io_close(io);
     } end();
@@ -23,12 +24,13 @@ spec( json_parse_spaces ) {
     when("the io does not start with spaces") {
       apply(preconditions);
       *io = io(s("123    "));
+      int original_cursor_position = io->cursor;
       int result = json_parse_spaces(io);
 
       must("return 0");
         verify(result == 0);
-      must("restore the cursor position");
-        verify(io->cursor == 0);
+      must("advance the cursor position");
+        verify(io->cursor == original_cursor_position + result);
       success();
         io_close(io);
     } end();
@@ -38,12 +40,13 @@ spec( json_parse_spaces ) {
     when("the io starts with spaces") {
       apply(preconditions);
       *io = io(s(" \t  \n  , \"abc\": 123"));
+      int original_cursor_position = io->cursor;
       int result = json_parse_spaces(io);
 
       must("return the length of the spaces");
         verify(result == 7);
-      must("restore the cursor position");
-        verify(io->cursor == 0);
+      must("advance the cursor position");
+        verify(io->cursor == original_cursor_position + result);
       success();
         io_close(io);
     } end();
@@ -51,12 +54,13 @@ spec( json_parse_spaces ) {
     when("the io does not start with spaces") {
       apply(preconditions);
       *io = io(s("123    , 123"));
+      int original_cursor_position = io->cursor;
       int result = json_parse_spaces(io);
 
       must("return 0");
         verify(result == 0);
-      must("restore the cursor position");
-        verify(io->cursor == 0);
+      must("advance the cursor position");
+        verify(io->cursor == original_cursor_position + result);
       success();
         io_close(io);
     } end();
