@@ -8,13 +8,25 @@ static inline int json_parse_string (
   slice result;
   #define character ((char*) result.data)[0]
 
+  result = io_read(io, sizeof(char));
+  if (error.occurred)
+    goto error;
+
+  if (result.length == 0)
+    goto error;
+
+  if (character != '"')
+    goto error;
+
+  length++;
+
 read_character:
   result = io_read(io, sizeof(char));
   if (error.occurred)
     goto error;
 
   if (result.length == 0)
-    goto terminate;
+    goto error;
 
   if (escaped) {
     escaped = false;
@@ -33,20 +45,15 @@ read_character:
     goto terminate;
   }
 
-  if (unlikely(character != '"' && length == 0)) {
-    length = 0;
-    goto terminate;
-  }
-
   length++;
   goto read_character;
 
 terminate:
-  io_cursor_restore(io);
+  io_cursor_restore(io, cursor);
   return length;
 
 error:
-  io_cursor_restore(io);
+  io_cursor_restore(io, cursor);
   return -1;
 
   #undef character

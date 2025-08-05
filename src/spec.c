@@ -10,12 +10,13 @@ int32 main (
   spec_add( date_to_string );
   spec_add( date_today );
   spec_add( io_buffer_init );
-  spec_focus( io_buffer_read );
+  spec_add( io_buffer_read );
   spec_add( io_read );
   spec_add( json_parse_bool );
   spec_add( json_parse_null );
   spec_add( json_parse_number );
   spec_add( json_parse_spaces );
+  spec_add( json_parse_string );
   spec_add( list );
   spec_add( list_alloc );
   spec_add( list_at );

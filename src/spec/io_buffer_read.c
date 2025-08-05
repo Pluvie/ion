@@ -187,17 +187,16 @@ spec( io_buffer_read ) {
 
     // when("the io buffer is already initialized")
     when("the amount to read exceeds the buffer end") {
-      when("the amount to read is lesser or equal than the buffer size") {
+      when("the amount to read is not greater than the buffer size") {
         amount = 6;
 
-        when("the underlying channel contains less data than the amount to read") {
+        when("the underlying channel contains less data than the buffer size") {
           int channel_available_data = 25;
           apply(preconditions(channel_available_data));
           io->buffer.end = 24;
           io->buffer.cursor = 20;
           io->buffer.retained = false;
           apply(buffer_already_initialized_condition);
-          int original_buffer_end = io->buffer.end;
           int original_buffer_cursor = io->buffer.cursor;
           /*        ┌────────────────────────────────────────┐
             channel:│1111111122222222333333334               │
@@ -211,8 +210,9 @@ spec( io_buffer_read ) {
                               2*size  cursor end */
           slice result = io_buffer_read(io, amount);
 
-          must("extend the buffer by a quantity equal to the buffer size");
-            verify(io->buffer.end == original_buffer_end + io->buffer.size);
+          must("extend the buffer to a quantity equal to the available "\
+               "data on the channel");
+            verify(io->buffer.end == channel_available_data);
           must("read the exceeding amount from the io channel");
             verify(io->read.count == 1);
           must("advance the buffer cursor by a quantity equal to the available "\
@@ -231,8 +231,8 @@ spec( io_buffer_read ) {
         // when("the amount to read exceeds the buffer end")
         // when("the amount to read is lesser or equal than the buffer size")
         // when("the io buffer contains data for equal or more than 2 times the buffer size")
-        when("the underlying channel contains equal or more data than the amount to read") {
-          int channel_available_data = 28;
+        when("the underlying channel contains equal or more data than the buffer size") {
+          int channel_available_data = 34;
           apply(preconditions(channel_available_data));
           io->buffer.end = 24;
           io->buffer.cursor = 20;
@@ -241,7 +241,7 @@ spec( io_buffer_read ) {
           int original_buffer_end = io->buffer.end;
           int original_buffer_cursor = io->buffer.cursor;
           /*        ┌────────────────────────────────────────┐
-            channel:│1111111122222222333333334444            │
+            channel:│1111111122222222333333334444444455      │
                     └────────────────────────────────────────┘
                                              ┌┐ exceeding part
             amount:                      ■■■■■■
@@ -271,7 +271,7 @@ spec( io_buffer_read ) {
       // when("the io buffer is already initialized")
       // when("the amount to read exceeds the buffer end")
       when("the amount to read is greater than the buffer size") {
-        amount = 12;
+        amount = 10;
 
         when("the underlying channel contains less data than the amount to read") {
           int channel_available_data = 27;
@@ -280,7 +280,6 @@ spec( io_buffer_read ) {
           io->buffer.cursor = 20;
           io->buffer.retained = true;
           apply(buffer_already_initialized_condition);
-          int original_buffer_end = io->buffer.end;
           int original_buffer_cursor = io->buffer.cursor;
           /*        ┌────────────────────────────────────────┐
             channel:│111111112222222233333333444             │
@@ -294,14 +293,14 @@ spec( io_buffer_read ) {
                               2*size  cursor end */
           slice result = io_buffer_read(io, amount);
 
-          must("extend the buffer by a quantity equal to the buffer size plus amount to read");
-            verify(io->buffer.end == original_buffer_end + io->buffer.size + amount);
+          must("extend the buffer to a quantity equal to the available "\
+               "data on the channel");
+            verify(io->buffer.end == channel_available_data);
           must("read the exceeding amount from the io channel");
             verify(io->read.count == 1);
           must("advance the buffer cursor by a quantity equal to the available "\
                "data on the channel");
-            verify(io->buffer.cursor == original_buffer_cursor +
-              (channel_available_data - original_buffer_end));
+            verify(io->buffer.cursor == channel_available_data);
           must("return a slice of data with length equal to the available data "\
                "on the channel");
             verify(result.length == channel_available_data - original_buffer_cursor);
@@ -314,24 +313,24 @@ spec( io_buffer_read ) {
 
         // when("the amount to read exceeds the buffer end")
         // when("the amount to read is greater than the buffer size")
-        when("the underlying channel contains equal or more data than the amount to read") {
-          int channel_available_data = 36;
+        when("the underlying channel contains equal or more data than the buffer size") {
+          int channel_available_data = 40;
           apply(preconditions(channel_available_data));
-          io->buffer.end = 24;
+          io->buffer.end = 22;
           io->buffer.cursor = 20;
           io->buffer.retained = true;
           apply(buffer_already_initialized_condition);
           int original_buffer_end = io->buffer.end;
           /*        ┌────────────────────────────────────────┐
-            channel:│111111112222222233333333444444445555    │
+            channel:│1111111122222222333333334444444455555555│
                     └────────────────────────────────────────┘
-                                             ┌──────┐ exceeding part
-            amount:                      ■■■■■■■■■■■■
+                                            ┌──────┐ exceeding part
+            amount:                     ■■■■■■■■■■■■
                     ┌────────────────────────────────────────┐
-            buffer: │▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒                │
-                    └───────────────┬───┬───┬────────────────┘
-                                    ▼   ▼   ▼
-                              2*size  cursor end */
+            buffer: │▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒                   │
+                    └───────────────┬──┬─┬───────────────────┘
+                                    ▼  ▼ ▼
+                              2*size cursor end */
           slice result = io_buffer_read(io, amount);
 
           must("extend the buffer by a quantity equal to the buffer size plus amount to read");

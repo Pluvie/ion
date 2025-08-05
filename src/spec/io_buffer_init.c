@@ -48,15 +48,13 @@ spec( io_buffer_init ) {
 
         must("initialize the buffer data");
           verify(io->buffer.data != NULL);
-        must("allocate buffer data equal to the buffer size plus the amount to read");
-          verify(io->buffer.end == io->buffer.size + amount);
+        must("allocate buffer data equal to the channel available data");
+          verify(io->buffer.end == channel_available_data);
         must("read data from the io channel");
           verify(io->read.count == 1);
         must("advance the buffer cursor by a quantity equal to the available data "\
              "on the channel");
           verify(io->buffer.cursor == channel_available_data);
-        must("set the buffer end equal to the available data on the channel");
-          verify(io->buffer.end == channel_available_data);
         must("return a slice of data with length equal to the available data on "\
              "the channel");
           verify(result.length == channel_available_data);
@@ -68,10 +66,10 @@ spec( io_buffer_init ) {
       } end();
 
       when("the underlying channel contains equal or more data than the amount to read") {
-        int channel_available_data = amount + 3;
+        int channel_available_data = amount + 12;
         apply(preconditions(channel_available_data));
         /*        ┌────────────────────────────────────────┐
-          channel:│11111111222222                          │
+          channel:│111111112222222233333333                │
                   └────────────────────────────────────────┘
           amount:  ■■■■■■■■■■■■
                   ┌────────────────────────────────────────┐
@@ -89,8 +87,6 @@ spec( io_buffer_init ) {
           verify(io->read.count == 1);
         must("advance the buffer cursor by a quantity equal to the amount to read");
           verify(io->buffer.cursor == amount);
-        must("set the buffer end equal to the available data on the channel");
-          verify(io->buffer.end == channel_available_data);
         must("return a slice of data with length equal to the amount to read");
           verify(result.length == amount);
           verify(streq(result, "111111112222"));
@@ -120,15 +116,13 @@ spec( io_buffer_init ) {
 
         must("initialize the buffer data");
           verify(io->buffer.data != NULL);
-        must("allocate buffer data equal to the buffer size");
-          verify(io->buffer.end == io->buffer.size);
+        must("allocate buffer data equal to the channel available data");
+          verify(io->buffer.end == channel_available_data);
         must("read data from the io channel");
           verify(io->read.count == 1);
         must("advance the buffer cursor by a quantity equal to the available data "\
              "on the channel");
           verify(io->buffer.cursor == channel_available_data);
-        must("set the buffer end equal to the available data on the channel");
-          verify(io->buffer.end == channel_available_data);
         must("return a slice of data with length equal to the available data on "\
              "the channel");
           verify(result.length == channel_available_data);
@@ -163,8 +157,6 @@ spec( io_buffer_init ) {
           verify(io->read.count == 1);
         must("advance the buffer cursor by a quantity equal to the amount to read");
           verify(io->buffer.cursor == amount);
-        must("set the buffer end equal to the available data on the channel");
-          verify(io->buffer.end == channel_available_data);
         must("return a slice of data with length equal to the amount to read");
           verify(result.length == amount);
           verify(streq(result, "1111111"));

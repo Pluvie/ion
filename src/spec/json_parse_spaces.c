@@ -4,7 +4,7 @@ spec( json_parse_spaces ) {
 
   precondition("valid io");
     #define preconditions \
-      io = memory_alloc(spec_allocator, sizeof(struct io));
+      io = memory_alloc_zero(spec_allocator, sizeof(struct io));
 
   when("the parsing reaches the end of input") {
     when("the io starts with spaces") {
