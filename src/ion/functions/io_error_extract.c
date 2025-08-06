@@ -45,14 +45,20 @@ extract_from_channel:
     channel_begin = 0;
 
   int channel_end = io->cursor + 32;
-  if (io->channel != IO_MEMORY || channel_end > io->length)
+  if (io->channel != IO_MEMORY)
     channel_end = io->cursor;
+  else if (channel_end > io->length)
+    channel_end = io->length;
 
   extraction_size = channel_end - channel_begin;
   if (extraction_size > sizeof(extraction))
     extraction_size = sizeof(extraction);
 
-  memcpy(extraction, io->storage + channel_begin, extraction_size);
+  if (io->channel == IO_MEMORY)
+    memcpy(extraction, io->memory + channel_begin, extraction_size);
+  else
+    memcpy(extraction, io->storage + channel_begin, extraction_size);
+
   extraction[sizeof(extraction)] = '\0';
 
   caret_position = 0;

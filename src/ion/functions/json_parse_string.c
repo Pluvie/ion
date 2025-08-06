@@ -40,7 +40,7 @@ read_character:
     goto read_character;
   }
 
-  if (character == '"' && length > 0) {
+  if (character == '"') {
     length++;
     goto terminate;
   }

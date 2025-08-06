@@ -10,6 +10,8 @@
 #include "spec/io_error_extract.c"
 #include "spec/io_read.c"
 #include "spec/json_decode.c"
+#include "spec/json_decode_string.c"
+#include "spec/json_decode_struct.c"
 #include "spec/json_parse_bool.c"
 #include "spec/json_parse_null.c"
 #include "spec/json_parse_number.c"

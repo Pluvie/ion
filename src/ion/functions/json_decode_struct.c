@@ -33,28 +33,27 @@ parse_field:
   if (error.occurred)
     return;
 
+  /* Parse field name. */
   field_name_length = json_parse_string(io);
   if (error.occurred)
     return;
 
-  if (field_name_length == 0)
+  if (field_name_length <= 0)
     goto check_object_end;
 
   result = io_read(io, field_name_length);
   if (error.occurred)
     return;
 
-  if (rfx == NULL) {
+  if (rfx != NULL) {
+    string field_name_no_quotes = { result.data + 1, result.length - 2 };
+    field_rfx = reflection_field_find(rfx, field_name_no_quotes);
+
+  } else {
     field_rfx = NULL;
-    goto check_colon;
   }
 
-  string field_name_no_quotes = { result.data + 1, result.length - 2 };
-  field_rfx = reflection_field_find(rfx, &field_name_no_quotes);
-  if (field_rfx != NULL)
-    goto check_colon;
-
-check_colon:
+  /* Check colon. */
   json_parse_spaces(io);
   if (error.occurred)
     return;
@@ -63,20 +62,17 @@ check_colon:
   if (error.occurred)
     return;
 
-  if (result.length == 0)
-    return;
-
-  if (character != ':') {
+  if (result.length == 0 || character != ':') {
     fail("expected a `:` after the field name");
     io_error_extract(io);
     return;
   }
 
+  /* Parse field value. */
   json_parse_spaces(io);
   if (error.occurred)
     return;
 
-parse_value:
   if (field_rfx != NULL) {
     void* field_obj = obj + field_rfx->offset;
     json_decode(field_obj, io, field_rfx, allocator);
@@ -88,7 +84,7 @@ parse_value:
   if (error.occurred)
     return;
 
-check_comma:
+  /* Check comma -- next field --, or object end. */
   json_parse_spaces(io);
   if (error.occurred)
     return;
@@ -100,7 +96,7 @@ check_comma:
   if (result.length == 0)
     return;
 
-  switch (*character) {
+  switch (character) {
   case '}':
     goto terminate;
 
@@ -114,16 +110,15 @@ check_comma:
   }
 
 check_object_end:
-  character = io_read(io, sizeof(char));
+  result = io_read(io, sizeof(char));
   if (error.occurred)
     return;
 
-  if (result.length == 0 || character != '}')
+  if (result.length == 0 || character != '}') {
     fail("expected an object field, or object end '}'");
     io_error_extract(io);
     return;
   }
-
 
 terminate:
   if (rfx == NULL)
@@ -131,7 +126,7 @@ terminate:
 
   reflection_validate(rfx, obj);
   if (error.occurred)
-    return error_add_reflection_path(rfx);
+    return reflection_error_extract(rfx);
 
   #undef character
 }

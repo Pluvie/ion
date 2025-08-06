@@ -38,5 +38,17 @@ spec( json_decode ) {
       io_close(io);
   } end();
 
+  when("the json is an incompatible value") {
+    apply(preconditions);
+    *io = io(s("   123 \n  "));
+    json_decode(obj, io, rfx, allocator);
+
+    must("fail with a specific error");
+      verify(error.occurred == true);
+      verify(streq(error.message, "expected object begin '{'"));
+    success();
+      io_close(io);
+  } end();
+
   #undef preconditions
 }

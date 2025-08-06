@@ -21,6 +21,7 @@ decode_with_reflection:
   case CHAR:
   case BOOL:
   case ENUM:
+    return json_decode_int(obj, io, rfx, allocator);
   case STRING:
   case STRUCT:
     //return json_decode_struct(obj, io, rfx, allocator);

@@ -1,4 +1,4 @@
-static inline void json_decode_primitive (
+static inline void json_decode_int (
     void* obj,
     struct io* io,
     struct reflection* rfx,

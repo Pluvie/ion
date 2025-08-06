@@ -13,7 +13,9 @@ int32 main (
   spec_add( io_buffer_init );
   spec_add( io_buffer_read );
   spec_add( io_read );
-  spec_focus( json_decode );
+  spec_add( json_decode );
+  spec_add( json_decode_string );
+  spec_focus( json_decode_struct );
   spec_add( json_parse_bool );
   spec_add( json_parse_null );
   spec_add( json_parse_number );
