@@ -10,7 +10,7 @@ spec( json_decode_struct ) {
   precondition("a valid reflection for the object");
   precondition("a valid memory allocator");
     #define preconditions \
-      struct squadmate shepard; \
+      struct squadmate shepard = { 0 }; \
       obj = &shepard; \
       io = memory_alloc_zero(spec_allocator, sizeof(struct io)); \
       rfx = &(struct reflection) { \
@@ -47,6 +47,8 @@ spec( json_decode_struct ) {
       verify(error.occurred == false);
     must("correctly parse until the end of the object");
       verify(io->cursor == 11);
+    must("not set any field");
+      verify(memeq(&shepard, &(struct squadmate) { 0 }, sizeof(struct squadmate)));
     success();
       io_close(io);
   } end();
@@ -63,6 +65,21 @@ spec( json_decode_struct ) {
     must("set the correct value to the corresponding fields");
       verify(streq(shepard.name, "Jane Shepard"));
       verify(shepard.class == SOLDIER);
+    success();
+      io_close(io);
+  } end();
+
+  when("the json object has no matching fields") {
+    apply(preconditions);
+    *io = io(s("   \n { \"_name\": \"Jane Shepard\", \"_class\": 0 } "));
+    json_decode_struct(obj, io, rfx, allocator);
+
+    must("not fail");
+      verify(error.occurred == false);
+    must("correctly parse until the end of the object");
+      verify(io->cursor == 45);
+    must("not set any field");
+      verify(memeq(&shepard, &(struct squadmate) { 0 }, sizeof(struct squadmate)));
     success();
       io_close(io);
   } end();

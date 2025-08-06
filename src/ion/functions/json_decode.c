@@ -16,15 +16,16 @@ decode_with_reflection:
 
   switch (rfx->type) {
   case INT:
-    //return json_decode_int(obj, io, rfx, allocator);
+    return json_decode_int(obj, io, rfx, allocator);
   case DEC:
   case CHAR:
   case BOOL:
   case ENUM:
     return json_decode_int(obj, io, rfx, allocator);
   case STRING:
+    return json_decode_string(obj, io, rfx, allocator);
   case STRUCT:
-    //return json_decode_struct(obj, io, rfx, allocator);
+    return json_decode_struct(obj, io, rfx, allocator);
   case ARRAY:
   case POINTER:
   case SELF:
@@ -35,5 +36,26 @@ decode_with_reflection:
   }
 
 decode_and_discard:
+  int parsed_length = 0;
+
+  if (json_decode_null(obj, io, rfx))
+    return;
+
+  parsed_length = json_parse_number(io);
+  if (error.occurred)
+    return;
+  if (parsed_length > 0) {
+    io_read(io, parsed_length);
+    return;
+  }
+
+  parsed_length = json_parse_string(io);
+  if (error.occurred)
+    return;
+  if (parsed_length > 0) {
+    io_read(io, parsed_length);
+    return;
+  }
+
   return;
 }
