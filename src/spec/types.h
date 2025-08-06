@@ -135,7 +135,7 @@ struct reflection rfx_blueprint = {
         { field(v_int, INT, b, v_struct) }
       })
     },
-    { field(v_array, ARRAY, b) },
+    { field(v_array, ARRAY, b), of({ type(INT) }) },
     { field(v_pointer, POINTER, b) },
     { field(v_self, SELF, b) },
     { field(v_list, LIST, b), of({ type(STRING) }) },

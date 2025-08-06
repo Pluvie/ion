@@ -49,6 +49,7 @@
 #include "functions/memory_init.c"
 #include "functions/memory_release.c"
 #include "functions/reflection_error_extract.c"
+#include "functions/reflection_field_find.c"
 #include "functions/reflection_path_print.c"
 #include "functions/reflection_validate.c"
 #include "functions/streq.c"

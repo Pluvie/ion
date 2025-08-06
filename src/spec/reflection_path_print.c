@@ -12,16 +12,40 @@ spec( reflection_path_print ) {
       result = result_holder; \
       length = sizeof(result_holder);
 
-  when("a supposed error is found in a top level element") {
+  when("a supposed error is found in a struct field") {
     apply(preconditions);
-    //rfx = &rfx_blueprint;
-    //int result_length = reflection_path_print(rfx, result, length);
 
     rfx = list_at(rfx_blueprint.fields, 0);
-    int result_length = reflection_path_print(rfx, result, length);
+    reflection_path_print(rfx, result, length);
 
-    must("print something");
-      print("----->\n%.*s", (int32) result_length, result);
+    must("print the field name");
+      verify(streq(rfx->name, result));
+
+  } end();
+
+  when("a supposed error is found in a nested struct field") {
+    apply(preconditions);
+
+    struct reflection* field = reflection_field_find(&rfx_blueprint, s("v_struct"));
+    rfx = reflection_field_find(field, s("v_int"));
+    reflection_path_print(rfx, result, length);
+
+    must("print the dot separated field path");
+      verify(streq("v_struct.v_int", result));
+
+  } end();
+
+  when("a supposed error is found in a struct field of type array") {
+    apply(preconditions);
+
+    struct reflection* field = reflection_field_find(&rfx_blueprint, s("v_array"));
+    rfx = field->element;
+    rfx->parent = field;
+    rfx->index = 7;
+    reflection_path_print(rfx, result, length);
+
+    must("print the field name with index");
+      verify(streq("v_array.7", result));
 
   } end();
 

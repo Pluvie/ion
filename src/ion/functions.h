@@ -49,6 +49,7 @@
 #include "functions/memory_init.h"
 #include "functions/memory_release.h"
 #include "functions/reflection_error_extract.h"
+#include "functions/reflection_field_find.h"
 #include "functions/reflection_path_print.h"
 #include "functions/reflection_validate.h"
 #include "functions/streq.h"

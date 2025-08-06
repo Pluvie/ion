@@ -13,7 +13,7 @@ int32 main (
   spec_add( io_buffer_init );
   spec_add( io_buffer_read );
   spec_add( io_read );
-  spec_add( json_decode );
+  spec_focus( json_decode );
   spec_add( json_parse_bool );
   spec_add( json_parse_null );
   spec_add( json_parse_number );
@@ -35,7 +35,7 @@ int32 main (
   spec_add( map_init );
   spec_add( map_set );
   spec_add( reflection );
-  spec_focus( reflection_path_print );
+  spec_add( reflection_path_print );
   spec_add( set );
   spec_add( set_add );
   spec_add( set_alloc );

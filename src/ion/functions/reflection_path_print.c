@@ -31,14 +31,14 @@ climb_reflection:
 reverse_print:
   int printed_bytes = 0;
   int print_cursor = 0;
-  int node_index = nodes_count - 1;
+  int node_depth = nodes_count - 1;
 
 loop_nodes:
-  node = nodes[node_index];
+  node = nodes[node_depth];
   printed_bytes = 0;
 
   if (!strnull(node->name)) {
-    if (node_index == 0)
+    if (node_depth == 0)
       printed_bytes = snprintf(result, length - print_cursor, "%.*s", sp(node->name));
     else
       printed_bytes = snprintf(result, length - print_cursor, "%.*s.", sp(node->name));
@@ -50,7 +50,7 @@ loop_nodes:
       (node->parent->type == ARRAY ||
        node->parent->type == LIST)) {
 
-    if (node_index == 0)
+    if (node_depth == 0)
       printed_bytes = snprintf(result, length - print_cursor, "%li", node->index);
     else
       printed_bytes = snprintf(result, length - print_cursor, "%li.", node->index);
@@ -64,9 +64,9 @@ previous_node:
 
   result += printed_bytes;
   print_cursor += printed_bytes;
-  node_index--;
+  node_depth--;
 
-  if (node_index < 0)
+  if (node_depth < 0)
     return print_cursor;
 
   goto loop_nodes;
