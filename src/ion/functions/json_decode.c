@@ -35,7 +35,7 @@ decode_with_reflection:
   case SET:
     return json_decode_set(obj, io, rfx, allocator);
   case MAP:
-    return;
+    return json_decode_map(obj, io, rfx, allocator);
   }
 
 decode_and_discard:

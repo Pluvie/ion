@@ -10,16 +10,18 @@ spec( json_decode_map ) {
   precondition("a valid reflection for the object");
   precondition("a valid memory allocator");
     #define preconditions \
-      set<struct squadmate> squad = { 0 }; \
+      map<string, struct squadmate> squad = { 0 }; \
       obj = &squad; \
       io = memory_alloc_zero(spec_allocator, sizeof(struct io)); \
       rfx = &(struct reflection) { \
-        type(SET), container(set<struct squadmate>_), of({ \
-          type(STRUCT, struct squadmate), fields({ \
-            { field(name, STRING, struct squadmate) }, \
-            { field(class, ENUM, struct squadmate) }, \
-            { field(health, INT, struct squadmate) }, \
-            { field(shields, INT, struct squadmate) }, \
+        type(MAP), container(map<string, struct squadmate>_), of({ \
+          type(STRING), of({ \
+            type(STRUCT, struct squadmate), fields({ \
+              { field(name, STRING, struct squadmate) }, \
+              { field(class, ENUM, struct squadmate) }, \
+              { field(health, INT, struct squadmate) }, \
+              { field(shields, INT, struct squadmate) }, \
+            }) \
           }) \
         }) \
       }; \
@@ -58,21 +60,23 @@ spec( json_decode_map ) {
   when("the json array has some elements") {
     apply(preconditions);
     *io = io(s("   \n [ \n"\
-      "{ \"name\": \"Jane Shepard\", \"class\": 0 }, \n"\
-      "{ \"name\": \"Garrus Vakarian\", \"class\": 2 } \n"\
+      "[ \"Commander\", { \"name\": \"Jane Shepard\", \"class\": 0 } ], \n"\
+      "[ \"Archangel\", { \"name\": \"Garrus Vakarian\", \"class\": 2 } ] \n"\
       "] "));
     json_decode_map(obj, io, rfx, allocator);
 
     must("not fail");
       verify(error.occurred == false);
     must("correctly parse until the end of the array");
-      verify(io->cursor == 93);
+      verify(io->cursor == 127);
     must("add the corresponding elements");
       verify(squad.length == 2);
-      struct squadmate shepard = { s("Jane Shepard"), SOLDIER };
-      struct squadmate garrus = { s("Garrus Vakarian"), INFILTRATOR };
-      verify(set_has(&squad, shepard));
-      verify(set_has(&squad, garrus));
+      struct squadmate* shepard = map_get(&squad, s("Commander"));
+      struct squadmate* garrus = map_get(&squad, s("Archangel"));
+      verify(streq(shepard->name, s("Jane Shepard")));
+      verify(shepard->class == SOLDIER);
+      verify(streq(garrus->name, s("Garrus Vakarian")));
+      verify(garrus->class == INFILTRATOR);
     success();
       io_close(io);
   } end();
@@ -80,22 +84,24 @@ spec( json_decode_map ) {
   when("the json array has some elements, some of which duplicated") {
     apply(preconditions);
     *io = io(s("   \n [ \n"\
-      "{ \"name\": \"Jane Shepard\", \"class\": 0 }, \n"\
-      "{ \"name\": \"Jane Shepard\", \"class\": 0 }, \n"\
-      "{ \"name\": \"Garrus Vakarian\", \"class\": 2 } \n"\
+      "[ \"Commander\", { \"name\": \"Jane Shepard\", \"class\": 0 } ], \n"\
+      "[ \"Commander\", { \"name\": \"Jane Shepard\", \"class\": 0 } ], \n"\
+      "[ \"Archangel\", { \"name\": \"Garrus Vakarian\", \"class\": 2 } ] \n"\
       "] "));
     json_decode_map(obj, io, rfx, allocator);
 
     must("not fail");
       verify(error.occurred == false);
     must("correctly parse until the end of the array");
-      verify(io->cursor == 134);
+      verify(io->cursor == 185);
     must("add the corresponding elements, removing duplicates from the set");
       verify(squad.length == 2);
-      struct squadmate shepard = { s("Jane Shepard"), SOLDIER };
-      struct squadmate garrus = { s("Garrus Vakarian"), INFILTRATOR };
-      verify(set_has(&squad, shepard));
-      verify(set_has(&squad, garrus));
+      struct squadmate* shepard = map_get(&squad, s("Commander"));
+      struct squadmate* garrus = map_get(&squad, s("Archangel"));
+      verify(streq(shepard->name, s("Jane Shepard")));
+      verify(shepard->class == SOLDIER);
+      verify(streq(garrus->name, s("Garrus Vakarian")));
+      verify(garrus->class == INFILTRATOR);
     success();
       io_close(io);
   } end();

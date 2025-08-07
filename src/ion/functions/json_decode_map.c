@@ -5,17 +5,22 @@ static inline void json_decode_map (
     struct memory* allocator
 )
 {
-  struct reflection* element_rfx = NULL;
-  void* element_block = NULL;
-  int element_index = 0;
+  struct reflection* key_rfx = NULL;
+  struct reflection* value_rfx = NULL;
+  void* key_block = NULL;
+  void* value_block = NULL;
   void* map_obj = NULL;
+  int added_position = 0;
   slice result;
 
   if (rfx != NULL) {
-    element_rfx = rfx->element;
-    element_rfx->parent = rfx;
+    key_rfx = rfx->element;
+    key_rfx->parent = rfx;
+    value_rfx = key_rfx->element;
+    value_rfx->parent = key_rfx;
     map_obj = rfx->container_creator(8, allocator);
-    element_block = memory_alloc_zero(allocator, element_rfx->size);
+    key_block = memory_alloc_zero(allocator, key_rfx->size);
+    value_block = memory_alloc_zero(allocator, value_rfx->size);
   }
 
   #define character ((char*) result.data)[0]
@@ -37,7 +42,57 @@ static inline void json_decode_map (
     return;
   }
 
-parse_value:
+parse_pair:
+  json_parse_spaces(io);
+  if (error.occurred)
+    return;
+
+  result = io_read(io, sizeof(char));
+  if (error.occurred)
+    return;
+
+  if (result.length > 0 && character == ']')
+    goto terminate;
+
+  if (result.length == 0 || character != '[') {
+    fail("expected array begin '['");
+    io_error_extract(io);
+    return;
+  }
+
+  /* Parse key. */
+  json_parse_spaces(io);
+  if (error.occurred)
+    return;
+
+  if (key_rfx != NULL) {
+    json_decode(key_block, io, key_rfx, allocator);
+    added_position = rfx->container_adder(map_obj, key_block);
+
+  } else {
+    json_decode(NULL, io, NULL, NULL);
+  }
+
+  if (error.occurred)
+    return;
+
+  /* Parse comma. */
+  json_parse_spaces(io);
+  if (error.occurred)
+    return;
+
+  result = io_read(io, sizeof(char));
+  if (error.occurred)
+    return;
+
+  if (result.length == 0 || character != ',') {
+    fail("expected comma");
+    reflection_error_extract(rfx);
+    io_error_extract(io);
+    return;
+  }
+
+  /* Parse value. */
   json_parse_spaces(io);
   if (error.occurred)
     return;
@@ -47,22 +102,17 @@ parse_value:
     return;
 
   if (result.length == 0) {
-    fail("expected value, or array end ']'");
+    fail("expected value");
     reflection_error_extract(rfx);
     io_error_extract(io);
     return;
   }
 
-  if (character == ']') {
-    io_read(io, sizeof(char));
-    if (error.occurred)
-      return;
-    goto terminate;
-  }
-
-  if (element_rfx != NULL) {
-    json_decode(element_block, io, element_rfx, allocator);
-    rfx->container_adder(map_obj, element_block);
+  if (value_rfx != NULL) {
+    json_decode(value_block, io, value_rfx, allocator);
+    void* map_values = *(void**) (map_obj + SET__SIZE);
+    void* value_position = map_values + (added_position * value_rfx->size);
+    memcpy(value_position, value_block, value_rfx->size);
 
   } else {
     json_decode(NULL, io, NULL, NULL);
@@ -71,7 +121,7 @@ parse_value:
   if (error.occurred)
     return;
 
-  /* Check comma -- next field --, or array end. */
+  /* Check array pair end. */
   json_parse_spaces(io);
   if (error.occurred)
     return;
@@ -80,16 +130,34 @@ parse_value:
   if (error.occurred)
     return;
 
-  if (result.length == 0)
+  if (result.length == 0 || character != ']') {
+    fail("expected array end ']'");
+    io_error_extract(io);
     return;
+  }
+
+
+  /* Check comma -- next pair --, or array end. */
+  json_parse_spaces(io);
+  if (error.occurred)
+    return;
+
+  result = io_read(io, sizeof(char));
+  if (error.occurred)
+    return;
+
+  if (result.length == 0) {
+    fail("expected comma, or array end ']'");
+    io_error_extract(io);
+    return;
+  }
 
   switch (character) {
   case ']':
     goto terminate;
 
   case ',':
-    element_index++;
-    goto parse_value;
+    goto parse_pair;
 
   default:
     fail("expected comma, or array end ']'");

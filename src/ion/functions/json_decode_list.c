@@ -28,10 +28,7 @@ static inline void json_decode_list (
   if (error.occurred)
     return;
 
-  if (result.length == 0)
-    return;
-
-  if (character != '[') {
+  if (result.length == 0 || character != '[') {
     fail("expected array begin '['");
     io_error_extract(io);
     return;
@@ -71,7 +68,7 @@ parse_value:
   if (error.occurred)
     return;
 
-  /* Check comma -- next field --, or array end. */
+  /* Check comma -- next element --, or array end. */
   json_parse_spaces(io);
   if (error.occurred)
     return;
@@ -80,8 +77,11 @@ parse_value:
   if (error.occurred)
     return;
 
-  if (result.length == 0)
+  if (result.length == 0) {
+    fail("expected comma, or array end ']'");
+    io_error_extract(io);
     return;
+  }
 
   switch (character) {
   case ']':

@@ -10,8 +10,6 @@ enum type_sizes {
   POINTER__SIZE   =  8,   /* 64bit pointer */
   SELF__SIZE      =  8,   /* 64bit pointer to same type */
   LIST__SIZE      = 32,   /* list data structure */
-  MAP__SIZE       = 64,   /* map data structure */
   SET__SIZE       = 48,   /* set data structure */
-
-  TYPE_SIZES_COUNT,
+  MAP__SIZE       = 64,   /* map data structure */
 };

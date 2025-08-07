@@ -17,7 +17,8 @@ int32 main (
   spec_add( json_decode_array );
   spec_add( json_decode_int );
   spec_add( json_decode_list );
-  spec_focus( json_decode_set );
+  spec_add( json_decode_map );
+  spec_add( json_decode_set );
   spec_add( json_decode_string );
   spec_add( json_decode_struct );
   spec_add( json_parse_bool );
