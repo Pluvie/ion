@@ -21,7 +21,7 @@ decode_with_reflection:
   case CHAR:
   case BOOL:
   case ENUM:
-    return json_decode_int(obj, io, rfx, allocator);
+    return json_decode_enum(obj, io, rfx, allocator);
   case STRING:
     return json_decode_string(obj, io, rfx, allocator);
   case STRUCT:
@@ -31,8 +31,10 @@ decode_with_reflection:
   case POINTER:
   case SELF:
   case LIST:
-  case MAP:
+    return json_decode_list(obj, io, rfx, allocator);
   case SET:
+    return json_decode_set(obj, io, rfx, allocator);
+  case MAP:
     return;
   }
 
