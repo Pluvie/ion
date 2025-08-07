@@ -18,8 +18,14 @@ decode_with_reflection:
   case INT:
     return json_decode_int(obj, io, rfx, allocator);
   case DEC:
+    fail("not implemented");
+    return;
   case CHAR:
+    fail("not implemented");
+    return;
   case BOOL:
+    fail("not implemented");
+    return;
   case ENUM:
     return json_decode_enum(obj, io, rfx, allocator);
   case STRING:
@@ -29,8 +35,10 @@ decode_with_reflection:
   case ARRAY:
     return json_decode_array(obj, io, rfx, allocator);
   case POINTER:
-    //return json_decode_pointer(obj, io, rfx, allocator);
+    return json_decode_pointer(obj, io, rfx, allocator);
   case SELF:
+    fail("not implemented");
+    return;
   case LIST:
     return json_decode_list(obj, io, rfx, allocator);
   case SET:

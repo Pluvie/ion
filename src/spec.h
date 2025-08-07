@@ -14,6 +14,7 @@
 #include "spec/json_decode_int.c"
 #include "spec/json_decode_list.c"
 #include "spec/json_decode_map.c"
+#include "spec/json_decode_pointer.c"
 #include "spec/json_decode_set.c"
 #include "spec/json_decode_string.c"
 #include "spec/json_decode_struct.c"

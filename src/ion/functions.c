@@ -30,6 +30,7 @@
 #include "functions/json_decode_list.c"
 #include "functions/json_decode_map.c"
 #include "functions/json_decode_null.c"
+#include "functions/json_decode_pointer.c"
 #include "functions/json_decode_set.c"
 #include "functions/json_decode_string.c"
 #include "functions/json_decode_struct.c"
