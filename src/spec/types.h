@@ -115,7 +115,7 @@ struct rfx_blueprint {
     int v_int;
   } v_struct;
   int v_array[2];
-  char* v_pointer;
+  int* v_pointer;
   struct rfx_blueprint* v_self;
   list<string> v_list;
   set<string> v_set;
@@ -131,16 +131,13 @@ struct reflection rfx_blueprint = {
     { field(v_bool, BOOL, b) },
     { field(v_enum, ENUM, b) },
     { field(v_string, STRING, b) },
-    { field(v_struct, STRUCT, b), fields({
-        { field(v_int, INT, b, v_struct) }
-      })
-    },
+    { field(v_struct, STRUCT, b), fields({ { field(v_int, INT, b, v_struct) } }) },
     { field(v_array, ARRAY, b), of({ type(INT) }) },
-    { field(v_pointer, POINTER, b) },
+    { field(v_pointer, POINTER, b), of({ type(INT) }) },
     { field(v_self, SELF, b) },
-    { field(v_list, LIST, b), of({ type(STRING) }) },
-    { field(v_set, SET, b), of({ type(STRING) }) },
-    { field(v_map, MAP, b), of({ type(STRING), of({ type(INT) }) }) },
+    { field(v_list, LIST, b), of({ type(STRING) }), container(list<string>_) },
+    { field(v_set, SET, b), of({ type(STRING) }), container(set<string>_) },
+    { field(v_map, MAP, b), of({ type(STRING), of({ type(INT) }) }), container(map<string, int>_) },
   })
 };
 #undef b

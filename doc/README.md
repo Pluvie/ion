@@ -18,3 +18,5 @@ Landing page for all documented ⚡️ION⚡️ features.
 
 - More spec cases for `io_error_extract` and `reflection_error_extract`: they should
   cover many more edge cases.
+
+- `reflection_error_extract`: what if *rfx* is NULL?

@@ -27,6 +27,7 @@ decode_with_reflection:
   case STRUCT:
     return json_decode_struct(obj, io, rfx, allocator);
   case ARRAY:
+    return json_decode_array(obj, io, rfx, allocator);
   case POINTER:
   case SELF:
   case LIST:
@@ -55,6 +56,29 @@ decode_and_discard:
   if (parsed_length > 0) {
     io_read(io, parsed_length);
     return;
+  }
+
+  parsed_length = json_parse_bool(io);
+  if (error.occurred)
+    return;
+  if (parsed_length > 0) {
+    io_read(io, parsed_length);
+    return;
+  }
+
+  slice peek = io_peek(io, sizeof(char));
+  if (error.occurred)
+    return;
+
+  switch (((char*) peek.data)[0]) {
+  case '{':
+    return json_decode_struct(NULL, io, NULL, NULL);
+  case '[':
+    return json_decode_array(NULL, io, NULL, NULL);
+  default:
+    fail("expected json value");
+    reflection_error_extract(rfx);
+    io_error_extract(io);
   }
 
   return;

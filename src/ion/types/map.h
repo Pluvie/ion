@@ -7,6 +7,7 @@
 
 #include "map/struct.h"
 #include "map/functions.h"
+#include "map/reflection.h"
 
 #undef K
 #undef V

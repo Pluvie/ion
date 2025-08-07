@@ -38,6 +38,18 @@ spec( json_decode ) {
       io_close(io);
   } end();
 
+  when("the reflection is NULL") {
+    apply(preconditions);
+    *io = io(s("   123 \n  "));
+    rfx = NULL;
+    json_decode(obj, io, rfx, allocator);
+
+    must("decode and discard the value");
+      verify(io->cursor == 6);
+    success();
+      io_close(io);
+  } end();
+
   when("the json is an incompatible value") {
     apply(preconditions);
     *io = io(s("   123 \n  "));
@@ -45,7 +57,10 @@ spec( json_decode ) {
 
     must("fail with a specific error");
       verify(error.occurred == true);
-      verify(streq(error.message, "expected object begin '{'"));
+      verify(streq(error.message,
+        "expected object begin '{', at position 4:\n"\
+        "   123 \\  \n"\
+        "   ^\n"));
     success();
       io_close(io);
   } end();

@@ -27,7 +27,8 @@ struct reflection {
     struct reflection* element;
   };
   bool (*validator)(void*, struct reflection*);
+  int (*container_adder)(void*, void*);
+  void* (*container_creator)(int, memory*);
   void* support_data;
-  padding(16);
 };
 check_sizeof(128, struct reflection);

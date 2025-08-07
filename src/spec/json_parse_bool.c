@@ -16,8 +16,8 @@ spec( json_parse_bool ) {
     must("not fail");
       verify(error.occurred == false);
 
-    must("return 1");
-      verify(result == 1);
+    must("return lengthof(\"true\")");
+      verify(result == lengthof("true"));
 
     must("restore the io cursor to the original position");
       verify(io->cursor == io_cursor_starting_position);
@@ -36,8 +36,8 @@ spec( json_parse_bool ) {
     must("not fail");
       verify(error.occurred == false);
 
-    must("return 0");
-      verify(result == 0);
+    must("return lengthof(\"false\")");
+      verify(result == lengthof("false"));
 
     must("restore the io cursor to the original position");
       verify(io->cursor == io_cursor_starting_position);

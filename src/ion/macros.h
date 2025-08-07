@@ -38,6 +38,7 @@
 #include "macros/strnull.h"
 #include "macros/unlikely.h"
 
+#include "macros/reflection/container.h"
 #include "macros/reflection/field.h"
 #include "macros/reflection/fields.h"
 #include "macros/reflection/inspect.h"

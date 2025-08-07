@@ -4,6 +4,7 @@
 
 #include "set/struct.h"
 #include "set/functions.h"
+#include "set/reflection.h"
 
 #undef T
 #undef _type
