@@ -31,6 +31,7 @@
 #include "functions/json_decode_map.h"
 #include "functions/json_decode_null.h"
 #include "functions/json_decode_pointer.h"
+#include "functions/json_decode_self.h"
 #include "functions/json_decode_set.h"
 #include "functions/json_decode_string.h"
 #include "functions/json_decode_struct.h"

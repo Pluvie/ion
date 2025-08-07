@@ -37,8 +37,7 @@ decode_with_reflection:
   case POINTER:
     return json_decode_pointer(obj, io, rfx, allocator);
   case SELF:
-    fail("not implemented");
-    return;
+    return json_decode_self(obj, io, rfx, allocator);
   case LIST:
     return json_decode_list(obj, io, rfx, allocator);
   case SET:
