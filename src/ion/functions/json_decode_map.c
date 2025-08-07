@@ -9,7 +9,6 @@ static inline void json_decode_map (
   struct reflection* value_rfx = NULL;
   void* key_block = NULL;
   void* value_block = NULL;
-  void* map_obj = NULL;
   int added_position = 0;
   slice result;
 
@@ -18,9 +17,9 @@ static inline void json_decode_map (
     key_rfx->parent = rfx;
     value_rfx = key_rfx->element;
     value_rfx->parent = key_rfx;
-    map_obj = rfx->container_creator(8, allocator);
     key_block = memory_alloc_zero(allocator, key_rfx->size);
     value_block = memory_alloc_zero(allocator, value_rfx->size);
+    rfx->container_creator(8, allocator, obj);
   }
 
   #define character ((char*) result.data)[0]
@@ -67,7 +66,7 @@ parse_pair:
 
   if (key_rfx != NULL) {
     json_decode(key_block, io, key_rfx, allocator);
-    added_position = rfx->container_adder(map_obj, key_block);
+    added_position = rfx->container_adder(obj, key_block);
 
   } else {
     json_decode(NULL, io, NULL, NULL);
@@ -110,7 +109,7 @@ parse_pair:
 
   if (value_rfx != NULL) {
     json_decode(value_block, io, value_rfx, allocator);
-    void* map_values = *(void**) (map_obj + SET__SIZE);
+    void* map_values = *(void**) (obj + SET__SIZE);
     void* value_position = map_values + (added_position * value_rfx->size);
     memcpy(value_position, value_block, value_rfx->size);
 
@@ -172,8 +171,6 @@ terminate:
   reflection_validate(rfx, obj);
   if (error.occurred)
     return reflection_error_extract(rfx);
-
-  memcpy(obj, map_obj, rfx->size);
 
   #undef character
 }

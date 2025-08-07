@@ -8,8 +8,9 @@ int map<K, V>_reflection_adder (
 
 void* map<K, V>_reflection_creator (
     int capacity,
-    memory* allocator
+    memory* allocator,
+    void* address
 )
 {
-  return map<K, V>_alloc(capacity, allocator);
+  return map<K, V>_alloc(capacity, allocator, address);
 }

@@ -72,8 +72,8 @@
 
 /**
  * Allocate a set. This set can be modified an may grow indefinitely. */
-#define set_alloc(t, c, a) \
-  set<t>_alloc(c, a)
+#define set_alloc(t, c, a, ...) \
+  set<t>_alloc(c, a, __VA_OPT__(__VA_ARGS__ +) 0)
 
 /**
  * Add an element to the set. */

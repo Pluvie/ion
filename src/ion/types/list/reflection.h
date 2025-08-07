@@ -8,8 +8,9 @@ int list<T>_reflection_adder (
 
 void* list<T>_reflection_creator (
     int capacity,
-    memory* allocator
+    memory* allocator,
+    void* address
 )
 {
-  return list<T>_alloc(capacity, allocator);
+  return list<T>_alloc(capacity, allocator, address);
 }

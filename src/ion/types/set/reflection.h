@@ -8,8 +8,9 @@ int set<T>_reflection_adder (
 
 void* set<T>_reflection_creator (
     int capacity,
-    memory* allocator
+    memory* allocator,
+    void* address
 )
 {
-  return set<T>_alloc(capacity, allocator);
+  return set<T>_alloc(capacity, allocator, address);
 }

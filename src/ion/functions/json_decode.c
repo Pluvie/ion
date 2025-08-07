@@ -29,6 +29,7 @@ decode_with_reflection:
   case ARRAY:
     return json_decode_array(obj, io, rfx, allocator);
   case POINTER:
+    //return json_decode_pointer(obj, io, rfx, allocator);
   case SELF:
   case LIST:
     return json_decode_list(obj, io, rfx, allocator);

@@ -28,7 +28,7 @@ struct reflection {
   };
   bool (*validator)(void*, struct reflection*);
   int (*container_adder)(void*, void*);
-  void* (*container_creator)(int, memory*);
+  void* (*container_creator)(int, memory*, void*);
   void* support_data;
 };
 check_sizeof(128, struct reflection);

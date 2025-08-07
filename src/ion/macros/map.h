@@ -74,8 +74,8 @@
 
 /**
  * Allocate a map. This map can be modified an may grow indefinitely. */
-#define map_alloc(kt, vt, c, a) \
-  map<kt, vt>_alloc(c, a)
+#define map_alloc(kt, vt, c, a, ...) \
+  map<kt, vt>_alloc(c, a, __VA_OPT__(__VA_ARGS__ +) 0)
 
 /**
  * Return the value of the given key in the map. */

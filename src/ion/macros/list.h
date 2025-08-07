@@ -72,8 +72,8 @@
 
 /**
  * Allocate a list. This list can be modified an may grow indefinitely. */
-#define list_alloc(t, c, a) \
-  list<t>_alloc(c, a)
+#define list_alloc(t, c, a, ...) \
+  list<t>_alloc(c, a, __VA_OPT__(__VA_ARGS__ +) 0)
 
 /**
  * Append an element to the end of list. */

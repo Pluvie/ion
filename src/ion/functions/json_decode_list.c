@@ -8,14 +8,13 @@ static inline void json_decode_list (
   struct reflection* element_rfx = NULL;
   void* element_block = NULL;
   int element_index = 0;
-  void* list_obj = NULL;
   slice result;
 
   if (rfx != NULL) {
     element_rfx = rfx->element;
     element_rfx->parent = rfx;
-    list_obj = rfx->container_creator(8, allocator);
     element_block = memory_alloc_zero(allocator, element_rfx->size);
+    rfx->container_creator(8, allocator, obj);
   }
 
   #define character ((char*) result.data)[0]
@@ -59,7 +58,7 @@ parse_value:
 
   if (element_rfx != NULL) {
     json_decode(element_block, io, element_rfx, allocator);
-    rfx->container_adder(list_obj, element_block);
+    rfx->container_adder(obj, element_block);
 
   } else {
     json_decode(NULL, io, NULL, NULL);
@@ -104,8 +103,6 @@ terminate:
   reflection_validate(rfx, obj);
   if (error.occurred)
     return reflection_error_extract(rfx);
-
-  memcpy(obj, list_obj, rfx->size);
 
   #undef character
 }

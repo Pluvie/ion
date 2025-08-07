@@ -1,6 +1,7 @@
 set<T>* set<T>_alloc (
     int initial_capacity,
-    memory* allocator
+    memory* allocator,
+    void* address
 )
 {
   int capacity = initial_capacity;
@@ -9,7 +10,14 @@ set<T>* set<T>_alloc (
   else
     capacity = next_pow2(initial_capacity);
 
-  set<T>* set = memory_alloc_zero(allocator, sizeof(set<T>));
+  set<T>* set;
+  if (address == NULL) {
+    set = memory_alloc_zero(allocator, sizeof(set<T>));
+  } else {
+    memzero(address, sizeof(set<T>));
+    set = address;
+  }
+
   set->capacity = capacity;
   set->allocator = allocator;
   set->data = memory_alloc_zero(allocator, capacity * sizeof(T));
