@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Generates a ~1GB JSON file.
+
+touch exe/decode.json
+truncate -s 0 exe/decode.json
+echo -e '{ "users": [' >> exe/decode.json
+
+echo 0
+for i in $(seq 1 10000000);
+do
+  if [[ $(( i % 1000000 )) == 0 ]]; then
+    echo $i
+  fi
+  echo -e '{ "name": "Billy", "age": 70, "roles": [ "admin", "supervisor" ] },' >> exe/decode.json
+done
+
+echo -e '{ "name": "Tony", "age": 90, "roles": [ "editor", "viewer" ] }' >> exe/decode.json
+echo '] }' >> exe/decode.json

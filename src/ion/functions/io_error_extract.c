@@ -24,11 +24,11 @@ extract_from_buffer:
     buffer_end = io->buffer.end;
 
   extraction_size = buffer_end - buffer_begin;
-  if (extraction_size > sizeof(extraction))
-    extraction_size = sizeof(extraction);
+  if (extraction_size > lengthof(extraction))
+    extraction_size = lengthof(extraction);
 
   memcpy(extraction, io->buffer.data + buffer_begin, extraction_size);
-  extraction[sizeof(extraction)] = '\0';
+  extraction[lengthof(extraction)] = '\0';
 
   caret_position = 0;
   for (; caret_position < io->buffer.cursor - buffer_begin - 1; caret_position++)
@@ -51,15 +51,15 @@ extract_from_channel:
     channel_end = io->length;
 
   extraction_size = channel_end - channel_begin;
-  if (extraction_size > sizeof(extraction))
-    extraction_size = sizeof(extraction);
+  if (extraction_size > lengthof(extraction))
+    extraction_size = lengthof(extraction);
 
   if (io->channel == IO_MEMORY)
     memcpy(extraction, io->memory + channel_begin, extraction_size);
   else
     memcpy(extraction, io->storage + channel_begin, extraction_size);
 
-  extraction[sizeof(extraction)] = '\0';
+  extraction[lengthof(extraction)] = '\0';
 
   caret_position = 0;
   for (; caret_position < io->cursor - channel_begin - 1; caret_position++)
@@ -69,7 +69,7 @@ extract_from_channel:
   position = io->cursor;
 
 store_message:
-  for (int i = 0; i < sizeof(extraction); i++)
+  for (int i = 0; i < lengthof(extraction); i++)
     if (extraction[i] == '\n')
       extraction[i] = 92;
 

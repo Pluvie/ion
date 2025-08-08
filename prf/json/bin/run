@@ -1,0 +1,8 @@
+#!/bin/bash
+
+hyperfine --warmup 5  \
+  exe/go              \
+  exe/ion             \
+  exe/python          \
+  exe/ruby            \
+  exe/rust

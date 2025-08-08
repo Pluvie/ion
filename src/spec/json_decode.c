@@ -68,7 +68,7 @@ spec( json_decode ) {
   when("the json is a compatible value") {
     apply(preconditions);
     *io = io(s("   \n { \"name\": \"Jane Shepard\", \"class\": 0 } "));
-    json_decode_struct(obj, io, rfx, allocator);
+    json_decode(obj, io, rfx, allocator);
 
     must("not fail");
       verify(error.occurred == false);

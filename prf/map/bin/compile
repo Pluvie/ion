@@ -32,10 +32,10 @@ fi
 if [ $# -eq 0 ] || [[ $1 == "ion" ]]; then
   cd ../..
   mkdir -p tmp
-  gcc prf/map/src/ion/ion.c -I ./src -Wall -Werror -E  | \
-  python3 bin/ion.py > tmp/ion.c                &&
-  gcc tmp/ion.c -I ./src -Wall -Werror             \
-    -O3 -march=native                           \
+  gcc prf/map/src/ion/ion.c -I ./src -Wall -Werror -E  |  \
+  python3 bin/ion.py > tmp/ion.c                          &&
+  gcc tmp/ion.c -I ./src -Wall -Werror                    \
+    -O3 -march=native                                     \
     -o prf/map/exe/ion
   rm tmp/ion.c
   cd -

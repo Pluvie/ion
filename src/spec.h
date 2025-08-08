@@ -2,6 +2,7 @@
 #include "spec/framework.h"
 #include "spec/types.h"
 
+#include "spec/json_decode_inline.c"
 #include "spec/date.c"
 #include "spec/date_to_string.c"
 #include "spec/date_today.c"

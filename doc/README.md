@@ -20,3 +20,5 @@ Landing page for all documented ⚡️ION⚡️ features.
   cover many more edge cases.
 
 - `reflection_error_extract`: what if *rfx* is NULL?
+
+- `json_decode` et al, produce more robusts specs, accouting also for parsing failures.
