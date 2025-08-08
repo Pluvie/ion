@@ -13,7 +13,7 @@ int32 main (
   spec_add( io_buffer_init );
   spec_add( io_buffer_read );
   spec_add( io_read );
-  //spec_focus( json_decode );
+  spec_add( json_decode );
   spec_add( json_decode_array );
   spec_add( json_decode_bool );
   spec_add( json_decode_dec );

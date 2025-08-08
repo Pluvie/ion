@@ -65,5 +65,21 @@ spec( json_decode ) {
       io_close(io);
   } end();
 
+  when("the json is a compatible value") {
+    apply(preconditions);
+    *io = io(s("   \n { \"name\": \"Jane Shepard\", \"class\": 0 } "));
+    json_decode_struct(obj, io, rfx, allocator);
+
+    must("not fail");
+      verify(error.occurred == false);
+    must("correctly parse until the end of the object");
+      verify(io->cursor == 43);
+    must("set the correct value to the corresponding fields");
+      verify(streq(shepard.name, "Jane Shepard"));
+      verify(shepard.class == SOLDIER);
+    success();
+      io_close(io);
+  } end();
+
   #undef preconditions
 }
