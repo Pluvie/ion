@@ -1,7 +1,6 @@
 enum types {
   INT,        /* 64bit signed integer */
   DEC,        /* 64bit double precision decimal */
-  CHAR,       /* 8bit ascii char */
   BOOL,       /* 32bit boolean */
   ENUM,       /* 32bit enumeration */
   STRING,     /* 128bit string pointer with incorporated length */

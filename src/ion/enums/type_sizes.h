@@ -1,7 +1,6 @@
 enum type_sizes {
   INT__SIZE       =  8,   /* 64bit signed integer */
   DEC__SIZE       =  8,   /* 64bit double precision decimal */
-  CHAR__SIZE      =  1,   /* 8bit ascii char */
   BOOL__SIZE      =  4,   /* 32bit boolean */
   ENUM__SIZE      =  4,   /* 32bit enumeration */
   STRING__SIZE    = 16,   /* 128bit string pointer with incorporated length */

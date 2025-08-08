@@ -217,10 +217,10 @@ spec( reflection ) {
         int value_int;
         dec value_dec;
         struct {
-          char* text;
+          int* number_ptr;
           int number;
           struct {
-            char* text;
+            int* number_ptr;
             int number;
           } inside_2;
         } inside_1;
@@ -233,10 +233,10 @@ spec( reflection ) {
           { field(value_int, INT, t) },
           { field(value_dec, DEC, t) },
           { field(inside_1, STRUCT, t), fields({
-              { field(text, POINTER, t, inside_1), of({ type(CHAR) }) },
+              { field(number_ptr, POINTER, t, inside_1), of({ type(INT) }) },
               { field(number, INT, t, inside_1) },
               { field(inside_2, STRUCT, t, inside_1), fields({
-                  { field(text, POINTER, t, inside_1.inside_2), of({ type(CHAR) }) },
+                  { field(number_ptr, POINTER, t, inside_1.inside_2), of({ type(INT) }) },
                   { field(number, INT, t, inside_1.inside_2) },
                 })
               },
@@ -286,11 +286,11 @@ spec( reflection ) {
 
         field_rfx = list_at(inside_1_rfx->fields, 0);
         verify(field_rfx->type == POINTER);
-        verify(streq(field_rfx->name, "text"));
+        verify(streq(field_rfx->name, "number_ptr"));
         verify(strnull(field_rfx->type_name));
         verify(field_rfx->size == sizeof(void*));
         verify(field_rfx->offset ==
-          offsetof(struct example, inside_1.text) - offsetof(struct example, inside_1));
+          offsetof(struct example, inside_1.number_ptr) - offsetof(struct example, inside_1));
         verify(field_rfx->index == 0);
 
         field_rfx = list_at(inside_1_rfx->fields, 1);
@@ -315,11 +315,11 @@ spec( reflection ) {
 
         field_rfx = list_at(inside_2_rfx->fields, 0);
         verify(field_rfx->type == POINTER);
-        verify(streq(field_rfx->name, "text"));
+        verify(streq(field_rfx->name, "number_ptr"));
         verify(strnull(field_rfx->type_name));
         verify(field_rfx->size == sizeof(void*));
         verify(field_rfx->offset ==
-          offsetof(struct example, inside_1.inside_2.text) -
+          offsetof(struct example, inside_1.inside_2.number_ptr) -
           offsetof(struct example, inside_1.inside_2));
         verify(field_rfx->index == 0);
 
@@ -341,10 +341,10 @@ spec( reflection ) {
         int value_int;
         dec value_dec;
         struct {
-          char* text;
+          int* number_ptr;
           int number;
           struct {
-            char* text;
+            int* number_ptr;
             int number;
           } inside_2;
         } inside_1;
@@ -355,15 +355,15 @@ spec( reflection ) {
           { field(value_int, INT, struct example) },
           { field(value_dec, DEC, struct example) },
           { field(inside_1, STRUCT, struct example), fields({
-              { field(text, POINTER, struct example, inside_1),
-                  of({ type(CHAR) })
+              { field(number_ptr, POINTER, struct example, inside_1),
+                  of({ type(INT) })
               },
               { field(number, INT, struct example, inside_1) },
               { field(inside_2, STRUCT, struct example, inside_1), fields({
                   /* The struct `inside_2` is tagless so we must use an offset from
                    * `inside_1` to get its type. */
-                  { field(text, POINTER, struct example, inside_1.inside_2),
-                      of({ type(CHAR) })
+                  { field(number_ptr, POINTER, struct example, inside_1.inside_2),
+                      of({ type(INT) })
                   },
                   { field(number, INT, struct example, inside_1.inside_2) },
                 })
@@ -413,11 +413,11 @@ spec( reflection ) {
 
         field_rfx = list_at(inside_1_rfx->fields, 0);
         verify(field_rfx->type == POINTER);
-        verify(streq(field_rfx->name, "text"));
+        verify(streq(field_rfx->name, "number_ptr"));
         verify(strnull(field_rfx->type_name));
         verify(field_rfx->size == sizeof(void*));
         verify(field_rfx->offset ==
-          offsetof(struct example, inside_1.text) - offsetof(struct example, inside_1));
+          offsetof(struct example, inside_1.number_ptr) - offsetof(struct example, inside_1));
         verify(field_rfx->index == 0);
 
         field_rfx = list_at(inside_1_rfx->fields, 1);
@@ -442,11 +442,11 @@ spec( reflection ) {
 
         field_rfx = list_at(inside_2_rfx->fields, 0);
         verify(field_rfx->type == POINTER);
-        verify(streq(field_rfx->name, "text"));
+        verify(streq(field_rfx->name, "number_ptr"));
         verify(strnull(field_rfx->type_name));
         verify(field_rfx->size == sizeof(void*));
         verify(field_rfx->offset ==
-          offsetof(struct example, inside_1.inside_2.text) -
+          offsetof(struct example, inside_1.inside_2.number_ptr) -
           offsetof(struct example, inside_1.inside_2));
         verify(field_rfx->index == 0);
 

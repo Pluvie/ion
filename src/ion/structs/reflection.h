@@ -21,14 +21,14 @@ struct reflection {
     int max;
   } size_limits;
   struct reflection* parent;
+  struct reflection* self;
   union {
     /* See the note above. */
     struct list_struct_reflection* fields;
     struct reflection* element;
   };
-  bool (*validator)(void*, struct reflection*);
-  int (*container_adder)(void*, void*);
+  bool  (*validator)(void*, struct reflection*);
+  int   (*container_adder)(void*, void*);
   void* (*container_creator)(int, memory*, void*);
-  void* support_data;
 };
 check_sizeof(128, struct reflection);

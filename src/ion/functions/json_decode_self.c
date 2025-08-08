@@ -5,7 +5,7 @@ static inline void json_decode_self (
     struct memory* allocator
 )
 {
-  struct reflection* self_rfx = rfx->parent;
+  struct reflection* self_rfx = reflection_self_get(rfx);
 
   void* pointer_data = memory_alloc_zero(allocator, self_rfx->size);
   json_decode(pointer_data, io, self_rfx, allocator);

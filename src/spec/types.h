@@ -107,7 +107,6 @@ int cmp<struct squadmate> (
 struct rfx_blueprint {
   int v_int;
   dec v_dec;
-  char v_char;
   bool v_bool;
   enum classes v_enum;
   string v_string;
@@ -127,7 +126,6 @@ struct reflection rfx_blueprint = {
   type(STRUCT, b), fields({
     { field(v_int, INT, b) },
     { field(v_dec, DEC, b) },
-    { field(v_char, CHAR, b) },
     { field(v_bool, BOOL, b) },
     { field(v_enum, ENUM, b) },
     { field(v_string, STRING, b) },
