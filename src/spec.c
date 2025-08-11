@@ -6,7 +6,7 @@ int32 main (
     char** argv
 )
 {
-  spec_focus( json_decode_inline );
+  spec_focus( json_decode_direct );
   spec_add( date );
   spec_add( date_to_string );
   spec_add( date_today );

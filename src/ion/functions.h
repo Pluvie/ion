@@ -25,7 +25,7 @@
 #include "functions/io_peek.h"
 #include "functions/io_read.h"
 #include "functions/io_read_channel.h"
-#include "functions/json_decode_inline.h"
+#include "functions/json_decode_direct.h"
 #include "functions/json_decode.h"
 #include "functions/json_decode_array.h"
 #include "functions/json_decode_bool.h"

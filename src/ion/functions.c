@@ -25,7 +25,7 @@
 #include "functions/io_peek.c"
 #include "functions/io_read.c"
 #include "functions/io_read_channel.c"
-#include "functions/json_decode_inline.c"
+#include "functions/json_decode_direct.c"
 #include "functions/json_decode.c"
 #include "functions/json_decode_array.c"
 #include "functions/json_decode_bool.c"

@@ -1,4 +1,4 @@
-spec( json_decode_inline ) {
+spec( json_decode_direct ) {
 
   argument(struct io* io);
 
@@ -8,14 +8,10 @@ spec( json_decode_inline ) {
 
   when("the json valid") {
     apply(preconditions);
-    //*io = io(s("   \n { \"name\": \"Jane Shepard\", \"class\": 0 } "));
-    struct io json = file_read("prf/json/exe/decode.json", spec_allocator);
-    io = &json;
-    if (error.occurred) {
-      error_print();
-      return;
-    }
-    json_decode_inline(io);
+    *io = io(s("   \n { \"name\": \"Jane Shepard\", \"class\": 0 } "));
+    //struct io json = file_read("prf/json/exe/decode.json", spec_allocator);
+    //io = &json;
+    json_decode_direct(io);
 
     must("not fail");
       verify(error.occurred == false);

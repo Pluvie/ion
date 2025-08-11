@@ -52,7 +52,7 @@ void decode (
   }
 
   //json_decode(&data, &json, &data_rfx, &allocator);
-  json_decode_inline(&json);
+  json_decode_direct(&json);
 
   //struct user* user;
 
@@ -74,6 +74,7 @@ void decode (
   //  sp(*list_at(&user->roles, 0)),
   //  sp(*list_at(&user->roles, 1)));
 
+  print("cursor: %li", json.cursor);
   memory_release(&allocator);
 }
 
