@@ -13,6 +13,7 @@
 #include "macros/error_print.h"
 #include "macros/error_reset.h"
 #include "macros/fail.h"
+#include "macros/failed.h"
 #include "macros/fatal.h"
 #include "macros/hash.h"
 #include "macros/io.h"

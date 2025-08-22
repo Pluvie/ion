@@ -21,14 +21,15 @@ void* io_read_direct (struct io* io, int amount) {
 
 
 
-int json_parse_string_direct(struct io* io) {
+int json_parse_string_direct (struct io* io) {
   int cursor = io->cursor;
   int length = 0;
   bool escaped = false;
-  char* result;
+  #define result  ((char*) io->data.data)[0]
 
-  result = io_read_direct(io, sizeof(char));
-  if (result == NULL)
+  io_read_direct(io, sizeof(char));
+
+  if (failed(|| io->exhausted))
     goto error;
 
   if (*result != '"')

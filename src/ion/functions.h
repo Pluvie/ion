@@ -1,3 +1,4 @@
+#include "functions/alloc.h"
 #include "functions/cmp.h"
 #include "functions/date.h"
 #include "functions/date_to_string.h"

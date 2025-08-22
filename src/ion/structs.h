@@ -1,5 +1,6 @@
-#include "structs/failure.h"
+#include "structs/error.h"
 #include "structs/io.h"
 #include "structs/iterator.h"
 #include "structs/pipe.h"
 #include "structs/reflection.h"
+#include "structs/stream.h"

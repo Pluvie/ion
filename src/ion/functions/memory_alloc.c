@@ -3,8 +3,6 @@ void* memory_alloc (
     int amount
 )
 {
-  int os_result;
-
   /* If the memory has already some allocated data, before allocating a new one check
    * whether it must grow to make space for the new data. */
   if (allocator->position > 0)
@@ -15,13 +13,14 @@ void* memory_alloc (
   if (amount > allocator->capacity)
     allocator->capacity = next_pow2(amount);
 
-  /* Create the allocator data and allocate the requested amount. */
-  os_result = posix_memalign(&allocator->data, 32, allocator->capacity);
+  /* Create the allocator data and allocate the requested amount, with a 32bit
+   * alignment. */
+  allocator->data = alloc(allocator->capacity, 32);
 
-  if (likely(os_result) == 0)
-    goto allocate;
+  if (unlikely(allocator->data == NULL))
+    goto error;
   else
-    goto os_error;
+    goto allocate;
 
 grow_check:
   /* If the memory has enough capacity to fit the requested amount, allocate directly. */
@@ -40,11 +39,9 @@ initialize_regions:
   if (allocator->regions.capacity <= 0)
     allocator->regions.capacity = 8;
 
-  allocator->regions.addresses = malloc(allocator->regions.capacity * sizeof(void*));
-  if (unlikely(allocator->regions.addresses == NULL)) {
-    os_result = ENOMEM;
-    goto os_error;
-  }
+  allocator->regions.addresses = alloc(allocator->regions.capacity * sizeof(void*), 32);
+  if (unlikely(allocator->regions.addresses == NULL))
+    goto error;
 
   goto append_region;
 
@@ -53,10 +50,14 @@ regions_grow_check:
   if (allocator->regions.count < allocator->regions.capacity)
     goto append_region;
 
-  allocator->regions.capacity *= 2;
-  allocator->regions.addresses = realloc(
+  int regions_new_capacity = allocator->regions.capacity * 2;
+  void* regions_new_addresses = alloc(regions_new_capacity * sizeof(void*), 32);
+  memcpy(regions_new_addresses,
     allocator->regions.addresses,
     allocator->regions.capacity * sizeof(void*));
+  free(allocator->regions.addresses);
+  allocator->regions.capacity = regions_new_capacity;
+  allocator->regions.addresses = regions_new_addresses;
 
 append_region:
   /* Remember the current memory address as last region. */
@@ -75,18 +76,10 @@ increase_capacity:
   else
     allocator->capacity *= 2;
 
-  os_result = posix_memalign(&allocator->data, 32, allocator->capacity);
+  allocator->data = alloc(allocator->capacity, 32);
 
-  if (likely(os_result) == 0)
-    goto allocate;
-
-os_error:
-  switch (os_result) {
-  case ENOMEM:
-    fatal("%li, not enough memory", allocator->capacity);
-  default:
-    fatal("memalign returned %li", os_result);
-  }
+  if (unlikely(allocator->data == NULL))
+    goto error;
 
 allocate:
   void* address = allocator->data + allocator->position;
@@ -94,4 +87,7 @@ allocate:
   allocator->allocations.size += amount;
   allocator->allocations.count++;
   return address;
+
+error:
+  fatal("alloc failed: %s", failure.message);
 }

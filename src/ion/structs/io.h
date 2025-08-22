@@ -1,32 +1,30 @@
 struct io {
   union {
-    int   file;
+    int file;
+    int socket;
     void* memory;
-    int   pipe;
-    int   socket;
-    FILE* stream;
+    struct pipe* pipe;
+    struct stream* stream;
   };
-  enum io_channels channel;
-  int length;
+  slice data;
   int cursor;
-  void* storage;
+  int length;
+  enum io_channels channel;
   struct {
     int count;
-    int flags;
+    int32 flags;
   } read;
   struct {
     int count;
-    int flags;
+    int32 flags;
   } write;
   struct {
+    slice data;
+    int cursor;
+    int size;
     bool enabled;
     bool retained;
     padding(2);
-    void* data;
-    int size;
-    int cursor;
-    int end;
-    padding(8);
   } buffer;
 };
 check_sizeof(128, struct io);

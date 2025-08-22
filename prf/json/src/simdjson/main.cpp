@@ -1,0 +1,13 @@
+#include <iostream>
+#include "simdjson.h"
+
+using namespace simdjson;
+
+int main(void) {
+    ondemand::parser parser;
+    padded_string json = padded_string::load("exe/decode.json");
+    ondemand::document data = parser.iterate(json);
+    auto users = data.find_field("users").get_array();
+    ondemand::object user = users.at(10000000);
+    std::cout << "Done: " << user["name"] << std::endl;
+}

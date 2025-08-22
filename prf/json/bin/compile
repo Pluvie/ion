@@ -47,3 +47,12 @@ if [ $# -eq 0 ] || [[ $1 == "rust" ]]; then
   rm -rf target
   cd -
 fi
+
+# SimdJSON
+if [ $# -eq 0 ] || [[ $1 == "simdjson" ]]; then
+  cd src/simdjson
+  g++ main.cpp simdjson.cpp \
+    -O3 -march=native       \
+    -o ../../exe/simdjson
+  cd -
+fi
