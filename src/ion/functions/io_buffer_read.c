@@ -70,27 +70,25 @@ read_from_channel:
   buffer->data.pointer = new_data;
 
   void* storage = buffer->data.pointer + buffer->data.length; 
-  int channel_read_quantity = extended_capacity - buffer->data.length;
-  io_channel_read(io, channel_read_quantity, storage);
+  int channel_asked_bytes = extended_capacity - buffer->data.length;
+  io_channel_read(io, channel_asked_bytes, storage);
   if (unlikely(failure.occurred))
     return;
 
+  int channel_read_bytes = io->data.length;
+  int available_amount = buffer_available_quantity + channel_read_bytes;
 
   /* If the underlying channel returns less data than the amount asked, we must update
    * the buffer pointers accordingly. */
-  int read_bytes = io->data.length;
   io->data.pointer = buffer->data.pointer + buffer->cursor;
+  buffer->data.length += available_amount;
 
-  if (read_bytes < channel_read_quantity) {
-    io->data.length = buffer_available_quantity + read_bytes;
-    buffer->data.length += read_bytes;
-    buffer->cursor += read_bytes;
+  if (amount <= available_amount) {
+    io->data.length = amount;
+    buffer->cursor += amount;
 
   } else {
-    io->data.length = amount;
-    buffer->data.length = extended_capacity;
-    buffer->cursor += amount;
+    io->data.length = available_amount;
+    buffer->cursor += available_amount;
   }
-
-  return;
 }
