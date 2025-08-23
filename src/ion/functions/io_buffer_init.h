@@ -1,4 +1,4 @@
-static inline slice io_buffer_init (
+static inline void io_buffer_init (
     struct io* io,
     int amount
 );

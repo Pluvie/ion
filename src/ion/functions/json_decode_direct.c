@@ -25,11 +25,12 @@ int json_parse_string_direct (struct io* io) {
   int cursor = io->cursor;
   int length = 0;
   bool escaped = false;
-  #define result  ((char*) io->data.data)[0]
+  #define result        ((char*) io->data.data)[0]
+  #define read_failure  failure.occurred || io->data.length == 0
 
   io_read_direct(io, sizeof(char));
 
-  if (failed(|| io->exhausted))
+  if (unlikely(read_failure))
     goto error;
 
   if (*result != '"')

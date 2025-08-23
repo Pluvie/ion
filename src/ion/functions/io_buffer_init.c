@@ -1,4 +1,4 @@
-static inline slice io_buffer_init (
+static inline void io_buffer_init (
     struct io* io,
     int amount
 )
@@ -10,20 +10,18 @@ static inline slice io_buffer_init (
   if (amount > alloc_amount)
     alloc_amount = io->buffer.size + amount;
 
-  io->buffer.data = malloc(alloc_amount);
-  slice result = io_read_channel(io, alloc_amount, io->buffer.data);
+  io->buffer.data.pointer = alloc_zero(alloc_amount);
+  io_channel_read(io, alloc_amount, io->buffer.data);
+  if (unlikely(failure.occurred))
+    return;
 
-  if (result.length < alloc_amount)
-    io->buffer.end = result.length;
+  if (io->data.length < alloc_amount)
+    io->buffer.data.length = io->data.length;
   else
-    io->buffer.end = alloc_amount;
+    io->buffer.data.length = alloc_amount;
 
-  if (result.length < amount) {
-    io->buffer.cursor = result.length;
-    return (slice) { io->buffer.data, result.length };
-
-  } else {
+  if (io->data.length < amount)
+    io->buffer.cursor = io->data.length;
+  else
     io->buffer.cursor = amount;
-    return (slice) { io->buffer.data, amount };
-  }
 }

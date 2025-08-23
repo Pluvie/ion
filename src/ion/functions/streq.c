@@ -14,7 +14,7 @@ static inline bool streq<string, slice> (
     slice s2
 )
 {
-  string s = (string) { s2.data, s2.length };
+  string s = (string) { s2.pointer, s2.length };
   return cmp<string>(s1, s) == 0;
 }
 
@@ -48,7 +48,7 @@ static inline bool streq<slice, char*> (
     char* s2
 )
 {
-  return strncmp(s1.data, s2, s1.length) == 0;
+  return strncmp(s1.pointer, s2, s1.length) == 0;
 }
 
 static inline bool streq<char*, string> (
@@ -64,7 +64,7 @@ static inline bool streq<char*, slice> (
     slice s2
 )
 {
-  return strncmp(s1, s2.data, s2.length) == 0;
+  return strncmp(s1, s2.pointer, s2.length) == 0;
 }
 
 static inline bool streq<char*, char*> (

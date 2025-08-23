@@ -1,4 +1,5 @@
-struct io file_read (
-    char* file_name,
-    struct memory* allocator
+int file_read (
+    int file,
+    void* address,
+    int amount
 );

@@ -3,6 +3,6 @@
 #endif
 
 typedef struct slice {
-  void* data;
+  void* pointer;
   int length;
 } slice;

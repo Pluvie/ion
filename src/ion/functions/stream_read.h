@@ -1,4 +1,5 @@
-struct io io_open_stream (
+void stream_read (
     struct stream* stream,
+    void* address,
     int length
 );

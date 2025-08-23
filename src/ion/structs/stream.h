@@ -1,12 +1,7 @@
-#if defined(__WIN32__)
-  #error "Not implemented for Windows platform."
-
-#elif defined(__APPLE__)
-  #error "Not implemented for Apple platform."
-
-#elif defined(__linux__)
+#if platform(LINUX)
   struct stream {
-    void* stream;
+    void* pointer;
+    const char* mode;
   };
   check_sizeof(8, struct stream);
 

@@ -1,13 +1,13 @@
-int file_read (
-    int file,
+int pipe_read (
+    struct pipe* pipes,
     void* address,
     int amount
 )
 {
 #if platform(LINUX)
-  int read_bytes = read(file, address, amount);
+  int read_bytes = read(pipes->reader, address, amount);
   if (read_bytes < 0) {
-    fail("file read error: %s", strerror(errno));
+    fail("pipe read error: %s", strerror(errno));
     return 0;
   }
 

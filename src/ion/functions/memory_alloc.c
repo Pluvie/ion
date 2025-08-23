@@ -3,6 +3,10 @@ void* memory_alloc (
     int amount
 )
 {
+  /* Defines the default alignment of memory allocations. A 32bit alignment is chosen,
+   * in order to facilitate the use of SIMD instructions. */
+  #define default_alignment 32
+
   /* If the memory has already some allocated data, before allocating a new one check
    * whether it must grow to make space for the new data. */
   if (allocator->position > 0)
@@ -13,14 +17,9 @@ void* memory_alloc (
   if (amount > allocator->capacity)
     allocator->capacity = next_pow2(amount);
 
-  /* Create the allocator data and allocate the requested amount, with a 32bit
-   * alignment. */
-  allocator->data = alloc(allocator->capacity, 32);
-
-  if (unlikely(allocator->data == NULL))
-    goto error;
-  else
-    goto allocate;
+  /* Create the allocator data and allocate the requested amount. */
+  allocator->data = alloc_aligned(allocator->capacity, default_alignment);
+  goto allocate;
 
 grow_check:
   /* If the memory has enough capacity to fit the requested amount, allocate directly. */
@@ -39,7 +38,8 @@ initialize_regions:
   if (allocator->regions.capacity <= 0)
     allocator->regions.capacity = 8;
 
-  allocator->regions.addresses = alloc(allocator->regions.capacity * sizeof(void*), 32);
+  allocator->regions.addresses = alloc_aligned(
+    allocator->regions.capacity * sizeof(void*), default_alignment);
   if (unlikely(allocator->regions.addresses == NULL))
     goto error;
 
@@ -51,7 +51,8 @@ regions_grow_check:
     goto append_region;
 
   int regions_new_capacity = allocator->regions.capacity * 2;
-  void* regions_new_addresses = alloc(regions_new_capacity * sizeof(void*), 32);
+  void* regions_new_addresses = alloc_aligned(
+    regions_new_capacity * sizeof(void*), default_alignment);
   memcpy(regions_new_addresses,
     allocator->regions.addresses,
     allocator->regions.capacity * sizeof(void*));
@@ -76,10 +77,7 @@ increase_capacity:
   else
     allocator->capacity *= 2;
 
-  allocator->data = alloc(allocator->capacity, 32);
-
-  if (unlikely(allocator->data == NULL))
-    goto error;
+  allocator->data = alloc_aligned(allocator->capacity, default_alignment);
 
 allocate:
   void* address = allocator->data + allocator->position;
@@ -88,6 +86,5 @@ allocate:
   allocator->allocations.count++;
   return address;
 
-error:
-  fatal("alloc failed: %s", failure.message);
+  #undef default_alignment;
 }

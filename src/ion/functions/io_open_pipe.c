@@ -1,9 +1,9 @@
 static inline struct io io_open_pipe (
-    int descriptor
+    struct pipe* pipes
 )
 {
   return (struct io) {
     .channel = IO_PIPE,
-    .pipe = descriptor,
+    .pipe = pipes,
   };
 }

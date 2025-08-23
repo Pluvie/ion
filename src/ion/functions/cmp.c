@@ -71,7 +71,7 @@ static inline int cmp<slice> (
 )
 {
   if (v1.length > 0 && v2.length > 0)
-    return strncmp(v1.data, v2.data, v1.length);
+    return strncmp(v1.pointer, v2.pointer, v1.length);
   else
     return cmp<int>(v1.length, v2.length);
 }
