@@ -5,7 +5,7 @@ static inline void json_encode_array (
 )
 {
   io_write(io, "[", 1);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   struct array* array = obj;
@@ -17,16 +17,16 @@ static inline void json_encode_array (
 
     if (element_index > 0) {
       io_write(io, ",", 1);
-      if (error.occurred)
+      if (unlikely(failure.occurred))
         return;
     }
 
     json_encode(element_obj, io, element_rfx);
-    if (error.occurred)
+    if (unlikely(failure.occurred))
       return;
   }
 
   io_write(io, "]", 1);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 }

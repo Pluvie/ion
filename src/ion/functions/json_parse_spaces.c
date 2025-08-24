@@ -9,7 +9,7 @@ static inline int json_parse_spaces (
 
 read_character:
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     goto error;
 
   if (result.length == 0)
@@ -23,7 +23,7 @@ read_character:
 terminate:
   io_cursor_restore(io, cursor);
   io_read(io, length);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     goto error;
 
   return length;

@@ -1,4 +1,4 @@
-slice io_peek (
+void io_peek (
     struct io* io,
     int amount
 );

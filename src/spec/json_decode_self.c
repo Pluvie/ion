@@ -30,7 +30,7 @@ spec( json_decode_self ) {
     json_decode_self(obj, io, rfx, allocator);
 
     must("not fail");
-      verify(error.occurred == false);
+      verify(unlikely(failure.occurred) == false);
     must("correctly parse until the end of the object");
       verify(io->cursor == 65);
     must("set the correct value to the corresponding field");

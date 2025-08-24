@@ -14,7 +14,7 @@ spec( json_parse_null ) {
     int result = json_parse_null(io);
 
     must("not fail");
-      verify(error.occurred == false);
+      verify(unlikely(failure.occurred) == false);
 
     must("return lengthof(\"null\")");
       verify(result == lengthof("null"));
@@ -34,7 +34,7 @@ spec( json_parse_null ) {
     int result = json_parse_null(io);
 
     must("not fail");
-      verify(error.occurred == false);
+      verify(unlikely(failure.occurred) == false);
 
     must("return 0");
       verify(result == 0);
@@ -57,8 +57,8 @@ spec( json_parse_null ) {
     int result = json_parse_null(io);
 
     must("fail with a specific error");
-      verify(error.occurred == true);
-      verify(streq(error.message, "io: invalid channel"));
+      verify(unlikely(failure.occurred) == true);
+      verify(streq(failure.message, "io: invalid channel"));
 
     must("return -1");
       verify(result == -1);

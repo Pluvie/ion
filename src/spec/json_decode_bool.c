@@ -22,8 +22,8 @@ spec( json_decode_bool ) {
     json_decode_bool(obj, io, rfx, allocator);
 
     must("fail with a specific error");
-      verify(error.occurred == true);
-      verify(streq(error.message,
+      verify(unlikely(failure.occurred) == true);
+      verify(streq(failure.message,
         "expected a boolean, at position 0:\n"\
         "\"string!\"\n"\
         "^\n"));
@@ -38,7 +38,7 @@ spec( json_decode_bool ) {
       json_decode_bool(obj, io, rfx, allocator);
 
       must("not fail");
-        verify(error.occurred == false);
+        verify(unlikely(failure.occurred) == false);
       must("correctly parse until the end of the value");
         verify(io->cursor == 4);
       must("correctly set the boolean value");
@@ -53,7 +53,7 @@ spec( json_decode_bool ) {
       json_decode_bool(obj, io, rfx, allocator);
 
       must("not fail");
-        verify(error.occurred == false);
+        verify(unlikely(failure.occurred) == false);
       must("correctly parse until the end of the value");
         verify(io->cursor == 5);
       must("correctly set the boolean value");

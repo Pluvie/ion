@@ -21,7 +21,7 @@
  * )
  * {
  *   failing_function();
- *   if (error.occurred) {
+ *   if (unlikely(failure.occurred)) {
  *     error_print();
  *     return EXIT_FAILURE;
  *   }

@@ -48,7 +48,7 @@ decode_and_discard:
     return;
 
   parsed_length = json_parse_number(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
   if (parsed_length > 0) {
     io_read(io, parsed_length);
@@ -56,7 +56,7 @@ decode_and_discard:
   }
 
   parsed_length = json_parse_string(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
   if (parsed_length > 0) {
     io_read(io, parsed_length);
@@ -64,7 +64,7 @@ decode_and_discard:
   }
 
   parsed_length = json_parse_bool(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
   if (parsed_length > 0) {
     io_read(io, parsed_length);
@@ -72,7 +72,7 @@ decode_and_discard:
   }
 
   slice peek = io_peek(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   switch (((char*) peek.data)[0]) {
@@ -82,8 +82,8 @@ decode_and_discard:
     return json_decode_array(NULL, io, NULL, NULL);
   default:
     fail("expected json value");
-    reflection_error_extract(rfx);
-    io_error_extract(io);
+    failure_add_reflection_info(rfx);
+    failure_add_io_info(io);
   }
 
   return;

@@ -3,7 +3,7 @@
     void* pointer;
     const char* mode;
   };
-  check_sizeof(8, struct stream);
+  check_sizeof(16, struct stream);
 
 #else
   #error "Unsupported platform."

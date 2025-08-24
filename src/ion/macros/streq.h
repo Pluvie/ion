@@ -16,5 +16,10 @@
       string : streq<char*, string>,    \
       slice : streq<char*, slice>,      \
       char* : streq<char*, char*>       \
+    ),                                  \
+    void* : _Generic((s2),              \
+      string : streq<char*, string>,    \
+      slice : streq<char*, slice>,      \
+      char* : streq<char*, char*>       \
     )                                   \
   )(s1, s2)

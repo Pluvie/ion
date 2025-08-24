@@ -3,7 +3,7 @@ static inline int json_parse_null (
 )
 {
   slice peek = io_peek(io, lengthof("null"));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return -1;
 
   if (streq(peek, "null"))

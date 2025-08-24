@@ -12,11 +12,11 @@ static inline void json_decode_struct (
   #define character ((char*) result.data)[0]
 
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (result.length == 0)
@@ -24,25 +24,25 @@ static inline void json_decode_struct (
 
   if (character != '{') {
     fail("expected object begin '{'");
-    io_error_extract(io);
+    failure_add_io_info(io);
     return;
   }
 
 parse_field:
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   /* Parse field name. */
   field_name_length = json_parse_string(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (field_name_length <= 0)
     goto check_object_end;
 
   result = io_read(io, field_name_length);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (rfx != NULL) {
@@ -55,22 +55,22 @@ parse_field:
 
   /* Check colon. */
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (result.length == 0 || character != ':') {
     fail("expected a `:` after the field name");
-    io_error_extract(io);
+    failure_add_io_info(io);
     return;
   }
 
   /* Parse field value. */
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (field_rfx != NULL) {
@@ -81,16 +81,16 @@ parse_field:
     json_decode(NULL, io, NULL, NULL);
   }
 
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   /* Check comma -- next field --, or object end. */
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (result.length == 0)
@@ -105,18 +105,18 @@ parse_field:
 
   default:
     fail("expected comma, or object end '}'");
-    io_error_extract(io);
+    failure_add_io_info(io);
     return;
   }
 
 check_object_end:
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (result.length == 0 || character != '}') {
     fail("expected an object field, or object end '}'");
-    io_error_extract(io);
+    failure_add_io_info(io);
     return;
   }
 
@@ -125,8 +125,8 @@ terminate:
     return;
 
   reflection_validate(rfx, obj);
-  if (error.occurred)
-    return reflection_error_extract(rfx);
+  if (unlikely(failure.occurred))
+    return failure_add_reflection_info(rfx);
 
   #undef character
 }

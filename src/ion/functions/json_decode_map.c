@@ -25,11 +25,11 @@ static inline void json_decode_map (
   #define character ((char*) result.data)[0]
 
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (result.length == 0)
@@ -37,17 +37,17 @@ static inline void json_decode_map (
 
   if (character != '[') {
     fail("expected array begin '['");
-    io_error_extract(io);
+    failure_add_io_info(io);
     return;
   }
 
 parse_pair:
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (result.length > 0 && character == ']')
@@ -55,13 +55,13 @@ parse_pair:
 
   if (result.length == 0 || character != '[') {
     fail("expected array begin '['");
-    io_error_extract(io);
+    failure_add_io_info(io);
     return;
   }
 
   /* Parse key. */
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (key_rfx != NULL) {
@@ -72,38 +72,38 @@ parse_pair:
     json_decode(NULL, io, NULL, NULL);
   }
 
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   /* Parse comma. */
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (result.length == 0 || character != ',') {
     fail("expected comma");
-    reflection_error_extract(rfx);
-    io_error_extract(io);
+    failure_add_reflection_info(rfx);
+    failure_add_io_info(io);
     return;
   }
 
   /* Parse value. */
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   result = io_peek(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (result.length == 0) {
     fail("expected value");
-    reflection_error_extract(rfx);
-    io_error_extract(io);
+    failure_add_reflection_info(rfx);
+    failure_add_io_info(io);
     return;
   }
 
@@ -117,37 +117,37 @@ parse_pair:
     json_decode(NULL, io, NULL, NULL);
   }
 
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   /* Check array pair end. */
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (result.length == 0 || character != ']') {
     fail("expected array end ']'");
-    io_error_extract(io);
+    failure_add_io_info(io);
     return;
   }
 
 
   /* Check comma -- next pair --, or array end. */
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (result.length == 0) {
     fail("expected comma, or array end ']'");
-    io_error_extract(io);
+    failure_add_io_info(io);
     return;
   }
 
@@ -160,7 +160,7 @@ parse_pair:
 
   default:
     fail("expected comma, or array end ']'");
-    io_error_extract(io);
+    failure_add_io_info(io);
     return;
   }
 
@@ -169,8 +169,8 @@ terminate:
     return;
 
   reflection_validate(rfx, obj);
-  if (error.occurred)
-    return reflection_error_extract(rfx);
+  if (unlikely(failure.occurred))
+    return failure_add_reflection_info(rfx);
 
   #undef character
 }

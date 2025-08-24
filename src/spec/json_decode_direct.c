@@ -14,7 +14,7 @@ spec( json_decode_direct ) {
     json_decode_direct(io);
 
     must("not fail");
-      verify(error.occurred == false);
+      verify(unlikely(failure.occurred) == false);
     must("correctly parse until the end of the object");
       verify(io->cursor == 43);
     success();

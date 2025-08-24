@@ -73,8 +73,8 @@ spec( json_parse_spaces ) {
     int result = json_parse_spaces(io);
 
     must("fail with a specific error");
-      verify(error.occurred == true);
-      verify(streq(error.message, "io: invalid channel"));
+      verify(unlikely(failure.occurred) == true);
+      verify(streq(failure.message, "io: invalid channel"));
 
     must("return -1");
       verify(result == -1);

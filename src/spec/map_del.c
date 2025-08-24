@@ -19,7 +19,7 @@ spec( map_del ) {
       int* result = map_del(map, key);
 
       must("not fail");
-        verify(error.occurred == false);
+        verify(unlikely(failure.occurred) == false);
 
       must("decrease the map length by 1");
         verify(map->length == original_map_length - 1);
@@ -41,7 +41,7 @@ spec( map_del ) {
       int* result = map_del(map, key);
 
       must("not fail");
-        verify(error.occurred == false);
+        verify(unlikely(failure.occurred) == false);
 
       must("leave the map length unchanged");
         verify(map->length == original_map_length);
@@ -72,7 +72,7 @@ spec( map_del ) {
       int* result = map_del(map, key);
 
       must("not fail");
-        verify(error.occurred == false);
+        verify(unlikely(failure.occurred) == false);
 
       must("decrease the map length by 1");
         verify(map->length == original_map_length - 1);
@@ -94,7 +94,7 @@ spec( map_del ) {
       int* result = map_del(map, key);
 
       must("not fail");
-        verify(error.occurred == false);
+        verify(unlikely(failure.occurred) == false);
 
       must("leave the map length unchanged");
         verify(map->length == original_map_length);

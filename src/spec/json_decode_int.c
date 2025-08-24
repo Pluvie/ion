@@ -22,8 +22,8 @@ spec( json_decode_int ) {
     json_decode_int(obj, io, rfx, allocator);
 
     must("fail with a specific error");
-      verify(error.occurred == true);
-      verify(streq(error.message,
+      verify(unlikely(failure.occurred) == true);
+      verify(streq(failure.message,
         "expected a number, at position 0:\n"\
         "\"string!\"\n"\
         "^\n"));
@@ -37,8 +37,8 @@ spec( json_decode_int ) {
     json_decode_int(obj, io, rfx, allocator);
 
     must("fail with a specific error");
-      verify(error.occurred == true);
-      verify(streq(error.message,
+      verify(unlikely(failure.occurred) == true);
+      verify(streq(failure.message,
         "cannot convert `123.77` to int: invalid characters detected"));
     success();
       io_close(io);
@@ -50,7 +50,7 @@ spec( json_decode_int ) {
     json_decode_int(obj, io, rfx, allocator);
 
     must("not fail");
-      verify(error.occurred == false);
+      verify(unlikely(failure.occurred) == false);
     must("correctly parse until the end of the string");
       verify(io->cursor == 5);
     must("correctly set the number value");

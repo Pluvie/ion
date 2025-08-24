@@ -23,7 +23,7 @@ spec( set_add ) {
         int result = set_add(set, element);
 
         must("not fail");
-          verify(error.occurred == false);
+          verify(unlikely(failure.occurred) == false);
 
         must("return a valid inserted position");
           verify(result >= 0);
@@ -46,7 +46,7 @@ spec( set_add ) {
         int result = set_add(set, element);
 
         must("not fail");
-          verify(error.occurred == false);
+          verify(unlikely(failure.occurred) == false);
 
         must("return a valid inserted position");
           verify(result >= 0);
@@ -83,7 +83,7 @@ spec( set_add ) {
         int result = set_add(set, element);
 
         must("not fail");
-          verify(error.occurred == false);
+          verify(unlikely(failure.occurred) == false);
 
         must("return a valid inserted position");
           verify(result >= 0);
@@ -106,8 +106,8 @@ spec( set_add ) {
         int result = set_add(set, element);
 
         must("fail with a specific error");
-          verify(error.occurred == true);
-          verify(streq(error.message, "add: stack allocated set is full"));
+          verify(unlikely(failure.occurred) == true);
+          verify(streq(failure.message, "add: stack allocated set is full"));
 
         must("return -1");
           verify(result == -1);
@@ -147,7 +147,7 @@ spec( set_add ) {
         int result = set_add(set, element);
 
         must("not fail");
-          verify(error.occurred == false);
+          verify(unlikely(failure.occurred) == false);
 
         must("return a valid inserted position");
           verify(result >= 0);
@@ -170,7 +170,7 @@ spec( set_add ) {
         int result = set_add(set, element);
 
         must("not fail");
-          verify(error.occurred == false);
+          verify(unlikely(failure.occurred) == false);
 
         must("return a valid inserted position");
           verify(result >= 0);
@@ -202,7 +202,7 @@ spec( set_add ) {
         int result = set_add(set, element);
 
         must("not fail");
-          verify(error.occurred == false);
+          verify(unlikely(failure.occurred) == false);
 
         must("return a valid inserted position");
           verify(result >= 0);
@@ -225,7 +225,7 @@ spec( set_add ) {
         int result = set_add(set, element);
 
         must("not fail");
-          verify(error.occurred == false);
+          verify(unlikely(failure.occurred) == false);
 
         must("return a valid inserted position");
           verify(result >= 0);

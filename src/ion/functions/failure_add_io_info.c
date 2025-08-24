@@ -1,4 +1,4 @@
-static inline void io_error_extract (
+static inline void failure_add_io_info (
     struct io* io
 )
 {
@@ -20,14 +20,14 @@ extract_from_buffer:
     buffer_begin = 0;
 
   int buffer_end = io->buffer.cursor + 32;
-  if (buffer_end > io->buffer.end)
-    buffer_end = io->buffer.end;
+  if (buffer_end > io->buffer.data.length)
+    buffer_end = io->buffer.data.length;
 
   extraction_size = buffer_end - buffer_begin;
   if (extraction_size > lengthof(extraction))
     extraction_size = lengthof(extraction);
 
-  memcpy(extraction, io->buffer.data + buffer_begin, extraction_size);
+  memcpy(extraction, io->buffer.data.pointer + buffer_begin, extraction_size);
   extraction[lengthof(extraction)] = '\0';
 
   caret_position = 0;
@@ -35,7 +35,7 @@ extract_from_buffer:
     caret[caret_position] = ' ';
   caret[caret_position] = '^';
 
-  position = io->cursor - (io->buffer.end - io->buffer.cursor);
+  position = io->cursor - (io->buffer.data.length - io->buffer.cursor);
 
   goto store_message;
 
@@ -46,7 +46,7 @@ extract_from_channel:
 
   int channel_end = io->cursor + 32;
   if (io->channel != IO_MEMORY)
-    channel_end = io->cursor;
+    channel_end = io->result.length;
   else if (channel_end > io->length)
     channel_end = io->length;
 
@@ -57,7 +57,7 @@ extract_from_channel:
   if (io->channel == IO_MEMORY)
     memcpy(extraction, io->memory + channel_begin, extraction_size);
   else
-    memcpy(extraction, io->storage + channel_begin, extraction_size);
+    memcpy(extraction, io->result.pointer + channel_begin, extraction_size);
 
   extraction[lengthof(extraction)] = '\0';
 
@@ -74,5 +74,5 @@ store_message:
       extraction[i] = 92;
 
   fail("%s, at position %li:\n%s\n%s\n",
-    error.message, position, extraction, caret);
+    failure.message, position, extraction, caret);
 }

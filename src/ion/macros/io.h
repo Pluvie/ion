@@ -7,6 +7,6 @@
     void* : io_open_memory,           \
     slice : io_open_slice,            \
     string : io_open_string,          \
-    struct pipe : io_open_pipe,       \
-    struct stream : io_open_stream    \
+    struct pipe* : io_open_pipe,      \
+    struct stream* : io_open_stream   \
   )(v, 0 __VA_OPT__(+(__VA_ARGS__)))

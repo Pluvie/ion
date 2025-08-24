@@ -6,11 +6,11 @@ int32 main (
     char** argv
 )
 {
-  spec_focus( json_decode_direct );
+  //spec_focus( json_decode_direct );
   spec_add( date );
   spec_add( date_to_string );
   spec_add( date_today );
-  spec_add( io_error_extract );
+  spec_add( failure_add_io_info );
   spec_add( io_buffer_init );
   spec_add( io_buffer_read );
   spec_add( io_read );

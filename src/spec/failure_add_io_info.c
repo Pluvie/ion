@@ -1,12 +1,12 @@
-spec( io_error_extract ) {
+spec( failure_add_io_info ) {
 
   argument(struct io* io);
 
   precondition("a valid io");
     #define preconditions(channel_data) \
-      struct pipe channel; pipe_open(&channel); \
+      struct pipe channel = pipe_open(); \
       io = memory_alloc(spec_allocator, sizeof(struct io)); \
-      *io = io(channel.reader); \
+      *io = io(&channel); \
       write(channel.writer, channel_data.content, channel_data.length);
 
   when("the io is buffered") {
@@ -20,11 +20,11 @@ spec( io_error_extract ) {
       io->buffer.cursor = 46;
 
       fail("some previous error message to be retained");
-      io_error_extract(io);
+      failure_add_io_info(io);
 
       must("set the error message at the appropriate cursor location");
-        verify(error.occurred == true);
-        verify(streq(error.message,
+        verify(unlikely(failure.occurred) == true);
+        verify(streq(failure.message,
           "some previous error message to be retained, at position 46:\n"\
           " be shown exactly at the colon : there you go\n"\
           "                               ^\n"));
@@ -44,11 +44,11 @@ spec( io_error_extract ) {
       io->buffer.cursor = 48;
 
       fail("some previous error message to be retained");
-      io_error_extract(io);
+      failure_add_io_info(io);
 
       must("set the error message at the appropriate cursor location");
-        verify(error.occurred == true);
-        verify(streq(error.message,
+        verify(unlikely(failure.occurred) == true);
+        verify(streq(failure.message,
           "some previous error message to be retained, at position 48:\n"\
           "e \\shown exactly at \\the colon : there \\you \\g\n"\
           "                               ^\n"));
@@ -68,11 +68,11 @@ spec( io_error_extract ) {
       io->cursor = 46;
 
       fail("some previous error message to be retained");
-      io_error_extract(io);
+      failure_add_io_info(io);
 
       must("set the error message at the appropriate cursor location");
-        verify(error.occurred == true);
-        verify(streq(error.message,
+        verify(unlikely(failure.occurred) == true);
+        verify(streq(failure.message,
           "some previous error message to be retained, at position 46:\n"\
           "the error must be shown exactly at the colon :\n"\
           "                                             ^\n"));
@@ -90,11 +90,11 @@ spec( io_error_extract ) {
       io->cursor = 48;
 
       fail("some previous error message to be retained");
-      io_error_extract(io);
+      failure_add_io_info(io);
 
       must("set the error message at the appropriate cursor location");
-        verify(error.occurred == true);
-        verify(streq(error.message,
+        verify(unlikely(failure.occurred) == true);
+        verify(streq(failure.message,
           "some previous error message to be retained, at position 48:\n"\
           "the error must be \\shown exactly at \\the colon :\n"\
           "                                               ^\n"));

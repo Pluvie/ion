@@ -23,28 +23,28 @@ encode_string:
   u64 string_length = strlen(string_content);
 
   io_write(io, "\"", 1);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   io_write(io, string_content, string_length);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   io_write(io, "\"", 1);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   return;
 
 encode_pointer:
   json_encode(element_obj, io, element_rfx);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   return;
 
 encode_null:
   io_write(io, "null", lengthof("null"));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 }

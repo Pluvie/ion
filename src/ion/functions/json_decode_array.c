@@ -17,11 +17,11 @@ static inline void json_decode_array (
   #define character ((char*) result.data)[0]
 
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (result.length == 0)
@@ -29,29 +29,29 @@ static inline void json_decode_array (
 
   if (character != '[') {
     fail("expected array begin '['");
-    io_error_extract(io);
+    failure_add_io_info(io);
     return;
   }
 
 parse_value:
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   result = io_peek(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (result.length == 0) {
     fail("expected value, or array end ']'");
-    reflection_error_extract(rfx);
-    io_error_extract(io);
+    failure_add_reflection_info(rfx);
+    failure_add_io_info(io);
     return;
   }
 
   if (character == ']') {
     io_read(io, sizeof(char));
-    if (error.occurred)
+    if (unlikely(failure.occurred))
       return;
     goto terminate;
   }
@@ -64,16 +64,16 @@ parse_value:
     json_decode(NULL, io, NULL, NULL);
   }
 
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   /* Check comma -- next field --, or array end. */
   json_parse_spaces(io);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   if (result.length == 0)
@@ -89,7 +89,7 @@ parse_value:
 
   default:
     fail("expected comma, or array end ']'");
-    io_error_extract(io);
+    failure_add_io_info(io);
     return;
   }
 
@@ -98,8 +98,8 @@ terminate:
     return;
 
   reflection_validate(rfx, obj);
-  if (error.occurred)
-    return reflection_error_extract(rfx);
+  if (unlikely(failure.occurred))
+    return failure_add_reflection_info(rfx);
 
   #undef character
 }

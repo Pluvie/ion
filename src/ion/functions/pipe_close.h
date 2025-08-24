@@ -1,3 +1,3 @@
 void pipe_close (
-    struct pipe pipes
+    struct pipe* pipes
 );

@@ -8,7 +8,7 @@ static inline int json_parse_number (
   #define digit ((char*) result.data)[0]
 
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     goto error;
 
   if (result.length == 0)
@@ -33,7 +33,7 @@ static inline int json_parse_number (
 
 check_after_zero:
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     goto error;
 
   if (result.length == 0)
@@ -71,7 +71,7 @@ check_after_zero:
 
 integral_part:
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     goto error;
 
   if (result.length == 0)
@@ -96,7 +96,7 @@ integral_part:
 
 check_after_decimal_separator:
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     goto error;
 
   if (result.length == 0)
@@ -111,7 +111,7 @@ check_after_decimal_separator:
 
 fractional_part:
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     goto error;
 
   if (result.length == 0)
@@ -131,7 +131,7 @@ fractional_part:
 
 exponent_sign:
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     goto error;
 
   if (result.length == 0)
@@ -153,7 +153,7 @@ exponent_sign:
 
 exponent_part:
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     goto error;
 
   if (result.length == 0)

@@ -41,8 +41,8 @@ read_from_buffer:
     buffer->cursor -= chip_begin;
   }
 
-  io->data.pointer = buffer->data.pointer + buffer->cursor;
-  io->data.length = amount;
+  io->result.pointer = buffer->data.pointer + buffer->cursor;
+  io->result.length = amount;
   buffer->cursor += amount;
   return;
 
@@ -63,32 +63,28 @@ read_from_channel:
   if (amount > buffer->size)
     extended_capacity += amount;
 
-  void* old_data = buffer->data.pointer;
-  void* new_data = alloc_zero(buffer->data, extended_capacity);
-  memcpy(new_data, old_data, buffer->data.length);
-  free(old_data);
-  buffer->data.pointer = new_data;
+  buffer->data.pointer = alloc_resize_zero(
+    buffer->data.pointer, buffer->data.length, extended_capacity);
 
-  void* storage = buffer->data.pointer + buffer->data.length; 
   int channel_asked_bytes = extended_capacity - buffer->data.length;
-  io_channel_read(io, channel_asked_bytes, storage);
+  io_channel_read(io, channel_asked_bytes, buffer->data.pointer + buffer->data.length);
   if (unlikely(failure.occurred))
     return;
 
-  int channel_read_bytes = io->data.length;
+  int channel_read_bytes = io->result.length;
   int available_amount = buffer_available_quantity + channel_read_bytes;
 
   /* If the underlying channel returns less data than the amount asked, we must update
    * the buffer pointers accordingly. */
-  io->data.pointer = buffer->data.pointer + buffer->cursor;
+  io->result.pointer = buffer->data.pointer + buffer->cursor;
   buffer->data.length += available_amount;
 
   if (amount <= available_amount) {
-    io->data.length = amount;
+    io->result.length = amount;
     buffer->cursor += amount;
 
   } else {
-    io->data.length = available_amount;
+    io->result.length = available_amount;
     buffer->cursor += available_amount;
   }
 }

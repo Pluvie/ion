@@ -6,7 +6,7 @@ struct io {
     struct pipe* pipe;
     struct stream* stream;
   };
-  slice data;
+  slice result;
   int cursor;
   int length;
   enum io_channels channel;

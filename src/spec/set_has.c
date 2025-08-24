@@ -17,7 +17,7 @@ spec( set_has ) {
       bool result = set_has(set, element);
 
       must("not fail");
-        verify(error.occurred == false);
+        verify(unlikely(failure.occurred) == false);
 
       must("return true");
         verify(result == true);
@@ -31,7 +31,7 @@ spec( set_has ) {
       bool result = set_has(set, element);
 
       must("not fail");
-        verify(error.occurred == false);
+        verify(unlikely(failure.occurred) == false);
 
       must("return false");
         verify(result == false);
@@ -54,7 +54,7 @@ spec( set_has ) {
       bool result = set_has(set, element);
 
       must("not fail");
-        verify(error.occurred == false);
+        verify(unlikely(failure.occurred) == false);
 
       must("return true");
         verify(result == true);
@@ -68,7 +68,7 @@ spec( set_has ) {
       bool result = set_has(set, element);
 
       must("not fail");
-        verify(error.occurred == false);
+        verify(unlikely(failure.occurred) == false);
 
       must("return false");
         verify(result == false);

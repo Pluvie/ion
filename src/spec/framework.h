@@ -80,7 +80,7 @@ memory* spec_allocator;
 
 /* Defines a function specification codepath success. */
 #define success() \
-  error_reset(); \
+  failure_recover(); \
   spec_print_verification_enabled = false;
 
 /* Ends a specification codepath. */

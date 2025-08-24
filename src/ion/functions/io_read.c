@@ -6,10 +6,10 @@ void io_read (
   if (io->buffer.enabled)
     return io_buffer_read(io, amount);
 
-  if (io->channel == MEMORY)
+  if (io->channel == IO_MEMORY)
     return io_channel_read(io, amount, NULL);
 
-  free(io->data.pointer);
-  io->data.pointer = alloc_zero(amount);
-  return io_channel_read(io, amount, io->data.pointer);
+  free(io->result.pointer);
+  io->result.pointer = alloc_zero(amount);
+  return io_channel_read(io, amount, io->result.pointer);
 }

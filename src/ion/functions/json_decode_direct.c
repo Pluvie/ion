@@ -25,8 +25,8 @@ int json_parse_string_direct (struct io* io) {
   int cursor = io->cursor;
   int length = 0;
   bool escaped = false;
-  #define result        ((char*) io->data.data)[0]
-  #define read_failure  failure.occurred || io->data.length == 0
+  #define result        ((char*) io->result.data)[0]
+  #define read_failure  failure.occurred || io->result.length == 0
 
   io_read_direct(io, sizeof(char));
 
@@ -191,7 +191,7 @@ void json_decode_direct (
     }
 
     fail("invalid json value");
-    io_error_extract(io);
+    failure_add_io_info(io);
   }
 
   return;
@@ -219,7 +219,7 @@ parse_object:
     return;
 
   fail("bad object end");
-  io_error_extract(io);
+  failure_add_io_info(io);
   return;
 
 parse_array:
@@ -237,6 +237,6 @@ parse_array:
     return;
 
   fail("bad array end");
-  io_error_extract(io);
+  failure_add_io_info(io);
   return;
 }

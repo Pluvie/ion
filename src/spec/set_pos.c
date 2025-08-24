@@ -26,7 +26,7 @@ spec( set_pos ) {
     for (int i = 0; i < countof(elements); i++) {
       element = elements[i];
       result = set_pos(set, element);
-      verify(error.occurred == false);
+      verify(unlikely(failure.occurred) == false);
       verify(result == positions[i]);
     }
     success();
@@ -41,7 +41,7 @@ spec( set_pos ) {
       int result = set_pos(set, element);
 
       must("not fail");
-        verify(error.occurred == false);
+        verify(unlikely(failure.occurred) == false);
 
       must("return a valid free position");
         verify(result >= 0);
@@ -64,7 +64,7 @@ spec( set_pos ) {
       int result = set_pos(set, element);
 
       must("not fail");
-        verify(error.occurred == false);
+        verify(unlikely(failure.occurred) == false);
 
       must("return -1");
         verify(result == -1);

@@ -1,4 +1,3 @@
 void* alloc (
-    int amount,
-    int alignment
+    int amount
 );

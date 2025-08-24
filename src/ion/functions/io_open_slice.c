@@ -5,7 +5,7 @@ struct io io_open_slice (
 {
   return (struct io) {
     .channel = IO_MEMORY,
-    .memory = slice.data,
+    .memory = slice.pointer,
     .length = slice.length,
   };
 }

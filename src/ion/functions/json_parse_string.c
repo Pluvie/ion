@@ -9,7 +9,7 @@ static inline int json_parse_string (
   #define character ((char*) result.data)[0]
 
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     goto error;
 
   if (result.length == 0)
@@ -22,7 +22,7 @@ static inline int json_parse_string (
 
 read_character:
   result = io_read(io, sizeof(char));
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     goto error;
 
   if (result.length == 0)

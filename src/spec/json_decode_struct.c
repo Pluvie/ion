@@ -29,8 +29,8 @@ spec( json_decode_struct ) {
     json_decode_struct(obj, io, rfx, allocator);
 
     must("fail with a specific error");
-      verify(error.occurred == true);
-      verify(streq(error.message,
+      verify(unlikely(failure.occurred) == true);
+      verify(streq(failure.message,
         "expected object begin '{', at position 4:\n"\
         "   123 \\  \n"\
         "   ^\n"));
@@ -44,7 +44,7 @@ spec( json_decode_struct ) {
     json_decode_struct(obj, io, rfx, allocator);
 
     must("not fail");
-      verify(error.occurred == false);
+      verify(unlikely(failure.occurred) == false);
     must("correctly parse until the end of the object");
       verify(io->cursor == 11);
     must("not set any field");
@@ -59,7 +59,7 @@ spec( json_decode_struct ) {
     json_decode_struct(obj, io, rfx, allocator);
 
     must("not fail");
-      verify(error.occurred == false);
+      verify(unlikely(failure.occurred) == false);
     must("correctly parse until the end of the object");
       verify(io->cursor == 43);
     must("set the correct value to the corresponding fields");
@@ -75,7 +75,7 @@ spec( json_decode_struct ) {
     json_decode_struct(obj, io, rfx, allocator);
 
     must("not fail");
-      verify(error.occurred == false);
+      verify(unlikely(failure.occurred) == false);
     must("correctly parse until the end of the object");
       verify(io->cursor == 45);
     must("not set any field");

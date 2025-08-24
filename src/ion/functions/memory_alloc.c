@@ -86,5 +86,5 @@ allocate:
   allocator->allocations.count++;
   return address;
 
-  #undef default_alignment;
+  #undef default_alignment
 }

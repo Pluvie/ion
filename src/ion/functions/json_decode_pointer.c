@@ -10,12 +10,12 @@ static inline void json_decode_pointer (
 
   void* pointer_data = memory_alloc_zero(allocator, value_rfx->size);
   json_decode(pointer_data, io, value_rfx, allocator);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   reflection_validate(rfx, obj);
-  if (error.occurred)
-    return reflection_error_extract(rfx);
+  if (unlikely(failure.occurred))
+    return failure_add_reflection_info(rfx);
 
   int pointer_address = (int) pointer_data;
   memcpy(obj, &pointer_address, sizeof(int));

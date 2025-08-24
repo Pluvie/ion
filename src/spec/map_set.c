@@ -25,7 +25,7 @@ spec( map_set ) {
         int result = map_set(map, key, value);
 
         must("not fail");
-          verify(error.occurred == false);
+          verify(unlikely(failure.occurred) == false);
 
         must("return a valid inserted position");
           verify(result >= 0);
@@ -51,7 +51,7 @@ spec( map_set ) {
         int result = map_set(map, key, value);
 
         must("not fail");
-          verify(error.occurred == false);
+          verify(unlikely(failure.occurred) == false);
 
         must("return a valid inserted position");
           verify(result >= 0);
@@ -92,7 +92,7 @@ spec( map_set ) {
         int result = map_set(map, key, value);
 
         must("not fail");
-          verify(error.occurred == false);
+          verify(unlikely(failure.occurred) == false);
 
         must("return a valid inserted position");
           verify(result >= 0);
@@ -118,8 +118,8 @@ spec( map_set ) {
         int result = map_set(map, key, value);
 
         must("fail with a specific error");
-          verify(error.occurred == true);
-          verify(streq(error.message, "set: stack allocated map is full"));
+          verify(unlikely(failure.occurred) == true);
+          verify(streq(failure.message, "set: stack allocated map is full"));
 
         must("return -1");
           verify(result == -1);
@@ -160,7 +160,7 @@ spec( map_set ) {
         int result = map_set(map, key, value);
 
         must("not fail");
-          verify(error.occurred == false);
+          verify(unlikely(failure.occurred) == false);
 
         must("return a valid inserted position");
           verify(result >= 0);
@@ -186,7 +186,7 @@ spec( map_set ) {
         int result = map_set(map, key, value);
 
         must("not fail");
-          verify(error.occurred == false);
+          verify(unlikely(failure.occurred) == false);
 
         must("return a valid inserted position");
           verify(result >= 0);
@@ -223,7 +223,7 @@ spec( map_set ) {
         int result = map_set(map, key, value);
 
         must("not fail");
-          verify(error.occurred == false);
+          verify(unlikely(failure.occurred) == false);
 
         must("return a valid inserted position");
           verify(result >= 0);
@@ -249,7 +249,7 @@ spec( map_set ) {
         int result = map_set(map, key, value);
 
         must("not fail");
-          verify(error.occurred == false);
+          verify(unlikely(failure.occurred) == false);
 
         must("return a valid inserted position");
           verify(result >= 0);

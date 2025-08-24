@@ -7,7 +7,7 @@ spec( string_to_int ) {
     int result = string_to_int(source);
 
     must("not fail");
-      verify(error.occurred == false);
+      verify(unlikely(failure.occurred) == false);
 
     must("convert the string to its integer equivalent");
       verify((int) 17788 == result);
@@ -20,8 +20,8 @@ spec( string_to_int ) {
     int result = string_to_int(source);
 
     must("fail with a specific error");
-      verify(error.occurred == true);
-      verify(streq(error.message,
+      verify(unlikely(failure.occurred) == true);
+      verify(streq(failure.message,
         "cannot convert `17aaa:0` to int: invalid characters detected"));
 
     must("return 0");

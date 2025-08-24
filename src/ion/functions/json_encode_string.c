@@ -5,15 +5,15 @@ static inline void json_encode_string (
 )
 {
   io_write(io, "\"", 1);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   struct string* string = obj;
   io_write(io, string->content, string->length);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 
   io_write(io, "\"", 1);
-  if (error.occurred)
+  if (unlikely(failure.occurred))
     return;
 }
