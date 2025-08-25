@@ -40,8 +40,6 @@ initialize_regions:
 
   allocator->regions.addresses = alloc_aligned(
     allocator->regions.capacity * sizeof(void*), default_alignment);
-  if (unlikely(allocator->regions.addresses == NULL))
-    goto error;
 
   goto append_region;
 

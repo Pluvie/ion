@@ -1,15 +1,14 @@
 static inline struct io io_open_file (
-    int descriptor,
-    int length,
-    struct stat* stat
+    struct file* file,
+    int length
 )
 {
   if (length <= 0)
-    length = stat->st_size;
+    length = file_size(file);
 
   struct io io = {
     .channel = IO_FILE,
-    .file = descriptor,
+    .file = file,
     .length = length
   };
 

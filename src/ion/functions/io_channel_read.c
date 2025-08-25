@@ -33,8 +33,7 @@ static inline void io_channel_read (
     break;
 
   case IO_STREAM:
-    io->result.length = amount;
-    stream_read(io->stream, address, amount);
+    io->result.length = stream_read(io->stream, address, amount);
     break;
 
   default:

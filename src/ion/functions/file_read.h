@@ -1,5 +1,5 @@
 int file_read (
-    int file,
+    struct file* file,
     void* address,
     int amount
 );

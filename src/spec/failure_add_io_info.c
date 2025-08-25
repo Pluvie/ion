@@ -12,20 +12,20 @@ spec( failure_add_io_info ) {
   when("the io is buffered") {
     when("there are no newlines in the extraction") {
       apply(preconditions(
-        s("the error must be shown exactly at the colon : there you go")));
+        s("the failure must be shown exactly at the colon : there you go")));
       io->buffer.enabled = true;
       io->buffer.size = 8;
 
       io_read(io, 52);
       io->buffer.cursor = 46;
 
-      fail("some previous error message to be retained");
+      fail("some previous failure message to be retained");
       failure_add_io_info(io);
 
-      must("set the error message at the appropriate cursor location");
+      must("set the failure message at the appropriate cursor location");
         verify(unlikely(failure.occurred) == true);
         verify(streq(failure.message,
-          "some previous error message to be retained, at position 46:\n"\
+          "some previous failure message to be retained, at position 46:\n"\
           " be shown exactly at the colon : there you go\n"\
           "                               ^\n"));
 
@@ -36,20 +36,20 @@ spec( failure_add_io_info ) {
 
     when("there are newlines in the extraction") {
       apply(preconditions(
-        s("the error must be \nshown exactly at \nthe colon : there \nyou \ngo")));
+        s("the failure must be \nshown exactly at \nthe colon : there \nyou \ngo")));
       io->buffer.enabled = true;
       io->buffer.size = 8;
 
       io_read(io, 54);
       io->buffer.cursor = 48;
 
-      fail("some previous error message to be retained");
+      fail("some previous failure message to be retained");
       failure_add_io_info(io);
 
-      must("set the error message at the appropriate cursor location");
+      must("set the failure message at the appropriate cursor location");
         verify(unlikely(failure.occurred) == true);
         verify(streq(failure.message,
-          "some previous error message to be retained, at position 48:\n"\
+          "some previous failure message to be retained, at position 48:\n"\
           "e \\shown exactly at \\the colon : there \\you \\g\n"\
           "                               ^\n"));
 
@@ -62,19 +62,19 @@ spec( failure_add_io_info ) {
   when("the io is not buffered") {
     when("there are no newlines in the extraction") {
       apply(preconditions(
-        s("the error must be shown exactly at the colon : there you go")));
+        s("the failure must be shown exactly at the colon : there you go")));
 
       io_read(io, 52);
       io->cursor = 46;
 
-      fail("some previous error message to be retained");
+      fail("some previous failure message to be retained");
       failure_add_io_info(io);
 
-      must("set the error message at the appropriate cursor location");
+      must("set the failure message at the appropriate cursor location");
         verify(unlikely(failure.occurred) == true);
         verify(streq(failure.message,
-          "some previous error message to be retained, at position 46:\n"\
-          "the error must be shown exactly at the colon :\n"\
+          "some previous failure message to be retained, at position 46:\n"\
+          "the failure must be shown exactly at the colon :\n"\
           "                                             ^\n"));
 
       success();
@@ -84,19 +84,19 @@ spec( failure_add_io_info ) {
 
     when("there are newlines in the extraction") {
       apply(preconditions(
-        s("the error must be \nshown exactly at \nthe colon : there \nyou \ngo")));
+        s("the failure must be \nshown exactly at \nthe colon : there \nyou \ngo")));
 
       io_read(io, 54);
       io->cursor = 48;
 
-      fail("some previous error message to be retained");
+      fail("some previous failure message to be retained");
       failure_add_io_info(io);
 
-      must("set the error message at the appropriate cursor location");
+      must("set the failure message at the appropriate cursor location");
         verify(unlikely(failure.occurred) == true);
         verify(streq(failure.message,
-          "some previous error message to be retained, at position 48:\n"\
-          "the error must be \\shown exactly at \\the colon :\n"\
+          "some previous failure message to be retained, at position 48:\n"\
+          "the failure must be \\shown exactly at \\the colon :\n"\
           "                                               ^\n"));
 
       success();

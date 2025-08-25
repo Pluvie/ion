@@ -1,4 +1,5 @@
-static inline struct io io_open_file (
+int file_write (
     struct file* file,
+    void* data,
     int length
 );

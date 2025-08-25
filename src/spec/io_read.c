@@ -24,8 +24,8 @@ spec( io_read ) {
     must("advance the io cursor by the given amount");
       verify(io->cursor == amount);
     must("return a slice of data of the given amount");
-      verify(io->result.length == amount);
-      verify(streq(io->result.pointer, "1111111122"));
+      slice result = { "1111111122", amount };
+      verify(eq(io->result, result));
 
     success();
       io_close(io);

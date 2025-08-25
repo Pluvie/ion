@@ -1,6 +1,8 @@
 #include "structs/error.h"
+#include "structs/file.h"
 #include "structs/io.h"
 #include "structs/iterator.h"
 #include "structs/pipe.h"
 #include "structs/reflection.h"
+#include "structs/socket.h"
 #include "structs/stream.h"

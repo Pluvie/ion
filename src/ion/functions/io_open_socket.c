@@ -1,9 +1,10 @@
 static inline struct io io_open_socket (
-    int descriptor
+    struct socket* sock,
+    int
 )
 {
   return (struct io) {
     .channel = IO_SOCKET,
-    .socket = descriptor,
+    .socket = sock,
   };
 }

@@ -1,9 +1,9 @@
 struct io {
   union {
-    int file;
-    int socket;
     void* memory;
+    struct file* file;
     struct pipe* pipe;
+    struct socket* socket;
     struct stream* stream;
   };
   slice result;

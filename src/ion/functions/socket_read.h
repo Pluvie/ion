@@ -1,5 +1,5 @@
 int socket_read (
-    int sockfd,
+    struct socket* sock,
     void* address,
     int amount,
     int32 flags
