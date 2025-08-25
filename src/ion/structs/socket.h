@@ -1,9 +1,9 @@
 #if platform(LINUX)
   struct socket {
     int descriptor;
+    int family;
     int type;
-    struct sockaddr* address;
-    int address_size;
+    string uri;
   };
   check_sizeof(32, struct socket);
 

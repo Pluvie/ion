@@ -1,9 +1,10 @@
 #if platform(LINUX)
   struct file {
     int descriptor;
-    char* name;
+    string name;
+    padding(8);
   };
-  check_sizeof(16, struct file);
+  check_sizeof(32, struct file);
 
 #else
   #error "Unsupported platform."

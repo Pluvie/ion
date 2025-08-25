@@ -1,23 +1,32 @@
 struct socket socket_open (
-    int type,
-    void* address,
-    int address_size
+    string uri
 )
 {
 #if platform(LINUX)
-  struct socket sock = { 0 };
-  struct sockaddr* sockaddr = address;
+  struct socket sock = { .uri = uri };
 
-  sock.type = type;
-  sock.descriptor = socket(sockaddr->sa_family, sock.type, 0);
-  if (sock.descriptor < 0) {
-    fail("socket create error: %s", strerror(errno));
+  int family;
+  int type;
+
+  /*  */ if (strstart(uri, s("tcp://")) {
+    family = AF_INET;
+    type = SOCK_STREAM;
+  } else if (strstart(uri, s("udp://")) {
+    family = AF_INET;
+    type = SOCK_DGRAM;
+  } else if (strstart(uri, s("unix://")) {
+    family = AF_UNIX;
+    type = SOCK_STREAM;
+  } else {
+    fail("socket uri error: must start with [tcp|udp|unix]://");
     return sock;
   }
 
-  int bind_result = bind(sock.descriptor, sockaddr, address_size);
-  if (bind_result < 0) {
-    fail("socket bind error: %s", strerror(errno));
+  sock.family = family;
+  sock.type = type;
+  sock.descriptor = socket(family, type, 0);
+  if (sock.descriptor < 0) {
+    fail("socket create error: %s", strerror(errno));
     return sock;
   }
 
