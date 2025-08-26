@@ -1,0 +1,1 @@
+#define SOCKET_PATH_MAXLEN  256

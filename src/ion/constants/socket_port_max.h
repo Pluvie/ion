@@ -1,0 +1,1 @@
+#define SOCKET_PORT_MAX   65535

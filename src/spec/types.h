@@ -139,3 +139,58 @@ struct reflection rfx_blueprint = {
   })
 };
 #undef b
+
+/**
+ * Adds a socket server fiber, to test socket connections using a separate thread. */
+fiber_define(spec_socket_server, {
+  string uri;
+  void (*connector)(struct socket*);
+})
+
+fiber_implement(spec_socket_server)
+{
+  struct fiber(spec_socket_server)* fiber = ptr;
+
+  struct socket sock = socket_open(fiber->args.uri);
+  if (unlikely(failure.occurred)) {
+    print("fiber [%li] error: %s", fiber->id, failure.message);
+    return NULL;
+  }
+
+  socket_accept(&sock, fiber->args.connector, 1, 100);
+  if (unlikely(failure.occurred))
+    print("fiber [%li] error: %s", fiber->id, failure.message);
+
+  return NULL;
+}
+
+/**
+ * Adds a socket client fiber, to test socket connections using a separate thread. */
+fiber_define(spec_socket_client, {
+  string uri;
+  void (*connector)(struct socket*);
+})
+
+fiber_implement(spec_socket_client)
+{
+  struct fiber(spec_socket_client)* fiber = ptr;
+
+  struct socket sock = socket_open(fiber->args.uri);
+  if (unlikely(failure.occurred)) {
+    fail("fiber [%li] error: %s", fiber->id, failure.message);
+    failure_print();
+    return NULL;
+  }
+
+  socket_connect(&sock);
+  if (unlikely(failure.occurred)) {
+    fail("fiber [%li] error: %s", fiber->id, failure.message);
+    failure_print();
+    return NULL;
+  }
+
+  if (fiber->args.connector != NULL)
+    fiber->args.connector(&sock);
+
+  return NULL;
+}

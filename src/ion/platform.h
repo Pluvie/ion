@@ -15,19 +15,7 @@
 #endif
 
 #if platform(LINUX)
-  #include <errno.h>
-  #include <fcntl.h>
-  #include <stdbool.h>
-  #include <stddef.h>
-  #include <stdint.h>
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <string.h>
-  #include <sys/socket.h>
-  #include <sys/stat.h>
-  #include <sys/time.h>
-  #include <time.h>
-  #include <unistd.h>
+  #include "platform/linux.h"
 #else
   #error "Unsupported platform."
 #endif

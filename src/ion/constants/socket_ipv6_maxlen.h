@@ -1,0 +1,1 @@
+#define SOCKET_IPV6_MAXLEN  46

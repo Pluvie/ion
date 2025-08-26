@@ -59,12 +59,14 @@ int32 main (
   spec_add( set_init );
   spec_add( set_pos );
   spec_add( set_rehash );
+  spec_add( socket_open );
+  spec_focus( socket_connect );
   spec_add( stridx );
-  spec_add( strstart );
-  spec_add( strsub );
   spec_add( stridx );
   spec_add( string_to_dec );
   spec_add( string_to_int );
+  spec_add( strstart );
+  spec_add( strsub );
   spec_add( time_now );
   spec_add( time_to_string );
 
