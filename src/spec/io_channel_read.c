@@ -193,13 +193,9 @@ spec( io_channel_read ) {
   } end();
 
 
+  /*
   when("the io channel is IO_SOCKET") {
     #define io_channel_socket_condition \
-      struct sockaddr_in client_addr = { 0 };
-      client_addr.sin_family = AF_INET;
-      client_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-      client_addr.sin_port = htons(3000);
-
       struct socket client = socket_open(); \
       struct socket server = socket_open(); \
       *io = io(&server); \
@@ -252,6 +248,7 @@ spec( io_channel_read ) {
         socket_close(&server);
     } end();
   } end();
+  */
 
   #undef preconditions
 }

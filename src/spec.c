@@ -13,7 +13,7 @@ int32 main (
   spec_add( failure_add_io_info );
   //spec_add( io_buffer_init );
   //spec_add( io_buffer_read );
-  spec_focus( io_channel_read );
+  spec_add( io_channel_read );
   spec_add( io_read );
   //spec_add( json_decode );
   //spec_add( json_decode_array );
@@ -59,6 +59,10 @@ int32 main (
   spec_add( set_init );
   spec_add( set_pos );
   spec_add( set_rehash );
+  spec_add( stridx );
+  spec_add( strstart );
+  spec_add( strsub );
+  spec_add( stridx );
   spec_add( string_to_dec );
   spec_add( string_to_int );
   spec_add( time_now );

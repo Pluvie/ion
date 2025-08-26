@@ -5,16 +5,16 @@ struct socket socket_open (
 #if platform(LINUX)
   struct socket sock = { .uri = uri };
 
-  int family;
-  int type;
+  int32 family;
+  int32 type;
 
-  /*  */ if (strstart(uri, s("tcp://")) {
+  /*  */ if (strstart(uri, s("tcp://"))) {
     family = AF_INET;
     type = SOCK_STREAM;
-  } else if (strstart(uri, s("udp://")) {
+  } else if (strstart(uri, s("udp://"))) {
     family = AF_INET;
     type = SOCK_DGRAM;
-  } else if (strstart(uri, s("unix://")) {
+  } else if (strstart(uri, s("unix://"))) {
     family = AF_UNIX;
     type = SOCK_STREAM;
   } else {

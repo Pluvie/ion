@@ -3,7 +3,7 @@ void file_delete (
 )
 {
 #if platform(LINUX)
-  int result = remove(file->name);
+  int result = remove(file->name.content);
 
   if (unlikely(result < 0))
     fail("file delete error: %s", strerror(errno));
