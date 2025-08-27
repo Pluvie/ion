@@ -22,7 +22,7 @@ spec( json_decode_string ) {
     json_decode_string(obj, io, rfx, allocator);
 
     must("fail with a specific error");
-      verify(unlikely(failure.occurred) == true);
+      verify(failure.occurred == true);
       verify(streq(failure.message,
         "expected a string, at position 0:\n"\
         "123\n"\
@@ -37,7 +37,7 @@ spec( json_decode_string ) {
     json_decode_string(obj, io, rfx, allocator);
 
     must("not fail");
-      verify(unlikely(failure.occurred) == false);
+      verify(failure.occurred == false);
     must("correctly parse until the end of the string");
       verify(io->cursor == 2);
     must("correctly set the string value");
@@ -52,7 +52,7 @@ spec( json_decode_string ) {
     json_decode_string(obj, io, rfx, allocator);
 
     must("not fail");
-      verify(unlikely(failure.occurred) == false);
+      verify(failure.occurred == false);
     must("correctly parse until the end of the string");
       verify(io->cursor == 5);
     must("correctly set the string value");

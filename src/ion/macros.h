@@ -35,7 +35,6 @@
 #include "macros/s.h"
 #include "macros/set.h"
 #include "macros/sp.h"
-#include "macros/strnull.h"
 #include "macros/unlikely.h"
 #include "macros/zero_out.h"
 

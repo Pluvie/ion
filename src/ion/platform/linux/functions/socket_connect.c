@@ -2,8 +2,8 @@ void socket_connect (
     struct socket* sock
 )
 {
-  switch (sock->family) {
-  case AF_INET: {
+  switch (sock->type) {
+  case SOCKET_IP_V4: {
     struct sockaddr_in address = { 0 };
     address.sin_family = AF_INET;
     address.sin_port = htons(sock->port);
@@ -20,7 +20,7 @@ void socket_connect (
     return;
   }
 
-  case AF_INET6: {
+  case SOCKET_IP_V6: {
     struct sockaddr_in6 address = { 0 };
     address.sin6_family = AF_INET6;
     address.sin6_port = htons(sock->port);
@@ -37,7 +37,7 @@ void socket_connect (
     return;
   }
 
-  case AF_UNIX: {
+  case SOCKET_LOCAL: {
     struct sockaddr_un address = { 0 };
     address.sun_family = AF_UNIX;
     strncpy(address.sun_path, sock->path, sizeof(address.sun_path) - 1);
@@ -48,7 +48,7 @@ void socket_connect (
   }
 
   default:
-    fail("socket connect error: unsupported socket family");
+    fail("socket connect error: unsupported socket type");
   }
 
   return;

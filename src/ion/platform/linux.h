@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <netinet/in.h>
 #include <pthread.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -19,3 +20,9 @@
 #include <sys/un.h>
 #include <time.h>
 #include <unistd.h>
+
+#undef stdin
+#undef stdout
+#undef stderr
+
+#include "linux/overrides.h"

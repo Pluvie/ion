@@ -1,4 +1,4 @@
-spec( stridx ) {
+spec( string_index ) {
 
   argument(string source);
   argument(string tester);
@@ -7,7 +7,7 @@ spec( stridx ) {
     source = (string) { 0 };
     tester = (string) { 0 };
 
-    int idx = stridx(source, tester);
+    int idx = string_index(source, tester);
 
     must("return -1");
       verify(idx == -1);
@@ -19,7 +19,7 @@ spec( stridx ) {
     source = (string) { 0 };
     tester = s("abc");
 
-    int idx = stridx(source, tester);
+    int idx = string_index(source, tester);
 
     must("return -1");
       verify(idx == -1);
@@ -31,7 +31,7 @@ spec( stridx ) {
     source = s("abc");
     tester = (string) { 0 };
 
-    int idx = stridx(source, tester);
+    int idx = string_index(source, tester);
 
     must("return -1");
       verify(idx == -1);
@@ -44,7 +44,7 @@ spec( stridx ) {
       source = s("abcdef");
       tester = s("ab");
 
-      int idx = stridx(source, tester);
+      int idx = string_index(source, tester);
 
       must("return the source index on which the tester is included");
         verify(idx == 0);
@@ -56,7 +56,7 @@ spec( stridx ) {
       source = s("abcdef");
       tester = s("cd");
 
-      int idx = stridx(source, tester);
+      int idx = string_index(source, tester);
 
       must("return the source index on which the tester is included");
         verify(idx == 2);
@@ -68,7 +68,7 @@ spec( stridx ) {
       source = s("abcdef");
       tester = s("ef");
 
-      int idx = stridx(source, tester);
+      int idx = string_index(source, tester);
 
       must("return the source index on which the tester is included");
         verify(idx == 4);
@@ -80,7 +80,7 @@ spec( stridx ) {
       source = s("abcdef");
       tester = s("xyz");
 
-      int idx = stridx(source, tester);
+      int idx = string_index(source, tester);
 
       must("return -1");
         verify(idx == -1);

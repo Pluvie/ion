@@ -7,7 +7,7 @@ spec( failure_add_io_info ) {
       struct pipe channel = pipe_open(); \
       io = memory_alloc(spec_allocator, sizeof(struct io)); \
       *io = io(&channel); \
-      write(channel.writer, channel_data.content, channel_data.length);
+      write(channel.writer, channel_data.pointer, channel_data.length);
 
   when("the io is buffered") {
     when("there are no newlines in the extraction") {
@@ -23,8 +23,8 @@ spec( failure_add_io_info ) {
       failure_add_io_info(io);
 
       must("set the failure message at the appropriate cursor location");
-        verify(unlikely(failure.occurred) == true);
-        verify(streq(failure.message,
+        verify(failure.occurred);
+        verify(failure_is(
           "some previous failure message to be retained, at position 46:\n"\
           " be shown exactly at the colon : there you go\n"\
           "                               ^\n"));
@@ -47,8 +47,8 @@ spec( failure_add_io_info ) {
       failure_add_io_info(io);
 
       must("set the failure message at the appropriate cursor location");
-        verify(unlikely(failure.occurred) == true);
-        verify(streq(failure.message,
+        verify(failure.occurred);
+        verify(failure_is(
           "some previous failure message to be retained, at position 48:\n"\
           "e \\shown exactly at \\the colon : there \\you \\g\n"\
           "                               ^\n"));
@@ -71,8 +71,8 @@ spec( failure_add_io_info ) {
       failure_add_io_info(io);
 
       must("set the failure message at the appropriate cursor location");
-        verify(unlikely(failure.occurred) == true);
-        verify(streq(failure.message,
+        verify(failure.occurred);
+        verify(failure_is(
           "some previous failure message to be retained, at position 46:\n"\
           "the failure must be shown exactly at the colon :\n"\
           "                                             ^\n"));
@@ -93,8 +93,8 @@ spec( failure_add_io_info ) {
       failure_add_io_info(io);
 
       must("set the failure message at the appropriate cursor location");
-        verify(unlikely(failure.occurred) == true);
-        verify(streq(failure.message,
+        verify(failure.occurred);
+        verify(failure_is(
           "some previous failure message to be retained, at position 48:\n"\
           "the failure must be \\shown exactly at \\the colon :\n"\
           "                                               ^\n"));

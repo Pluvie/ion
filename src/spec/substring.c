@@ -1,4 +1,4 @@
-spec( strsub ) {
+spec( substring ) {
 
   argument(string source);
   argument(int begin);
@@ -9,10 +9,11 @@ spec( strsub ) {
     begin = 7;
     end = 9;
 
-    string sub = strsub(source, begin, end);
+    string result = substring(source, begin, end);
+    string expected = { 0 };
 
     must("return an empty string");
-      verify(strnull(sub));
+      verify(eq(result, expected));
 
     success();
   } end();
@@ -23,10 +24,11 @@ spec( strsub ) {
       begin = 2;
       end = -3;
 
-      string sub = strsub(source, begin, end);
+      string result = substring(source, begin, end);
+      string expected = s("cd");
 
       must("return the substring counting from the end of the string");
-        verify(streq(sub, "cd"));
+        verify(eq(result, expected));
 
       success();
     } end();
@@ -36,10 +38,11 @@ spec( strsub ) {
       begin = 2;
       end = 4;
 
-      string sub = strsub(source, begin, end);
+      string result = substring(source, begin, end);
+      string expected = s("cde");
 
       must("return the substring from begin to end inclusive");
-        verify(streq(sub, "cde"));
+        verify(eq(result, expected));
 
       success();
     } end();
@@ -49,10 +52,11 @@ spec( strsub ) {
       begin = 6;
       end = 4;
 
-      string sub = strsub(source, begin, end);
+      string result = substring(source, begin, end);
+      string expected = { 0 };
 
       must("return an empty string");
-        verify(strnull(sub));
+        verify(eq(result, expected));
 
       success();
     } end();

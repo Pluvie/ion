@@ -16,15 +16,15 @@ spec( io_read ) {
     io_read(io, amount);
 
     must("not fail");
-      verify(unlikely(failure.occurred) == false);
+      verify(failure.occurred == false);
     must("read the data from the io channel");
       verify(io->read.count == 1);
     must("return the data in the io result");
       verify(io->result.pointer != NULL);
     must("advance the io cursor by the given amount");
       verify(io->cursor == amount);
-    must("return a slice of data of the given amount");
-      slice result = { "1111111122", amount };
+    must("return a string of data of the given amount");
+      string result = { "1111111122", amount };
       verify(eq(io->result, result));
 
     success();
@@ -52,7 +52,7 @@ spec( io_read ) {
     void* io_with_buffer_read_data = io_with_buffer_read.buffer.data.pointer;
     io_with_read.buffer.data.pointer = NULL;
     io_with_buffer_read.buffer.data.pointer = NULL;
-    verify(eq(&io_with_read, &io_with_buffer_read));
+    verify(byte_eq(&io_with_read, &io_with_buffer_read, sizeof(struct io)));
 
     success();
       io_with_read.buffer.data.pointer = io_with_read_data;

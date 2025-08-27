@@ -14,7 +14,7 @@ spec( json_parse_bool ) {
     int result = json_parse_bool(io);
 
     must("not fail");
-      verify(unlikely(failure.occurred) == false);
+      verify(failure.occurred == false);
 
     must("return lengthof(\"true\")");
       verify(result == lengthof("true"));
@@ -34,7 +34,7 @@ spec( json_parse_bool ) {
     int result = json_parse_bool(io);
 
     must("not fail");
-      verify(unlikely(failure.occurred) == false);
+      verify(failure.occurred == false);
 
     must("return lengthof(\"false\")");
       verify(result == lengthof("false"));
@@ -54,7 +54,7 @@ spec( json_parse_bool ) {
     int result = json_parse_bool(io);
 
     must("not fail");
-      verify(unlikely(failure.occurred) == false);
+      verify(failure.occurred == false);
 
     must("return -1");
       verify(result == -1);
@@ -77,7 +77,7 @@ spec( json_parse_bool ) {
     int result = json_parse_bool(io);
 
     must("fail with a specific error");
-      verify(unlikely(failure.occurred) == true);
+      verify(failure.occurred == true);
       verify(streq(failure.message, "io: invalid channel"));
 
     must("return -1");

@@ -20,7 +20,7 @@ spec( list_at ) {
       int* result = list_at(list, position);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("return the element at the specified position");
         verify(*result == 4);
@@ -38,8 +38,8 @@ spec( list_at ) {
       int* result = list_at(list, position);
 
       must("fail with a specific error");
-        verify(unlikely(failure.occurred) == true);
-        verify(streq(failure.message, "3: overbound list position"));
+        verify(failure.occurred);
+        verify(failure_is("3: overbound list position"));
 
       must("return NULL");
         verify(result == NULL);
@@ -60,7 +60,7 @@ spec( list_at ) {
       int* result = list_at(list, position);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("return the element at the specified position");
         verify(*result == 4);
@@ -77,8 +77,8 @@ spec( list_at ) {
       int* result = list_at(list, position);
 
       must("fail with a specific error");
-        verify(unlikely(failure.occurred) == true);
-        verify(streq(failure.message, "3: overbound list position"));
+        verify(failure.occurred == true);
+        verify(failure_is("3: overbound list position"));
 
       must("return NULL");
         verify(result == NULL);

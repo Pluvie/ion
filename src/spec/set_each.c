@@ -12,13 +12,13 @@ spec( set_each ) {
       for set_each(&set, char** element) {
         switch (index) {
         case 0:
-          verify(streq(*element, "a"))
+          verify(eq(*element, "a"))
           break;
         case 1:
-          verify(streq(*element, "b"))
+          verify(eq(*element, "b"))
           break;
         case 2:
-          verify(streq(*element, "c"))
+          verify(eq(*element, "c"))
           break;
         }
         index++;
@@ -35,13 +35,13 @@ spec( set_each ) {
       for set_each(&set, char** element, custom_index) {
         switch (index) {
         case 0:
-          verify(streq(*element, "a"))
+          verify(eq(*element, "a"))
           break;
         case 1:
-          verify(streq(*element, "b"))
+          verify(eq(*element, "b"))
           break;
         case 2:
-          verify(streq(*element, "c"))
+          verify(eq(*element, "c"))
         }
 
         verify(custom_index == index);

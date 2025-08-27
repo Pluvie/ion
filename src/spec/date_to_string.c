@@ -8,10 +8,11 @@ spec( date_to_string ) {
 
   must("return a `YYYY-MM-DD` formatted string of the given date");
     string date_string = date_to_string(date_number);
-    verify(streq(date_string, s("1999-01-01")));
+    string expected_string = s("1999-01-01");
+    verify(eq(date_string, expected_string));
 
   must("utilize the global variable `__date_string` to hold the resulting string");
-    verify(date_string.content == __date_string);
+    verify(date_string.pointer == __date_string);
 
   success();
 }

@@ -28,8 +28,8 @@ spec( io_channel_read ) {
         verify(io->read.count == 1);
       must("advance the cursor by the given amount");
         verify(io->cursor == original_cursor + amount);
-      must("return a slice of data with length equal to the given amount");
-        slice result = { "11112222", 8 };
+      must("return a string of data with length equal to the given amount");
+        string result = { "11112222", 8 };
         verify(eq(io->result, result));
 
       success();
@@ -48,8 +48,8 @@ spec( io_channel_read ) {
         verify(io->read.count == 1);
       must("advance the cursor to the io length");
         verify(io->cursor == io->length);
-      must("return a slice of data with length equal to the available data on the io");
-        slice result = { "55555", 4 };
+      must("return a string of data with length equal to the available data on the io");
+        string result = { "55555", 4 };
         verify(eq(io->result, result));
 
       success();
@@ -69,8 +69,8 @@ spec( io_channel_read ) {
         verify(io->read.count == 0);
       must("not advance the io cursor");
         verify(io->cursor == original_cursor);
-      must("return an empty slice of data");
-        slice result = { NULL, 0 };
+      must("return an empty string of data");
+        string result = { NULL, 0 };
         verify(eq(io->result, result));
 
       success();
@@ -89,7 +89,7 @@ spec( io_channel_read ) {
       apply(preconditions);
       apply(io_channel_file_condition);
       amount = 8;
-      file_write(&file, data.content, amount);
+      file_write(&file, data.pointer, amount);
       lseek(file.descriptor, 0, SEEK_SET);
 
       io_channel_read(io, amount, address);
@@ -98,11 +98,11 @@ spec( io_channel_read ) {
         verify(io->read.count == 1);
       must("advance the cursor by the given amount");
         verify(io->cursor == amount);
-      must("return a slice of data with length equal to the given amount");
-        slice result = { "11111111", 8 };
+      must("return a string of data with length equal to the given amount");
+        string result = { "11111111", 8 };
         verify(eq(io->result, result));
       must("store the channel read result into the address");
-        verify(eq(io->result, (string) { address, amount }));
+        verify(byte_eq(address, io->result.pointer, amount));
 
       success();
         io_close(io);
@@ -115,7 +115,7 @@ spec( io_channel_read ) {
       apply(io_channel_file_condition);
       amount = 8;
       int channel_available_data = amount - 4;
-      file_write(&file, data.content, channel_available_data);
+      file_write(&file, data.pointer, channel_available_data);
       lseek(file.descriptor, 0, SEEK_SET);
 
       io_channel_read(io, amount, address);
@@ -124,11 +124,11 @@ spec( io_channel_read ) {
         verify(io->read.count == 1);
       must("advance the cursor by the channel available data");
         verify(io->cursor == channel_available_data);
-      must("return a slice of data with length equal to the channel available data");
-        slice result = { "1111", channel_available_data };
+      must("return a string of data with length equal to the channel available data");
+        string result = { "1111", channel_available_data };
         verify(eq(io->result, result));
       must("store the channel read result into the address");
-        verify(eq(io->result, (string) { address, channel_available_data }));
+        verify(byte_eq(address, io->result.pointer, channel_available_data));
 
       success();
         io_close(io);
@@ -148,7 +148,7 @@ spec( io_channel_read ) {
       apply(preconditions);
       apply(io_channel_pipe_condition);
       amount = 8;
-      pipe_write(&pipes, data.content, amount);
+      pipe_write(&pipes, data.pointer, amount);
 
       io_channel_read(io, amount, address);
 
@@ -156,11 +156,11 @@ spec( io_channel_read ) {
         verify(io->read.count == 1);
       must("advance the cursor by the given amount");
         verify(io->cursor == amount);
-      must("return a slice of data with length equal to the given amount");
-        slice result = { "11111111", 8 };
+      must("return a string of data with length equal to the given amount");
+        string result = { "11111111", 8 };
         verify(eq(io->result, result));
       must("store the channel read result into the address");
-        verify(eq(io->result, (string) { address, amount }));
+        verify(byte_eq(address, io->result.pointer, amount));
 
       success();
         io_close(io);
@@ -172,7 +172,7 @@ spec( io_channel_read ) {
       apply(io_channel_pipe_condition);
       amount = 8;
       int channel_available_data = amount - 4;
-      pipe_write(&pipes, data.content, channel_available_data);
+      pipe_write(&pipes, data.pointer, channel_available_data);
 
       io_channel_read(io, amount, address);
 
@@ -180,11 +180,11 @@ spec( io_channel_read ) {
         verify(io->read.count == 1);
       must("advance the cursor by the channel available data");
         verify(io->cursor == channel_available_data);
-      must("return a slice of data with length equal to the channel available data");
-        slice result = { "1111", channel_available_data };
+      must("return a string of data with length equal to the channel available data");
+        string result = { "1111", channel_available_data };
         verify(eq(io->result, result));
       must("store the channel read result into the address");
-        verify(eq(io->result, (string) { address, channel_available_data }));
+        verify(byte_eq(address, io->result.pointer, channel_available_data));
 
       success();
         io_close(io);
@@ -205,7 +205,7 @@ spec( io_channel_read ) {
       apply(preconditions);
       apply(io_channel_socket_condition);
       amount = 8;
-      socket_write(&server, data.content, amount);
+      socket_write(&server, data.pointer, amount);
 
       io_channel_read(io, amount, address);
 
@@ -213,11 +213,11 @@ spec( io_channel_read ) {
         verify(io->read.count == 1);
       must("advance the cursor by the given amount");
         verify(io->cursor == amount);
-      must("return a slice of data with length equal to the given amount");
-        slice result = { "11111111", 8 };
+      must("return a string of data with length equal to the given amount");
+        string result = { "11111111", 8 };
         verify(eq(io->result, result));
       must("store the channel read result into the address");
-        verify(eq(io->result, (string) { address, amount }));
+        verify(byte_eq(address, io->result.pointer, amount));
 
       success();
         io_close(io);
@@ -229,7 +229,7 @@ spec( io_channel_read ) {
       apply(io_channel_socket_condition);
       amount = 8;
       int channel_available_data = amount - 4;
-      socket_write(&server, data.content, channel_available_data);
+      socket_write(&server, data.pointer, channel_available_data);
 
       io_channel_read(io, amount, address);
 
@@ -237,11 +237,11 @@ spec( io_channel_read ) {
         verify(io->read.count == 1);
       must("advance the cursor by the channel available data");
         verify(io->cursor == channel_available_data);
-      must("return a slice of data with length equal to the channel available data");
-        slice result = { "1111", channel_available_data };
+      must("return a string of data with length equal to the channel available data");
+        string result = { "1111", channel_available_data };
         verify(eq(io->result, result));
       must("store the channel read result into the address");
-        verify(eq(io->result, (string) { address, channel_available_data }));
+        verify(byte_eq(address, io->result.pointer, channel_available_data));
 
       success();
         io_close(io);

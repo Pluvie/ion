@@ -62,12 +62,11 @@ int32 main (
   spec_add( socket_connect );
   spec_focus( socket_init );
   spec_add( socket_open );
-  spec_add( stridx );
-  spec_add( stridx );
+  spec_add( string_index );
+  spec_add( string_starts );
   spec_add( string_to_dec );
   spec_add( string_to_int );
-  spec_add( strstart );
-  spec_add( strsub );
+  spec_add( substring );
   spec_add( time_now );
   spec_add( time_to_string );
 

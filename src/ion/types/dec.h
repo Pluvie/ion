@@ -2,5 +2,5 @@
 #undef dec
 #endif
 
-typedef double d64;
-#define dec d64
+typedef double dec64;
+#define dec dec64

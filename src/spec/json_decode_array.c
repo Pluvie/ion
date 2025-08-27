@@ -31,7 +31,7 @@ spec( json_decode_array ) {
     json_decode_array(obj, io, rfx, allocator);
 
     must("fail with a specific error");
-      verify(unlikely(failure.occurred) == true);
+      verify(failure.occurred == true);
       verify(streq(failure.message,
         "expected array begin '[', at position 4:\n"\
         "   123 \\  \n"\
@@ -46,7 +46,7 @@ spec( json_decode_array ) {
     json_decode_array(obj, io, rfx, allocator);
 
     must("not fail");
-      verify(unlikely(failure.occurred) == false);
+      verify(failure.occurred == false);
     must("correctly parse until the end of the array");
       verify(io->cursor == 11);
     must("not add any element");
@@ -64,7 +64,7 @@ spec( json_decode_array ) {
     json_decode_array(obj, io, rfx, allocator);
 
     must("not fail");
-      verify(unlikely(failure.occurred) == false);
+      verify(failure.occurred == false);
     must("correctly parse until the end of the object");
       verify(io->cursor == 93);
     must("add the corresponding elements");

@@ -19,7 +19,7 @@ spec( map_get ) {
       int* result = map_get(map, key);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("return the value associated with the key");
         verify(*result == 7);
@@ -41,7 +41,7 @@ spec( map_get ) {
       int* result = map_get(map, key);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("return null");
         verify(result == NULL);
@@ -72,7 +72,7 @@ spec( map_get ) {
       int* result = map_get(map, key);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("return the value associated with the key");
         verify(*result == 7);
@@ -94,7 +94,7 @@ spec( map_get ) {
       int* result = map_get(map, key);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("return null");
         verify(result == NULL);

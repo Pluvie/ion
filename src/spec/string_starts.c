@@ -1,4 +1,4 @@
-spec( strstart ) {
+spec( string_starts ) {
 
   argument(string source);
   argument(string tester);
@@ -7,7 +7,7 @@ spec( strstart ) {
     source = (string) { 0 };
     tester = (string) { 0 };
 
-    bool result = strstart(source, tester);
+    bool result = string_starts(source, tester);
 
     must("return false");
       verify(result == false);
@@ -19,7 +19,7 @@ spec( strstart ) {
     source = (string) { 0 };
     tester = s("abc");
 
-    bool result = strstart(source, tester);
+    bool result = string_starts(source, tester);
 
     must("return false");
       verify(result == false);
@@ -31,7 +31,7 @@ spec( strstart ) {
     source = s("abc");
     tester = (string) { 0 };
 
-    bool result = strstart(source, tester);
+    bool result = string_starts(source, tester);
 
     must("return false");
       verify(result == false);
@@ -44,7 +44,7 @@ spec( strstart ) {
       source = s("abcdef");
       tester = s("ab");
 
-      bool result = strstart(source, tester);
+      bool result = string_starts(source, tester);
 
       must("return true");
         verify(result == true);
@@ -56,7 +56,7 @@ spec( strstart ) {
       source = s("abcdef");
       tester = s("cd");
 
-      bool result = strstart(source, tester);
+      bool result = string_starts(source, tester);
 
       must("return false");
         verify(result == false);
@@ -68,7 +68,7 @@ spec( strstart ) {
       source = s("abcdef");
       tester = s("ef");
 
-      bool result = strstart(source, tester);
+      bool result = string_starts(source, tester);
 
       must("return false");
         verify(result == false);
@@ -80,7 +80,7 @@ spec( strstart ) {
       source = s("abcdef");
       tester = s("xyz");
 
-      bool result = strstart(source, tester);
+      bool result = string_starts(source, tester);
 
       must("return false");
         verify(result == false);

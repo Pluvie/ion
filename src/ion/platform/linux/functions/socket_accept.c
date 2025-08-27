@@ -8,8 +8,8 @@ void socket_accept (
   struct sockaddr* sockaddr;
   int sockaddr_len;
 
-  switch (sock->family) {
-  case AF_INET: {
+  switch (sock->type) {
+  case SOCKET_IP_V4: {
     struct sockaddr_in address = { 0 };
     address.sin_family = AF_INET;
     address.sin_port = htons(sock->port);
@@ -24,7 +24,7 @@ void socket_accept (
     break;
   }
 
-  case AF_INET6: {
+  case SOCKET_IP_V6: {
     struct sockaddr_in6 address = { 0 };
     address.sin6_family = AF_INET6;
     address.sin6_port = htons(sock->port);
@@ -39,7 +39,7 @@ void socket_accept (
     break;
   }
 
-  case AF_UNIX: {
+  case SOCKET_LOCAL: {
     struct sockaddr_un address = { 0 };
     address.sun_family = AF_UNIX;
     strncpy(address.sun_path, sock->path, sizeof(address.sun_path) - 1);
@@ -50,7 +50,7 @@ void socket_accept (
   }
 
   default:
-    fail("socket connect error: unsupported socket family");
+    fail("socket connect error: unsupported socket type");
   }
 
   setsockopt(sock->descriptor, SOL_SOCKET, SO_REUSEADDR, &(int32) { 1 }, sizeof(int32));

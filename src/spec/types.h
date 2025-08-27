@@ -45,12 +45,12 @@ int cmp<struct squadmate*> (
 }
 
 #undef cmp
-#define cmp(v, ...)                             \
-  _Generic(v,                                   \
+#define cmp(v1, v2)                             \
+  _Generic(v1,                                  \
     struct squadmate : cmp<struct squadmate>,   \
     struct squadmate* : cmp<struct squadmate*>, \
-    _cmp(v, __VA_ARGS__)                        \
-  )(v, ...)
+    _cmp(v1, v2)                                \
+  )(v1, v2)
 
 #undef hash
 #define hash(v)                                 \

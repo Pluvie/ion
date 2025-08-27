@@ -15,7 +15,7 @@ spec( set_rehash ) {
   set_rehash(set);
 
   must("not fail");
-    verify(unlikely(failure.occurred) == false);
+    verify(failure.occurred == false);
 
   must("keep the elements in the set");
     verify(set_has(set, "a") == true);

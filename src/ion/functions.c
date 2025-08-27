@@ -50,10 +50,10 @@
 #include "functions/reflection_path_print.c"
 #include "functions/reflection_self_get.c"
 #include "functions/reflection_validate.c"
-#include "functions/stridx.c"
-#include "functions/strstart.c"
-#include "functions/strsub.c"
-#include "functions/strnull.c"
+#include "functions/string_char_at.c"
+#include "functions/string_index.c"
+#include "functions/string_starts.c"
+#include "functions/substring.c"
 
 #if platform(LINUX)
   #include "platform/linux/functions.c"

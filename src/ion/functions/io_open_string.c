@@ -5,7 +5,7 @@ struct io io_open_string (
 {
   return (struct io) {
     .channel = IO_MEMORY,
-    .memory = string.content,
+    .memory = string.pointer,
     .length = string.length,
   };
 }

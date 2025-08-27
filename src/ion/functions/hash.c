@@ -40,5 +40,5 @@ static inline int hash<string> (
     string value
 )
 {
-  return hash_djb2(value.content, value.length);
+  return hash_djb2(value.pointer, value.length);
 }

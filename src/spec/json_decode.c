@@ -29,7 +29,7 @@ spec( json_decode ) {
     json_decode(obj, io, rfx, allocator);
 
     must("not fail");
-      verify(unlikely(failure.occurred) == false);
+      verify(failure.occurred == false);
     must("zero out the object");
       verify(byte_eq(obj, &(struct squadmate) { 0 }, sizeof(struct squadmate)));
     must("exhaust the io");
@@ -56,7 +56,7 @@ spec( json_decode ) {
     json_decode(obj, io, rfx, allocator);
 
     must("fail with a specific error");
-      verify(unlikely(failure.occurred) == true);
+      verify(failure.occurred == true);
       verify(streq(failure.message,
         "expected object begin '{', at position 4:\n"\
         "   123 \\  \n"\
@@ -71,7 +71,7 @@ spec( json_decode ) {
     json_decode(obj, io, rfx, allocator);
 
     must("not fail");
-      verify(unlikely(failure.occurred) == false);
+      verify(failure.occurred == false);
     must("correctly parse until the end of the object");
       verify(io->cursor == 43);
     must("set the correct value to the corresponding fields");

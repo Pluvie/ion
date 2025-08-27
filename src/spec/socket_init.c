@@ -9,7 +9,7 @@ spec( socket_init ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message, "socket uri error: must start with [tcp|udp|unix]://"));
+      verify(failure_is("socket uri error: must start with [tcp|udp|unix]://"));
     must("return an invalid descriptor");
       verify(sock.descriptor == 0);
 

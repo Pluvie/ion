@@ -18,7 +18,7 @@ spec( list_push ) {
       bool result = list_push(list, element);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("return true");
         verify(result == true);
@@ -45,8 +45,8 @@ spec( list_push ) {
       bool result = list_push(list, element);
 
       must("fail with a specific error");
-        verify(unlikely(failure.occurred) == true);
-        verify(streq(failure.message, "push: stack allocated list is full"));
+        verify(failure.occurred == true);
+        verify(failure_is("push: stack allocated list is full"));
 
       must("return false");
         verify(result == false);
@@ -99,7 +99,7 @@ spec( list_push ) {
       bool result = list_push(list, element);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("return true");
         verify(result == true);

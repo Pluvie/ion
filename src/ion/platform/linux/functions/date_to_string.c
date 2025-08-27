@@ -10,5 +10,5 @@ string date_to_string (
     return (string) { 0 };
 
   strftime(__date_string, sizeof(__date_string), "%Y-%m-%d", &time_calendar);
-  return (string) { .content = __date_string, .length = lengthof(__date_string) };
+  return (string) { .pointer = __date_string, .length = lengthof(__date_string) };
 }

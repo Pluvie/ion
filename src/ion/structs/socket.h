@@ -3,7 +3,7 @@ struct socket {
   int port;
   string uri;
   enum socket_protocols protocol;
-  enum socket_ip_versions ip_version;
+  enum socket_types type;
   union {
     char ipv4[SOCKET_IPV4_MAXLEN];
     char ipv6[SOCKET_IPV6_MAXLEN];

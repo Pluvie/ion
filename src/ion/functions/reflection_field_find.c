@@ -4,7 +4,7 @@ struct reflection* reflection_field_find (
 )
 {
   for list_each(rfx->fields, struct reflection* field_rfx) {
-    if (streq(field_rfx->name, field_name)) {
+    if (eq(field_rfx->name, field_name.pointer)) {
       field_rfx->parent = rfx;
       return field_rfx;
     }

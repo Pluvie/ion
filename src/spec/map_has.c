@@ -17,7 +17,7 @@ spec( map_has ) {
       bool result = map_has(map, key);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("return true");
         verify(result == true);
@@ -31,7 +31,7 @@ spec( map_has ) {
       bool result = map_has(map, key);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("return false");
         verify(result == false);
@@ -54,7 +54,7 @@ spec( map_has ) {
       bool result = map_has(map, key);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("return true");
         verify(result == true);
@@ -68,7 +68,7 @@ spec( map_has ) {
       bool result = map_has(map, key);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("return false");
         verify(result == false);

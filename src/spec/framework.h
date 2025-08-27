@@ -78,6 +78,10 @@ memory* spec_allocator;
 #define verify(cond) \
   if (!(cond)) { spec_failed(#cond, __FILE__, __LINE__ ); } else { spec_verified(); }
 
+/* Checks that the failure has the specified message. */
+#define failure_is(msg) \
+  (cmp<string>(failure.message, s(msg)) == 0)
+
 /* Defines a function specification codepath success. */
 #define success() \
   failure_recover(); \

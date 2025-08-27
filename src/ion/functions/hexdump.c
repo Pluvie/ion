@@ -14,28 +14,28 @@ void hexdump (
     groups++;
 
   for (int group = 0; group < groups; group++) {
-    fprintf(stderr, "| ");
+    stream_print(&stderr, "| ");
     for (int index = group * line_length;
         index < (group * line_length) + line_length;
         index++) {
       if (index >= length) {
-        fprintf(stderr, "   ");
+        stream_print(&stderr, "   ");
         continue;
       }
       hex = data[index];
-      fprintf(stderr, "%02x ", hex);
+      stream_print(&stderr, "%02x ", hex);
     }
-    fprintf(stderr, "| ");
+    stream_print(&stderr, "| ");
     for (int index = group * line_length;
         index < (group * line_length) + line_length;
         index++) {
       if (index >= length) {
-        fprintf(stderr, "  ");
+        stream_print(&stderr, "  ");
         continue;
       }
       ascii = data[index];
-      fprintf(stderr, "%c ", isprint(ascii) ? ascii : '_');
+      stream_print(&stderr, "%c ", isprint(ascii) ? ascii : '_');
     }
-    fprintf(stderr, "|\n");
+    stream_print(&stderr, "|\n");
   }
 }

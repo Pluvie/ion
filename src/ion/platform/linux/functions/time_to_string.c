@@ -13,5 +13,5 @@ string time_to_string (
   strftime(__time_string, sizeof(__time_string),
     "%Y-%m-%d %H:%M:%S", &time_calendar);
   snprintf(__time_string + 19, 5, ".%03li", milliseconds);
-  return (string) { .content = __time_string, .length = lengthof(__time_string) };
+  return (string) { .pointer = __time_string, .length = lengthof(__time_string) };
 }

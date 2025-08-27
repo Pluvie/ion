@@ -1,4 +1,4 @@
-string strsub (
+string substring (
     string source,
     int begin,
     int end
@@ -7,11 +7,11 @@ string strsub (
   if (end < 0)
     end = source.length + end;
 
-  if (unlikely(strnull(source)))
+  if (unlikely(source.pointer == NULL))
     return (string) { 0 };
 
   if (unlikely(begin > end))
     return (string) { 0 };
 
-  return (string) { source.content + begin, end - begin + 1 };
+  return (string) { source.pointer + begin, end - begin + 1 };
 }

@@ -5,7 +5,7 @@ struct stream stream_open (
 {
   struct stream stream = { .name = name, .mode = mode };
 
-  stream.pointer = fopen(name, mode);
+  stream.pointer = fopen(name.pointer, mode);
   if (unlikely(stream.pointer == NULL))
     fail("error while opening stream: %s", strerror(errno));
 

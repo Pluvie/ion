@@ -1,7 +1,6 @@
 static inline int reflection_path_print (
     struct reflection* rfx,
-    char* result,
-    int length
+    string result
 )
 {
   if (rfx == NULL)
@@ -9,6 +8,7 @@ static inline int reflection_path_print (
 
   struct reflection* node = rfx;
   struct reflection* nodes[32] = { 0 };
+  string printer = { result.pointer, result.length };
   int nodes_count = 0;
 
 climb_reflection:
@@ -30,18 +30,17 @@ climb_reflection:
 
 reverse_print:
   int printed_bytes = 0;
-  int print_cursor = 0;
   int node_depth = nodes_count - 1;
 
 loop_nodes:
   node = nodes[node_depth];
   printed_bytes = 0;
 
-  if (!strnull(node->name)) {
+  if (!eq(node->name, NULL)) {
     if (node_depth == 0)
-      printed_bytes = snprintf(result, length - print_cursor, "%.*s", sp(node->name));
+      printed_bytes = string_print(printer, "%.*s", sp(node->name));
     else
-      printed_bytes = snprintf(result, length - print_cursor, "%.*s.", sp(node->name));
+      printed_bytes = string_print(printer, "%.*s.", sp(node->name));
 
     goto previous_node;
   }
@@ -51,9 +50,9 @@ loop_nodes:
        node->parent->type == LIST)) {
 
     if (node_depth == 0)
-      printed_bytes = snprintf(result, length - print_cursor, "%li", node->index);
+      printed_bytes = string_print(printer, "%li", node->index);
     else
-      printed_bytes = snprintf(result, length - print_cursor, "%li.", node->index);
+      printed_bytes = string_print(printer, "%li.", node->index);
 
     goto previous_node;
   }
@@ -62,16 +61,16 @@ previous_node:
   if (printed_bytes < 0)
     goto print_error;
 
-  result += printed_bytes;
-  print_cursor += printed_bytes;
+  printer.pointer += printed_bytes;
+  printer.length -= printed_bytes;
   node_depth--;
 
   if (node_depth < 0)
-    return print_cursor;
+    return printed_bytes;
 
   goto loop_nodes;
 
 print_error:
-  zero_out(result, length);
+  zero_out(result.pointer, result.length);
   return printed_bytes;
 }

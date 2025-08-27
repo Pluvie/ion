@@ -7,10 +7,11 @@ spec( time_to_string ) {
 
   must("return a `YYYY-MM-DD HH:mm:SS.LLL` formatted string of the given time");
     string time_string = time_to_string(time);
-    verify(streq(time_string, s("2000-01-01 00:00:00.001")));
+    string expected_string = s("2000-01-01 00:00:00.001");
+    verify(eq(time_string, expected_string));
 
   must("utilize the global variable `__time_string` to hold the resulting string");
-    verify(time_string.content == __time_string);
+    verify(time_string.pointer == __time_string);
 
   success();
 }

@@ -16,7 +16,7 @@ spec( socket_connect ) {
 
       must("fail with a specific error");
         verify(failure.occurred == true);
-        verify(streq(failure.message, "socket connect error: Network is unreachable"));
+        verify(failure_is("socket connect error: Network is unreachable"));
 
       success();
         socket_close(sock);
@@ -30,7 +30,7 @@ spec( socket_connect ) {
 
       must("fail with a specific error");
         verify(failure.occurred == true);
-        verify(streq(failure.message, "socket uri error: ip too long"));
+        verify(failure_is("socket uri error: ip too long"));
 
       success();
         socket_close(sock);
@@ -44,7 +44,7 @@ spec( socket_connect ) {
 
       must("fail with a specific error");
         verify(failure.occurred == true);
-        verify(streq(failure.message, "socket uri error: port too long"));
+        verify(failure_is("socket uri error: port too long"));
 
       success();
         socket_close(sock);
@@ -58,7 +58,7 @@ spec( socket_connect ) {
 
       must("fail with a specific error");
         verify(failure.occurred == true);
-        verify(streq(failure.message, "socket uri error: missing port"));
+        verify(failure_is("socket uri error: missing port"));
 
       success();
         socket_close(sock);

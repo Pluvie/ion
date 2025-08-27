@@ -1,25 +1,23 @@
 spec( reflection_path_print ) {
 
   argument(struct reflection* rfx);
-  argument(char* result);
-  argument(int length);
+  argument(string result);
 
   precondition("a valid reflection");
   precondition("a valid result");
   precondition("a valid maximum result length");
     #define preconditions \
       char result_holder[256] = { 0 }; \
-      result = result_holder; \
-      length = sizeof(result_holder);
+      result = (string) { result_holder, sizeof(result_holder) };
 
   when("a supposed error is found in a struct field") {
     apply(preconditions);
 
     rfx = list_at(rfx_blueprint.fields, 0);
-    reflection_path_print(rfx, result, length);
+    reflection_path_print(rfx, result);
 
     must("print the field name");
-      verify(streq(rfx->name, result));
+      verify(eq(rfx->name, result));
 
   } end();
 
@@ -28,10 +26,10 @@ spec( reflection_path_print ) {
 
     struct reflection* field = reflection_field_find(&rfx_blueprint, s("v_struct"));
     rfx = reflection_field_find(field, s("v_int"));
-    reflection_path_print(rfx, result, length);
+    reflection_path_print(rfx, result);
 
     must("print the dot separated field path");
-      verify(streq("v_struct.v_int", result));
+      verify(eq("v_struct.v_int", result));
 
   } end();
 
@@ -42,10 +40,10 @@ spec( reflection_path_print ) {
     rfx = field->element;
     rfx->parent = field;
     rfx->index = 7;
-    reflection_path_print(rfx, result, length);
+    reflection_path_print(rfx, result);
 
     must("print the field name with index");
-      verify(streq("v_array.7", result));
+      verify(eq("v_array.7", result));
 
   } end();
 

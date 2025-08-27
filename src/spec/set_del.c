@@ -19,7 +19,7 @@ spec( set_del ) {
       int result = set_del(set, element);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("decrease the set length by 1");
         verify(set->length == original_set_length - 1);
@@ -41,7 +41,7 @@ spec( set_del ) {
       int result = set_del(set, element);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("leave the set length unchanged");
         verify(set->length == original_set_length);
@@ -72,7 +72,7 @@ spec( set_del ) {
       int result = set_del(set, element);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("decrease the set length by 1");
         verify(set->length == original_set_length - 1);
@@ -94,7 +94,7 @@ spec( set_del ) {
       int result = set_del(set, element);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("leave the set length unchanged");
         verify(set->length == original_set_length);

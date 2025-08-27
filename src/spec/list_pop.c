@@ -14,7 +14,7 @@ spec( list_pop ) {
       int* result = list_pop(list);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("decrease the list length by 1");
         verify(list->length == original_list_length - 1);
@@ -36,8 +36,8 @@ spec( list_pop ) {
       int* result = list_pop(list);
 
       must("fail with a specific error");
-        verify(unlikely(failure.occurred) == true);
-        verify(streq(failure.message, "pop: empty list"));
+        verify(failure.occurred == true);
+        verify(failure_is("pop: empty list"));
 
       must("return NULL");
         verify(result == NULL);
@@ -63,7 +63,7 @@ spec( list_pop ) {
       int* result = list_pop(list);
 
       must("not fail");
-        verify(unlikely(failure.occurred) == false);
+        verify(failure.occurred == false);
 
       must("decrease the list length by 1");
         verify(list->length == original_list_length - 1);
@@ -84,8 +84,8 @@ spec( list_pop ) {
       int* result = list_pop(list);
 
       must("fail with a specific error");
-        verify(unlikely(failure.occurred) == true);
-        verify(streq(failure.message, "pop: empty list"));
+        verify(failure.occurred == true);
+        verify(failure_is("pop: empty list"));
 
       must("return NULL");
         verify(result == NULL);
