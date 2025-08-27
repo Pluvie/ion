@@ -6,6 +6,6 @@ void* alloc_resize (
 {
   void* new_address = alloc(resized_amount);
   byte_copy(new_address, old_address, original_amount);
-  free(old_address);
+  alloc_release(old_address);
   return new_address;
 }

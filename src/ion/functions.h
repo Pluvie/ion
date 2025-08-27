@@ -57,6 +57,7 @@
 
 #include "functions/platform/alloc.h"
 #include "functions/platform/alloc_aligned.h"
+#include "functions/platform/alloc_release.h"
 #include "functions/platform/alloc_zero.h"
 #include "functions/platform/byte_compare.h"
 #include "functions/platform/byte_copy.h"
@@ -85,8 +86,10 @@
 #include "functions/platform/string_to_dec.h"
 #include "functions/platform/string_to_int.h"
 #include "functions/platform/stream_close.h"
+#include "functions/platform/stream_init_defaults.h"
 #include "functions/platform/stream_open.h"
 #include "functions/platform/stream_read.h"
 #include "functions/platform/stream_size.h"
+#include "functions/platform/stream_suppress.h"
 #include "functions/platform/time_now.h"
 #include "functions/platform/time_to_string.h"

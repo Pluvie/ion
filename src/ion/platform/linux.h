@@ -1,3 +1,7 @@
+#define stdin   __stdin
+#define stdout  __stdout
+#define stderr  __stderr
+
 #include <arpa/inet.h>
 #include <errno.h>
 #include <fcntl.h>

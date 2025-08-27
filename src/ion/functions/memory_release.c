@@ -3,13 +3,13 @@ void memory_release (
 )
 {
   if (allocator->data != NULL)
-    free(allocator->data);
+    alloc_release(allocator->data);
 
   for (int i = 0; i < allocator->regions.count; i++)
-    free(allocator->regions.addresses[i]);
+    alloc_release(allocator->regions.addresses[i]);
 
   if (allocator->regions.addresses != NULL)
-    free(allocator->regions.addresses);
+    alloc_release(allocator->regions.addresses);
 
   zero_out(allocator, sizeof(memory));
 }

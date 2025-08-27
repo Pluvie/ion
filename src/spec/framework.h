@@ -92,12 +92,12 @@ void spec_print (
     const char* text
 )
 {
-  fprintf(original_stderr, "\n");
+  stream_print(&original_stderr, "\n");
 
   for (int i = 0; i < spec_indentation; i++)
-    fprintf(original_stderr, "  ");
+    stream_print(&original_stderr, "  ");
     
-  fprintf(original_stderr, "%s", text);
+  stream_print(&original_stderr, "%s", text);
 }
 
 /* Prints a failed spec condition. */
@@ -108,15 +108,15 @@ void spec_failed (
 )
 {
   specs_passed = false;
-  fprintf(original_stderr, PRINT_COLOR_RED);
-  fprintf(original_stderr, "█");
-  fprintf(original_stderr, PRINT_COLOR_NONE);
-  fprintf(original_stderr, "\n");
+  stream_print(&original_stderr, PRINT_COLOR_RED);
+  stream_print(&original_stderr, "█");
+  stream_print(&original_stderr, PRINT_COLOR_NONE);
+  stream_print(&original_stderr, "\n");
   for (int i = 0; i < spec_indentation; i++)
-    fprintf(original_stderr, "  ");
-  fprintf(original_stderr, PRINT_COLOR_RED);
-  fprintf(original_stderr, "%s (%s:%li) ", text, file, line);
-  fprintf(original_stderr, PRINT_COLOR_NONE);
+    stream_print(&original_stderr, "  ");
+  stream_print(&original_stderr, PRINT_COLOR_RED);
+  stream_print(&original_stderr, "%s (%s:%li) ", text, file, line);
+  stream_print(&original_stderr, PRINT_COLOR_NONE);
 }
 
 /* Prints a verified spec condition. */
@@ -125,9 +125,9 @@ void spec_verified (
 )
 {
   if (spec_print_verification_enabled) {
-    fprintf(original_stderr, PRINT_COLOR_GREEN);
-    fprintf(original_stderr, "█");
-    fprintf(original_stderr, PRINT_COLOR_NONE);
+    stream_print(&original_stderr, PRINT_COLOR_GREEN);
+    stream_print(&original_stderr, "█");
+    stream_print(&original_stderr, PRINT_COLOR_NONE);
   }
 }
 
@@ -139,19 +139,22 @@ void specs_run (
   spec_allocator = alloc_zero(sizeof(memory));
 
   if (focused_specs[0] == NULL) {
-    original_stderr = fdopen(STDERR_FILENO, "w");
-    stderr = fopen("/dev/null", "w");
+    original_stderr = stream_duplicate(&stderr);
+    stream_suppress(&stderr);
+    //original_stderr = fdopen(STDERR_FILENO, "w");
+    //stderr = fopen("/dev/null", "w");
   } else {
-    original_stderr = fdopen(STDERR_FILENO, "w");
+    original_stderr = stream_duplicate(&stderr);
+    //original_stderr = fdopen(STDERR_FILENO, "w");
   }
 
   if (focused_specs[0] == NULL) {
     for (int i = 0; i < registered_specs_count; i++) {
       spec_indentation = 0;
-      fprintf(original_stderr, PRINT_COLOR_MAGENTA);
-      fprintf(original_stderr, "\n%s", registered_spec_names[i]);
-      fprintf(original_stderr, PRINT_COLOR_NONE);
-      fflush(original_stderr);
+      stream_print(&original_stderr, PRINT_COLOR_MAGENTA);
+      stream_print(&original_stderr, "\n%s", registered_spec_names[i]);
+      stream_print(&original_stderr, PRINT_COLOR_NONE);
+      stream_flush(&original_stderr);
       spec_indentation = 1;
       registered_specs[i]();
       memory_release(spec_allocator);
@@ -159,36 +162,38 @@ void specs_run (
   } else {
     for (int i = 0; i < focused_specs_count; i++) {
       spec_indentation = 0;
-      fprintf(original_stderr, PRINT_COLOR_MAGENTA);
-      fprintf(original_stderr, "\n%s", focused_spec_names[i]);
-      fprintf(original_stderr, PRINT_COLOR_NONE);
-      fflush(original_stderr);
+      stream_print(&original_stderr, PRINT_COLOR_MAGENTA);
+      stream_print(&original_stderr, "\n%s", focused_spec_names[i]);
+      stream_print(&original_stderr, PRINT_COLOR_NONE);
+      stream_flush(&original_stderr);
       focused_specs[i]();
       memory_release(spec_allocator);
     }
   }
 
   if (specs_passed) {
-    fprintf(original_stderr, "\n");
-    fprintf(original_stderr, "\n");
-    fprintf(original_stderr, PRINT_COLOR_GREEN);
+    stream_print(&original_stderr, "\n");
+    stream_print(&original_stderr, "\n");
+    stream_print(&original_stderr, PRINT_COLOR_GREEN);
     if (focused_specs[0] == NULL)
-      fprintf(original_stderr, "Completed %li specs.\n", registered_specs_count);
+      stream_print(&original_stderr, "Completed %li specs.\n", registered_specs_count);
     else
-      fprintf(original_stderr, "Completed %li focused spec(s).\n", focused_specs_count);
-    fprintf(original_stderr, "All specs passed successfully.");
-    fprintf(original_stderr, "\n");
-    fprintf(original_stderr, PRINT_COLOR_NONE);
+      stream_print(&original_stderr, "Completed %li focused spec(s).\n", focused_specs_count);
+    stream_print(&original_stderr, "All specs passed successfully.");
+    stream_print(&original_stderr, "\n");
+    stream_print(&original_stderr, PRINT_COLOR_NONE);
   } else {
-    fprintf(original_stderr, "\n");
-    fprintf(original_stderr, "\n");
-    fprintf(original_stderr, PRINT_COLOR_RED);
-    fprintf(original_stderr, "Some specs did not pass. Check for errors above.");
-    fprintf(original_stderr, "\n");
-    fprintf(original_stderr, PRINT_COLOR_NONE);
+    stream_print(&original_stderr, "\n");
+    stream_print(&original_stderr, "\n");
+    stream_print(&original_stderr, PRINT_COLOR_RED);
+    stream_print(&original_stderr, "Some specs did not pass. Check for errors above.");
+    stream_print(&original_stderr, "\n");
+    stream_print(&original_stderr, PRINT_COLOR_NONE);
   }
 
-  fclose(original_stderr);
-  fclose(stderr);
-  free(spec_allocator);
+  //fclose(original_stderr);
+  //fclose(stderr);
+  stream_close(&original_stderr);
+  stream_close(&stderr);
+  alloc_release(spec_allocator);
 }

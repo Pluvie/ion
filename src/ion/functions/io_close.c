@@ -3,7 +3,7 @@ void io_close (
 )
 {
   if (io->buffer.enabled)
-    return free(io->buffer.data.pointer);
+    return alloc_release(io->buffer.data.pointer);
 
   switch (io->channel) {
   case IO_MEMORY:
@@ -13,6 +13,6 @@ void io_close (
   case IO_PIPE:
   case IO_SOCKET:
   case IO_STREAM:
-    return free(io->result.pointer);
+    return alloc_release(io->result.pointer);
   }
 }

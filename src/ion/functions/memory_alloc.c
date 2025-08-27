@@ -54,7 +54,7 @@ regions_grow_check:
   byte_copy(regions_new_addresses,
     allocator->regions.addresses,
     allocator->regions.capacity * sizeof(void*));
-  free(allocator->regions.addresses);
+  alloc_release(allocator->regions.addresses);
   allocator->regions.capacity = regions_new_capacity;
   allocator->regions.addresses = regions_new_addresses;
 
