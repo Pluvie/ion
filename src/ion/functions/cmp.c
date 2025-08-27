@@ -37,7 +37,7 @@ static inline int cmp<char*> (
 )
 {
   if (likely(v1 != NULL && v2 != NULL))
-    return char_compare(v1, v2);
+    return char_compare(v1, v2, -1);
   else if (v1 != NULL)
     return 1;
   else if (v2 != NULL)
@@ -52,7 +52,8 @@ static inline int cmp<string> (
 )
 {
   if (likely(v1.length > 0 && v2.length > 0))
-    return byte_compare(v1.pointer, v2.pointer, v1.length);
+    return char_compare(v1.pointer, v2.pointer,
+      v1.length >= v2.length ? v1.length : v2.length);
   else
     return cmp<int>(v1.length, v2.length);
 }
@@ -63,7 +64,7 @@ static inline int cmp<string, char*> (
 )
 {
   if (likely(v1.length > 0 && v2 != NULL))
-    return byte_compare(v1.pointer, v2, v1.length);
+    return char_compare(v1.pointer, v2, v1.length);
   else if (v1.length > 0 && v2 == NULL)
     return 1;
   else if (v1.length == 0 && v2 != NULL)
@@ -78,7 +79,7 @@ static inline int cmp<char*, string> (
 )
 {
   if (likely(v1 != NULL && v2.length > 0))
-    return byte_compare(v1, v2.pointer, v2.length);
+    return char_compare(v1, v2.pointer, v2.length);
   else if (v1 != NULL && v2.length == 0)
     return 1;
   else if (v1 == NULL && v2.length > 0)

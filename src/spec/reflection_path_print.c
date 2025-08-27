@@ -17,7 +17,7 @@ spec( reflection_path_print ) {
     reflection_path_print(rfx, result);
 
     must("print the field name");
-      verify(eq(rfx->name, result));
+      verify(eq(result, rfx->name));
 
   } end();
 
@@ -29,7 +29,7 @@ spec( reflection_path_print ) {
     reflection_path_print(rfx, result);
 
     must("print the dot separated field path");
-      verify(eq("v_struct.v_int", result));
+      verify(eq(result, "v_struct.v_int"));
 
   } end();
 
@@ -43,7 +43,7 @@ spec( reflection_path_print ) {
     reflection_path_print(rfx, result);
 
     must("print the field name with index");
-      verify(eq("v_array.7", result));
+      verify(eq(result, "v_array.7"));
 
   } end();
 

@@ -9,7 +9,7 @@ static inline void failure_add_io_info (
   int caret_position = 0;
   int position = 0;
 
-  if (io->buffer.enabled)
+  if (io->buffer.enabled && io->channel != IO_MEMORY)
     goto extract_from_buffer;
   else
     goto extract_from_channel;

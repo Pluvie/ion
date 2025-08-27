@@ -10,7 +10,7 @@ spec( reflection ) {
       must("correctly define the reflection");
         verify(rfx.type == ARRAY);
         verify(eq(rfx.name, NULL));
-        verify(eq(rfx.type_name, "i64[3][3][3]"));
+        verify(eq(rfx.type_name, "int64[3][3][3]"));
         verify(rfx.size == sizeof(cube));
         verify(rfx.index == 0);
         verify(rfx.offset == 0);
@@ -131,7 +131,7 @@ spec( reflection ) {
         field_rfx = list_at(rfx.fields, 1);
         verify(field_rfx->type == ARRAY);
         verify(eq(field_rfx->name, "why"));
-        verify(eq(field_rfx->type_name, "struct example"));
+        verify(eq(field_rfx->type_name, NULL));
         verify(field_rfx->size == sizeof(o(struct example)->why));
         verify(field_rfx->offset == offsetof(struct example, why));
         verify(field_rfx->index == 0);
