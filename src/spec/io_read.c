@@ -45,18 +45,13 @@ spec( io_read ) {
     io_buffer_read(io, amount);
     struct io io_with_buffer_read = *io;
 
-    /* Equality of io structs is done without taking in consideration its buffer data
-     * pointer value because, of course, the buffer shall malloc on two different
-     * addresses. */
-    void* io_with_read_data = io_with_read.buffer.data.pointer;
-    void* io_with_buffer_read_data = io_with_buffer_read.buffer.data.pointer;
-    io_with_read.buffer.data.pointer = NULL;
-    io_with_buffer_read.buffer.data.pointer = NULL;
-    verify(byte_eq(&io_with_read, &io_with_buffer_read, sizeof(struct io)));
+    verify(io_with_read.cursor == io_with_buffer_read.cursor);
+    verify(io_with_read.buffer.cursor == io_with_buffer_read.buffer.cursor);
+
+    verify(eq(io_with_read.result, io_with_buffer_read.result));
+    verify(eq(io_with_read.buffer.data, io_with_buffer_read.buffer.data));
 
     success();
-      io_with_read.buffer.data.pointer = io_with_read_data;
-      io_with_buffer_read.buffer.data.pointer = io_with_buffer_read_data;
       io_close(&io_with_read);
       io_close(&io_with_buffer_read);
   } end();

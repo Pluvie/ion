@@ -12,8 +12,8 @@ spec( io_buffer_init ) {
       *io = io(&channel); \
       io->buffer.enabled = true; \
       io->buffer.size = 8; \
-      io->buffer.data = (slice) { NULL, 0 }; \
-      write(channel.writer, data.content, channel_available_data);
+      io->buffer.data = (string) { NULL, 0 }; \
+      write(channel.writer, data.pointer, channel_available_data);
 
   when("the buffer size is negative or zero") {
     apply(preconditions(8));
@@ -58,7 +58,7 @@ spec( io_buffer_init ) {
         must("return a slice of data with length equal to the available data on "\
              "the channel");
           verify(io->result.length == channel_available_data);
-          verify(streq(io->result.pointer, "1111111"));
+          verify(eq(io->result, "1111111"));
 
         success();
           io_close(io);
@@ -89,7 +89,7 @@ spec( io_buffer_init ) {
           verify(io->buffer.cursor == amount);
         must("return a slice of data with length equal to the amount to read");
           verify(io->result.length == amount);
-          verify(streq(io->result.pointer, "111111112222"));
+          verify(eq(io->result, "111111112222"));
 
         success();
           io_close(io);
@@ -126,7 +126,7 @@ spec( io_buffer_init ) {
         must("return a slice of data with length equal to the available data on "\
              "the channel");
           verify(io->result.length == channel_available_data);
-          verify(streq(io->result.pointer, "1111111"));
+          verify(eq(io->result, "1111111"));
 
         success();
           io_close(io);
@@ -159,7 +159,7 @@ spec( io_buffer_init ) {
           verify(io->buffer.cursor == amount);
         must("return a slice of data with length equal to the amount to read");
           verify(io->result.length == amount);
-          verify(streq(io->result.pointer, "1111111"));
+          verify(eq(io->result, "1111111"));
 
         success();
           io_close(io);

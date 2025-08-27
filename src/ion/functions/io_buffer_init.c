@@ -15,13 +15,14 @@ static inline void io_buffer_init (
   if (unlikely(failure.occurred))
     return;
 
-  if (io->result.length < alloc_amount)
-    io->buffer.data.length = io->result.length;
-  else
-    io->buffer.data.length = alloc_amount;
+  int channel_available_data = io->result.length;
+  io->buffer.data.length = channel_available_data;
 
-  if (io->result.length < amount)
-    io->buffer.cursor = io->result.length;
-  else
+  if (channel_available_data < amount) {
+    io->buffer.cursor = channel_available_data;
+    io->result = (string) { io->buffer.data.pointer, channel_available_data };
+  } else {
     io->buffer.cursor = amount;
+    io->result = (string) { io->buffer.data.pointer, amount };
+  }
 }

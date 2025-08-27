@@ -12,11 +12,11 @@ spec( io_buffer_read ) {
       *io = io(&channel); \
       io->buffer.enabled = true; \
       io->buffer.size = 8; \
-      write(channel.writer, data.content, channel_available_data);
+      write(channel.writer, data.pointer, channel_available_data);
 
   when("the io buffer is not initialized") {
     #define buffer_not_initialized_condition \
-      io->buffer.data = (slice) { NULL, 0 };
+      io->buffer.data = (string) { NULL, 0 };
 
     must("behave exactly like the `io_buffer_init` function");
     /* Refer to the `io_buffer_init` spec for more details on its behaviour. */
@@ -39,18 +39,13 @@ spec( io_buffer_read ) {
       pipe_close(&channel);
     }
 
-    /* Equality of io structs is done without taking in consideration its buffer data
-     * pointer value because, of course, the buffer shall malloc on two different
-     * addresses. */
-    void* io_with_buffer_init_data = io_with_buffer_init.buffer.data.pointer;
-    void* io_with_buffer_read_data = io_with_buffer_read.buffer.data.pointer;
-    io_with_buffer_init.buffer.data.pointer = NULL;
-    io_with_buffer_read.buffer.data.pointer = NULL;
-    verify(eq(&io_with_buffer_init, &io_with_buffer_read));
+    verify(io_with_buffer_init.cursor == io_with_buffer_read.cursor);
+    verify(io_with_buffer_init.buffer.cursor == io_with_buffer_read.buffer.cursor);
+
+    verify(eq(io_with_buffer_init.result, io_with_buffer_read.result));
+    verify(eq(io_with_buffer_init.buffer.data, io_with_buffer_read.buffer.data));
 
     success();
-      io_with_buffer_init.buffer.data.pointer = io_with_buffer_init_data;
-      io_with_buffer_read.buffer.data.pointer = io_with_buffer_read_data;
       io_close(&io_with_buffer_init);
       io_close(&io_with_buffer_read);
 
@@ -60,10 +55,10 @@ spec( io_buffer_read ) {
   when("the io buffer is already initialized") {
     #define buffer_already_initialized_condition \
       io->buffer.data.pointer = alloc(io->buffer.data.length); \
-      byte_copy(io->buffer.data.pointer, data.content, io->buffer.data.length); \
+      byte_copy(io->buffer.data.pointer, data.pointer, io->buffer.data.length); \
       read(channel.reader, (char[40]) { 0 }, io->buffer.data.length);
 
-    when("the amount to read does not exceed the buffer end") {
+    when("the amount to read does not exceed the buffer length") {
       amount = 4;
 
       when("the io buffer contains data for no more than 2 times the buffer size") {
@@ -72,7 +67,7 @@ spec( io_buffer_read ) {
         io->buffer.data.length = 14;
         io->buffer.cursor = 8;
         apply(buffer_already_initialized_condition);
-        slice original_buffer_data = { io->buffer.data.pointer, io->buffer.data.length };
+        string original_buffer_data = { io->buffer.data.pointer, io->buffer.data.length };
         int original_buffer_cursor = io->buffer.cursor;
         /*        ┌────────────────────────────────────────┐
           channel:│11111111222222223                       │
@@ -92,9 +87,9 @@ spec( io_buffer_read ) {
           verify(io->read.count == 0);
         must("advance the buffer cursor by a quantity equal to the amount to read");
           verify(io->buffer.cursor == original_buffer_cursor + amount);
-        must("return a slice of data with length equal to the amount to read");
+        must("return a string of data with length equal to the amount to read");
           verify(io->result.length == amount);
-          verify(streq(io->result.pointer, "2222"));
+          verify(eq(io->result, "2222"));
 
         success();
           io_close(io);
@@ -102,7 +97,7 @@ spec( io_buffer_read ) {
       } end();
 
       // when("the io buffer is already initialized")
-      // when("the amount to read does not exceed the buffer end")
+      // when("the amount to read does not exceed the buffer length")
       when("the io buffer contains data for more than 2 times the buffer size") {
         when("the io buffer is retained") {
           int channel_available_data = 25;
@@ -111,7 +106,7 @@ spec( io_buffer_read ) {
           io->buffer.data.length = 24;
           io->buffer.cursor = 18;
           apply(buffer_already_initialized_condition);
-          slice original_buffer_data = { io->buffer.data.pointer, io->buffer.data.length };
+          string original_buffer_data = { io->buffer.data.pointer, io->buffer.data.length };
           int original_buffer_cursor = io->buffer.cursor;
           /*        ┌────────────────────────────────────────┐
             channel:│1111111122222222333333334               │
@@ -131,9 +126,9 @@ spec( io_buffer_read ) {
             verify(io->read.count == 0);
           must("advance the buffer cursor by a quantity equal to the amount to read");
             verify(io->buffer.cursor == original_buffer_cursor + amount);
-          must("return a slice of data with length equal to the amount to read");
+          must("return a string of data with length equal to the amount to read");
             verify(io->result.length == amount);
-            verify(streq(io->result.pointer, "3333"));
+            verify(eq(io->result, "3333"));
 
           success();
             io_close(io);
@@ -141,7 +136,7 @@ spec( io_buffer_read ) {
         } end();
 
         // when("the io buffer is already initialized")
-        // when("the amount to read does not exceed the buffer end")
+        // when("the amount to read does not exceed the buffer length")
         // when("the io buffer contains data for equal or more than 2 times the buffer size")
         when("the io buffer is not retained") {
           int channel_available_data = 25;
@@ -170,9 +165,9 @@ spec( io_buffer_read ) {
           must("adjust the buffer cursor by a quantity equal to the amount to read minus "\
                "the chipped away quantity");
             verify(io->buffer.cursor == original_buffer_cursor + amount - chipped_away_quantity);
-          must("return a slice of data with length equal to the amount to read");
+          must("return a string of data with length equal to the amount to read");
             verify(io->result.length == amount);
-            verify(streq(io->result.pointer, "3333"));
+            verify(eq(io->result, "3333"));
 
           success();
             io_close(io);
@@ -182,7 +177,7 @@ spec( io_buffer_read ) {
     } end();
 
     // when("the io buffer is already initialized")
-    when("the amount to read exceeds the buffer end") {
+    when("the amount to read exceeds the buffer length") {
       when("the amount to read is not greater than the buffer size") {
         amount = 6;
 
@@ -214,17 +209,17 @@ spec( io_buffer_read ) {
           must("advance the buffer cursor by a quantity equal to the available "\
                "data on the channel");
             verify(io->buffer.cursor == channel_available_data);
-          must("return a slice of data with length equal to the available data "\
+          must("return a string of data with length equal to the available data "\
                "on the channel");
             verify(io->result.length == channel_available_data - original_buffer_cursor);
-            verify(streq(io->result.pointer, "33334"));
+            verify(eq(io->result, "33334"));
 
           success();
             io_close(io);
             pipe_close(&channel);
         } end();
 
-        // when("the amount to read exceeds the buffer end")
+        // when("the amount to read exceeds the buffer length")
         // when("the amount to read is lesser or equal than the buffer size")
         // when("the io buffer contains data for equal or more than 2 times the buffer size")
         when("the underlying channel contains equal or more data than the buffer size") {
@@ -254,9 +249,9 @@ spec( io_buffer_read ) {
             verify(io->read.count == 1);
           must("advance the buffer cursor by a quantity equal to the amount to read");
             verify(io->buffer.cursor == original_buffer_cursor + amount);
-          must("return a slice of data with length equal to the amount to read");
+          must("return a string of data with length equal to the amount to read");
             verify(io->result.length == amount);
-            verify(streq(io->result.pointer, "333344"));
+            verify(eq(io->result, "333344"));
 
           success();
             io_close(io);
@@ -265,7 +260,7 @@ spec( io_buffer_read ) {
       } end();
 
       // when("the io buffer is already initialized")
-      // when("the amount to read exceeds the buffer end")
+      // when("the amount to read exceeds the buffer length")
       when("the amount to read is greater than the buffer size") {
         amount = 10;
 
@@ -297,17 +292,17 @@ spec( io_buffer_read ) {
           must("advance the buffer cursor by a quantity equal to the available "\
                "data on the channel");
             verify(io->buffer.cursor == channel_available_data);
-          must("return a slice of data with length equal to the available data "\
+          must("return a string of data with length equal to the available data "\
                "on the channel");
             verify(io->result.length == channel_available_data - original_buffer_cursor);
-            verify(streq(io->result.pointer, "3333444"));
+            verify(eq(io->result, "3333444"));
 
           success();
             io_close(io);
             pipe_close(&channel);
         } end();
 
-        // when("the amount to read exceeds the buffer end")
+        // when("the amount to read exceeds the buffer length")
         // when("the amount to read is greater than the buffer size")
         when("the underlying channel contains equal or more data than the buffer size") {
           int channel_available_data = 40;
@@ -335,9 +330,9 @@ spec( io_buffer_read ) {
             verify(io->read.count == 1);
           must("advance the buffer cursor by a quantity equal to the amount to read");
             verify(io->buffer.cursor = amount);
-          must("return a slice of data with length equal to the amount to read");
+          must("return a string of data with length equal to the amount to read");
             verify(io->result.length == amount);
-            verify(streq(io->result.pointer, "333344444444"));
+            verify(eq(io->result, "333344444444"));
 
           success();
             io_close(io);
