@@ -1,19 +1,16 @@
-static inline int json_parse_number (
+int json_parse_number (
     struct io* io
 )
 {
   int cursor = io_cursor_save(io);
   int length = 0;
-  slice result;
-  #define digit ((char*) result.data)[0]
+  char digit;
 
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     goto error;
 
-  if (result.length == 0)
-    return 0;
-
+  digit = string_char_at(io->result, 0);
   if (digit == '-') {
     length++;
     goto integral_part;
@@ -32,13 +29,14 @@ static inline int json_parse_number (
   goto error;
 
 check_after_zero:
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     goto error;
 
-  if (result.length == 0)
+  if (io->result.length == 0)
     goto terminate;
 
+  digit = string_char_at(io->result, 0);
   switch(digit) {
   case '.':
     length++;
@@ -70,13 +68,14 @@ check_after_zero:
   }
 
 integral_part:
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     goto error;
 
-  if (result.length == 0)
+  if (io->result.length == 0)
     goto terminate;
 
+  digit = string_char_at(io->result, 0);
   if (isdigit(digit)) {
     length++;
     goto integral_part;
@@ -95,13 +94,14 @@ integral_part:
   goto terminate;
 
 check_after_decimal_separator:
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     goto error;
 
-  if (result.length == 0)
+  if (io->result.length == 0)
     goto error;
 
+  digit = string_char_at(io->result, 0);
   if (isdigit(digit)) {
     length++;
     goto fractional_part;
@@ -110,13 +110,14 @@ check_after_decimal_separator:
   goto error;
 
 fractional_part:
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     goto error;
 
-  if (result.length == 0)
+  if (io->result.length == 0)
     goto terminate;
 
+  digit = string_char_at(io->result, 0);
   if (isdigit(digit)) {
     length++;
     goto fractional_part;
@@ -130,13 +131,14 @@ fractional_part:
   goto terminate;
 
 exponent_sign:
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     goto error;
 
-  if (result.length == 0)
+  if (io->result.length == 0)
     goto error;
 
+  digit = string_char_at(io->result, 0);
   switch (digit) {
   case '-':
   case '+':
@@ -152,13 +154,14 @@ exponent_sign:
   }
 
 exponent_part:
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     goto error;
 
-  if (result.length == 0)
+  if (io->result.length == 0)
     goto terminate;
 
+  digit = string_char_at(io->result, 0);
   if (isdigit(digit)) {
     length++;
     goto exponent_part;
@@ -166,11 +169,10 @@ exponent_part:
 
 terminate:
   io_cursor_restore(io, cursor);
+  io_read(io, length);
   return length;
 
 error:
   io_cursor_restore(io, cursor);
   return -1;
-
-  #undef digit
 }

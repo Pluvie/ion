@@ -1,4 +1,4 @@
-static inline bool reflection_validate (
+bool reflection_validate (
     struct reflection* rfx,
     void* value
 );

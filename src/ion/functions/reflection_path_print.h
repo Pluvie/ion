@@ -1,4 +1,4 @@
-static inline int reflection_path_print (
+int reflection_path_print (
     struct reflection* rfx,
     string result
 );

@@ -14,8 +14,8 @@ spec( json_parse_string ) {
 
       must("return the length of the string");
         verify(result == 9);
-      must("restore the cursor position");
-        verify(io->cursor == 0);
+      must("advance the cursor position by the length of the string");
+        verify(io->cursor == result);
       success();
         io_close(io);
     } end();
@@ -42,8 +42,8 @@ spec( json_parse_string ) {
 
       must("return the length of the string");
         verify(result == 5);
-      must("restore the cursor position");
-        verify(io->cursor == 0);
+      must("advance the cursor position by the length of the string");
+        verify(io->cursor == result);
       success();
         io_close(io);
     } end();
@@ -70,7 +70,7 @@ spec( json_parse_string ) {
 
     must("return -1");
       verify(result == -1);
-    must("restore the cursor position");
+    must("advance the cursor position by the length of the string");
       verify(io->cursor == 9);
     success();
       io_close(io);
@@ -84,7 +84,7 @@ spec( json_parse_string ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message, "io: invalid channel"));
+      verify(failure_is("io: invalid channel"));
 
     must("return -1");
       verify(result == -1);

@@ -15,8 +15,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 3);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -28,8 +28,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 6);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -41,8 +41,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 6);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -54,8 +54,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 9);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -69,8 +69,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 4);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -82,8 +82,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 7);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -95,8 +95,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 8);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -108,8 +108,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 10);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -125,8 +125,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 3);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -138,8 +138,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 6);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -151,8 +151,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 6);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -164,8 +164,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 10);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -179,8 +179,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 4);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -192,8 +192,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 7);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -205,8 +205,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 8);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -218,8 +218,8 @@ spec( json_parse_number ) {
 
         must("return the length of the number");
           verify(result == 10);
-        must("restore the cursor position");
-          verify(io->cursor == 0);
+        must("advance the cursor by the number length");
+          verify(io->cursor == result);
         success();
           io_close(io);
       } end();
@@ -234,7 +234,7 @@ spec( json_parse_number ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message, "io: invalid channel"));
+      verify(failure_is("io: invalid channel"));
 
     must("return -1");
       verify(result == -1);

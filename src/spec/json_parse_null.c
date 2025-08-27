@@ -7,7 +7,7 @@ spec( json_parse_null ) {
       io = memory_alloc_zero(spec_allocator, sizeof(struct io)); \
       *io = io(s("  { \"a\":   null } "));
 
-  when("the io reads a string equal to `true`") {
+  when("the io reads a string equal to `null`") {
     apply(preconditions);
     int io_cursor_starting_position = 11;
     io->cursor = io_cursor_starting_position;
@@ -16,11 +16,11 @@ spec( json_parse_null ) {
     must("not fail");
       verify(failure.occurred == false);
 
-    must("return lengthof(\"null\")");
-      verify(result == lengthof("null"));
+    must("return the value length");
+      verify(result == 4);
 
-    must("restore the io cursor to the original position");
-      verify(io->cursor == io_cursor_starting_position);
+    must("advance the io cursor by the value length");
+      verify(io->cursor == io_cursor_starting_position + 4);
 
     success();
       io_close(io);
@@ -36,8 +36,8 @@ spec( json_parse_null ) {
     must("not fail");
       verify(failure.occurred == false);
 
-    must("return 0");
-      verify(result == 0);
+    must("return -1");
+      verify(result == -1);
 
     must("restore the io cursor to the original position");
       verify(io->cursor == io_cursor_starting_position);
@@ -58,7 +58,7 @@ spec( json_parse_null ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message, "io: invalid channel"));
+      verify(failure_is("io: invalid channel"));
 
     must("return -1");
       verify(result == -1);

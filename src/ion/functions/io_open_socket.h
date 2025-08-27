@@ -1,4 +1,4 @@
-static inline struct io io_open_socket (
+struct io io_open_socket (
     struct socket* sock,
     int
 );

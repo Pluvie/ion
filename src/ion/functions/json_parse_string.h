@@ -1,3 +1,3 @@
-static inline int json_parse_string (
+int json_parse_string (
     struct io* source
 );

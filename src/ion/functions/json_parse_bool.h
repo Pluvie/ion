@@ -1,3 +1,3 @@
-static inline int json_parse_bool (
+int json_parse_bool (
     struct io* io
 );

@@ -1,3 +1,3 @@
-static inline int json_parse_spaces (
+int json_parse_spaces (
     struct io* io
 );

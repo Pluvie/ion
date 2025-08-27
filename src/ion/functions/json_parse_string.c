@@ -1,31 +1,31 @@
-static inline int json_parse_string (
+int json_parse_string (
     struct io* io
 )
 {
   int cursor = io_cursor_save(io);
   int length = 0;
   bool escaped = false;
-  slice result;
-  #define character ((char*) result.data)[0]
+  char character;
 
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     goto error;
 
-  if (result.length == 0)
+  if (io->result.length == 0)
     goto error;
 
+  character = string_char_at(io->result, 0);
   if (character != '"')
     goto error;
 
   length++;
 
 read_character:
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     goto error;
 
-  if (result.length == 0)
+  if (io->result.length == 0)
     goto error;
 
   if (escaped) {
@@ -34,6 +34,7 @@ read_character:
     goto read_character;
   }
 
+  character = string_char_at(io->result, 0);
   if (character == 92) {
     escaped = true;
     length++;
@@ -50,6 +51,7 @@ read_character:
 
 terminate:
   io_cursor_restore(io, cursor);
+  io_read(io, length);
   return length;
 
 error:

@@ -1,13 +1,15 @@
-static inline int json_parse_null (
+int json_parse_null (
     struct io* io
 )
 {
-  slice peek = io_peek(io, lengthof("null"));
+  io_peek(io, 4);
   if (unlikely(failure.occurred))
     return -1;
 
-  if (streq(peek, "null"))
-    return lengthof("null");
+  if (cmp<string>(io->result, s("null")) == 0) {
+    io_read(io, 4);
+    return 4;
+  }
 
-  return 0;
+  return -1;
 }
