@@ -10,4 +10,4 @@ struct socket {
     char path[SOCKET_PATH_MAXLEN];
   };
 };
-check_sizeof(296, struct socket);
+check_sizeof(152, struct socket);

@@ -21,6 +21,7 @@ struct socket socket_open (
     break;
   default:
     fail("socket connect error: unsupported socket type");
+    return (struct socket) { 0 };
   }
 
   switch (sock.protocol) {
@@ -32,6 +33,7 @@ struct socket socket_open (
     break;
   default:
     fail("socket connect error: unsupported socket protocol");
+    return (struct socket) { 0 };
   }
 
   sock.descriptor = socket(linux_socket_family, linux_socket_type, 0);

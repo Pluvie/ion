@@ -40,11 +40,13 @@ void socket_connect (
   case SOCKET_LOCAL: {
     struct sockaddr_un address = { 0 };
     address.sun_family = AF_UNIX;
-    strncpy(address.sun_path, sock->path, sizeof(address.sun_path) - 1);
+    snprintf(address.sun_path, sizeof(address.sun_path), "%s", sock->path);
 
     int result = connect(sock->descriptor, (struct sockaddr*) &address, sizeof(address));
     if (result == -1)
       fail("socket connect error: %s", strerror(errno));
+
+    return;
   }
 
   default:

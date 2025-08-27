@@ -50,6 +50,7 @@
 #include "functions/reflection_path_print.c"
 #include "functions/reflection_self_get.c"
 #include "functions/reflection_validate.c"
+#include "functions/signal_catcher.c"
 #include "functions/string_char_at.c"
 #include "functions/string_index.c"
 #include "functions/string_starts.c"

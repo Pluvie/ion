@@ -39,7 +39,7 @@ void lookup (
   }
 
   print("Size: %li", map->length);
-  print("LF: %Lf", (dec) map->keys.length / (dec) map->keys.capacity);
+  print("LF: %f", (dec) map->keys.length / (dec) map->keys.capacity);
   print("Buckets: %li", map->keys.capacity);
   print("Done: %li", *v);
   memory_release(&allocator);
@@ -52,7 +52,7 @@ int32 main (
 {
   //insert();
   lookup();
-  if (error.occurred)
+  if (failure.occurred)
     return EXIT_FAILURE;
   else
     return EXIT_SUCCESS;

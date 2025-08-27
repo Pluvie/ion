@@ -51,6 +51,7 @@ void socket_accept (
 
   default:
     fail("socket connect error: unsupported socket type");
+    return;
   }
 
   setsockopt(sock->descriptor, SOL_SOCKET, SO_REUSEADDR, &(int32) { 1 }, sizeof(int32));
@@ -73,10 +74,20 @@ void socket_accept (
   struct timeval receive_timeout = { .tv_sec = timeout_sec, .tv_usec = timeout_usec };
   struct socket client = { 0 };
 
+  /* Catches SIGINT to break the accept block. */
+  signal_catch(SIGINT);
+  if (unlikely(failure.occurred))
+    return;
+
   /* Accepts incoming connection and waits up until 5 seconds to receive data. If no
    * data are received after this timeout, the connection shall be closed. */
   do {
     client.descriptor = accept(sock->descriptor, sockaddr, (socklen_t*) &sockaddr_len);
+    if (signal_received(SIGINT)) {
+      print("Interrupt received.");
+      break;
+    }
+
     if (client.descriptor == -1)
       continue;
 
