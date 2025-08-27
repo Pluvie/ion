@@ -111,7 +111,7 @@ parse_pair:
     json_decode(value_block, io, value_rfx, allocator);
     void* map_values = *(void**) (obj + SET__SIZE);
     void* value_position = map_values + (added_position * value_rfx->size);
-    memcpy(value_position, value_block, value_rfx->size);
+    byte_copy(value_position, value_block, value_rfx->size);
 
   } else {
     json_decode(NULL, io, NULL, NULL);

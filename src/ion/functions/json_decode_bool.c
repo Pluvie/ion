@@ -33,7 +33,7 @@ static inline void json_decode_bool (
   if (rfx == NULL)
     return;
 
-  memcpy(obj, &value, rfx->size);
+  byte_copy(obj, &value, rfx->size);
 
   reflection_validate(rfx, obj);
   if (unlikely(failure.occurred))

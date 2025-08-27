@@ -19,7 +19,7 @@ bool json_decode_null (
   if (unlikely(failure.occurred))
     goto error;
 
-  memzero(obj, rfx->size);
+  zero_out(obj, rfx->size);
 
   json_parse_spaces(io);
   if (unlikely(failure.occurred))

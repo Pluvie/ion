@@ -6,7 +6,7 @@ struct io {
     struct socket* socket;
     struct stream* stream;
   };
-  slice result;
+  string result;
   int cursor;
   int length;
   enum io_channels channel;
@@ -19,7 +19,7 @@ struct io {
     int32 flags;
   } write;
   struct {
-    slice data;
+    string data;
     int cursor;
     int size;
     bool enabled;

@@ -51,7 +51,7 @@ regions_grow_check:
   int regions_new_capacity = allocator->regions.capacity * 2;
   void* regions_new_addresses = alloc_aligned(
     regions_new_capacity * sizeof(void*), default_alignment);
-  memcpy(regions_new_addresses,
+  byte_copy(regions_new_addresses,
     allocator->regions.addresses,
     allocator->regions.capacity * sizeof(void*));
   free(allocator->regions.addresses);

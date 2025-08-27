@@ -15,7 +15,7 @@ enum spec_commands {
 };
 
 /* Tracks the original stderr stream to allow printing. */
-FILE* original_stderr;
+struct stream original_stderr;
 
 /* Global variable that stores registered specs to be run. */
 int registered_specs_count = 0;
@@ -136,7 +136,7 @@ void specs_run (
     void
 )
 {
-  spec_allocator = calloc(1, sizeof(memory));
+  spec_allocator = alloc_zero(sizeof(memory));
 
   if (focused_specs[0] == NULL) {
     original_stderr = fdopen(STDERR_FILENO, "w");

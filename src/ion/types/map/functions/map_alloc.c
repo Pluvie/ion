@@ -8,7 +8,7 @@ map<K, V>* map<K, V>_alloc (
   if (address == NULL) {
     map = memory_alloc_zero(allocator, sizeof(map<K, V>));
   } else {
-    memzero(address, sizeof(map<K, V>));
+    zero_out(address, sizeof(map<K, V>));
     map = address;
   }
 

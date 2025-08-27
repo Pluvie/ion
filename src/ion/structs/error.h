@@ -34,8 +34,7 @@
 struct error {
   bool occurred;
   padding(4);
-  int code;
-  int length;
-  char message[488];
+  string message;
+  char _message_data[488];
 };
 check_sizeof(512, struct error);

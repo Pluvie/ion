@@ -1,21 +1,21 @@
 #define LINUX   1
 #define WINDOWS 2
-#define APPLE   3
+#define MACOS   3
 
 #define platform(name) PLATFORM == name
 
 #if   defined(__linux__)
   #define PLATFORM LINUX
+  #include "platform/linux.h"
+
 #elif defined(__WIN32__)
   #define PLATFORM WINDOWS
-#elif defined(__APPLE__)
-  #define PLATFORM APPLE
-#else
-  #define PLATFORM 0
-#endif
+  #include "platform/windows.h"
 
-#if platform(LINUX)
-  #include "platform/linux.h"
+#elif defined(__APPLE__)
+  #define PLATFORM MACOS
+  #include "platform/macos.h"
+
 #else
   #error "Unsupported platform."
 #endif

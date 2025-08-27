@@ -43,17 +43,15 @@
  *
  * This of course should be done exactly once for a whole program, only when all used
  * types are known, and must be updated every time a new type is added. */
-#define cmp(v1, v2) \
-  _Generic((v1), _cmp(v1, v2))(v1, v2)
+#define cmp(v, ...) \
+  _Generic((v), _cmp(v, __VA_ARGS__))(v, __VA_ARGS__)
 
 
 /**
  * Default comparison for ⚡️ION⚡️ base types. */
-#define _cmp(v1, v2)      \
-  int : cmp<int>,         \
-  dec : cmp<dec>,         \
-  bool : cmp<bool>,       \
-  char : cmp<char>,       \
-  char* : cmp<char*>,     \
-  slice : cmp<slice>,     \
-  string : cmp<string>
+#define _cmp(v, ...)                \
+  int : cmp<int>,                   \
+  dec : cmp<dec>,                   \
+  bool : cmp<bool>,                 \
+  string : cmp<string>,             \
+  struct io* : cmp<struct io*>

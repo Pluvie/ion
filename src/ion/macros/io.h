@@ -3,7 +3,6 @@
 #define io(v, ...)                    \
   _Generic(v,                         \
     void* : io_open_memory,           \
-    slice : io_open_slice,            \
     string : io_open_string,          \
     struct file* : io_open_file,      \
     struct pipe* : io_open_pipe,      \

@@ -1,3 +1,5 @@
 #include "enums/io_channels.h"
+#include "enums/socket_ip_versions.h"
+#include "enums/socket_protocols.h"
 #include "enums/type_sizes.h"
 #include "enums/types.h"

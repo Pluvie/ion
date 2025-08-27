@@ -11,5 +11,5 @@ void memory_release (
   if (allocator->regions.addresses != NULL)
     free(allocator->regions.addresses);
 
-  memzero(allocator, sizeof(memory));
+  zero_out(allocator, sizeof(memory));
 }

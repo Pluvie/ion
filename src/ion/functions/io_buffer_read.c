@@ -34,7 +34,7 @@ read_from_buffer:
 
     void* old_data = buffer->data.pointer;
     void* new_data = alloc_zero(chipped_capacity);
-    memcpy(new_data, old_data + chip_begin, chipped_capacity);
+    byte_copy(new_data, old_data + chip_begin, chipped_capacity);
     free(old_data);
     buffer->data.pointer = new_data;
     buffer->data.length = chipped_capacity;

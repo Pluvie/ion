@@ -14,7 +14,7 @@ set<T>* set<T>_alloc (
   if (address == NULL) {
     set = memory_alloc_zero(allocator, sizeof(set<T>));
   } else {
-    memzero(address, sizeof(set<T>));
+    zero_out(address, sizeof(set<T>));
     set = address;
   }
 

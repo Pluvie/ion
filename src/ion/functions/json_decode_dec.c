@@ -29,7 +29,7 @@ static inline void json_decode_dec (
   if (unlikely(failure.occurred))
     return;
 
-  memcpy(obj, &number, rfx->size);
+  byte_copy(obj, &number, rfx->size);
 
   reflection_validate(rfx, obj);
   if (unlikely(failure.occurred))

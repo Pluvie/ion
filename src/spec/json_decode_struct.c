@@ -48,7 +48,7 @@ spec( json_decode_struct ) {
     must("correctly parse until the end of the object");
       verify(io->cursor == 11);
     must("not set any field");
-      verify(memeq(&shepard, &(struct squadmate) { 0 }, sizeof(struct squadmate)));
+      verify(eq(&shepard, &(struct squadmate) { 0 }));
     success();
       io_close(io);
   } end();
@@ -79,7 +79,7 @@ spec( json_decode_struct ) {
     must("correctly parse until the end of the object");
       verify(io->cursor == 45);
     must("not set any field");
-      verify(memeq(&shepard, &(struct squadmate) { 0 }, sizeof(struct squadmate)));
+      verify(eq(&shepard, &(struct squadmate) { 0 }));
     success();
       io_close(io);
   } end();

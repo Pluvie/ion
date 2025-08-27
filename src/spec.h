@@ -56,6 +56,7 @@
 #include "spec/set_pos.c"
 #include "spec/set_rehash.c"
 #include "spec/socket_connect.c"
+#include "spec/socket_init.c"
 #include "spec/socket_open.c"
 #include "spec/stridx.c"
 #include "spec/string_to_dec.c"

@@ -102,7 +102,7 @@ spec( io_channel_read ) {
         slice result = { "11111111", 8 };
         verify(eq(io->result, result));
       must("store the channel read result into the address");
-        verify(memeq(address, io->result.pointer, amount));
+        verify(eq(io->result, (string) { address, amount }));
 
       success();
         io_close(io);
@@ -128,7 +128,7 @@ spec( io_channel_read ) {
         slice result = { "1111", channel_available_data };
         verify(eq(io->result, result));
       must("store the channel read result into the address");
-        verify(memeq(address, io->result.pointer, channel_available_data));
+        verify(eq(io->result, (string) { address, channel_available_data }));
 
       success();
         io_close(io);
@@ -160,7 +160,7 @@ spec( io_channel_read ) {
         slice result = { "11111111", 8 };
         verify(eq(io->result, result));
       must("store the channel read result into the address");
-        verify(memeq(address, io->result.pointer, amount));
+        verify(eq(io->result, (string) { address, amount }));
 
       success();
         io_close(io);
@@ -184,7 +184,7 @@ spec( io_channel_read ) {
         slice result = { "1111", channel_available_data };
         verify(eq(io->result, result));
       must("store the channel read result into the address");
-        verify(memeq(address, io->result.pointer, channel_available_data));
+        verify(eq(io->result, (string) { address, channel_available_data }));
 
       success();
         io_close(io);
@@ -217,7 +217,7 @@ spec( io_channel_read ) {
         slice result = { "11111111", 8 };
         verify(eq(io->result, result));
       must("store the channel read result into the address");
-        verify(memeq(address, io->result.pointer, amount));
+        verify(eq(io->result, (string) { address, amount }));
 
       success();
         io_close(io);
@@ -241,7 +241,7 @@ spec( io_channel_read ) {
         slice result = { "1111", channel_available_data };
         verify(eq(io->result, result));
       must("store the channel read result into the address");
-        verify(memeq(address, io->result.pointer, channel_available_data));
+        verify(eq(io->result, (string) { address, channel_available_data }));
 
       success();
         io_close(io);

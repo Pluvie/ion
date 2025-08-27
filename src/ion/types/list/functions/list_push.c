@@ -16,7 +16,7 @@ grow:
 
   list->capacity *= 2;
   T* new_data = memory_alloc_zero(list->allocator, list->capacity * sizeof(T));
-  memcpy(new_data, list->data, list->length * sizeof(T));
+  byte_copy(new_data, list->data, list->length * sizeof(T));
   list->data = new_data;
 
 push:

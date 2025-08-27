@@ -1,4 +1,4 @@
 struct stream stream_open (
-    char* name,
+    string name,
     const char* mode
 );

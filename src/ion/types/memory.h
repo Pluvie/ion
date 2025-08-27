@@ -1,3 +1,9 @@
+#ifdef NULL
+#undef NULL
+#endif
+
+#define NULL ((void*)0)
+
 #ifdef memory
 #undef memory
 #endif

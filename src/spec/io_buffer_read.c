@@ -46,7 +46,7 @@ spec( io_buffer_read ) {
     void* io_with_buffer_read_data = io_with_buffer_read.buffer.data.pointer;
     io_with_buffer_init.buffer.data.pointer = NULL;
     io_with_buffer_read.buffer.data.pointer = NULL;
-    verify(memeq(&io_with_buffer_init, &io_with_buffer_read, sizeof(struct io)));
+    verify(eq(&io_with_buffer_init, &io_with_buffer_read));
 
     success();
       io_with_buffer_init.buffer.data.pointer = io_with_buffer_init_data;
@@ -60,7 +60,7 @@ spec( io_buffer_read ) {
   when("the io buffer is already initialized") {
     #define buffer_already_initialized_condition \
       io->buffer.data.pointer = alloc(io->buffer.data.length); \
-      memcpy(io->buffer.data.pointer, data.content, io->buffer.data.length); \
+      byte_copy(io->buffer.data.pointer, data.content, io->buffer.data.length); \
       read(channel.reader, (char[40]) { 0 }, io->buffer.data.length);
 
     when("the amount to read does not exceed the buffer end") {

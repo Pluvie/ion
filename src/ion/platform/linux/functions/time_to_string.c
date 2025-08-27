@@ -6,7 +6,7 @@ string time_to_string (
   int milliseconds = time - ((int) time_in_seconds * 1000);
   struct tm time_calendar;
 
-  memzero(__time_string, sizeof(__time_string));
+  zero_out(__time_string, sizeof(__time_string));
   if (gmtime_r(&time_in_seconds, &time_calendar) == NULL)
     return (string) { 0 };
 

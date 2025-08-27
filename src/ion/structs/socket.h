@@ -1,9 +1,9 @@
 struct socket {
   int descriptor;
+  int port;
   string uri;
-  int32 family;
-  int32 type;
-  int32 port;
+  enum socket_protocols protocol;
+  enum socket_ip_versions ip_version;
   union {
     char ipv4[SOCKET_IPV4_MAXLEN];
     char ipv6[SOCKET_IPV6_MAXLEN];

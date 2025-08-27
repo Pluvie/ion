@@ -4,6 +4,6 @@ void* memory_alloc_zero (
 )
 {
   void* address = memory_alloc(allocator, amount);
-  memzero(address, amount);
+  zero_out(address, amount);
   return address;
 }

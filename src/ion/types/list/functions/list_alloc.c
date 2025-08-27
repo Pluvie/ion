@@ -14,7 +14,7 @@ list<T>* list<T>_alloc (
   if (address == NULL) {
     list = memory_alloc_zero(allocator, sizeof(list<T>));
   } else {
-    memzero(address, sizeof(list<T>));
+    zero_out(address, sizeof(list<T>));
     list = address;
   }
 

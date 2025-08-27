@@ -16,22 +16,12 @@ static inline int cmp<bool> (
     bool v2
 );
 
-static inline int cmp<char> (
-    char v1,
-    char v2
-);
-
-static inline int cmp<char*> (
-    char* v1,
-    char* v2
-);
-
 static inline int cmp<string> (
     string v1,
     string v2
 );
 
-static inline int cmp<slice> (
-    slice v1,
-    slice v2
+static inline int cmp<struct io*> (
+    struct io* v1,
+    struct io* v2
 );

@@ -27,7 +27,7 @@ extract_from_buffer:
   if (extraction_size > lengthof(extraction))
     extraction_size = lengthof(extraction);
 
-  memcpy(extraction, io->buffer.data.pointer + buffer_begin, extraction_size);
+  byte_copy(extraction, io->buffer.data.pointer + buffer_begin, extraction_size);
   extraction[lengthof(extraction)] = '\0';
 
   caret_position = 0;
@@ -55,9 +55,9 @@ extract_from_channel:
     extraction_size = lengthof(extraction);
 
   if (io->channel == IO_MEMORY)
-    memcpy(extraction, io->memory + channel_begin, extraction_size);
+    byte_copy(extraction, io->memory + channel_begin, extraction_size);
   else
-    memcpy(extraction, io->result.pointer + channel_begin, extraction_size);
+    byte_copy(extraction, io->result.pointer + channel_begin, extraction_size);
 
   extraction[lengthof(extraction)] = '\0';
 

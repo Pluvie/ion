@@ -5,7 +5,7 @@ void* alloc_resize_zero (
 )
 {
   void* new_address = alloc_zero(resized_amount);
-  memcpy(new_address, old_address, original_amount);
+  byte_copy(new_address, old_address, original_amount);
   free(old_address);
   return new_address;
 }

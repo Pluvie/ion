@@ -5,70 +5,94 @@ void socket_accept (
     int timeout_ms
 )
 {
-  //setsockopt(sock->descriptor, SOL_SOCKET, SO_REUSEADDR, &(int32) { 1 }, sizeof(int32));
-  //int bind_outcome = bind(sock, (struct sockaddr*) &address, sizeof(address));
-  //if (bind_outcome == -1) {
-  //  fail("socket binding failure: %s", strerror(errno));
-  //  return;
-  //}
+  struct sockaddr* sockaddr;
+  int sockaddr_len;
 
-  //int32 listen_outcome = listen(sock, 10);
-  //if (listen_outcome == -1) {
-  //  fail("socket listen failure: %s", strerror(errno));
-  //  return;
-  //}
+  switch (sock->family) {
+  case AF_INET: {
+    struct sockaddr_in address = { 0 };
+    address.sin_family = AF_INET;
+    address.sin_port = htons(sock->port);
+    int valid_address = inet_pton(AF_INET, sock->ipv4, (void*) &(address.sin_addr));
+    if (unlikely(valid_address != 1)) {
+      fail("socket connect error: invalid IPv4 address `%s`", sock->ipv4);
+      return;
+    }
 
-  ///* Server setup: accepts incoming connection until the *connections_limit* is reached,
-  // * or accepts indefinitely if *connections_limit* is equal to `0`.
-  // *
-  // * The timeout for receiving data after a succesful connection is set by the server
-  // * *timeout_ms* field. */
-  //u32 socklen_size = sizeof(address);
-  //int32 timeout_outcome = -1;
-  //bool infinite_connections = (server->connections_limit == 0);
-  //i64 timeout_sec = server->timeout_ms / 1000;
-  //i64 timeout_usec = (server->timeout_ms * 1000) - timeout_sec;
-  //struct timeval receive_timeout = { .tv_sec = timeout_sec, .tv_usec = timeout_usec };
+    sockaddr = (struct sockaddr*) &address;
+    sockaddr_len = sizeof(address);
+    break;
+  }
 
-  ///* Sets up an intercept function for SIGINT signals: they can be used to interrupt
-  // * the server block while accepting connections. */ 
-  //signal_catch(SIGINT);
-  //if (error.occurred)
-  //  return;
+  case AF_INET6: {
+    struct sockaddr_in6 address = { 0 };
+    address.sin6_family = AF_INET6;
+    address.sin6_port = htons(sock->port);
+    int valid_address = inet_pton(AF_INET, sock->ipv6, (void*) &(address.sin6_addr));
+    if (unlikely(valid_address != 1)) {
+      fail("socket connect error: invalid IPv6 address `%s`", sock->ipv6);
+      return;
+    }
 
-  ///* Accepts incoming connection and waits up until 5 seconds to receive data. If no
-  // * data are received after this timeout, the connection shall be closed. */
-  //do {
-  //  server->descriptor = accept(sock,
-  //    (struct sockaddr*) &(address),
-  //    (socklen_t*) &socklen_size);
+    sockaddr = (struct sockaddr*) &address;
+    sockaddr_len = sizeof(address);
+    break;
+  }
 
-  //  if (signal_received(SIGINT)) {
-  //    print("Interrupt received");
-  //    break;
-  //  }
+  case AF_UNIX: {
+    struct sockaddr_un address = { 0 };
+    address.sun_family = AF_UNIX;
+    strncpy(address.sun_path, sock->path, sizeof(address.sun_path) - 1);
 
-  //  if (server->descriptor == -1)
-  //    continue;
+    sockaddr = (struct sockaddr*) &address;
+    sockaddr_len = sizeof(address);
+    break;
+  }
 
-  //  inet_ntop(AF_INET, &(address.sin_addr), server->client_ip, INET_ADDRSTRLEN);
+  default:
+    fail("socket connect error: unsupported socket family");
+  }
 
-  //  timeout_outcome = setsockopt(server->descriptor, SOL_SOCKET, SO_RCVTIMEO,
-  //    (const char*) &receive_timeout, sizeof(receive_timeout));
-  //  if (timeout_outcome == -1) {
-  //    close(server->descriptor);
-  //    continue;
-  //  }
+  setsockopt(sock->descriptor, SOL_SOCKET, SO_REUSEADDR, &(int32) { 1 }, sizeof(int32));
 
-  //  /* Starts the request handling phase. The logical request handling must be done by
-  //   * the provided *connector* function. */
-  //  server->connector(server);
-  //  server->connections_limit--;
+  int bind_outcome = bind(sock->descriptor, sockaddr, sockaddr_len);
+  if (bind_outcome == -1) {
+    fail("socket binding failure: %s", strerror(errno));
+    return;
+  }
 
-  //} while(infinite_connections || server->connections_limit > 0);
+  int listen_outcome = listen(sock->descriptor, 10);
+  if (listen_outcome == -1) {
+    fail("socket listen failure: %s", strerror(errno));
+    return;
+  }
 
-  //if (server->descriptor > 0)
-  //  close(server->descriptor);
+  bool infinite_connections = (max_accepts == 0);
+  int timeout_sec = timeout_ms / 1000;
+  int timeout_usec = (timeout_ms * 1000) - timeout_sec;
+  struct timeval receive_timeout = { .tv_sec = timeout_sec, .tv_usec = timeout_usec };
+  struct socket client = { 0 };
 
-  //return;
+  /* Accepts incoming connection and waits up until 5 seconds to receive data. If no
+   * data are received after this timeout, the connection shall be closed. */
+  do {
+    client.descriptor = accept(sock->descriptor, sockaddr, (socklen_t*) &sockaddr_len);
+    if (client.descriptor == -1)
+      continue;
+
+    int timeout_outcome = setsockopt(client.descriptor, SOL_SOCKET, SO_RCVTIMEO,
+      (const char*) &receive_timeout, sizeof(receive_timeout));
+    if (timeout_outcome == -1) {
+      close(client.descriptor);
+      continue;
+    }
+
+    if (connector != NULL)
+      connector(&client);
+
+    max_accepts--;
+
+  } while(infinite_connections || max_accepts > 0);
+
+  return;
 }

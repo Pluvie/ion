@@ -18,5 +18,5 @@ static inline void json_decode_pointer (
     return failure_add_reflection_info(rfx);
 
   int pointer_address = (int) pointer_data;
-  memcpy(obj, &pointer_address, sizeof(int));
+  byte_copy(obj, &pointer_address, sizeof(int));
 }

@@ -36,12 +36,21 @@ int cmp<struct squadmate> (
   return cmp<string>(c1.name, c2.name);
 }
 
+int cmp<struct squadmate*> (
+    struct squadmate* c1,
+    struct squadmate* c2
+)
+{
+  return cmp<string>(c1->name, c2->name);
+}
+
 #undef cmp
-#define cmp(v1, v2)                             \
-  _Generic(v1,                                  \
+#define cmp(v, ...)                             \
+  _Generic(v,                                   \
     struct squadmate : cmp<struct squadmate>,   \
-    _cmp(v1, v2)                                \
-  )(v1, v2)
+    struct squadmate* : cmp<struct squadmate*>, \
+    _cmp(v, __VA_ARGS__)                        \
+  )(v, ...)
 
 #undef hash
 #define hash(v)                                 \
@@ -161,6 +170,7 @@ fiber_implement(spec_socket_server)
   if (unlikely(failure.occurred))
     print("fiber [%li] error: %s", fiber->id, failure.message);
 
+  socket_close(&sock);
   return NULL;
 }
 
@@ -192,5 +202,6 @@ fiber_implement(spec_socket_client)
   if (fiber->args.connector != NULL)
     fiber->args.connector(&sock);
 
+  socket_close(&sock);
   return NULL;
 }

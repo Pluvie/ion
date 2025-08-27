@@ -3,5 +3,4 @@
 #include "types/bool.h"
 
 #include "types/memory.h"
-#include "types/slice.h"
 #include "types/string.h"

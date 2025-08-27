@@ -31,7 +31,7 @@ spec( json_decode ) {
     must("not fail");
       verify(unlikely(failure.occurred) == false);
     must("zero out the object");
-      verify(memeq(obj, &(struct squadmate) { 0 }, sizeof(struct squadmate)));
+      verify(byte_eq(obj, &(struct squadmate) { 0 }, sizeof(struct squadmate)));
     must("exhaust the io");
       verify(io->cursor == io->length);
     success();

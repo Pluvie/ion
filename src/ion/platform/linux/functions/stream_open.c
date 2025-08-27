@@ -1,11 +1,11 @@
 struct stream stream_open (
-    char* name,
+    string name,
     const char* mode
 )
 {
-  struct stream stream = { .mode = mode };
+  struct stream stream = { .name = name, .mode = mode };
 
-  stream.pointer = fopen(name, "r");
+  stream.pointer = fopen(name, mode);
   if (unlikely(stream.pointer == NULL))
     fail("error while opening stream: %s", strerror(errno));
 

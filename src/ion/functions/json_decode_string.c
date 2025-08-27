@@ -45,11 +45,11 @@ static inline void json_decode_string (
     return failure_add_reflection_info(rfx);
 
   if (io->channel == IO_MEMORY && io->buffer.enabled == false) {
-    memcpy(obj, &value, sizeof(string));
+    byte_copy(obj, &value, sizeof(string));
   } else {
     string copy = { 0 };
     copy.content = memory_alloc(allocator, value.length);
-    memcpy(copy.content, value.content, value.length);
-    memcpy(obj, &copy, sizeof(string));
+    byte_copy(copy.content, value.content, value.length);
+    byte_copy(obj, &copy, sizeof(string));
   }
 }

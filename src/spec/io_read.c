@@ -52,7 +52,7 @@ spec( io_read ) {
     void* io_with_buffer_read_data = io_with_buffer_read.buffer.data.pointer;
     io_with_read.buffer.data.pointer = NULL;
     io_with_buffer_read.buffer.data.pointer = NULL;
-    verify(memeq(&io_with_read, &io_with_buffer_read, sizeof(struct io)));
+    verify(eq(&io_with_read, &io_with_buffer_read));
 
     success();
       io_with_read.buffer.data.pointer = io_with_read_data;

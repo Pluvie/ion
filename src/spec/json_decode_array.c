@@ -50,7 +50,7 @@ spec( json_decode_array ) {
     must("correctly parse until the end of the array");
       verify(io->cursor == 11);
     must("not add any element");
-      verify(memeq(&squad, (struct squadmate [3]) { 0 }, sizeof(struct squadmate [3])));
+      verify(byte_eq(&squad, (struct squadmate [3]) { 0 }, sizeof(struct squadmate [3])));
     success();
       io_close(io);
   } end();
