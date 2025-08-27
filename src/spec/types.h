@@ -162,13 +162,13 @@ fiber_implement(spec_socket_server)
 
   struct socket sock = socket_open(fiber->args.uri);
   if (unlikely(failure.occurred)) {
-    print("fiber [%li] error: %s", fiber->id, failure.message);
+    print("fiber [%li] error: %.*s", fiber->id, sp(failure.message));
     return NULL;
   }
 
   socket_accept(&sock, fiber->args.connector, 1, 100);
   if (unlikely(failure.occurred))
-    print("fiber [%li] error: %s", fiber->id, failure.message);
+    print("fiber [%li] error: %.*s", fiber->id, sp(failure.message));
 
   socket_close(&sock);
   return NULL;
@@ -187,14 +187,14 @@ fiber_implement(spec_socket_client)
 
   struct socket sock = socket_open(fiber->args.uri);
   if (unlikely(failure.occurred)) {
-    fail("fiber [%li] error: %s", fiber->id, failure.message);
+    fail("fiber [%li] error: %.*s", fiber->id, sp(failure.message));
     failure_print();
     return NULL;
   }
 
   socket_connect(&sock);
   if (unlikely(failure.occurred)) {
-    fail("fiber [%li] error: %s", fiber->id, failure.message);
+    fail("fiber [%li] error: %.*s", fiber->id, sp(failure.message));
     failure_print();
     return NULL;
   }

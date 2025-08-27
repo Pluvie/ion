@@ -1,7 +1,3 @@
-#define stdin   __stdin
-#define stdout  __stdout
-#define stderr  __stderr
-
 #include <arpa/inet.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -20,9 +16,5 @@
 #include <sys/un.h>
 #include <time.h>
 #include <unistd.h>
-
-#undef stdin
-#undef stdout
-#undef stderr
 
 #include "linux/overrides.h"

@@ -1,1 +1,1 @@
-struct stream stdin = { 0 };
+struct stream __stdin = { 0 };

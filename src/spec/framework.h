@@ -140,16 +140,14 @@ void specs_run (
     void
 )
 {
+  stream_init_defaults();
   spec_allocator = alloc_zero(sizeof(memory));
 
   if (focused_specs[0] == NULL) {
-    original_stderr = stream_duplicate(&stderr);
-    stream_suppress(&stderr);
-    //original_stderr = fdopen(STDERR_FILENO, "w");
-    //stderr = fopen("/dev/null", "w");
+    original_stderr = stream_duplicate(&__stderr);
+    stream_suppress(&__stderr);
   } else {
-    original_stderr = stream_duplicate(&stderr);
-    //original_stderr = fdopen(STDERR_FILENO, "w");
+    original_stderr = stream_duplicate(&__stderr);
   }
 
   if (focused_specs[0] == NULL) {
@@ -195,9 +193,7 @@ void specs_run (
     stream_print(&original_stderr, PRINT_COLOR_NONE);
   }
 
-  //fclose(original_stderr);
-  //fclose(stderr);
   stream_close(&original_stderr);
-  stream_close(&stderr);
+  stream_close(&__stderr);
   alloc_release(spec_allocator);
 }

@@ -73,6 +73,6 @@ store_message:
     if (extraction[i] == '\n')
       extraction[i] = 92;
 
-  fail("%s, at position %li:\n%s\n%s\n",
-    failure.message, position, extraction, caret);
+  fail("%.*s, at position %li:\n%s\n%s\n",
+    sp(failure.message), position, extraction, caret);
 }

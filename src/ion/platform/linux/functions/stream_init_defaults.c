@@ -2,7 +2,7 @@ void stream_init_defaults (
     void
 )
 {
-  stdin.pointer = __stdin;
-  stdout.pointer = __stdout;
-  stderr.pointer = __stderr;
+  __stdin = (struct stream) { stdin, s("stdin"), "r" };
+  __stdout = (struct stream) { stdout, s("stdout"), "w" };
+  __stderr = (struct stream) { stderr, s("stderr"), "w" };
 }

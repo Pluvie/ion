@@ -1,1 +1,1 @@
-struct stream stderr = { 0 };
+struct stream __stderr = { 0 };

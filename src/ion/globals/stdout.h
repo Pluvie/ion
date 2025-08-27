@@ -1,1 +1,1 @@
-struct stream stdout = { 0 };
+struct stream __stdout = { 0 };

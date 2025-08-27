@@ -30,7 +30,6 @@
 #include "macros/map.h"
 #include "macros/next_pow2.h"
 #include "macros/padding.h"
-#include "macros/print_c.h"
 #include "macros/print_sizeof.h"
 #include "macros/s.h"
 #include "macros/set.h"
@@ -49,3 +48,12 @@
 #include "macros/reflection/reflect.h"
 #include "macros/reflection/type.h"
 #include "macros/reflection/valid_if.h"
+
+#include "macros/platform/print.h"
+#include "macros/platform/print_c.h"
+#include "macros/platform/stream_print.h"
+#include "macros/platform/string_print.h"
+
+#if platform(LINUX)
+  #include "platform/linux/macros.h"
+#endif

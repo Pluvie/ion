@@ -23,40 +23,42 @@ struct socket socket_init (
 
   } else {
     fail("socket uri error: must start with [tcp|udp]://");
-    return sock;
+    return (struct socket) { 0 };
   }
 
   /* If the user has given a string exactly equal to `tcp://` it is not valid.
    * Otherwise checks the first character to determine the resource. */
   if (unlikely(sock.uri.length <= resource_begin)) {
     fail("socket uri error: invalid");
-    return sock;
+    return (struct socket) { 0 };
   }
 
   string resource = substring(sock.uri, resource_begin, -1);
   switch (string_char_at(resource, 0)) {
-
   /* IPv6 socket. */
   case '[': {
     sock.type = SOCKET_IP_V6;
     int port_begin = string_index(resource, s("]:"));
     if (unlikely(port_begin < 0)) {
       fail("socket uri error: missing port");
-      return sock;
+      return (struct socket) { 0 };
     }
 
-    string ip = substring(resource, 0, port_begin);
+    string ip = substring(resource, 1, port_begin - 1);
     string port = substring(resource, port_begin + 2, -1);
-    snprintf(sock.ipv6, sizeof(sock.ipv6), "%s", (char*) ip.pointer);
+    snprintf(sock.ipv6, sizeof(sock.ipv6), "%.*s", sp(ip));
     sock.port = string_to_int(port);
 
-    if (unlikely(failure.occurred))
-      return sock;
+    if (unlikely(failure.occurred)) {
+      fail("socket uri error: invalid port");
+      return (struct socket) { 0 };
+    }
 
-    if (likely(sock.port >= 0 && sock.port <= SOCKET_PORT_MAX))
-      return sock;
+    if (unlikely(sock.port < 0 || sock.port > SOCKET_PORT_MAX)) {
+      fail("socket uri error: invalid port");
+      return (struct socket) { 0 };
+    }
 
-    fail("socket uri error: invalid port");
     return sock;
   }
 
@@ -75,21 +77,24 @@ struct socket socket_init (
     int port_begin = string_index(resource, s(":"));
     if (unlikely(port_begin < 0)) {
       fail("socket uri error: missing port");
-      return sock;
+      return (struct socket) { 0 };
     }
 
-    string ip = substring(resource, 0, port_begin);
+    string ip = substring(resource, 0, port_begin - 1);
     string port = substring(resource, port_begin + 1, -1);
-    snprintf(sock.ipv4, sizeof(sock.ipv4), "%s", (char*) ip.pointer);
+    snprintf(sock.ipv4, sizeof(sock.ipv4), "%.*s", sp(ip));
     sock.port = string_to_int(port);
 
-    if (unlikely(failure.occurred))
-      return sock;
+    if (unlikely(failure.occurred)) {
+      fail("socket uri error: invalid port");
+      return (struct socket) { 0 };
+    }
 
-    if (likely(sock.port >= 0 && sock.port <= SOCKET_PORT_MAX))
-      return sock;
+    if (unlikely(sock.port < 0 || sock.port > SOCKET_PORT_MAX)) {
+      fail("socket uri error: invalid port");
+      return (struct socket) { 0 };
+    }
 
-    fail("socket uri error: invalid port");
     return sock;
   }
 
