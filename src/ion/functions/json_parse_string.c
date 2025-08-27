@@ -57,6 +57,4 @@ terminate:
 error:
   io_cursor_restore(io, cursor);
   return -1;
-
-  #undef character
 }

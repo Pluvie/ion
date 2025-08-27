@@ -32,7 +32,7 @@ spec( json_decode_array ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message,
+      verify(failure_is(
         "expected array begin '[', at position 4:\n"\
         "   123 \\  \n"\
         "   ^\n"));
@@ -68,9 +68,9 @@ spec( json_decode_array ) {
     must("correctly parse until the end of the object");
       verify(io->cursor == 93);
     must("add the corresponding elements");
-      verify(streq(squad[0].name, "Jane Shepard"));
+      verify(eq(squad[0].name, "Jane Shepard"));
       verify(squad[0].class == SOLDIER);
-      verify(streq(squad[1].name, "Garrus Vakarian"));
+      verify(eq(squad[1].name, "Garrus Vakarian"));
       verify(squad[1].class == INFILTRATOR);
     success();
       io_close(io);

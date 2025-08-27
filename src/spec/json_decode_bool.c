@@ -23,7 +23,7 @@ spec( json_decode_bool ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message,
+      verify(failure_is(
         "expected a boolean, at position 0:\n"\
         "\"string!\"\n"\
         "^\n"));

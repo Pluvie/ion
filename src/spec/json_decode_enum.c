@@ -23,7 +23,7 @@ spec( json_decode_enum ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message,
+      verify(failure_is(
         "expected a number, at position 0:\n"\
         "\"string!\"\n"\
         "^\n"));
@@ -38,8 +38,7 @@ spec( json_decode_enum ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message,
-        "cannot convert `123.77` to int: invalid characters detected"));
+      verify(failure_is("cannot convert `123.77` to int: invalid characters detected"));
     success();
       io_close(io);
   } end();

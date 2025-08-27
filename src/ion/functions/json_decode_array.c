@@ -1,4 +1,4 @@
-void json_decode_array (
+static inline void json_decode_array (
     void* obj,
     struct io* io,
     struct reflection* rfx,
@@ -7,26 +7,25 @@ void json_decode_array (
 {
   struct reflection* element_rfx = NULL;
   int element_index = 0;
-  slice result;
+  char character;
 
   if (rfx != NULL) {
     element_rfx = rfx->element;
     element_rfx->parent = rfx;
   }
 
-  #define character ((char*) result.data)[0]
-
   json_parse_spaces(io);
   if (unlikely(failure.occurred))
     return;
 
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     return;
 
-  if (result.length == 0)
+  if (io->result.length == 0)
     return;
 
+  character = string_char_at(io->result, 0);
   if (character != '[') {
     fail("expected array begin '['");
     failure_add_io_info(io);
@@ -38,21 +37,20 @@ parse_value:
   if (unlikely(failure.occurred))
     return;
 
-  result = io_peek(io, sizeof(char));
+  io_peek(io, sizeof(char));
   if (unlikely(failure.occurred))
     return;
 
-  if (result.length == 0) {
+  if (io->result.length == 0) {
     fail("expected value, or array end ']'");
     failure_add_reflection_info(rfx);
     failure_add_io_info(io);
     return;
   }
 
+  character = string_char_at(io->result, 0);
   if (character == ']') {
     io_read(io, sizeof(char));
-    if (unlikely(failure.occurred))
-      return;
     goto terminate;
   }
 
@@ -72,13 +70,14 @@ parse_value:
   if (unlikely(failure.occurred))
     return;
 
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     return;
 
-  if (result.length == 0)
+  if (io->result.length == 0)
     return;
 
+  character = string_char_at(io->result, 0);
   switch (character) {
   case ']':
     goto terminate;
@@ -94,12 +93,13 @@ parse_value:
   }
 
 terminate:
+  if (unlikely(failure.occurred))
+    return;
+
   if (rfx == NULL)
     return;
 
   reflection_validate(rfx, obj);
   if (unlikely(failure.occurred))
     return failure_add_reflection_info(rfx);
-
-  #undef character
 }

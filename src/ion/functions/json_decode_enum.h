@@ -1,4 +1,4 @@
-void json_decode_enum (
+static inline void json_decode_enum (
     void* obj,
     struct io* io,
     struct reflection* rfx,

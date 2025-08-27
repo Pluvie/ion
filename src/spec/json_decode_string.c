@@ -23,7 +23,7 @@ spec( json_decode_string ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message,
+      verify(failure_is(
         "expected a string, at position 0:\n"\
         "123\n"\
         "^\n"));
@@ -41,7 +41,7 @@ spec( json_decode_string ) {
     must("correctly parse until the end of the string");
       verify(io->cursor == 2);
     must("correctly set the string value");
-      verify(streq(name, ""));
+      verify(eq(name, NULL));
     success();
       io_close(io);
   } end();
@@ -56,7 +56,7 @@ spec( json_decode_string ) {
     must("correctly parse until the end of the string");
       verify(io->cursor == 5);
     must("correctly set the string value");
-      verify(streq(name, "abc"));
+      verify(eq(name, "abc"));
     success();
       io_close(io);
   } end();

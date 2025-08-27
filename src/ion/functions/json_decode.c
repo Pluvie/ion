@@ -30,58 +30,52 @@ decode_with_reflection:
   case ARRAY:
     return json_decode_array(obj, io, rfx, allocator);
   case POINTER:
-    return json_decode_pointer(obj, io, rfx, allocator);
+    //return json_decode_pointer(obj, io, rfx, allocator);
   case SELF:
-    return json_decode_self(obj, io, rfx, allocator);
+    //return json_decode_self(obj, io, rfx, allocator);
   case LIST:
-    return json_decode_list(obj, io, rfx, allocator);
+    //return json_decode_list(obj, io, rfx, allocator);
   case SET:
-    return json_decode_set(obj, io, rfx, allocator);
+    //return json_decode_set(obj, io, rfx, allocator);
   case MAP:
-    return json_decode_map(obj, io, rfx, allocator);
+    //return json_decode_map(obj, io, rfx, allocator);
   }
 
 decode_and_discard:
-  int parsed_length = 0;
+  int result = 0;
 
   if (json_decode_null(obj, io, rfx))
     return;
 
-  parsed_length = json_parse_number(io);
+  result = json_parse_number(io);
   if (unlikely(failure.occurred))
     return;
-  if (parsed_length > 0) {
-    io_read(io, parsed_length);
+  if (result > 0)
     return;
-  }
 
-  parsed_length = json_parse_string(io);
+  result = json_parse_string(io);
   if (unlikely(failure.occurred))
     return;
-  if (parsed_length > 0) {
-    io_read(io, parsed_length);
+  if (result > 0)
     return;
-  }
 
-  parsed_length = json_parse_bool(io);
+  result = json_parse_bool(io);
   if (unlikely(failure.occurred))
     return;
-  if (parsed_length > 0) {
-    io_read(io, parsed_length);
+  if (result > 0)
     return;
-  }
 
-  slice peek = io_peek(io, sizeof(char));
+  io_peek(io, sizeof(char));
   if (unlikely(failure.occurred))
     return;
 
-  switch (((char*) peek.data)[0]) {
+  switch (string_char_at(io->result, 0)) {
   case '{':
-    return json_decode_struct(NULL, io, NULL, NULL);
+    //return json_decode_struct(NULL, io, NULL, NULL);
   case '[':
-    return json_decode_array(NULL, io, NULL, NULL);
+    //return json_decode_array(NULL, io, NULL, NULL);
   default:
-    fail("expected json value");
+    fail("expected a json value");
     failure_add_reflection_info(rfx);
     failure_add_io_info(io);
   }

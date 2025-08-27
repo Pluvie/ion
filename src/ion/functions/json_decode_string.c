@@ -1,27 +1,23 @@
-void json_decode_string (
+static inline void json_decode_string (
     void* obj,
     struct io* io,
     struct reflection* rfx,
     struct memory* allocator
 )
 {
-  int string_length = json_parse_string(io);
+  int result = json_parse_string(io);
   if (unlikely(failure.occurred))
     return;
 
-  if (string_length < 2) {
+  if (result < 0) {
     fail("expected a string");
     failure_add_reflection_info(rfx);
     failure_add_io_info(io);
     return;
   }
 
-  slice result = io_read(io, string_length);
-  if (unlikely(failure.occurred))
-    return;
-
   /* Removes the surrounding '"'. */
-  string value = { result.data + 1, result.length - 2 };
+  string value = substring(io->result, 1, -2);
 
   int string_max_length = rfx->size_limits.max;
   if (string_max_length > 0 && value.length > string_max_length) {
@@ -46,10 +42,11 @@ void json_decode_string (
 
   if (io->channel == IO_MEMORY && io->buffer.enabled == false) {
     byte_copy(obj, &value, sizeof(string));
+
   } else {
     string copy = { 0 };
-    copy.content = memory_alloc(allocator, value.length);
-    byte_copy(copy.content, value.content, value.length);
+    copy.pointer = memory_alloc(allocator, value.length);
+    byte_copy(copy.pointer, value.pointer, value.length);
     byte_copy(obj, &copy, sizeof(string));
   }
 }
