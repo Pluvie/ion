@@ -28,7 +28,7 @@ int32 main (
   //spec_add( json_decode_set );
   //spec_add( json_decode_string );
   //spec_add( json_decode_struct );
-  //spec_add( json_parse_bool );
+  spec_focus( json_parse_bool );
   //spec_add( json_parse_null );
   //spec_add( json_parse_number );
   //spec_add( json_parse_spaces );

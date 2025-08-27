@@ -37,7 +37,7 @@
 //#include "functions/json_decode_set.h"
 //#include "functions/json_decode_string.h"
 //#include "functions/json_decode_struct.h"
-//#include "functions/json_parse_bool.h"
+#include "functions/json_parse_bool.h"
 //#include "functions/json_parse_null.h"
 //#include "functions/json_parse_number.h"
 //#include "functions/json_parse_spaces.h"

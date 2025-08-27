@@ -53,7 +53,7 @@ static inline int cmp<string> (
 {
   if (likely(v1.length > 0 && v2.length > 0))
     return char_compare(v1.pointer, v2.pointer,
-      v1.length >= v2.length ? v1.length : v2.length);
+      v1.length < v2.length ? v1.length : v2.length);
   else
     return cmp<int>(v1.length, v2.length);
 }
