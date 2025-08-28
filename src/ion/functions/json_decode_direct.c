@@ -25,13 +25,9 @@ int json_parse_string_direct (struct io* io) {
   int cursor = io->cursor;
   int length = 0;
   bool escaped = false;
-  #define result        ((char*) io->result.data)[0]
-  #define read_failure  failure.occurred || io->result.length == 0
+  char* result;
 
-  io_read_direct(io, sizeof(char));
-
-  if (unlikely(read_failure))
-    goto error;
+  result = io_read_direct(io, sizeof(char));
 
   if (*result != '"')
     goto error;
@@ -96,7 +92,7 @@ int json_parse_null_direct (
   if (peek == NULL)
     return -1;
 
-  if (streq(s("null"), peek))
+  if (eq(peek, "null"))
     return lengthof("null");
 
   return -1;
@@ -111,10 +107,10 @@ int json_parse_bool_direct (
   if (peek == NULL)
     return -1;
 
-  if (streq(s("true"), peek))
+  if (eq(peek, "true"))
     return lengthof("true");
 
-  if (streq(s("false"), peek))
+  if (eq(peek, "false"))
     return lengthof("false"); 
 
   return -1;

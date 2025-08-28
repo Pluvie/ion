@@ -71,9 +71,9 @@ decode_and_discard:
 
   switch (string_char_at(io->result, 0)) {
   case '{':
-    //return json_decode_struct(NULL, io, NULL, NULL);
+    return json_decode_struct(NULL, io, NULL, NULL);
   case '[':
-    //return json_decode_array(NULL, io, NULL, NULL);
+    return json_decode_array(NULL, io, NULL, NULL);
   default:
     fail("expected a json value");
     failure_add_reflection_info(rfx);

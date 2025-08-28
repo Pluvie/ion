@@ -22,7 +22,7 @@
 #include "functions/io_open_string.c"
 #include "functions/io_peek.c"
 #include "functions/io_read.c"
-//#include "functions/json_decode_direct.c"
+#include "functions/json_decode_direct.c"
 #include "functions/json_decode.c"
 #include "functions/json_decode_array.c"
 #include "functions/json_decode_bool.c"

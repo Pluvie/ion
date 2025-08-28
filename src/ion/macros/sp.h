@@ -9,4 +9,4 @@
  * ```
  */
 #define sp(str) \
-  (int32) str.length, (char*) str.pointer
+  (int32) (str).length, (char*) (str).pointer

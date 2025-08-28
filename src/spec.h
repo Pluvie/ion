@@ -2,7 +2,7 @@
 #include "spec/framework.h"
 #include "spec/types.h"
 
-//#include "spec/json_decode_direct.c"
+#include "spec/json_decode_direct.c"
 #include "spec/date.c"
 #include "spec/date_to_string.c"
 #include "spec/date_today.c"
@@ -11,7 +11,7 @@
 #include "spec/io_buffer_read.c"
 #include "spec/io_channel_read.c"
 #include "spec/io_read.c"
-//#include "spec/json_decode.c"
+#include "spec/json_decode.c"
 #include "spec/json_decode_array.c"
 #include "spec/json_decode_bool.c"
 #include "spec/json_decode_dec.c"

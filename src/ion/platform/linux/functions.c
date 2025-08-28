@@ -12,6 +12,7 @@
 #include "functions/file_close.c"
 #include "functions/file_create.c"
 #include "functions/file_delete.c"
+#include "functions/file_open.c"
 #include "functions/file_read.c"
 #include "functions/file_size.c"
 #include "functions/file_write.c"

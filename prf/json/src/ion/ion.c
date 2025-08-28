@@ -45,13 +45,14 @@ void decode (
   //};
 
   struct memory allocator = memory_init(0);
-  struct io json = file_read("exe/decode.json", &allocator);
-  if (error.occurred) {
-    error_print();
-    return;
-  }
+  struct file file = file_open(s("exe/decode.json"));
+  int size = file_size(&file);
+  void* content = memory_alloc(&allocator, size);
+  file_read(&file, content, size);
 
+  struct io json = io(content, size);
   //json_decode(&data, &json, &data_rfx, &allocator);
+  //json_decode(NULL, &json, NULL, NULL);
   json_decode_direct(&json);
 
   //struct user* user;
@@ -74,7 +75,6 @@ void decode (
   //  sp(*list_at(&user->roles, 0)),
   //  sp(*list_at(&user->roles, 1)));
 
-  print("cursor: %li", json.cursor);
   memory_release(&allocator);
 }
 
