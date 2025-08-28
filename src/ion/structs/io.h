@@ -1,30 +1,7 @@
 struct io {
-  union {
-    void* memory;
-    struct file* file;
-    struct pipe* pipe;
-    struct socket* socket;
-    struct stream* stream;
-  };
-  string result;
   int cursor;
-  int length;
-  enum io_channels channel;
-  struct {
-    int count;
-    int32 flags;
-  } read;
-  struct {
-    int count;
-    int32 flags;
-  } write;
-  struct {
-    string data;
-    int cursor;
-    int size;
-    bool enabled;
-    bool retained;
-    padding(2);
-  } buffer;
+  memory* buffer;
+  memory* allocator;
+  struct reflection* rfx;
 };
-check_sizeof(128, struct io);
+check_sizeof(32, struct io);

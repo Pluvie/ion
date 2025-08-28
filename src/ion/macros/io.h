@@ -1,11 +1,11 @@
-/**
- * Creates a new io with channel that depends on the given argument. */
-#define io(v, ...)                    \
-  _Generic(v,                         \
-    void* : io_open_memory,           \
-    string : io_open_string,          \
-    struct file* : io_open_file,      \
-    struct pipe* : io_open_pipe,      \
-    struct socket* : io_open_socket,  \
-    struct stream* : io_open_stream   \
-  )(v, 0 __VA_OPT__(+(__VA_ARGS__)))
+#define io(source, rfx, allocator)      \
+  _Generic((source),                    \
+    string* : io_init,                  \
+    struct file* : io_init_with_buffer  \
+  )(rfx, allocator);
+
+#define io_read(v, source, amount, ...)       \
+  _Generic((source),                          \
+    string* : io<string>_read,                \
+    struct file* : io<struct file>_read       \
+  )(v, source, amount __VA_OPT__(, __VA_ARGS__));

@@ -27,7 +27,7 @@ static inline void* io_channel_read_direct (struct io* io, int amount, void* add
   return NULL;
 }
 
-void* io_channel_memory_read_direct (struct io* io, int amount) {
+static inline void* io_channel_memory_read_direct (struct io* io, int amount) {
   if (io->cursor + amount > io->length)
     amount = io->length + io->cursor;
 
@@ -35,7 +35,7 @@ void* io_channel_memory_read_direct (struct io* io, int amount) {
     return NULL;
 
   void* data = io->memory + io->cursor;
-  io->cursor += amount;
+  io_cursor_advance(io, amount);
   return data;
 }
 
@@ -57,15 +57,7 @@ void* io_read_direct (struct io* io, int amount) {
    * Even with branch prediction. */
 
   /* PIECE 1 */
-  if (io->cursor + amount > io->length)
-    amount = io->length + io->cursor;
-
-  if (unlikely(io->cursor >= io->length))
-    return NULL;
-
-  void* data = io->memory + io->cursor;
-  io->cursor += amount;
-  return data;
+  return io_channel_memory_read_direct(io, amount);
 
   /* PIECE 2 */
   /*
