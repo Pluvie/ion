@@ -7,7 +7,27 @@ void* io_peek_direct (struct io* io) {
 
 
 
-void* io_read_direct (struct io* io, int amount) {
+static inline void* io_channel_read_direct (struct io* io, int amount, void* address) {
+  switch (io->channel) {
+  case IO_MEMORY:
+    if (unlikely(io->cursor + amount > io->length))
+      amount = io->length - io->cursor;
+
+    if (unlikely(amount <= 0))
+      return NULL;
+
+    void* data = io->memory + io->cursor;
+    io_cursor_advance(io, amount);
+    return data;
+
+  default:
+    fail("not implemented");
+  }
+
+  return NULL;
+}
+
+void* io_channel_memory_read_direct (struct io* io, int amount) {
   if (io->cursor + amount > io->length)
     amount = io->length + io->cursor;
 
@@ -17,6 +37,50 @@ void* io_read_direct (struct io* io, int amount) {
   void* data = io->memory + io->cursor;
   io->cursor += amount;
   return data;
+}
+
+
+
+void* io_read_direct (struct io* io, int amount) {
+  /**
+   * Two pieces of code.
+   * The first one reads directly from memory.
+   * The second one checks whether the io is buffered and which channel it has, then
+   * it reads from the corresponding channel.
+   *
+   * Since the `io_read_direct` function is called a gazillion of times, paying the
+   * cost of checking every tims whether the io is buffered and which channel it has
+   * -- which are always the same!! -- adds up, and in the end the first block takes
+   * ~1.90s while the second ~2.70s.
+   *
+   * Quite a lot of time! This is what they mean that `if` statements are expensive!
+   * Even with branch prediction. */
+
+  /* PIECE 1 */
+  if (io->cursor + amount > io->length)
+    amount = io->length + io->cursor;
+
+  if (unlikely(io->cursor >= io->length))
+    return NULL;
+
+  void* data = io->memory + io->cursor;
+  io->cursor += amount;
+  return data;
+
+  /* PIECE 2 */
+  /*
+  if (io->buffer.enabled) {
+    io_buffer_read(io, amount);
+    return io->result.pointer;
+  }
+
+  if (io->channel == IO_MEMORY)
+    return io_channel_memory_read_direct(io, amount);
+
+  alloc_release(io->result.pointer);
+  io->result.pointer = alloc_zero(amount);
+  return io_channel_read_direct(io, amount, io->result.pointer);
+  */
 }
 
 
