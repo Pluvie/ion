@@ -32,7 +32,7 @@ spec( json_decode_list ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message,
+      verify(failure_is(
         "expected array begin '[', at position 4:\n"\
         "   123 \\  \n"\
         "   ^\n"));
@@ -69,10 +69,12 @@ spec( json_decode_list ) {
       verify(io->cursor == 93);
     must("add the corresponding elements");
       verify(squad.length == 2);
-      verify(streq(list_at(&squad, 0)->name, "Jane Shepard"));
-      verify(list_at(&squad, 0)->class == SOLDIER);
-      verify(streq(list_at(&squad, 1)->name, "Garrus Vakarian"));
-      verify(list_at(&squad, 1)->class == INFILTRATOR);
+      struct squadmate* shepard = list_at(&squad, 0);
+      verify(eq(shepard->name, "Jane Shepard"));
+      verify(shepard->class == SOLDIER);
+      struct squadmate* garrus = list_at(&squad, 1);
+      verify(eq(garrus->name, "Garrus Vakarian"));
+      verify(garrus->class == INFILTRATOR);
     success();
       io_close(io);
   } end();

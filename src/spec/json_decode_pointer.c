@@ -32,7 +32,7 @@ spec( json_decode_pointer ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message,
+      verify(failure_is(
         "expected object begin '{', at position 4:\n"\
         "   123 \\  \n"\
         "   ^\n"));
@@ -65,7 +65,7 @@ spec( json_decode_pointer ) {
     must("correctly parse until the end of the object");
       verify(io->cursor == 43);
     must("set the correct value to the corresponding fields");
-      verify(streq(shepard->name, "Jane Shepard"));
+      verify(eq(shepard->name, "Jane Shepard"));
       verify(shepard->class == SOLDIER);
     success();
       io_close(io);

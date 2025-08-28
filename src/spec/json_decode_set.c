@@ -32,7 +32,7 @@ spec( json_decode_set ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message,
+      verify(failure_is(
         "expected array begin '[', at position 4:\n"\
         "   123 \\  \n"\
         "   ^\n"));

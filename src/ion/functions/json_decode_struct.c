@@ -17,9 +17,6 @@ static inline void json_decode_struct (
   if (unlikely(failure.occurred))
     return;
 
-  if (io->result.length == 0)
-    return;
-
   character = string_char_at(io->result, 0);
   if (character != '{') {
     fail("expected object begin '{'");
@@ -89,9 +86,6 @@ parse_field:
   if (unlikely(failure.occurred))
     return;
 
-  if (io->result.length == 0)
-    return;
-
   character = string_char_at(io->result, 0);
   switch (character) {
   case '}':
@@ -112,7 +106,7 @@ check_object_end:
     return;
 
   character = string_char_at(io->result, 0);
-  if (io->result.length == 0 || character != '}') {
+  if (character != '}') {
     fail("expected an object field, or object end '}'");
     failure_add_io_info(io);
     return;

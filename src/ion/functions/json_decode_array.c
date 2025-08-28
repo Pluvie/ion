@@ -22,9 +22,6 @@ static inline void json_decode_array (
   if (unlikely(failure.occurred))
     return;
 
-  if (io->result.length == 0)
-    return;
-
   character = string_char_at(io->result, 0);
   if (character != '[') {
     fail("expected array begin '['");
@@ -72,9 +69,6 @@ parse_value:
 
   io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
-    return;
-
-  if (io->result.length == 0)
     return;
 
   character = string_char_at(io->result, 0);

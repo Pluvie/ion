@@ -21,11 +21,11 @@ int32 main (
   spec_add( json_decode_dec );
   spec_add( json_decode_enum );
   spec_add( json_decode_int );
-  //spec_add( json_decode_list );
-  //spec_add( json_decode_map );
-  //spec_add( json_decode_pointer );
-  //spec_add( json_decode_self );
-  //spec_add( json_decode_set );
+  spec_add( json_decode_list );
+  spec_add( json_decode_map );
+  spec_add( json_decode_pointer );
+  spec_add( json_decode_self );
+  spec_add( json_decode_set );
   spec_add( json_decode_string );
   spec_add( json_decode_struct );
   spec_add( json_parse_bool );

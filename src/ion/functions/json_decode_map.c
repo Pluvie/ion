@@ -1,4 +1,4 @@
-void json_decode_map (
+static inline void json_decode_map (
     void* obj,
     struct io* io,
     struct reflection* rfx,
@@ -10,7 +10,7 @@ void json_decode_map (
   void* key_block = NULL;
   void* value_block = NULL;
   int added_position = 0;
-  slice result;
+  char character;
 
   if (rfx != NULL) {
     key_rfx = rfx->element;
@@ -22,19 +22,15 @@ void json_decode_map (
     rfx->container_creator(8, allocator, obj);
   }
 
-  #define character ((char*) result.data)[0]
-
   json_parse_spaces(io);
   if (unlikely(failure.occurred))
     return;
 
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     return;
 
-  if (result.length == 0)
-    return;
-
+  character = string_char_at(io->result, 0);
   if (character != '[') {
     fail("expected array begin '['");
     failure_add_io_info(io);
@@ -46,14 +42,15 @@ parse_pair:
   if (unlikely(failure.occurred))
     return;
 
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     return;
 
-  if (result.length > 0 && character == ']')
+  character = string_char_at(io->result, 0);
+  if (character == ']')
     goto terminate;
 
-  if (result.length == 0 || character != '[') {
+  if (character != '[') {
     fail("expected array begin '['");
     failure_add_io_info(io);
     return;
@@ -80,11 +77,12 @@ parse_pair:
   if (unlikely(failure.occurred))
     return;
 
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     return;
 
-  if (result.length == 0 || character != ',') {
+  character = string_char_at(io->result, 0);
+  if (character != ',') {
     fail("expected comma");
     failure_add_reflection_info(rfx);
     failure_add_io_info(io);
@@ -95,17 +93,6 @@ parse_pair:
   json_parse_spaces(io);
   if (unlikely(failure.occurred))
     return;
-
-  result = io_peek(io, sizeof(char));
-  if (unlikely(failure.occurred))
-    return;
-
-  if (result.length == 0) {
-    fail("expected value");
-    failure_add_reflection_info(rfx);
-    failure_add_io_info(io);
-    return;
-  }
 
   if (value_rfx != NULL) {
     json_decode(value_block, io, value_rfx, allocator);
@@ -125,32 +112,27 @@ parse_pair:
   if (unlikely(failure.occurred))
     return;
 
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     return;
 
-  if (result.length == 0 || character != ']') {
+  character = string_char_at(io->result, 0);
+  if (character != ']') {
     fail("expected array end ']'");
     failure_add_io_info(io);
     return;
   }
-
 
   /* Check comma -- next pair --, or array end. */
   json_parse_spaces(io);
   if (unlikely(failure.occurred))
     return;
 
-  result = io_read(io, sizeof(char));
+  io_read(io, sizeof(char));
   if (unlikely(failure.occurred))
     return;
 
-  if (result.length == 0) {
-    fail("expected comma, or array end ']'");
-    failure_add_io_info(io);
-    return;
-  }
-
+  character = string_char_at(io->result, 0);
   switch (character) {
   case ']':
     goto terminate;

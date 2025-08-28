@@ -34,7 +34,7 @@ spec( json_decode_map ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message,
+      verify(failure_is(
         "expected array begin '[', at position 4:\n"\
         "   123 \\  \n"\
         "   ^\n"));
@@ -73,9 +73,9 @@ spec( json_decode_map ) {
       verify(squad.length == 2);
       struct squadmate* shepard = map_get(&squad, s("Commander"));
       struct squadmate* garrus = map_get(&squad, s("Archangel"));
-      verify(streq(shepard->name, s("Jane Shepard")));
+      verify(eq(shepard->name, "Jane Shepard"));
       verify(shepard->class == SOLDIER);
-      verify(streq(garrus->name, s("Garrus Vakarian")));
+      verify(eq(garrus->name, "Garrus Vakarian"));
       verify(garrus->class == INFILTRATOR);
     success();
       io_close(io);
@@ -98,9 +98,9 @@ spec( json_decode_map ) {
       verify(squad.length == 2);
       struct squadmate* shepard = map_get(&squad, s("Commander"));
       struct squadmate* garrus = map_get(&squad, s("Archangel"));
-      verify(streq(shepard->name, s("Jane Shepard")));
+      verify(eq(shepard->name, "Jane Shepard"));
       verify(shepard->class == SOLDIER);
-      verify(streq(garrus->name, s("Garrus Vakarian")));
+      verify(eq(garrus->name, "Garrus Vakarian"));
       verify(garrus->class == INFILTRATOR);
     success();
       io_close(io);

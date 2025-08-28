@@ -30,15 +30,15 @@ decode_with_reflection:
   case ARRAY:
     return json_decode_array(obj, io, rfx, allocator);
   case POINTER:
-    //return json_decode_pointer(obj, io, rfx, allocator);
+    return json_decode_pointer(obj, io, rfx, allocator);
   case SELF:
-    //return json_decode_self(obj, io, rfx, allocator);
+    return json_decode_self(obj, io, rfx, allocator);
   case LIST:
-    //return json_decode_list(obj, io, rfx, allocator);
+    return json_decode_list(obj, io, rfx, allocator);
   case SET:
-    //return json_decode_set(obj, io, rfx, allocator);
+    return json_decode_set(obj, io, rfx, allocator);
   case MAP:
-    //return json_decode_map(obj, io, rfx, allocator);
+    return json_decode_map(obj, io, rfx, allocator);
   }
 
 decode_and_discard:
