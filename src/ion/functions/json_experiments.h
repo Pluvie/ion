@@ -1,14 +1,3 @@
-void json<T>_parse_string_direct (
-    struct io* io,
-    T* source,
-    string* result
-);
-
-void json<T>_parse_spaces_direct (
-    struct io* io,
-    T* source
-);
-
 bool json<T>_parse_null_direct (
     struct io* io,
     T* source

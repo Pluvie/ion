@@ -28,7 +28,7 @@
 //#include "spec/json_parse_bool.c"
 //#include "spec/json_parse_null.c"
 //#include "spec/json_parse_number.c"
-//#include "spec/json_parse_spaces.c"
+#include "spec/json_parse_spaces.c"
 #include "spec/json_parse_string.c"
 #include "spec/list.c"
 #include "spec/list_alloc.c"

@@ -21,6 +21,9 @@ static inline char* io<struct file>_read (
     int amount
 )
 {
+  if (unlikely(failure.occurred))
+    goto error;
+
   void* address = memory_alloc(io->buffer, amount);
   int result = file_read(source, address, amount);
   if (likely(result > 0)) {
@@ -28,6 +31,7 @@ static inline char* io<struct file>_read (
     return address;
   }
 
+error:
   return EMPTY_STRING;
 }
 
@@ -39,6 +43,9 @@ static inline char* io<struct pipe>_read (
     int amount
 )
 {
+  if (unlikely(failure.occurred))
+    goto error;
+
   void* address = memory_alloc(io->buffer, amount);
   int result = pipe_read(source, address, amount);
   if (likely(result > 0)) {
@@ -46,6 +53,7 @@ static inline char* io<struct pipe>_read (
     return address;
   }
 
+error:
   return EMPTY_STRING;
 }
 
@@ -57,6 +65,9 @@ static inline char* io<struct socket>_read (
     int amount
 )
 {
+  if (unlikely(failure.occurred))
+    goto error;
+
   void* address = memory_alloc(io->buffer, amount);
   int result = socket_read(source, address, amount, io->read_flags);
   if (likely(result > 0)) {
@@ -64,6 +75,7 @@ static inline char* io<struct socket>_read (
     return address;
   }
 
+error:
   return EMPTY_STRING;
 }
 
@@ -75,6 +87,9 @@ static inline char* io<struct stream>_read (
     int amount
 )
 {
+  if (unlikely(failure.occurred))
+    goto error;
+
   void* address = memory_alloc(io->buffer, amount);
   int result = stream_read(source, address, amount);
   if (likely(result > 0)) {
@@ -82,5 +97,6 @@ static inline char* io<struct stream>_read (
     return address;
   }
 
+error:
   return EMPTY_STRING;
 }

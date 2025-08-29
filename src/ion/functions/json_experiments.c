@@ -1,63 +1,3 @@
-void json<T>_parse_string_direct (
-    struct io* io,
-    T* source,
-    string* result
-)
-{
-  int cursor = io_cursor_save(io);
-  bool escaped = false;
-  char* data;
-
-  data = io_read(io, source, sizeof(char));
-  result->pointer = data;
-
-  if (*data != '"')
-    goto error;
-
-read_character:
-  data = io_read(io, source, sizeof(char));
-
-  if (escaped) {
-    escaped = false;
-    goto read_character;
-  }
-
-  if (*data == 92) {
-    escaped = true;
-    goto read_character;
-  }
-
-  if (*data == '"')
-    goto terminate;
-
-  goto read_character;
-
-terminate:
-  result->length = io->cursor - cursor;
-  return;
-
-error:
-  *result = (string) { 0 };
-  io_cursor_restore(io, cursor);
-  return;
-}
-
-void json<T>_parse_spaces_direct (
-    struct io* io,
-    T* source
-)
-{
-read_space:
-  char* data = io_read(io, source, sizeof(char));
-
-  if (isspace(*data))
-    goto read_space;
-
-  io->cursor--;
-}
-
-
-
 bool json<T>_parse_null_direct (
     struct io* io,
     T* source
@@ -119,7 +59,7 @@ void json<T>_decode_direct (
   char* data;
   string result;
 
-  json(parse_spaces_direct, io, source);
+  json(parse_spaces, io, source);
   data = io_read(io, source, sizeof(char));
   switch (*data) {
   case '{':
@@ -146,7 +86,7 @@ void json<T>_decode_direct (
   default:
     io->cursor--;
 
-    json(parse_string_direct, io, source, &result);
+    json(parse_string, io, source, &result);
     if (result.length > 0)
       return;
 
@@ -162,15 +102,15 @@ void json<T>_decode_direct (
   return;
 
 parse_object:
-  json(parse_spaces_direct, io, source);
-  json(parse_string_direct, io, source, &result); // field
+  json(parse_spaces, io, source);
+  json(parse_string, io, source, &result); // field
 
-  json(parse_spaces_direct, io, source);
+  json(parse_spaces, io, source);
   io_read(io, source, sizeof(char)); // colon ':'
-  json(parse_spaces_direct, io, source);
+  json(parse_spaces, io, source);
 
   json(decode_direct, io, source); // value
-  json(parse_spaces_direct, io, source);
+  json(parse_spaces, io, source);
 
   data = io_read(io, source, sizeof(char));
   if (*data == ',')
@@ -184,9 +124,9 @@ parse_object:
   return;
 
 parse_array:
-  json(parse_spaces_direct, io, source);
+  json(parse_spaces, io, source);
   json(decode_direct, io, source); // value
-  json(parse_spaces_direct, io, source);
+  json(parse_spaces, io, source);
 
   data = io_read(io, source, sizeof(char));
   if (*data == ',')

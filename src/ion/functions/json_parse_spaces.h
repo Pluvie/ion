@@ -1,3 +1,4 @@
-int json_parse_spaces (
-    struct io* io
+void json<T>_parse_spaces (
+    struct io* io,
+    T* source
 );

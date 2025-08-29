@@ -16,7 +16,7 @@
 //#include "json_parse_bool.c"
 //#include "json_parse_null.c"
 //#include "json_parse_number.c"
-//#include "json_parse_spaces.c"
+#include "json_parse_spaces.c"
 #include "json_parse_string.c"
 
 #undef T

@@ -12,7 +12,7 @@ spec( json_experiments ) {
       string str = s("\"Jane Shepard\"");
 
       string result;
-      json(parse_string_direct, io, &str, &result);
+      json(parse_string, io, &str, &result);
 
       must("point the result to the parsed string, including quotes");
         verify(eq(result, "\"Jane Shepard\""));
@@ -28,7 +28,7 @@ spec( json_experiments ) {
       string str = s("123");
 
       string result;
-      json(parse_string_direct, io, &str, &result);
+      json(parse_string, io, &str, &result);
 
       must("point the result to an empty string");
         verify(eq(result, NULL));

@@ -3,34 +3,30 @@ spec( json_parse_spaces ) {
   argument(struct io* io);
 
   precondition("valid io");
-    #define preconditions \
+    #define preconditions(source) \
       io = memory_alloc_zero(spec_allocator, sizeof(struct io));
 
   when("the parsing reaches the end of input") {
     when("the io starts with spaces") {
-      apply(preconditions);
-      *io = io(s(" \t  \n  "));
-      int original_cursor_position = io->cursor;
-      int result = json_parse_spaces(io);
+      string source = s(" \t  \n  ");
+      apply(preconditions(source));
 
-      must("return the length of the spaces");
-        verify(result == 7);
-      must("advance the cursor position");
-        verify(io->cursor == original_cursor_position + result);
+      json(parse_spaces, io, &source);
+
+      must("advance the cursor position to consume the spaces");
+        verify(io->cursor == source.length);
       success();
         io_close(io);
     } end();
 
     when("the io does not start with spaces") {
-      apply(preconditions);
-      *io = io(s("123    "));
-      int original_cursor_position = io->cursor;
-      int result = json_parse_spaces(io);
+      string source = s("123    ");
+      apply(preconditions(source));
 
-      must("return 0");
-        verify(result == 0);
-      must("advance the cursor position");
-        verify(io->cursor == original_cursor_position + result);
+      json(parse_spaces, io, &source);
+
+      must("restore the cursor position");
+        verify(io->cursor == 0);
       success();
         io_close(io);
     } end();
@@ -38,50 +34,45 @@ spec( json_parse_spaces ) {
 
   when("the parsing does not reach the end of input") {
     when("the io starts with spaces") {
-      apply(preconditions);
-      *io = io(s(" \t  \n  , \"abc\": 123"));
-      int original_cursor_position = io->cursor;
-      int result = json_parse_spaces(io);
+      string source = s(" \t  \n  , \"abc\": 123");
+      apply(preconditions(source));
 
-      must("return the length of the spaces");
-        verify(result == 7);
-      must("advance the cursor position");
-        verify(io->cursor == original_cursor_position + result);
+      json(parse_spaces, io, &source);
+
+      must("advance the cursor position to consume the spaces");
+        verify(io->cursor == string_index(source, s(",")));
       success();
         io_close(io);
     } end();
 
     when("the io does not start with spaces") {
-      apply(preconditions);
-      *io = io(s("123    , 123"));
-      int original_cursor_position = io->cursor;
-      int result = json_parse_spaces(io);
+      string source = s("123    , 123");
+      apply(preconditions(source));
 
-      must("return 0");
-        verify(result == 0);
-      must("advance the cursor position");
-        verify(io->cursor == original_cursor_position + result);
+      json(parse_spaces, io, &source);
+
+      must("restore the cursor position");
+        verify(io->cursor == 0);
       success();
         io_close(io);
     } end();
   } end();
 
   when("the io read fails") {
-    apply(preconditions);
-    /* An invalid io channel. Shall fail upon calling the `io_read` function. */
-    io->channel = -1;
-    int result = json_parse_spaces(io);
+    /* An invalid file. Shall fail upon calling the `io_read` function. */
+    struct file file = file_open(s("/wrong/path"));
+    apply(preconditions(&file));
+    io_buffer_init(io, 0);
+
+    json(parse_spaces, io, &file);
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(failure_is("io: invalid channel"));
-
-    must("return -1");
-      verify(result == -1);
-
+      verify(failure_is("file open error: No such file or directory"));
+    must("reset the io cursor");
+      verify(io->cursor == 0);
     success();
       io_close(io);
-
   } end();
 
   #undef preconditions

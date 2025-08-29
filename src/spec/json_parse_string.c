@@ -16,7 +16,7 @@ spec( json_parse_string ) {
 
       must("point the result to the parsed string, including quotes");
         verify(eq(result, "\" \t  \n  \""));
-      must("advance the io cursor to consume the input");
+      must("advance the io cursor to consume the string");
         verify(io->cursor == result.length);
       success();
         io_close(io);
@@ -48,7 +48,7 @@ spec( json_parse_string ) {
 
       must("point the result to the parsed string, including quotes");
         verify(eq(result, "\"abc\""));
-      must("advance the io cursor to consume the input");
+      must("advance the io cursor to consume the string");
         verify(io->cursor == result.length);
       success();
         io_close(io);
@@ -97,7 +97,7 @@ spec( json_parse_string ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(failure_is("file read error: Bad file descriptor"));
+      verify(failure_is("file open error: No such file or directory"));
     must("point the result to an empty string");
       verify(eq(result, NULL));
     must("reset the io cursor");

@@ -16,7 +16,7 @@
 //#include "json_parse_bool.h"
 //#include "json_parse_null.h"
 //#include "json_parse_number.h"
-//#include "json_parse_spaces.h"
+#include "json_parse_spaces.h"
 #include "json_parse_string.h"
 
 #undef T

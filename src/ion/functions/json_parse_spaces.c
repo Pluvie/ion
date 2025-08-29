@@ -1,31 +1,14 @@
-int json_parse_spaces (
-    struct io* io
+void json<T>_parse_spaces (
+    struct io* io,
+    T* source
 )
 {
-  int cursor = io_cursor_save(io);
-  int length = 0;
-  char character;
+read_space:
+  char* data = io_read(io, source, sizeof(char));
 
-read_character:
-  io_read(io, sizeof(char));
-  if (unlikely(failure.occurred))
-    goto error;
+  if (isspace(*data))
+    goto read_space;
 
-  if (io->result.length == 0)
-    goto terminate;
-
-  character = string_char_at(io->result, 0);
-  if (isspace(character)) {
-    length++;
-    goto read_character;
-  }
-
-terminate:
-  io_cursor_restore(io, cursor);
-  io_read(io, length);
-  return length;
-
-error:
-  io_cursor_restore(io, cursor);
-  return -1;
+  if (likely(*data != 0))
+    io->cursor--;
 }
