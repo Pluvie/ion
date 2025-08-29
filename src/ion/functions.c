@@ -1,6 +1,3 @@
-#define T string
-#include "functions/json_experiments.c"
-
 #include "functions/alloc_resize.c"
 #include "functions/alloc_resize_zero.c"
 #include "functions/cmp.c"
@@ -13,7 +10,7 @@
 //#include "functions/io_buffer_init.c"
 //#include "functions/io_buffer_read.c"
 //#include "functions/io_channel_read.c"
-//#include "functions/io_close.c"
+#include "functions/io_close.c"
 //#include "functions/io_cursor_advance.c"
 //#include "functions/io_cursor_restore.c"
 //#include "functions/io_cursor_save.c"
@@ -26,25 +23,6 @@
 //#include "functions/io_peek.c"
 #include "functions/io_init.c"
 #include "functions/io_read.c"
-//#include "functions/json_decode.c"
-//#include "functions/json_decode_array.c"
-//#include "functions/json_decode_bool.c"
-//#include "functions/json_decode_dec.c"
-//#include "functions/json_decode_enum.c"
-//#include "functions/json_decode_int.c"
-//#include "functions/json_decode_list.c"
-//#include "functions/json_decode_map.c"
-//#include "functions/json_decode_null.c"
-//#include "functions/json_decode_pointer.c"
-//#include "functions/json_decode_self.c"
-//#include "functions/json_decode_set.c"
-//#include "functions/json_decode_string.c"
-//#include "functions/json_decode_struct.c"
-//#include "functions/json_parse_bool.c"
-//#include "functions/json_parse_null.c"
-//#include "functions/json_parse_number.c"
-//#include "functions/json_parse_spaces.c"
-//#include "functions/json_parse_string.c"
 #include "functions/memory_alloc.c"
 #include "functions/memory_alloc_zero.c"
 #include "functions/memory_init.c"
@@ -58,6 +36,11 @@
 #include "functions/string_index.c"
 #include "functions/string_starts.c"
 #include "functions/substring.c"
+
+#define T string
+#include "functions/json.c"
+#define T struct file
+#include "functions/json.c"
 
 #if platform(LINUX)
   #include "platform/linux/functions.c"

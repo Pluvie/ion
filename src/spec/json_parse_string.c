@@ -4,30 +4,31 @@ spec( json_parse_string ) {
 
   precondition("valid io");
     #define preconditions \
-      io = memory_alloc_zero(spec_allocator, sizeof(struct io));
+      io = memory_alloc_zero(spec_allocator, sizeof(struct io)); \
+      *io = io_init_with_buffer(NULL, NULL);
 
   when("the parsing reaches the end of input") {
     when("the io starts with string") {
       apply(preconditions);
-      *io = io(s("\" \t  \n  \""));
-      int result = json_parse_string(io);
+      string source = s("\" \t  \n  \"");
+      string result; json(parse_string, io, &source, &result);
 
-      must("return the length of the string");
-        verify(result == 9);
-      must("advance the cursor position by the length of the string");
-        verify(io->cursor == result);
+      must("point the result to the parsed string, including quotes");
+        verify(eq(result, "\" \t  \n  \""));
+      must("advance the io cursor to consume the input");
+        verify(io->cursor == result.length);
       success();
         io_close(io);
     } end();
 
     when("the io does not start with string") {
       apply(preconditions);
-      *io = io(s("123    "));
-      int result = json_parse_string(io);
+      string source = s("123    ");
+      string result; json(parse_string, io, &source, &result);
 
-      must("return -1");
-        verify(result == -1);
-      must("restore the cursor position");
+      must("point the result to an empty string");
+        verify(eq(result, NULL));
+      must("reset the io cursor");
         verify(io->cursor == 0);
       success();
         io_close(io);
@@ -37,25 +38,25 @@ spec( json_parse_string ) {
   when("the parsing does not reach the end of input") {
     when("the io starts with string") {
       apply(preconditions);
-      *io = io(s("\"abc\": 123 ,  \t  \n"));
-      int result = json_parse_string(io);
+      string source = s("\"abc\": 123 ,  \t  \n");
+      string result; json(parse_string, io, &source, &result);
 
-      must("return the length of the string");
-        verify(result == 5);
-      must("advance the cursor position by the length of the string");
-        verify(io->cursor == result);
+      must("point the result to the parsed string, including quotes");
+        verify(eq(result, "\"abc\""));
+      must("advance the io cursor to consume the input");
+        verify(io->cursor == result.length);
       success();
         io_close(io);
     } end();
 
     when("the io does not start with string") {
       apply(preconditions);
-      *io = io(s("123    , 123"));
-      int result = json_parse_string(io);
+      string source = s("123    , 123");
+      string result; json(parse_string, io, &source, &result);
 
-      must("return -1");
-        verify(result == -1);
-      must("restore the cursor position");
+      must("point the result to an empty string");
+        verify(eq(result, NULL));
+      must("reset the io cursor");
         verify(io->cursor == 0);
       success();
         io_close(io);
@@ -64,13 +65,13 @@ spec( json_parse_string ) {
 
   when("the io has reached the end of input") {
     apply(preconditions);
-    *io = io(s("\"123\"    "));
+    string source = s("\"123\"    ");
     io->cursor = 9;
-    int result = json_parse_string(io);
+    string result; json(parse_string, io, &source, &result);
 
-    must("return -1");
-      verify(result == -1);
-    must("advance the cursor position by the length of the string");
+    must("point the result to an empty string");
+      verify(eq(result, NULL));
+    must("reset the io cursor");
       verify(io->cursor == 9);
     success();
       io_close(io);
@@ -78,17 +79,17 @@ spec( json_parse_string ) {
 
   when("the io read fails") {
     apply(preconditions);
-    /* An invalid io channel. Shall fail upon calling the `io_read` function. */
-    io->channel = -1;
-    int result = json_parse_string(io);
+    /* An invalid file. Shall fail upon calling the `io_read` function. */
+    struct file file = { .descriptor = -1 };
+    string result; json(parse_string, io, &file, &result);
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(failure_is("io: invalid channel"));
-
-    must("return -1");
-      verify(result == -1);
-
+      verify(failure_is("file read error: Bad file descriptor"));
+    must("point the result to an empty string");
+      verify(eq(result, NULL));
+    must("reset the io cursor");
+      verify(io->cursor == 0);
     success();
       io_close(io);
 

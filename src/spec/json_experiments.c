@@ -10,41 +10,43 @@ spec( json_experiments ) {
     when("a valid json string") {
       apply(preconditions);
       string str = s("\"Jane Shepard\"");
-      *io = io(&str, NULL, NULL);
+      *io = io_init(NULL, NULL);
 
-      bool result = json_parse_string_direct(io, &str);
+      string result; json(parse_string_direct, io, &str, &result);
 
-      must("return true");
-        verify(result == true);
+      must("point the result to the parsed string, including quotes");
+        verify(eq(result, "\"Jane Shepard\""));
       must("advance the io cursor to consume the input");
         verify(io->cursor == str.length);
 
       success();
+        io_close(io);
     } end();
 
     when("a invalid json string") {
       apply(preconditions);
       string str = s("123");
-      *io = io(&str, NULL, NULL);
+      *io = io_init(NULL, NULL);
 
-      bool result = json_parse_string_direct(io, &str);
+      string result; json(parse_string_direct, io, &str, &result);
 
-      must("return false");
-        verify(result == false);
+      must("point the result to an empty string");
+        verify(eq(result, NULL));
       must("reset the io cursor");
         verify(io->cursor == 0);
 
       success();
+        io_close(io);
     } end();
   } end();
 
   when("json_decode") {
     apply(preconditions);
     string str = s("   \n { \"name\": \"Jane Shepard\", \"class\": 0 } ");
-    *io = io(&str, NULL, NULL);
+    *io = io_init(NULL, NULL);
     //struct io json = file_read("prf/json/exe/decode.json", spec_allocator);
     //io = &json;
-    json_decode_direct(io, &str);
+    json(decode_direct, io, &str);
 
     must("not fail");
       verify(failure.occurred == false);
@@ -52,6 +54,7 @@ spec( json_experiments ) {
       verify(io->cursor == 43);
 
     success();
+      io_close(io);
   } end();
 
   #undef preconditions

@@ -11,5 +11,8 @@ static inline struct io io_init_with_buffer (
     memory* allocator
 )
 {
-  return (struct io) { 0 };
+  struct io io = { 0 };
+  io.buffer = alloc(sizeof(memory));
+  *io.buffer = memory_init(1024);
+  return io;
 }

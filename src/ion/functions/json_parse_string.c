@@ -1,60 +1,43 @@
-int json_parse_string (
-    struct io* io
+void json<T>_parse_string (
+    struct io* io,
+    T* source,
+    string* result
 )
 {
   int cursor = io_cursor_save(io);
-  int length = 0;
   bool escaped = false;
-  char character;
+  char* data;
 
-  io_read(io, sizeof(char));
-  if (unlikely(failure.occurred))
+  data = io_read(io, source, sizeof(char));
+  result->pointer = data;
+
+  if (*data != '"')
     goto error;
-
-  if (io->result.length == 0)
-    goto error;
-
-  character = string_char_at(io->result, 0);
-  if (character != '"')
-    goto error;
-
-  length++;
 
 read_character:
-  io_read(io, sizeof(char));
-  if (unlikely(failure.occurred))
-    goto error;
-
-  if (io->result.length == 0)
-    goto error;
+  data = io_read(io, source, sizeof(char));
 
   if (escaped) {
     escaped = false;
-    length++;
     goto read_character;
   }
 
-  character = string_char_at(io->result, 0);
-  if (character == 92) {
+  if (*data == 92) {
     escaped = true;
-    length++;
     goto read_character;
   }
 
-  if (character == '"') {
-    length++;
+  if (*data == '"')
     goto terminate;
-  }
 
-  length++;
   goto read_character;
 
 terminate:
-  io_cursor_restore(io, cursor);
-  io_read(io, length);
-  return length;
+  result->length = io->cursor - cursor;
+  return;
 
 error:
+  *result = (string) { 0 };
   io_cursor_restore(io, cursor);
-  return -1;
+  return;
 }

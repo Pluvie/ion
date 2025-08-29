@@ -2,7 +2,6 @@
 #include "spec/framework.h"
 #include "spec/types.h"
 
-#include "spec/io_test.c"
 #include "spec/json_experiments.c"
 
 #include "spec/date.c"
@@ -30,7 +29,7 @@
 //#include "spec/json_parse_null.c"
 //#include "spec/json_parse_number.c"
 //#include "spec/json_parse_spaces.c"
-//#include "spec/json_parse_string.c"
+#include "spec/json_parse_string.c"
 #include "spec/list.c"
 #include "spec/list_alloc.c"
 #include "spec/list_at.c"

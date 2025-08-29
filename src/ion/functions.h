@@ -1,6 +1,3 @@
-#define T string
-#include "functions/json_experiments.h"
-
 #include "functions/alloc_resize.h"
 #include "functions/alloc_resize_zero.h"
 #include "functions/cmp.h"
@@ -13,7 +10,7 @@
 //#include "functions/io_buffer_init.h"
 //#include "functions/io_buffer_read.h"
 //#include "functions/io_channel_read.h"
-//#include "functions/io_close.h"
+#include "functions/io_close.h"
 //#include "functions/io_cursor_advance.h"
 //#include "functions/io_cursor_restore.h"
 //#include "functions/io_cursor_save.h"
@@ -26,25 +23,6 @@
 //#include "functions/io_peek.h"
 #include "functions/io_init.h"
 #include "functions/io_read.h"
-//#include "functions/json_decode.h"
-//#include "functions/json_decode_array.h"
-//#include "functions/json_decode_bool.h"
-//#include "functions/json_decode_dec.h"
-//#include "functions/json_decode_enum.h"
-//#include "functions/json_decode_int.h"
-//#include "functions/json_decode_list.h"
-//#include "functions/json_decode_map.h"
-//#include "functions/json_decode_null.h"
-//#include "functions/json_decode_pointer.h"
-//#include "functions/json_decode_self.h"
-//#include "functions/json_decode_set.h"
-//#include "functions/json_decode_string.h"
-//#include "functions/json_decode_struct.h"
-//#include "functions/json_parse_bool.h"
-//#include "functions/json_parse_null.h"
-//#include "functions/json_parse_number.h"
-//#include "functions/json_parse_spaces.h"
-//#include "functions/json_parse_string.h"
 #include "functions/memory_alloc.h"
 #include "functions/memory_alloc_zero.h"
 #include "functions/memory_init.h"
@@ -58,6 +36,11 @@
 #include "functions/string_index.h"
 #include "functions/string_starts.h"
 #include "functions/substring.h"
+
+#define T string
+#include "functions/json.h"
+#define T struct file
+#include "functions/json.h"
 
 #include "functions/platform/alloc.h"
 #include "functions/platform/alloc_aligned.h"

@@ -1,3 +1,5 @@
-int json_parse_string (
-    struct io* source
+void json<T>_parse_string (
+    struct io* io,
+    T* source,
+    string* result
 );

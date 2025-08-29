@@ -44,16 +44,16 @@ void decode (
   //  })
   //};
 
-  struct memory allocator = memory_init(0);
+  memory allocator = memory_init(0);
   struct file file = file_open(s("exe/decode.json"));
   int size = file_size(&file);
   string content = { memory_alloc(&allocator, size), size };
   file_read(&file, content.pointer, size);
 
-  struct io json = io(&content, NULL, NULL);
+  struct io json = io_init(NULL, NULL);
   //json_decode(&data, &json, &data_rfx, &allocator);
   //json_decode(NULL, &json, NULL, NULL);
-  json_decode_direct(&json, &content);
+  json(decode_direct, &json, &content);
 
   //struct user* user;
 

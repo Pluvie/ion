@@ -1,52 +1,56 @@
-bool json_parse_string_direct (
+void json<T>_parse_string_direct (
     struct io* io,
-    T* source
+    T* source,
+    string* result
 )
 {
-  char* result;
-  int cursor = io->cursor;
+  int cursor = io_cursor_save(io);
   bool escaped = false;
+  char* data;
 
-  result = io_read(io, source, sizeof(char));
+  data = io_read(io, source, sizeof(char));
+  result->pointer = data;
 
-  if (*result != '"')
+  if (*data != '"')
     goto error;
 
 read_character:
-  result = io_read(io, source, sizeof(char));
+  data = io_read(io, source, sizeof(char));
 
   if (escaped) {
     escaped = false;
     goto read_character;
   }
 
-  if (*result == 92) {
+  if (*data == 92) {
     escaped = true;
     goto read_character;
   }
 
-  if (*result == '"')
+  if (*data == '"')
     goto terminate;
 
   goto read_character;
 
 terminate:
-  return true;
+  result->length = io->cursor - cursor;
+  return;
 
 error:
-  io->cursor = cursor;
-  return false;
+  *result = (string) { 0 };
+  io_cursor_restore(io, cursor);
+  return;
 }
 
-void json_parse_spaces_direct (
+void json<T>_parse_spaces_direct (
     struct io* io,
     T* source
 )
 {
 read_space:
-  char* result = io_read(io, source, sizeof(char));
+  char* data = io_read(io, source, sizeof(char));
 
-  if (isspace(*result))
+  if (isspace(*data))
     goto read_space;
 
   io->cursor--;
@@ -54,48 +58,48 @@ read_space:
 
 
 
-bool json_parse_null_direct (
+bool json<T>_parse_null_direct (
     struct io* io,
     T* source
 )
 {
-  char* result = io_read(io, source, lengthof("null"));
+  char* data = io_read(io, source, lengthof("null"));
 
-  if (char_compare("null", result, lengthof("null")) == 0)
+  if (char_compare("null", data, lengthof("null")) == 0)
     return true;
 
   return false;
 }
 
 
-bool json_parse_bool_direct (
+bool json<T>_parse_bool_direct (
     struct io* io,
     T* source
 )
 {
-  char* result = io_read(io, source, lengthof("false"));
+  char* data = io_read(io, source, lengthof("false"));
 
-  if (char_compare("true", result, lengthof("true")) == 0)
+  if (char_compare("true", data, lengthof("true")) == 0)
     return true;
 
-  if (char_compare("false", result, lengthof("false")) == 0)
+  if (char_compare("false", data, lengthof("false")) == 0)
     return true;
 
   return false;
 }
 
 
-bool json_parse_number_direct (
+bool json<T>_parse_number_direct (
     struct io* io,
     T* source
 )
 {
   int cursor = io->cursor;
-  char* result = io_read(io, source, 32);
+  char* data = io_read(io, source, 32);
   char* end;
 
-  strtold(result, &end);
-  int number_length = (end - result);
+  strtold(data, &end);
+  int number_length = (end - data);
 
   if (errno == 0) {
     io->cursor = cursor + number_length;
@@ -107,16 +111,17 @@ bool json_parse_number_direct (
 
 
 
-void json_decode_direct (
+void json<T>_decode_direct (
     struct io* io,
     T* source
 )
 {
-  char* result;
+  char* data;
+  string result;
 
-  json_parse_spaces_direct(io, source);
-  result = io_read(io, source, sizeof(char));
-  switch (*result) {
+  json(parse_spaces_direct, io, source);
+  data = io_read(io, source, sizeof(char));
+  switch (*data) {
   case '{':
     goto parse_object;
 
@@ -135,17 +140,19 @@ void json_decode_direct (
   case '9':
   case '-':
     io->cursor--;
-    json_parse_number_direct(io, source);
+    json(parse_number_direct, io, source);
     return;
 
   default:
     io->cursor--;
 
-    if (json_parse_string_direct(io, source))
+    json(parse_string_direct, io, source, &result);
+    if (result.length > 0)
       return;
-    if (json_parse_null_direct(io, source))
+
+    if (json(parse_null_direct, io, source))
       return;
-    if (json_parse_bool_direct(io, source))
+    if (json(parse_bool_direct, io, source))
       return;
 
     fail("invalid json value");
@@ -155,21 +162,21 @@ void json_decode_direct (
   return;
 
 parse_object:
-  json_parse_spaces_direct(io, source);
-  json_parse_string_direct(io, source); // field
+  json(parse_spaces_direct, io, source);
+  json(parse_string_direct, io, source, &result); // field
 
-  json_parse_spaces_direct(io, source);
+  json(parse_spaces_direct, io, source);
   io_read(io, source, sizeof(char)); // colon ':'
-  json_parse_spaces_direct(io, source);
+  json(parse_spaces_direct, io, source);
 
-  json_decode_direct(io, source); // value
-  json_parse_spaces_direct(io, source);
+  json(decode_direct, io, source); // value
+  json(parse_spaces_direct, io, source);
 
-  result = io_read(io, source, sizeof(char));
-  if (*result == ',')
+  data = io_read(io, source, sizeof(char));
+  if (*data == ',')
     goto parse_object;
 
-  if (*result == '}')
+  if (*data == '}')
     return;
 
   fail("bad object end");
@@ -177,20 +184,18 @@ parse_object:
   return;
 
 parse_array:
-  json_parse_spaces_direct(io, source);
-  json_decode_direct(io, source); // value
-  json_parse_spaces_direct(io, source);
+  json(parse_spaces_direct, io, source);
+  json(decode_direct, io, source); // value
+  json(parse_spaces_direct, io, source);
 
-  result = io_read(io, source, sizeof(char));
-  if (*result == ',')
+  data = io_read(io, source, sizeof(char));
+  if (*data == ',')
     goto parse_array;
 
-  if (*result == ']')
+  if (*data == ']')
     return;
 
   fail("bad array end");
   //failure_add_io_info(io);
   return;
 }
-
-#undef T
