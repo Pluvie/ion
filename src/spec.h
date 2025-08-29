@@ -25,7 +25,7 @@
 //#include "spec/json_decode_set.c"
 //#include "spec/json_decode_string.c"
 //#include "spec/json_decode_struct.c"
-//#include "spec/json_parse_bool.c"
+#include "spec/json_parse_bool.c"
 //#include "spec/json_parse_null.c"
 //#include "spec/json_parse_number.c"
 #include "spec/json_parse_spaces.c"

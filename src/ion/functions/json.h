@@ -13,7 +13,7 @@
 //#include "json_decode_set.h"
 //#include "json_decode_string.h"
 //#include "json_decode_struct.h"
-//#include "json_parse_bool.h"
+#include "json_parse_bool.h"
 //#include "json_parse_null.h"
 //#include "json_parse_number.h"
 #include "json_parse_spaces.h"

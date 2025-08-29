@@ -12,23 +12,6 @@ bool json<T>_parse_null_direct (
 }
 
 
-bool json<T>_parse_bool_direct (
-    struct io* io,
-    T* source
-)
-{
-  char* data = io_read(io, source, lengthof("false"));
-
-  if (char_compare("true", data, lengthof("true")) == 0)
-    return true;
-
-  if (char_compare("false", data, lengthof("false")) == 0)
-    return true;
-
-  return false;
-}
-
-
 bool json<T>_parse_number_direct (
     struct io* io,
     T* source
@@ -57,7 +40,8 @@ void json<T>_decode_direct (
 )
 {
   char* data;
-  string result;
+  string result_string;
+  bool result_bool;
 
   json(parse_spaces, io, source);
   data = io_read(io, source, sizeof(char));
@@ -86,13 +70,14 @@ void json<T>_decode_direct (
   default:
     io->cursor--;
 
-    json(parse_string, io, source, &result);
-    if (result.length > 0)
+    json(parse_string, io, source, &result_string);
+    if (result_string.length > 0)
       return;
 
     if (json(parse_null_direct, io, source))
       return;
-    if (json(parse_bool_direct, io, source))
+
+    if (json(parse_bool, io, source, &result_bool))
       return;
 
     fail("invalid json value");
@@ -103,7 +88,7 @@ void json<T>_decode_direct (
 
 parse_object:
   json(parse_spaces, io, source);
-  json(parse_string, io, source, &result); // field
+  json(parse_string, io, source, &result_string); // field
 
   json(parse_spaces, io, source);
   io_read(io, source, sizeof(char)); // colon ':'

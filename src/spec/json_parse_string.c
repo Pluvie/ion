@@ -3,13 +3,13 @@ spec( json_parse_string ) {
   argument(struct io* io);
 
   precondition("valid io");
-    #define preconditions(source) \
+    #define preconditions \
       io = memory_alloc_zero(spec_allocator, sizeof(struct io));
 
   when("the parsing reaches the end of input") {
     when("the io starts with string") {
       string source = s("\" \t  \n  \"");
-      apply(preconditions(&source));
+      apply(preconditions);
 
       string result;
       json(parse_string, io, &source, &result);
@@ -24,7 +24,7 @@ spec( json_parse_string ) {
 
     when("the io does not start with string") {
       string source = s("123    ");
-      apply(preconditions(&source));
+      apply(preconditions);
 
       string result;
       json(parse_string, io, &source, &result);
@@ -41,7 +41,7 @@ spec( json_parse_string ) {
   when("the parsing does not reach the end of input") {
     when("the io starts with string") {
       string source = s("\"abc\": 123 ,  \t  \n");
-      apply(preconditions(&source));
+      apply(preconditions);
 
       string result;
       json(parse_string, io, &source, &result);
@@ -56,7 +56,7 @@ spec( json_parse_string ) {
 
     when("the io does not start with string") {
       string source = s("123    , 123");
-      apply(preconditions(&source));
+      apply(preconditions);
 
       string result;
       json(parse_string, io, &source, &result);
@@ -72,7 +72,7 @@ spec( json_parse_string ) {
 
   when("the io has reached the end of input") {
     string source = s("\"123\"    ");
-    apply(preconditions(&source));
+    apply(preconditions);
 
     io->cursor = 9;
     string result;
@@ -89,7 +89,7 @@ spec( json_parse_string ) {
   when("the io read fails") {
     /* An invalid file. Shall fail upon calling the `io_read` function. */
     struct file file = file_open(s("/wrong/path"));
-    apply(preconditions(&file));
+    apply(preconditions);
     io_buffer_init(io, 0);
 
     string result;
@@ -100,7 +100,7 @@ spec( json_parse_string ) {
       verify(failure_is("file open error: No such file or directory"));
     must("point the result to an empty string");
       verify(eq(result, NULL));
-    must("reset the io cursor");
+    must("restore the io cursor to the original position");
       verify(io->cursor == 0);
     success();
       io_close(io);
