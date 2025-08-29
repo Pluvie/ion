@@ -3,15 +3,16 @@ spec( json_parse_string ) {
   argument(struct io* io);
 
   precondition("valid io");
-    #define preconditions \
-      io = memory_alloc_zero(spec_allocator, sizeof(struct io)); \
-      *io = io_init_with_buffer(NULL, NULL);
+    #define preconditions(source) \
+      io = memory_alloc_zero(spec_allocator, sizeof(struct io));
 
   when("the parsing reaches the end of input") {
     when("the io starts with string") {
-      apply(preconditions);
       string source = s("\" \t  \n  \"");
-      string result; json(parse_string, io, &source, &result);
+      apply(preconditions(&source));
+
+      string result;
+      json(parse_string, io, &source, &result);
 
       must("point the result to the parsed string, including quotes");
         verify(eq(result, "\" \t  \n  \""));
@@ -22,9 +23,11 @@ spec( json_parse_string ) {
     } end();
 
     when("the io does not start with string") {
-      apply(preconditions);
       string source = s("123    ");
-      string result; json(parse_string, io, &source, &result);
+      apply(preconditions(&source));
+
+      string result;
+      json(parse_string, io, &source, &result);
 
       must("point the result to an empty string");
         verify(eq(result, NULL));
@@ -37,9 +40,11 @@ spec( json_parse_string ) {
 
   when("the parsing does not reach the end of input") {
     when("the io starts with string") {
-      apply(preconditions);
       string source = s("\"abc\": 123 ,  \t  \n");
-      string result; json(parse_string, io, &source, &result);
+      apply(preconditions(&source));
+
+      string result;
+      json(parse_string, io, &source, &result);
 
       must("point the result to the parsed string, including quotes");
         verify(eq(result, "\"abc\""));
@@ -50,9 +55,11 @@ spec( json_parse_string ) {
     } end();
 
     when("the io does not start with string") {
-      apply(preconditions);
       string source = s("123    , 123");
-      string result; json(parse_string, io, &source, &result);
+      apply(preconditions(&source));
+
+      string result;
+      json(parse_string, io, &source, &result);
 
       must("point the result to an empty string");
         verify(eq(result, NULL));
@@ -64,10 +71,12 @@ spec( json_parse_string ) {
   } end();
 
   when("the io has reached the end of input") {
-    apply(preconditions);
     string source = s("\"123\"    ");
+    apply(preconditions(&source));
+
     io->cursor = 9;
-    string result; json(parse_string, io, &source, &result);
+    string result;
+    json(parse_string, io, &source, &result);
 
     must("point the result to an empty string");
       verify(eq(result, NULL));
@@ -78,10 +87,13 @@ spec( json_parse_string ) {
   } end();
 
   when("the io read fails") {
-    apply(preconditions);
     /* An invalid file. Shall fail upon calling the `io_read` function. */
-    struct file file = { .descriptor = -1 };
-    string result; json(parse_string, io, &file, &result);
+    struct file file = file_open(s("/wrong/path"));
+    apply(preconditions(&file));
+    io_buffer_init(io, 0);
+
+    string result;
+    json(parse_string, io, &file, &result);
 
     must("fail with a specific error");
       verify(failure.occurred == true);
@@ -92,7 +104,6 @@ spec( json_parse_string ) {
       verify(io->cursor == 0);
     success();
       io_close(io);
-
   } end();
 
   #undef preconditions

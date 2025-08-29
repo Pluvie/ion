@@ -58,7 +58,7 @@ static inline char* io<struct socket>_read (
 )
 {
   void* address = memory_alloc(io->buffer, amount);
-  int result = socket_read(source, address, amount, io->read.flags);
+  int result = socket_read(source, address, amount, io->read_flags);
   if (likely(result > 0)) {
     io->cursor += result;
     return address;

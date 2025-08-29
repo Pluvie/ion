@@ -21,39 +21,43 @@ void decode (
     void
 )
 {
-  //struct {
-  //  list<struct user>* users;
-  //} data;
+  struct {
+    list<struct user>* users;
+  } data;
 
 
-  //struct reflection data_rfx = {
-  //  type(STRUCT, typeof(data)), fields({
-  //    { field(users, POINTER, typeof(data)), of({
-  //        type(LIST), container(list<struct user>_), of({
-  //          type(STRUCT, struct user), fields({
-  //            { field(name, STRING, struct user) },
-  //            { field(age, INT, struct user) },
-  //            { field(roles, LIST, struct user),
-  //                container(list<string>_),
-  //                of({ type(STRING) })
-  //            },
-  //          })
-  //        })
-  //      })
-  //    },
-  //  })
-  //};
+  struct reflection data_rfx = {
+    type(STRUCT, typeof(data)), fields({
+      { field(users, POINTER, typeof(data)), of({
+          type(LIST), container(list<struct user>_), of({
+            type(STRUCT, struct user), fields({
+              { field(name, STRING, struct user) },
+              { field(age, INT, struct user) },
+              { field(roles, LIST, struct user),
+                  container(list<string>_),
+                  of({ type(STRING) })
+              },
+            })
+          })
+        })
+      },
+    })
+  };
 
   memory allocator = memory_init(0);
   struct file file = file_open(s("exe/decode.json"));
   int size = file_size(&file);
-  string content = { memory_alloc(&allocator, size), size };
-  file_read(&file, content.pointer, size);
+  string json_users = { memory_alloc(&allocator, size), size };
+  file_read(&file, json_users.pointer, size);
 
-  struct io json = io_init(NULL, NULL);
+  struct io users_decoder = {
+    .target = &data,
+    .rfx = &data_rfx,
+    .allocator = &allocator,
+  };
   //json_decode(&data, &json, &data_rfx, &allocator);
   //json_decode(NULL, &json, NULL, NULL);
-  json(decode_direct, &json, &content);
+  json(decode_direct, &users_decoder, &json_users);
 
   //struct user* user;
 

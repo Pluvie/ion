@@ -1,15 +1,10 @@
 struct io {
   int cursor;
+  void* target;
   memory* buffer;
   memory* allocator;
   struct reflection* rfx;
-  struct {
-    int count;
-    int flags;
-  } read;
-  struct {
-    int count;
-    int flags;
-  } write;
+  int32 read_flags;
+  int32 write_flags;
 };
-check_sizeof(64, struct io);
+check_sizeof(48, struct io);

@@ -10,9 +10,9 @@ spec( json_experiments ) {
     when("a valid json string") {
       apply(preconditions);
       string str = s("\"Jane Shepard\"");
-      *io = io_init(NULL, NULL);
 
-      string result; json(parse_string_direct, io, &str, &result);
+      string result;
+      json(parse_string_direct, io, &str, &result);
 
       must("point the result to the parsed string, including quotes");
         verify(eq(result, "\"Jane Shepard\""));
@@ -26,9 +26,9 @@ spec( json_experiments ) {
     when("a invalid json string") {
       apply(preconditions);
       string str = s("123");
-      *io = io_init(NULL, NULL);
 
-      string result; json(parse_string_direct, io, &str, &result);
+      string result;
+      json(parse_string_direct, io, &str, &result);
 
       must("point the result to an empty string");
         verify(eq(result, NULL));
@@ -43,7 +43,6 @@ spec( json_experiments ) {
   when("json_decode") {
     apply(preconditions);
     string str = s("   \n { \"name\": \"Jane Shepard\", \"class\": 0 } ");
-    *io = io_init(NULL, NULL);
     //struct io json = file_read("prf/json/exe/decode.json", spec_allocator);
     //io = &json;
     json(decode_direct, io, &str);
