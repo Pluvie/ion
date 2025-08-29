@@ -1,8 +1,9 @@
 #!/bin/bash
 
-hyperfine --warmup 5  \
-  exe/go              \
-  exe/ion             \
-  exe/python          \
-  exe/ruby            \
-  exe/rust
+hyperfine --runs 1  \
+  exe/go            \
+  exe/ion           \
+  exe/python        \
+  exe/ruby          \
+  exe/rust          \
+  exe/simdjson
