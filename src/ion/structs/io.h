@@ -1,3 +1,4 @@
+/*
 struct io {
   int cursor;
   void* target;
@@ -8,7 +9,12 @@ struct io {
   int32 write_flags;
 };
 check_sizeof(48, struct io);
+*/
 
+enum io_types {
+  IO_DIRECT,
+  IO_BUFFERED
+};
 
 
 
@@ -35,3 +41,15 @@ struct io_buffered {
   } buffer;
 };
 check_sizeof(40, struct io_buffered);
+
+struct io {
+  union {
+    struct io_direct direct;
+    struct io_buffered buffered;
+  };
+  enum io_types type;
+  padding(4);
+  struct reflection* rfx;
+  memory* allocator;
+};
+check_sizeof(64, struct io);
