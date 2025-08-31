@@ -7,10 +7,10 @@
 #include "functions/hash.c"
 #include "functions/hash_djb2.c"
 #include "functions/hexdump.c"
-#include "functions/io_buffer_init.c"
+//#include "functions/io_buffer_init.c"
 //#include "functions/io_buffer_read.c"
 //#include "functions/io_channel_read.c"
-#include "functions/io_close.c"
+//#include "functions/io_close.c"
 //#include "functions/io_cursor_advance.c"
 //#include "functions/io_cursor_restore.c"
 //#include "functions/io_cursor_save.c"
@@ -21,7 +21,15 @@
 //#include "functions/io_open_stream.c"
 //#include "functions/io_open_string.c"
 //#include "functions/io_peek.c"
-#include "functions/io_read.c"
+//#include "functions/io_read.c"
+#include "functions/json_discard_bool_direct.c"
+#include "functions/json_discard_null_direct.c"
+#include "functions/json_discard_number_direct.c"
+#include "functions/json_discard_string_direct.c"
+#include "functions/json_parse_bool_direct.c"
+#include "functions/json_parse_null_direct.c"
+#include "functions/json_parse_number_direct.c"
+#include "functions/json_parse_string_direct.c"
 #include "functions/memory_alloc.c"
 #include "functions/memory_alloc_zero.c"
 #include "functions/memory_init.c"
@@ -36,10 +44,7 @@
 #include "functions/string_starts.c"
 #include "functions/substring.c"
 
-#define T string
-#include "functions/json.c"
-#define T struct file
-#include "functions/json.c"
+#include "functions/json_experiments.c"
 
 #if platform(LINUX)
   #include "platform/linux/functions.c"

@@ -1,43 +1,47 @@
-static inline void json<T>_parse_string (
-    struct io* io,
-    T* source,
-    string* result
-)
 {
-  int cursor = io_cursor_save(io);
   bool escaped = false;
-  char* data;
+#ifndef JSON_DISCARD
+  result->pointer = io->cursor;
+#else
+  char* begin = io->cursor;
+#endif
 
-  data = io_read(io, source, sizeof(char));
-  result->pointer = data;
-
-  if (*data != '"')
+  if (*io->cursor != '"')
     goto error;
 
 read_character:
-  data = io_read(io, source, sizeof(char));
+  io_advance(io, 1);
 
   if (escaped) {
     escaped = false;
     goto read_character;
   }
 
-  if (*data == 92) {
+  if (*io->cursor == 92) {
     escaped = true;
     goto read_character;
   }
 
-  if (*data == '"')
+  if (*io->cursor == '"')
     goto terminate;
+
+  if (unlikely(io_exhausted(io)))
+    goto error;
 
   goto read_character;
 
 terminate:
-  result->length = io->cursor - cursor;
-  return;
+#ifndef JSON_DISCARD
+  result->length = io->cursor - (char*) result->pointer;
+#endif
+  return true;
 
 error:
+#ifndef JSON_DISCARD
+  io_cursor_restore(io, result->pointer);
   *result = (string) { 0 };
-  io_cursor_restore(io, cursor);
-  return;
+#else
+  io_cursor_restore(io, begin);
+#endif
+  return false;
 }
