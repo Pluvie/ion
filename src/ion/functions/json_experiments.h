@@ -4,13 +4,6 @@ static inline struct io io_open_string (
 void io_close (
     struct io* io
 );
-static inline bool json_parse_null_direct (
-    struct io_direct* io
-);
-static inline bool json_parse_bool_direct (
-    struct io_direct* io,
-    bool* result
-);
 static inline void json_parse_spaces_direct (
     struct io_direct* io
 );

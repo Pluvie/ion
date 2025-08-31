@@ -1,4 +1,4 @@
-{
+
   io_reserve(io, 128);
   char* number_end;
 
@@ -15,4 +15,3 @@
   }
 
   return false;
-}

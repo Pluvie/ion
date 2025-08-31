@@ -83,36 +83,6 @@ void io_close (
 
 
 
-static inline bool json_parse_null_direct (
-    struct io_direct* io
-)
-{
-  if (io_contains(io, "null", lengthof("null")))
-    return true;
-
-  return false;
-}
-
-
-
-static inline bool json_parse_bool_direct (
-    struct io_direct* io,
-    bool* result
-)
-{
-  if (io_contains(io, "true", lengthof("true"))) {
-    *result = true;
-    return true;
-  }
-
-  if (io_contains(io, "false", lengthof("false"))) {
-    *result = false;
-    return true;
-  }
-
-  return false;
-}
-
 
 
 static inline void json_parse_spaces_direct (

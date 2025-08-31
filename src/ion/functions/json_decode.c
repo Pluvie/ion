@@ -5,9 +5,17 @@ void json_decode (
 {
   switch (io->type) {
   case IO_DIRECT:
-    return json_decode_direct(&(io->direct), target);
+    if (io->rfx != NULL)
+      return json_decode_direct(&(io->direct), target);
+    else
+      return json_discard_value_direct(&(io->direct));
+
   case IO_BUFFERED:
-    return json_decode_buffered(&(io->buffered), target);
+    if (io->rfx != NULL)
+      return json_decode_buffered(&(io->buffered), target);
+    else
+      return json_discard_value_buffered(&(io->direct));
+
   default:
     fail("json decode: unrecognized io type");
   }

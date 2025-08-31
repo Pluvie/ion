@@ -7,7 +7,8 @@ static inline void json_decode_string_direct (
   #include "../procedures/json_parse_string.c"
 
 parse_success:
-  #include "../procedures/reflection_validate_string.c"
+  /* Add reflection validation. */
+  return;
 
 parse_error:
   fail("expected a string");
@@ -25,11 +26,12 @@ static inline void json_decode_string_buffered (
   #include "../procedures/json_parse_string.c"
 
 parse_success:
-  #include "../procedures/reflection_validate_string.c"
+  /* Add reflection validation. */
   string copy = { 0 };
   copy.pointer = memory_alloc(io->allocator, result->length);
   byte_copy(copy.pointer, result->pointer, result->length);
   byte_copy(target, &copy, sizeof(string));
+  return;
 
 parse_error:
   fail("expected a string");
