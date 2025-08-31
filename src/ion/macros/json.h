@@ -1,7 +1,3 @@
-#define json_decode_value(io_ptr, target)           \
-  _Generic((io_ptr),                                \
-    struct io_direct* : json_decode_direct          \
-  )(io_ptr, target)
 
 #define json_parse_spaces(io_ptr)                   \
   _Generic((io_ptr),                                \

@@ -1,79 +1,3 @@
-void json_decode (
-    struct io* io,
-    void* target
-)
-{
-  switch (io->type) {
-  case IO_DIRECT:
-    return json_decode_direct(&(io->direct), target);
-  case IO_BUFFERED:
-    return json_decode_buffered(&(io->buffered), target);
-  default:
-    fail("json decode: unrecognized io type");
-  }
-}
-
-
-static inline void json_decode_direct (
-    struct io_direct* io,
-    void* target
-)
-{
-  if (io->rfx != NULL)
-    goto decode;
-  else
-    goto discard;
-
-decode:
-  json_parse_spaces(io);
-
-  if (json_parse_null(io, target))
-    return;
-
-  switch (io->rfx->type) {
-  case INT:
-    return json_decode_int(io, target);
-  case DEC:
-    return json_decode_dec(io, target);
-  case BOOL:
-    return json_decode_bool(io, target);
-  case ENUM:
-    return json_decode_enum(io, target);
-  case STRING:
-    return json_decode_string(io, target);
-  case STRUCT:
-    return json_decode_struct(io, target);
-  case ARRAY:
-    return json_decode_array(io, target);
-  case POINTER:
-    return json_decode_pointer(io, target);
-  case SELF:
-    return json_decode_self(io, target);
-  case LIST:
-    return json_decode_list(io, target);
-  case SET:
-    return json_decode_set(io, target);
-  case MAP:
-    return json_decode_map(io, target);
-  default:
-    fail("unsupported reflection type");
-  }
-  return;
-
-discard:
-  json_parse_spaces(io);
-  json_discard_value(io);
-  return;
-}
-
-static inline void json_decode_buffered (
-    struct io_buffered* io,
-    void* target
-)
-{
-  /* To be implemented. */
-  return;
-}
 
 
 
@@ -156,23 +80,6 @@ void io_close (
 
 
 
-static inline bool json_parse_number_direct (
-    struct io_direct* io,
-    dec* result
-)
-{
-  io_reserve(io, 128);
-  char* number_end;
-
-  *result = strtold(io->cursor, &number_end);
-  if (errno == 0) {
-    int number_length = (number_end - io->cursor);
-    io_advance(io, number_length);
-    return true;
-  }
-
-  return false;
-}
 
 
 

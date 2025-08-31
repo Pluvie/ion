@@ -3,6 +3,6 @@
 #endif
 
 typedef struct string {
-  void* pointer;
+  char* pointer;
   int length;
 } string;

@@ -1,24 +1,8 @@
-void json_decode (
-    struct io* io,
-    void* target
-);
-static inline void json_decode_direct (
-    struct io_direct* io,
-    void* target
-);
-static inline void json_decode_buffered (
-    struct io_buffered* io,
-    void* target
-);
 static inline struct io io_open_string (
     string* source
 );
 void io_close (
     struct io* io
-);
-static inline bool json_parse_number_direct (
-    struct io_direct* io,
-    dec* result
 );
 static inline bool json_parse_null_direct (
     struct io_direct* io
