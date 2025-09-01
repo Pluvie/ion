@@ -30,6 +30,8 @@
 #include "macros/log2.h"
 #include "macros/lvar.h"
 #include "macros/map.h"
+#include "macros/next_mul32.h"
+#include "macros/next_mul64.h"
 #include "macros/next_pow2.h"
 #include "macros/padding.h"
 #include "macros/print_sizeof.h"
