@@ -1,9 +1,9 @@
-static inline bool json_discard_null_direct (
+static inline bool json_discard_object_direct (
     struct io_direct* io
 )
 {
   #define JSON_DISCARD
-  #include "../procedures/json_parse_null.c"
+  #include "../procedures/json_parse_object.c"
   #undef JSON_DISCARD
 
 parse_success:
@@ -15,12 +15,12 @@ parse_error:
 
 
 
-static inline bool json_discard_null_buffered (
+static inline bool json_discard_object_buffered (
     struct io_buffered* io
 )
 {
   #define JSON_DISCARD
-  #include "../procedures/json_parse_null.c"
+  #include "../procedures/json_parse_object.c"
   #undef JSON_DISCARD
 
 parse_success:

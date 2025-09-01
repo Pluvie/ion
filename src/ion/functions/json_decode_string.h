@@ -8,12 +8,12 @@
 
 static inline void json_decode_string_direct (
     struct io_direct* io,
-    string* result
+    void* target
 );
 
 
 
 static inline void json_decode_string_buffered (
     struct io_buffered* io,
-    string* result
+    void* target
 );

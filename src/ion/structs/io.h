@@ -21,10 +21,9 @@ enum io_types {
 struct io_direct {
   string* data;
   char* cursor;
-  struct reflection* rfx;
-  memory* allocator;
+  char* end;
 };
-check_sizeof(32, struct io_direct);
+check_sizeof(24, struct io_direct);
 
 struct io_buffered {
   char* cursor;
@@ -40,10 +39,8 @@ struct io_buffered {
     memory* data;
     int length;
   } buffer;
-  struct reflection* rfx;
-  memory* allocator;
 };
-check_sizeof(56, struct io_buffered);
+check_sizeof(40, struct io_buffered);
 
 struct io {
   union {
@@ -52,5 +49,7 @@ struct io {
   };
   enum io_types type;
   padding(4);
+  struct reflection* rfx;
+  memory* allocator;
 };
 check_sizeof(64, struct io);

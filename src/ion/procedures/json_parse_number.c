@@ -3,15 +3,15 @@
   char* number_end;
 
 #ifndef JSON_DISCARD
-  strtold(io->cursor, &number_end);
-#else
   *result = strtold(io->cursor, &number_end);
+#else
+  strtold(io->cursor, &number_end);
 #endif
 
   if (errno == 0) {
     int number_length = (number_end - io->cursor);
     io_advance(io, number_length);
-    return true;
+    goto parse_success;
   }
 
-  return false;
+  goto parse_error;

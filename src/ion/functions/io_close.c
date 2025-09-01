@@ -2,8 +2,12 @@ void io_close (
     struct io* io
 )
 {
-  if (io->buffer != NULL) {
-    memory_release(io->buffer);
-    alloc_release(io->buffer);
+  switch (io->type) {
+  case IO_DIRECT:
+    return;
+  case IO_BUFFERED:
+    /* To be implemented. */
+  default:
+    fail("json decode: unrecognized io type");
   }
 }

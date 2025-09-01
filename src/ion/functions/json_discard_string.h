@@ -6,12 +6,12 @@
 
 
 
-static inline void json_discard_string_direct (
+static inline bool json_discard_string_direct (
     struct io_direct* io
 );
 
 
 
-static inline void json_discard_string_buffered (
+static inline bool json_discard_string_buffered (
     struct io_buffered* io
 );

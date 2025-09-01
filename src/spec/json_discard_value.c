@@ -1,4 +1,4 @@
-spec( json_experiments ) {
+spec( json_discard_value ) {
 
   argument(struct io* io);
 
@@ -6,23 +6,30 @@ spec( json_experiments ) {
     #define preconditions \
       io = memory_alloc_zero(spec_allocator, sizeof(struct io));
 
-  when("json_decode") {
+  when("the io is direct") {
     apply(preconditions);
-    string str = s("   \n { \"name\": \"Jane Shepard\", \"class\": 0 } ");
+    string content = s("   \n { \"name\": \"Jane Shepard\", \"class\": 0 } ");
+    *io = io_open(&content);
+
     struct squadmate shepard = { 0 };
-    struct io json = io_open(&str);
-    //struct io json = file_read("prf/json/exe/decode.json", spec_allocator);
-    //io = &json;
-    json_decode(&json, &shepard);
+    json_discard_value(&(io->direct));
 
     must("not fail");
       verify(failure.occurred == false);
     must("correctly parse until the end of the object");
+      print("--> |%li|", io->direct.cursor - (char*) io->direct.data->pointer);
       verify(*io->direct.cursor == '}');
+    must("leave the target unchanged");
+      verify(eq(&shepard, &(struct squadmate) { 0 }));
 
     success();
       io_close(io);
   } end();
+
+  /*
+  when("the io is buffered") {
+  } end();
+  */
 
   #undef preconditions
 }

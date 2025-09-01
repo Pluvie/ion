@@ -1,14 +1,9 @@
 
   bool escaped = false;
-#ifdef JSON_DISCARD
   char* begin = io->cursor;
-#endif
 
   if (*io->cursor != '"')
-    goto error;
-
-  /* Removes the quote " at the beginning.*/
-  result->pointer = io->cursor + 1;
+    goto parse_error;
 
 read_character:
   io_advance(io, 1);
@@ -33,16 +28,15 @@ read_character:
 
 json_parse_string_terminate:
 #ifndef JSON_DISCARD
-  /* Removes the quote " at the end.*/
+  /* Removes the quote " at the beginning and end.*/
+  result->pointer = begin + 1;
   result->length = (io->cursor) - (result->pointer) - 1;
 #endif
   goto parse_success;
 
 json_parse_string_error:
 #ifndef JSON_DISCARD
-  io_cursor_restore(io, result->pointer);
   *result = (string) { 0 };
-#else
-  io_cursor_restore(io, begin);
 #endif
+  io_cursor_restore(io, begin);
   goto parse_error;

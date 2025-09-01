@@ -6,8 +6,6 @@ int32 main (
     char** argv
 )
 {
-  spec_focus( json_experiments );
-
   spec_add( date );
   spec_add( date_to_string );
   spec_add( date_today );
@@ -34,6 +32,7 @@ int32 main (
   //spec_add( json_parse_number );
   //spec_add( json_parse_spaces );
   //spec_add( json_parse_string );
+  spec_focus( json_discard_value );
   spec_add( list );
   spec_add( list_alloc );
   spec_add( list_at );

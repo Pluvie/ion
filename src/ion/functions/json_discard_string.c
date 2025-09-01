@@ -1,4 +1,4 @@
-static inline void json_discard_string_direct (
+static inline bool json_discard_string_direct (
     struct io_direct* io
 )
 {
@@ -7,16 +7,15 @@ static inline void json_discard_string_direct (
   #undef JSON_DISCARD
 
 parse_success:
-  return;
+  return true;
 
 parse_error:
-  fail("json parse error: discard string");
-  return;
+  return false;
 }
 
 
 
-static inline void json_discard_string_buffered (
+static inline bool json_discard_string_buffered (
     struct io_buffered* io
 )
 {
@@ -25,9 +24,8 @@ static inline void json_discard_string_buffered (
   #undef JSON_DISCARD
 
 parse_success:
-  return;
+  return true;
 
 parse_error:
-  fail("json parse error: discard string");
-  return;
+  return false;
 }

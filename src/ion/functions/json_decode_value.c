@@ -1,4 +1,4 @@
-static inline void json_decode_value_direct (
+static inline bool json_decode_value_direct (
     struct io_direct* io,
     void* target
 )
@@ -8,7 +8,7 @@ static inline void json_decode_value_direct (
 
 
 
-static inline void json_decode_value_buffered (
+static inline bool json_decode_value_buffered (
     struct io_buffered* io,
     void* target
 )

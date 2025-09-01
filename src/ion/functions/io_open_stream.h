@@ -1,4 +1,0 @@
-struct io io_open_stream (
-    struct stream* stream,
-    int length
-);
