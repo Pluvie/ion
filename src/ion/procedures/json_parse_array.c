@@ -5,8 +5,6 @@
   io_advance(io, 1);
 
 parse_value:
-  #include "json_parse_spaces.c"
-
 #ifndef JSON_DISCARD
   // json_decode_value(io, target);
   /* Here logic to decode value. */
@@ -14,8 +12,10 @@ parse_value:
   if (json_discard_value(io))
     goto parse_comma_or_end;
 
-  if (*io->cursor == ']')
+  if (*io->cursor == ']') {
+    io_advance(io, 1);
     goto parse_success;
+  }
 
   fail("expected an array element or array end");
   goto parse_error;
@@ -26,6 +26,7 @@ parse_comma_or_end:
 
   switch(*io->cursor) {
   case ',':
+    io_advance(io, 1);
     goto parse_value;
 
   case ']':

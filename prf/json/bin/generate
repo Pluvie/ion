@@ -12,8 +12,8 @@ do
   if [[ $(( i % 1000000 )) == 0 ]]; then
     echo $i
   fi
-  echo -e '{ "name": "Billy", "age": 70, "roles": [ "admin", "supervisor" ] },' >> exe/decode.json
+  echo -e '{ "name": "Billy", "age": 70, "roles": [ "admin", "supervisor" ], "last_login": "1999-01-01 00:00:00" },' >> exe/decode.json
 done
 
-echo -e '{ "name": "Tony", "age": 90, "roles": [ "editor", "viewer" ] }' >> exe/decode.json
+echo -e '{ "name": "Tony", "surname": "", "age": 90, "roles": [ "editor", "viewer" ], "last_login": "1999-01-01 00:00:00" }' >> exe/decode.json
 echo '] }' >> exe/decode.json

@@ -27,6 +27,8 @@ read_character:
   goto read_character;
 
 json_parse_string_terminate:
+  io_advance(io, 1);
+
 #ifndef JSON_DISCARD
   /* Removes the quote " at the beginning and end.*/
   result->pointer = begin + 1;

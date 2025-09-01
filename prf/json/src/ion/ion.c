@@ -26,6 +26,7 @@ void decode (
   } data;
 
 
+  /*
   struct reflection data_rfx = {
     type(STRUCT, typeof(data)), fields({
       { field(users, POINTER, typeof(data)), of({
@@ -43,21 +44,18 @@ void decode (
       },
     })
   };
+  */
 
   memory allocator = memory_init(0);
   struct file file = file_open(s("exe/decode.json"));
   int size = file_size(&file);
-  string json_users = { memory_alloc(&allocator, size), size };
-  file_read(&file, json_users.pointer, size);
+  string content = { memory_alloc(&allocator, size), size };
+  file_read(&file, content.pointer, size);
 
-  struct io users_decoder = {
-    .target = &data,
-    .rfx = &data_rfx,
-    .allocator = &allocator,
-  };
+  struct io json = io_open(&content);
   //json_decode(&data, &json, &data_rfx, &allocator);
   //json_decode(NULL, &json, NULL, NULL);
-  json(decode_direct, &users_decoder, &json_users);
+  json_decode(&json, &data);
 
   //struct user* user;
 

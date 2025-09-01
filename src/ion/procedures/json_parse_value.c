@@ -1,4 +1,6 @@
 #ifdef JSON_DISCARD
+  #include "json_parse_spaces.c"
+
   switch(*io->cursor) {
   case '{':
     return json_discard_object(io);
@@ -28,6 +30,8 @@
 
 #else
   /*
+  #include "json_parse_spaces.c"
+
   if (json_decode_null(io, target))
     return true;
   

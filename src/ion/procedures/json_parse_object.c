@@ -25,14 +25,14 @@ parse_field:
 parse_colon:
   #include "json_parse_spaces.c"
 
-  if (unlikely(*io->cursor != ':')) {
-    fail("expected colon after object field");
-    goto parse_error;
+  if (*io->cursor == ':') {
+    io_advance(io, 1);
+    goto parse_value;
   }
 
-  #include "json_parse_spaces.c"
+  fail("expected colon after object field");
+  goto parse_error;
 
-  goto parse_value;
 
 parse_value:
 #ifndef JSON_DISCARD
@@ -50,6 +50,7 @@ parse_comma_or_end:
 
   switch(*io->cursor) {
   case ',':
+    io_advance(io, 1);
     goto parse_field;
 
   case '}':
