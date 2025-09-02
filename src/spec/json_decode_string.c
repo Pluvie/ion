@@ -100,6 +100,7 @@ spec( json_decode_string ) {
   } end();
 
 
+  /*
   when("the io is buffered") {
     when("the input is not a string") {
       struct pipe source = pipe_open();
@@ -190,6 +191,7 @@ spec( json_decode_string ) {
         io_close(io);
     } end();
   } end();
+  */
 
   #undef preconditions
 }

@@ -46,6 +46,10 @@ struct coordinate calc (
   //struct io json = io_open(content, &rfx, allocator);
   struct io json = io_open(content, NULL, allocator);
   json_decode(&json, &data);
+  if (unlikely(failure.occurred)) {
+    failure_add_io_info(json.direct);
+    failure_print();
+  }
   return result;
 }
 
@@ -63,13 +67,7 @@ int32 main (
   file_read(&benchmark_file, benchmark_content.pointer, size);
 
   struct coordinate result = calc(&benchmark_content, &allocator);
-  print("Result:"   "\n"
-      "{"           "\n"
-      "  x: %f,"    "\n"
-      "  y: %f,"    "\n"
-      "  z: %f,"    "\n"
-      "}"           "\n",
-    result.x, result.y, result.z);
+  print("Result: { x: %f, y: %f, z: %f }", result.x, result.y, result.z);
 
   memory_release(&allocator);
   return EXIT_SUCCESS;
