@@ -9,21 +9,21 @@ void failure_add_io_info (
   int caret_position = 0;
   int position = 0;
 
-  if (io->buffer.enabled && io->channel != IO_MEMORY)
-    goto extract_from_buffer;
+  if (io->type == IO_DIRECT)
+    goto extract_direct;
   else
-    goto extract_from_channel;
+    goto extract_buffered;
 
-extract_from_buffer:
-  int buffer_begin = io->buffer.cursor - 32;
-  if (buffer_begin < 0)
-    buffer_begin = 0;
+extract_direct:
+  char* data_begin = io->direct.cursor - 32;
+  if ((void*) data_begin < io->direct->pointer)
+    data_begin = io->direct->pointer;
 
-  int buffer_end = io->buffer.cursor + 32;
-  if (buffer_end > io->buffer.data.length)
-    buffer_end = io->buffer.data.length;
+  char* data_end = io->direct.cursor + 32;
+  if (data_end > io->direct.end)
+    data_end = io->direct.end;
 
-  extraction_size = buffer_end - buffer_begin;
+  extraction_size = data_end - data_begin;
   if (extraction_size > lengthof(extraction))
     extraction_size = lengthof(extraction);
 
@@ -39,7 +39,8 @@ extract_from_buffer:
 
   goto store_message;
 
-extract_from_channel:
+extract_buffered:
+  /*
   int channel_begin = io->cursor - 32;
   if (io->channel != IO_MEMORY || channel_begin < 0)
     channel_begin = 0;
@@ -67,6 +68,7 @@ extract_from_channel:
   caret[caret_position] = '^';
 
   position = io->cursor;
+  */
 
 store_message:
   for (int i = 0; i < lengthof(extraction); i++)

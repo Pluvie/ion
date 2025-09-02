@@ -1,5 +1,6 @@
 static inline bool json_decode_value_direct (
     struct io_direct* io,
+    struct reflection* rfx,
     void* target
 )
 {
@@ -10,6 +11,7 @@ static inline bool json_decode_value_direct (
 
 static inline bool json_decode_value_buffered (
     struct io_buffered* io,
+    struct reflection* rfx,
     void* target
 )
 {

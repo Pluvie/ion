@@ -1,5 +1,6 @@
 static inline void json_decode_string_direct (
     struct io_direct* io,
+    struct reflection* rfx,
     void* target
 )
 {
@@ -7,11 +8,17 @@ static inline void json_decode_string_direct (
   #include "../procedures/json_parse_string.c"
 
 parse_success:
-  /* Add reflection validation. */
-  return;
+  if (reflection_validate(rfx, target))
+    return;
 
-parse_error:
+  goto add_failure_info;
+
+parse_failure:
   fail("expected a string");
+
+add_failure_info:
+  failure_add_io_info(io);
+  failure_add_reflection_info(rfx);
   return;
 }
 
@@ -19,6 +26,7 @@ parse_error:
 
 static inline void json_decode_string_buffered (
     struct io_buffered* io,
+    struct reflection* rfx,
     void* target
 )
 {
@@ -33,7 +41,7 @@ static inline void json_decode_string_buffered (
 //  byte_copy(target, &copy, sizeof(string));
 //  return;
 //
-//parse_error:
+//parse_failure:
 //  fail("expected a string");
 //  return;
 }

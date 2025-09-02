@@ -1,6 +1,6 @@
 
   if (unlikely(*io->cursor != '{'))
-    goto parse_error;
+    goto parse_failure;
 
   io_advance(io, 1);
 
@@ -19,7 +19,7 @@ parse_field:
     goto parse_success;
 
   fail("expected an object field or object end");
-  goto parse_error;
+  goto parse_failure;
 #endif
 
 parse_colon:
@@ -31,7 +31,7 @@ parse_colon:
   }
 
   fail("expected colon after object field");
-  goto parse_error;
+  goto parse_failure;
 
 
 parse_value:
@@ -42,7 +42,7 @@ parse_value:
   if (json_discard_value(io))
     goto parse_comma_or_end;
 
-  goto parse_error;
+  goto parse_failure;
 #endif
 
 parse_comma_or_end:
@@ -59,9 +59,9 @@ parse_comma_or_end:
 
   default:
     if (failure.occurred)
-      goto parse_error;
+      goto parse_failure;
 
     fail("expected comma or object end");
   }
 
-  goto parse_error;
+  goto parse_failure;

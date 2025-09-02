@@ -1,6 +1,6 @@
 
   if (unlikely(*io->cursor != '['))
-    goto parse_error;
+    goto parse_failure;
 
   io_advance(io, 1);
 
@@ -18,7 +18,7 @@ parse_value:
   }
 
   fail("expected an array element or array end");
-  goto parse_error;
+  goto parse_failure;
 #endif
 
 parse_comma_or_end:
@@ -35,9 +35,9 @@ parse_comma_or_end:
 
   default:
     if (failure.occurred)
-      goto parse_error;
+      goto parse_failure;
 
     fail("expected comma or array end");
   }
 
-  goto parse_error;
+  goto parse_failure;

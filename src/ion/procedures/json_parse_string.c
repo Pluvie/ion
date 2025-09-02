@@ -3,7 +3,7 @@
   char* begin = io->cursor;
 
   if (*io->cursor != '"')
-    goto parse_error;
+    goto parse_failure;
 
 read_character:
   io_advance(io, 1);
@@ -41,4 +41,4 @@ json_parse_string_error:
   *result = (string) { 0 };
 #endif
   io_cursor_restore(io, begin);
-  goto parse_error;
+  goto parse_failure;

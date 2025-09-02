@@ -9,7 +9,7 @@ static inline bool json_discard_array_direct (
 parse_success:
   return true;
 
-parse_error:
+parse_failure:
   return false;
 }
 
@@ -26,6 +26,6 @@ static inline bool json_discard_array_buffered (
 parse_success:
   return true;
 
-parse_error:
+parse_failure:
   return false;
 }

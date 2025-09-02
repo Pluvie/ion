@@ -13,4 +13,4 @@
     goto parse_success;
   }
 
-  goto parse_error;
+  goto parse_failure;
