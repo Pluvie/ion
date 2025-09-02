@@ -1,5 +1,4 @@
 
-  io_reserve(io, 128);
   char* number_end;
 
 #ifndef JSON_DISCARD
@@ -8,22 +7,18 @@
   strtold(io->cursor, &number_end);
 #endif
 
-  if (errno == 0) {
-    int number_length = (number_end - io->cursor);
+  int number_length = (number_end - io->cursor);
+  if (errno == 0 && number_length > 0) {
     io_advance(io, number_length);
-    goto parse_success;
+#ifndef JSON_DISCARD
+    /* To be implemented. */
+#else
+    return true;
+#endif
   }
 
-  goto parse_failure;
-
-parse_success:
 #ifndef JSON_DISCARD
-#else
-  return true;
-#endif
-
-parse_failure:
-#ifndef JSON_DISCARD
+  /* To be implemented. */
 #else
   return false;
 #endif

@@ -5,8 +5,7 @@ mkdir -p exe
 # Go
 if [ $# -eq 0 ] || [[ $1 == "go" ]]; then
   cd src/go
-  go build go.go
-  mv go ../../exe
+  go build go.go && mv go ../../exe
   cd -
 fi
 
@@ -52,6 +51,7 @@ fi
 if [ $# -eq 0 ] || [[ $1 == "simdjson" ]]; then
   cd src/simdjson
   g++ main.cpp simdjson.cpp \
+    -std=c++20              \
     -O3 -march=native       \
     -o ../../exe/simdjson
   cd -

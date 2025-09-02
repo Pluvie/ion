@@ -1,8 +1,8 @@
-#define io_contains(io_ptr, v, len)             \
-  _Generic((io_ptr),                            \
+#define io_contains(io, value, length)          \
+  _Generic((io),                                \
     struct io_direct* : io_contains_direct,     \
     struct io_buffered* : io_contains_buffered  \
-  )(io_ptr, v, len)
+  )(io, value, length)
 
 
 

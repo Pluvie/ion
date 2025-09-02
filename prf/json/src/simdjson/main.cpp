@@ -1,22 +1,75 @@
 #include <iostream>
 #include "simdjson.h"
 
+using namespace std;
+
+struct coordinate_t {
+  double x;
+  double y;
+  double z;
+
+  auto operator<=>(const coordinate_t &) const = default;
+
+  friend ostream &operator<<(ostream &out, const coordinate_t &point) {
+    out << "coordinate_t {x: " << point.x << ", y: " << point.y
+        << ", z: " << point.z << "}";
+    return out;
+  }
+};
+
 using namespace simdjson;
 
-int main(void) {
-    ondemand::parser parser;
-    padded_string json = padded_string::load("exe/decode.json");
-    ondemand::document data = parser.iterate(json);
-    ondemand::array users;
-    auto error = data.find_field("users").get_array().get(users);
+class on_demand {
+public:
+  bool run(const padded_string &json);
+  coordinate_t my_point{};
+  size_t count{};
 
-    ondemand::object user;
-    user = users.at(0);
-    std::cout << "Done: " << user["name"] << std::endl;
-    users.reset();
-    user = users.at(9999999);
-    std::cout << "Done: " << user["name"] << std::endl;
-    users.reset();
-    user = users.at(10000000);
-    std::cout << "Done: " << user["name"] << std::endl;
+private:
+  ondemand::parser parser{};
+};
+
+bool on_demand::run(const padded_string &json) {
+  count = 0;
+  auto doc = parser.iterate(json);
+  for (ondemand::object point_object : doc["coordinates"]) {
+    my_point.x += double(point_object["x"]);
+    my_point.y += double(point_object["y"]);
+    my_point.z += double(point_object["z"]);
+    count++;
+  }
+  return true;
+}
+
+coordinate_t calc(const padded_string &json) {
+  on_demand reader;
+  reader.run(json);
+  reader.my_point.x /= reader.count;
+  reader.my_point.y /= reader.count;
+  reader.my_point.z /= reader.count;
+  return reader.my_point;
+}
+
+int main() {
+  auto right = coordinate_t{2.0, 0.5, 0.25};
+  // The _padded suffix creates a simdjson::padded_string instance
+  for (const padded_string &v :
+       {R"({"coordinates":[{"x":2.0,"y":0.5,"z":0.25}]})"_padded,
+        R"({"coordinates":[{"y":0.5,"x":2.0,"z":0.25}]})"_padded}) {
+    auto left = calc(v);
+    if (left != right) {
+      cerr << left << " != " << right << endl;
+      exit(EXIT_FAILURE);
+    }
+  }
+
+  padded_string text;
+  const auto &error = padded_string::load("exe/benchmark.json").get(text);
+  if (error) {
+    cerr << "could not load file" << endl;
+    return EXIT_FAILURE;
+  }
+
+  auto results = calc(text);
+  cout << results << endl;
 }

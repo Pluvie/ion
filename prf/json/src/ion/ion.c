@@ -1,83 +1,52 @@
 #include "../src/ion.h"
 #include "../src/ion.c"
 
-struct user {
-  string name;
-  int age;
-  list<string> roles;
+struct coordinate {
+  dec x;
+  dec y;
+  dec z;
 };
 
-#define list_of struct user
+#define list_of struct coordinate
 #include "ion/types/list.h"
 
 #undef list_function
-#define list_function(s, f, ...)                  \
-  _Generic(*(s),                                  \
-    list<struct user> : list<struct user>_ ## f,  \
-    _list_function(v, f, __VA_ARGS__)             \
+#define list_function(s, f, ...)                              \
+  _Generic(*(s),                                              \
+    list<struct coordinate> : list<struct coordinate>_ ## f,  \
+    _list_function(v, f, __VA_ARGS__)                         \
   )
 
-void decode (
-    void
-)
-{
-  struct {
-    list<struct user>* users;
-  } data;
+struct coordinates_data {
+  list<struct coordinate>* coordinates;
+};
 
-
-  /*
-  struct reflection data_rfx = {
-    type(STRUCT, typeof(data)), fields({
-      { field(users, POINTER, typeof(data)), of({
-          type(LIST), container(list<struct user>_), of({
-            type(STRUCT, struct user), fields({
-              { field(name, STRING, struct user) },
-              { field(age, INT, struct user) },
-              { field(roles, LIST, struct user),
-                  container(list<string>_),
-                  of({ type(STRING) })
-              },
-            })
+struct reflection rfx = {
+  type(STRUCT, struct coordinates_data), fields({
+    { field(coordinates, POINTER, struct coordinates_data), of({
+        type(LIST), container(list<struct coordinate>_), of({
+          type(STRUCT, struct coordinate), fields({
+            { field(x, DEC, struct coordinate) },
+            { field(y, DEC, struct coordinate) },
+            { field(z, DEC, struct coordinate) },
           })
         })
-      },
-    })
-  };
-  */
+      })
+    },
+  })
+};
 
-  memory allocator = memory_init(0);
-  struct file file = file_open(s("exe/decode.json"));
-  int size = file_size(&file);
-  string content = { memory_alloc(&allocator, size), size };
-  file_read(&file, content.pointer, size);
-
-  struct io json = io_open(&content);
-  //json_decode(&data, &json, &data_rfx, &allocator);
-  //json_decode(NULL, &json, NULL, NULL);
+struct coordinate calc (
+    string* content,
+    memory* allocator
+)
+{
+  struct coordinate result = { 0 };
+  struct coordinates_data data = { 0 };
+  //struct io json = io_open(content, &rfx, allocator);
+  struct io json = io_open(content, NULL, allocator);
   json_decode(&json, &data);
-
-  //struct user* user;
-
-  //user = list_at(data.users, 0);
-  //print("Done: { %.*s, %li, [ %.*s, %.*s ] }",
-  //  sp(user->name), user->age,
-  //  sp(*list_at(&user->roles, 0)),
-  //  sp(*list_at(&user->roles, 1)));
-
-  //user = list_at(data.users, 9999999);
-  //print("Done: { %.*s, %li, [ %.*s, %.*s ] }",
-  //  sp(user->name), user->age,
-  //  sp(*list_at(&user->roles, 0)),
-  //  sp(*list_at(&user->roles, 1)));
-
-  //user = list_at(data.users, 10000000);
-  //print("Done: { %.*s, %li, [ %.*s, %.*s ] }",
-  //  sp(user->name), user->age,
-  //  sp(*list_at(&user->roles, 0)),
-  //  sp(*list_at(&user->roles, 1)));
-
-  memory_release(&allocator);
+  return result;
 }
 
 int32 main (
@@ -85,6 +54,23 @@ int32 main (
     char** argv
 )
 {
-  decode();
+
+  memory allocator = memory_init(0);
+
+  struct file benchmark_file = file_open(s("exe/benchmark.json"));
+  int size = file_size(&benchmark_file);
+  string benchmark_content = { memory_alloc(&allocator, next_mul64(size)), size };
+  file_read(&benchmark_file, benchmark_content.pointer, size);
+
+  struct coordinate result = calc(&benchmark_content, &allocator);
+  print("Result:"   "\n"
+      "{"           "\n"
+      "  x: %f,"    "\n"
+      "  y: %f,"    "\n"
+      "  z: %f,"    "\n"
+      "}"           "\n",
+    result.x, result.y, result.z);
+
+  memory_release(&allocator);
   return EXIT_SUCCESS;
 }
