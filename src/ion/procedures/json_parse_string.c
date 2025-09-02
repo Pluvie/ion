@@ -1,6 +1,10 @@
 
   bool escaped = false;
+
+#ifndef JSON_DISCARD
   char* begin = io->cursor;
+  string* result = (string*) target;
+#endif
 
   if (*io->cursor != '"')
     goto parse_failure;
@@ -18,27 +22,52 @@ read_character:
     goto read_character;
   }
 
-  if (*io->cursor == '"')
-    goto json_parse_string_terminate;
+  if (*io->cursor == '"') {
+    io_advance(io, 1);
+    goto parse_success;
+  }
 
   if (unlikely(io_exhausted(io)))
-    goto json_parse_string_error;
+    goto parse_failure;
 
   goto read_character;
 
-json_parse_string_terminate:
-  io_advance(io, 1);
-
+parse_success:
 #ifndef JSON_DISCARD
   /* Removes the quote " at the beginning and end.*/
   result->pointer = begin + 1;
   result->length = (io->cursor) - (result->pointer) - 1;
-#endif
-  goto parse_success;
 
-json_parse_string_error:
+  if (reflection_validate(rfx, target))
+    return;
+  else
+    goto parse_failure;
+#else
+  return true;
+#endif
+
+parse_failure:
 #ifndef JSON_DISCARD
   *result = (string) { 0 };
+
+  if (failure.occurred) {
+    /* Nothing to add. */
+
+  } else if (io_exhausted(io)) {
+    io->cursor--;
+    fail("unterminated string");
+
+  } else if (io->cursor > begin) {
+    fail("invalid string");
+
+  } else {
+    io_cursor_restore(io, begin);
+    fail("expected a string");
+  }
+
+  failure_add_io_info(io);
+  failure_add_reflection_info(rfx);
+  return;
+#else
+  return false;
 #endif
-  io_cursor_restore(io, begin);
-  goto parse_failure;

@@ -15,3 +15,15 @@
   }
 
   goto parse_failure;
+
+parse_success:
+#ifndef JSON_DISCARD
+#else
+  return true;
+#endif
+
+parse_failure:
+#ifndef JSON_DISCARD
+#else
+  return false;
+#endif

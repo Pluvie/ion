@@ -17,7 +17,7 @@ spec( json_discard_value ) {
     must("not fail");
       verify(failure.occurred == false);
     must("correctly parse until the end of the object");
-      int parsed_length = io->direct.cursor - (char*) io->direct.data->pointer;
+      int parsed_length = io->direct.cursor - io->direct.data->pointer;
       verify(parsed_length == 43);
       verify(*io->direct.cursor == ' ');
     must("leave the target unchanged");

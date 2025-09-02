@@ -5,12 +5,6 @@ static inline bool json_discard_number_direct (
   #define JSON_DISCARD
   #include "../procedures/json_parse_number.c"
   #undef JSON_DISCARD
-
-parse_success:
-  return true;
-
-parse_failure:
-  return false;
 }
 
 
@@ -22,10 +16,4 @@ static inline bool json_discard_number_buffered (
   #define JSON_DISCARD
   #include "../procedures/json_parse_number.c"
   #undef JSON_DISCARD
-
-parse_success:
-  return true;
-
-parse_failure:
-  return false;
 }

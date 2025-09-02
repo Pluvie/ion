@@ -1,7 +1,7 @@
 #include "functions/alloc_resize.c"
 #include "functions/alloc_resize_zero.c"
 #include "functions/cmp.c"
-//#include "functions/failure_add_io_info.c"
+#include "functions/failure_add_io_info.c"
 #include "functions/failure_add_reflection_info.c"
 #include "functions/file_load.c"
 #include "functions/hash.c"
