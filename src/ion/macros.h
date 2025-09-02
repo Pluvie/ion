@@ -38,6 +38,7 @@
 #include "macros/s.h"
 #include "macros/set.h"
 #include "macros/signal_received.h"
+#include "macros/slice.h"
 #include "macros/sp.h"
 #include "macros/unlikely.h"
 #include "macros/zero_out.h"

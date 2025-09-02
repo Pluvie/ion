@@ -26,7 +26,10 @@ struct io_direct {
 check_sizeof(24, struct io_direct);
 
 struct io_buffered {
-  memory* buffer;
+  struct {
+    char* data;
+    int length;
+  } buffer;
   char* cursor;
   int offset;
   enum io_channels channel;
@@ -38,16 +41,16 @@ struct io_buffered {
     struct stream* stream;
   };
 };
-check_sizeof(40, struct io_buffered);
+check_sizeof(48, struct io_buffered);
 
 struct io {
   union {
-    struct io_direct direct;
-    struct io_buffered buffered;
+    struct io_direct* direct;
+    struct io_buffered* buffered;
   };
   enum io_types type;
   padding(4);
   struct reflection* rfx;
   memory* allocator;
 };
-check_sizeof(64, struct io);
+check_sizeof(32, struct io);

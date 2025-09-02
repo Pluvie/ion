@@ -7,7 +7,8 @@ void io_close (
     return;
   case IO_BUFFERED:
     /* To be implemented. */
+    return;
   default:
-    fail("json decode: unrecognized io type");
+    fail("io close: unrecognized io type");
   }
 }

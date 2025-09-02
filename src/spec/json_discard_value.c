@@ -9,17 +9,17 @@ spec( json_discard_value ) {
   when("the io is direct") {
     apply(preconditions);
     string content = s("   \n { \"name\": \"Jane Shepard\", \"class\": 0 } ");
-    *io = io_open(&content);
+    *io = io_open(&content, NULL, spec_allocator);
 
     struct squadmate shepard = { 0 };
-    json_discard_value(&(io->direct));
+    json_discard_value(io->direct);
 
     must("not fail");
       verify(failure.occurred == false);
     must("correctly parse until the end of the object");
-      int parsed_length = io->direct.cursor - io->direct.data->pointer;
+      int parsed_length = io->direct->cursor - io->direct->data->pointer;
       verify(parsed_length == 43);
-      verify(*io->direct.cursor == ' ');
+      verify(*io->direct->cursor == ' ');
     must("leave the target unchanged");
       verify(eq(&shepard, &(struct squadmate) { 0 }));
 

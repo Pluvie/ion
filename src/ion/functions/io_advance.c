@@ -19,6 +19,20 @@ static inline void io_advance_buffered (
     int amount
 )
 {
-  fail("to be implemented");
+/*
+  void* address = memory_alloc(io->buffer, amount);
+  switch (io->channel) {
+  case IO_FILE:
+    file_read(io->file, address, amount);
+  case IO_PIPE:
+    pipe_read(io->file, address, amount);
+  case IO_SOCKET:
+    socket_read(io->file, address, amount, 0);
+  case IO_STREAM:
+    stream_read(io->file, address, amount);
+  default:
+    fail("io: unsupported channel");
+  }
   return;
+*/
 }

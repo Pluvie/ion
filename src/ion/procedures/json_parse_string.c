@@ -27,7 +27,7 @@ read_character:
     goto parse_success;
   }
 
-  if (unlikely(io_exhausted(io)))
+  if (unlikely(*io->cursor <= 31)) /* Control characters. */
     goto parse_failure;
 
   goto read_character;
@@ -50,8 +50,8 @@ parse_failure:
 #ifndef JSON_DISCARD
   *result = (string) { 0 };
 
-  if (failure.occurred) {
-    /* Nothing to add. */
+  if (unlikely(failure.occurred)) {
+    /* Some I/O failure occurred. Nothing to add. */
 
   } else if (io_exhausted(io)) {
     io->cursor--;
