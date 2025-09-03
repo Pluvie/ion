@@ -1,9 +1,13 @@
 #!/bin/bash
 
+#hyperfine --runs 1  \
+#  exe/go            \
+#  exe/ion           \
+#  exe/python        \
+#  exe/ruby          \
+#  exe/rust          \
+#  exe/simdjson
 hyperfine --runs 1  \
-  exe/go            \
   exe/ion           \
-  exe/python        \
-  exe/ruby          \
   exe/rust          \
   exe/simdjson

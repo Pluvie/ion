@@ -8,8 +8,8 @@ spec( json_decode_dec ) {
   precondition("a valid reflection");
   precondition("a valid target");
     #define preconditions \
-      string name; target = &name; \
-      rfx = &(struct reflection) { type(STRING) }; \
+      dec number; target = &number; \
+      rfx = &(struct reflection) { type(DEC) }; \
       io = memory_alloc_zero(spec_allocator, sizeof(struct io)); \
       *io = io_open(&source, rfx, spec_allocator);
 
@@ -41,7 +41,7 @@ spec( json_decode_dec ) {
         verify(failure_is(
           "invalid number, at position 4:\n"\
           "123.\n"\
-          "   ^\n"));
+          "    ^\n"));
       success();
         io_close(io);
     } end();
@@ -55,15 +55,15 @@ spec( json_decode_dec ) {
       must("fail with a specific error");
         verify(failure.occurred == true);
         verify(failure_is(
-          "invalid number, at position 6:\n"\
+          "invalid number, at position 7:\n"\
           "123.77e\n"\
-          "      ^\n"));
+          "       ^\n"));
       success();
         io_close(io);
     } end();
 
-    when("the input is a valid json string") {
-      string source = s("\"abc def\"");
+    when("the input is a valid integral json number") {
+      string source = s("12345");
       apply(preconditions);
 
       json_decode_dec(io->direct, rfx, target);
@@ -72,16 +72,16 @@ spec( json_decode_dec ) {
         verify(failure.occurred == false);
       must("correctly parse until the end of the string");
         int parsed_length = io->direct->cursor - io->direct->data->pointer;
-        verify(parsed_length == 9);
+        verify(parsed_length == source.length);
         verify(io_exhausted(io->direct));
-      must("store the parsed string in the reflection target, without quotes");
-        verify(eq(name, "abc def"));
+      must("store the parsed number in the reflection target");
+        verify(number == 12345);
       success();
         io_close(io);
     } end();
 
-    when("the input is a valid json string with escaped characters") {
-      string source = s("\"abc def\"");
+    when("the input is a valid decimal json number") {
+      string source = s("12345.6789");
       apply(preconditions);
 
       json_decode_dec(io->direct, rfx, target);
@@ -90,10 +90,10 @@ spec( json_decode_dec ) {
         verify(failure.occurred == false);
       must("correctly parse until the end of the string");
         int parsed_length = io->direct->cursor - io->direct->data->pointer;
-        verify(parsed_length == 9);
+        verify(parsed_length == source.length);
         verify(io_exhausted(io->direct));
-      must("store the parsed string in the reflection target, without quotes");
-        verify(eq(name, "abc def"));
+      must("store the parsed number in the reflection target");
+        verify(number == 12345.6789);
       success();
         io_close(io);
     } end();

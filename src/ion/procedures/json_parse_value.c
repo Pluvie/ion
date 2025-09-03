@@ -25,6 +25,7 @@
       return false;
   
     fail("expected a json value");
+    failure_add_io_info(io);
     return false;
   }
 

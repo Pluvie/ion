@@ -72,7 +72,7 @@ spec( json_decode_string ) {
         verify(failure.occurred == false);
       must("correctly parse until the end of the string");
         int parsed_length = io->direct->cursor - io->direct->data->pointer;
-        verify(parsed_length == 9);
+        verify(parsed_length == source.length);
         verify(io_exhausted(io->direct));
       must("store the parsed string in the reflection target, without quotes");
         verify(eq(name, "abc def"));
@@ -90,7 +90,7 @@ spec( json_decode_string ) {
         verify(failure.occurred == false);
       must("correctly parse until the end of the string");
         int parsed_length = io->direct->cursor - io->direct->data->pointer;
-        verify(parsed_length == 9);
+        verify(parsed_length == source.length);
         verify(io_exhausted(io->direct));
       must("store the parsed string in the reflection target, without quotes");
         verify(eq(name, "abc def"));

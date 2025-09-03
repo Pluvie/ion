@@ -3,6 +3,8 @@ static inline void io_advance_direct (
     int amount
 )
 {
+  io->cursor += amount;
+  /*
   if (likely(io->cursor < io->end)) {
     io->cursor += amount;
     return;
@@ -10,6 +12,7 @@ static inline void io_advance_direct (
 
   io->cursor = EMPTY_STRING;
   return;
+  */
 }
 
 
