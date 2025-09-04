@@ -47,6 +47,9 @@ parse_integral:
   else if (*io->cursor == 'e' || *io->cursor == 'E')
     goto parse_exponent;
 
+#ifndef JSON_DISCARD
+  number = accumulator;
+#endif
   goto parse_success;
 
 
@@ -57,15 +60,12 @@ parse_decimal:
 #endif
 
 #ifdef JSON_DECODE_INT
-  /* If we're decoding an INT, we can memorize the parsed number so far and completely
+  /* If we're decoding an INT, we can memorize the parsed number so far, and completely
    * truncate the decimal part when converting. */
   number = accumulator;
   accumulator = 0;
 #endif
 
-#ifdef JSON_DECODE_DEC
-  decimal_length = io->cursor - decimal_start;
-#endif
   if (*io->cursor >= '0' && *io->cursor <= '9')
     #include "json_parse_digit.c"
   else
@@ -77,6 +77,7 @@ parse_decimal:
    * converting. */
   number = accumulator;
   accumulator = 0;
+  decimal_length = io->cursor - decimal_start;
 #endif
 
   if (*io->cursor != 'e' && *io->cursor != 'E')
@@ -125,12 +126,21 @@ parse_success:
   memcpy(target, &number, sizeof(int));
 #endif
 #ifdef JSON_DECODE_DEC
+  print("");
+  print("number -----> %li", number);
+  print("dec length -----> %li", decimal_length);
+  
   dec number_dec = 0;
+
   if (decimal_length > 0)
-    number_dec = number / (10.0 * decimal_length);
+    number_dec = number * (10.0 * decimal_length); // Should be `number * (10^(-decimal_length))
+  else
+    number_dec = (dec) number;
+
   if (negative)
     number_dec = -number_dec;
 
+  print("number dec -----> %f", number_dec);
   memcpy(target, &number_dec, sizeof(dec));
 #endif
   return;
