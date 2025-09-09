@@ -15,9 +15,6 @@ spec( string_to_dec ) {
     must("not fail");
       verify(failure.occurred == false);
 
-    must("parse the source string");
-      verify(*source->pointer == '\0');
-
     must("return its decimal equivalent");
       verify((dec) 17788 == result);
 
@@ -31,9 +28,6 @@ spec( string_to_dec ) {
 
     must("not fail");
       verify(failure.occurred == false);
-
-    must("parse the source string");
-      verify(*source->pointer == '\0');
 
     must("return its decimal equivalent");
       verify((dec) 17788.44 == result);
@@ -49,9 +43,6 @@ spec( string_to_dec ) {
     must("not fail");
       verify(failure.occurred == false);
 
-    must("parse the source string");
-      verify(*source->pointer == '\0');
-
     must("return its decimal equivalent");
       verify((dec) 17.78844 == result);
 
@@ -65,9 +56,6 @@ spec( string_to_dec ) {
 
     must("not fail");
       verify(failure.occurred == false);
-
-    must("parse the source string");
-      verify(*source->pointer == '\0');
 
     must("return its decimal equivalent");
       verify((dec) 1778800 == result);
@@ -83,9 +71,6 @@ spec( string_to_dec ) {
     must("not fail");
       verify(failure.occurred == false);
 
-    must("parse the source string");
-      verify(*source->pointer == '\0');
-
     must("return its decimal equivalent");
       verify((dec) 17788.99 == (result / 1e159));
 
@@ -100,9 +85,6 @@ spec( string_to_dec ) {
     must("not fail");
       verify(failure.occurred == false);
 
-    must("parse the source string");
-      verify(*source->pointer == '\0');
-
     must("return its decimal equivalent");
       verify((dec) 17788.99 == (result * 1e199));
 
@@ -116,9 +98,6 @@ spec( string_to_dec ) {
 
     must("not fail");
       verify(failure.occurred == false);
-
-    must("parse the source string");
-      verify(*source->pointer == 'a');
 
     must("return its decimal equivalent");
       verify((dec) 17 == result);
@@ -135,9 +114,6 @@ spec( string_to_dec ) {
       verify(failure.occurred == true);
       verify(failure_is("number overflow"));
 
-    must("parse the source string");
-      verify(*source->pointer == '\0');
-
     must("return 0");
       verify((dec) 0 == result);
 
@@ -152,9 +128,6 @@ spec( string_to_dec ) {
     must("fail with a specific error");
       verify(failure.occurred == true);
       verify(failure_is("number overflow"));
-
-    must("parse the source string");
-      verify(*source->pointer == '\0');
 
     must("return 0");
       verify((dec) 0 == result);
@@ -171,9 +144,6 @@ spec( string_to_dec ) {
       verify(failure.occurred == true);
       verify(failure_is("exponent overflow"));
 
-    must("parse the source string");
-      verify(*source->pointer == '\0');
-
     must("return 0");
       verify((dec) 0 == result);
 
@@ -188,9 +158,6 @@ spec( string_to_dec ) {
     must("fail with a specific error");
       verify(failure.occurred == true);
       verify(failure_is("expected a number"));
-
-    must("not parse the source string");
-      verify(*source->pointer == 'a');
 
     must("return 0");
       verify((dec) 0 == result);

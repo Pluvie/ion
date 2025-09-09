@@ -1,16 +1,12 @@
 
-  /* Variable prerequisites:
-   * - `source` must be a `string*`: it must contain the number to be parsed, with at
-   *   least one '\0' padding character at the end.
-   * - `result` must be a `int` or `dec`, depending on which type the parser
-   *   must output.
+  /* Procedure prerequisites on local variables:
    *
-   * The `end` variable can be used in case of a parsing failure in order to give more
-   * information on the failure reason. If it is equal to `source->pointer`, no valid
-   * characters were found. Otherwise, some valid characters were found up until a
-   * mandatory expected character, which was not found. These are mostly incomplete
-   * numbers situations like `3.` or `3.14e`. */
-  char* cursor = source->pointer;
+   * - `cursor` must be a `char*`: it must point to the number to be parsed, with at
+   *   least one padding character at the end. This means that the last character of
+   *   the string must not be the last valid character of the number to parse.
+   * - `result` must be a `int` or `dec`, depending on which type the parser
+   *   must output. */
+  char* begin = cursor;
 
 #ifndef STRING_TO_NUMBER__DISCARD
   int number = 0;
@@ -23,14 +19,27 @@
   int decimal_length = 0;
   int exponent_length = 0;
 
-  char* integral_start = source->pointer;
-  char* decimal_start = source->pointer;
-  char* exponent_start = source->pointer;
+  char* integral_start = cursor;
+  char* decimal_start = cursor;
+  char* exponent_start = cursor;
 #endif
 
-  /* Number starts with 0-9. Go parse the integral part. */
-  if (*cursor >= '0' && *cursor <= '9')
+  /* Number starts with 1-9. Go parse the integral part. */
+  if (*cursor >= '1' && *cursor <= '9')
     goto parse_integral;
+
+  /* Number starts with 0. Cannot contain any digit afterwards. */
+  if (*cursor == '0') {
+    cursor++;
+
+    /* Non-numbers or numbers starting with 0 and with any other digit afterwards. */
+    if (*cursor == '.')
+      goto parse_decimal;
+    else if (*cursor >= '0' && *cursor <= '9')
+      goto parse_failure;
+    else
+      goto parse_success;
+  }
 
   /* Number does not start with 0-9 and neither with '-': it's not valid. */
   if (*cursor != '-')
@@ -54,10 +63,6 @@ parse_integral:
   integral_length = cursor - integral_start;
 #endif
 
-  /* Non-numbers or numbers starting with 0 and with any other digit afterwards. */
-  if (integral_length == 0 || (*integral_start == '0' && integral_length > 1))
-    goto parse_failure;
-
   if (*cursor == '.')
     goto parse_decimal;
   else if (*cursor == 'e' || *cursor == 'E')
@@ -71,7 +76,9 @@ parse_integral:
 
 parse_decimal:
   cursor++;
+#ifndef STRING_TO_NUMBER__DISCARD
   decimal_start = cursor;
+#endif
 
   if (*cursor >= '0' && *cursor <= '9')
     #include "string_to_number_parse_digit.c"
@@ -92,7 +99,9 @@ parse_exponent:
 
   if (*cursor == '-') {
     cursor++;
+#ifndef STRING_TO_NUMBER__DISCARD
     negative_exponent = true;
+#endif
   } else if (*cursor == '+') {
     cursor++;
   }
@@ -115,18 +124,21 @@ parse_exponent:
     goto parse_failure;
   }
 
+
 parse_failure:
-  if (cursor == source->pointer) {
+#ifndef STRING_TO_NUMBER__DISCARD
+  if (cursor == begin) {
     fail("expected a number");
   } else {
     fail("invalid number");
   }
-
-  source->pointer = cursor;
+#else
+  cursor = begin;
+#endif
   goto procedure_failure;
 
+
 parse_success:
-  source->pointer = cursor;
 #ifdef STRING_TO_NUMBER__DISCARD
   goto procedure_success;
 
