@@ -1,7 +1,7 @@
 
 #ifndef JSON_DISCARD
   int number = 0;
-  //int exponent = 0;
+  int exponent = 0;
   int accumulator = 0;
   bool negative = false;
 #endif
@@ -60,8 +60,9 @@ parse_decimal:
 #endif
 
 #ifdef JSON_DECODE_INT
-  /* If we're decoding an INT, we can memorize the parsed number so far, and completely
-   * truncate the decimal part when converting. */
+  /* If we're decoding an INT, we can memorize the parsed number so far, and start
+   * using the accumulator to parse the decimal part. This part shall be completely
+   * truncated when converting. */
   number = accumulator;
   accumulator = 0;
 #endif
@@ -73,8 +74,7 @@ parse_decimal:
 
 #ifdef JSON_DECODE_DEC
   /* If we're decoding a DEC, we memorize the parsed number so far, and start using
-   * the accumulator to parse the exponent. It shall be used at the end when
-   * converting. */
+   * the accumulator to parse the exponent. */
   number = accumulator;
   accumulator = 0;
   decimal_length = io->cursor - decimal_start;
@@ -90,6 +90,10 @@ parse_exponent:
 
   if (*io->cursor >= '0' && *io->cursor <= '9') {
     #include "json_parse_digit.c"
+#ifndef JSON_DISCARD
+    exponent = accumulator;
+    accumulator = 0;
+#endif
     goto parse_success;
 
   } else {

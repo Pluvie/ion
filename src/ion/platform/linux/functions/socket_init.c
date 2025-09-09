@@ -47,7 +47,7 @@ struct socket socket_init (
     string ip = substring(resource, 1, port_begin - 1);
     string port = substring(resource, port_begin + 2, -1);
     snprintf(sock.ipv6, sizeof(sock.ipv6), "%.*s", sp(ip));
-    sock.port = string_to_int(port);
+    sock.port = string_to_int(&port);
 
     if (unlikely(failure.occurred)) {
       fail("socket uri error: invalid port");
@@ -83,7 +83,7 @@ struct socket socket_init (
     string ip = substring(resource, 0, port_begin - 1);
     string port = substring(resource, port_begin + 1, -1);
     snprintf(sock.ipv4, sizeof(sock.ipv4), "%.*s", sp(ip));
-    sock.port = string_to_int(port);
+    sock.port = string_to_int(&port);
 
     if (unlikely(failure.occurred)) {
       fail("socket uri error: invalid port");

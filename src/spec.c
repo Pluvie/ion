@@ -17,7 +17,7 @@ int32 main (
   //spec_add( json_decode );
   //spec_add( json_decode_array );
   //spec_add( json_decode_bool );
-  spec_focus( json_decode_dec );
+  //spec_focus( json_decode_dec );
   //spec_add( json_decode_enum );
   //spec_add( json_decode_int );
   //spec_add( json_decode_list );
@@ -65,7 +65,7 @@ int32 main (
   spec_add( string_index );
   spec_add( string_starts );
   spec_add( string_to_dec );
-  spec_add( string_to_int );
+  spec_focus( string_to_int );
   spec_add( substring );
   spec_add( time_now );
   spec_add( time_to_string );

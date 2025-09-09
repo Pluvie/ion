@@ -1,21 +1,37 @@
-#ifdef int64
-#undef int64
+/* Sets the `int` type based on the value of the INT_SIZE constant over which ⚡️ION⚡️
+ * is compiled on.
+ *
+ * If the INT_SIZE constant is not provided, ⚡️ION⚡️ shall default to 64 bit sizes for
+ * both integer and decimal numbers. */
+
+#ifndef INT_SIZE
+#define INT_SIZE  64
 #endif
 
-#ifdef int32
-#undef int32
-#endif
-
-#ifdef int16
-#undef int16
-#endif
-
-typedef int64_t   int64;
-typedef int32_t   int32;
-typedef int16_t   int16;
+/* The base types `int64_t` and `int32_t` must be provided by the platform. Usually,
+ * they are defined in the <stdint.h> header. */
 
 #ifdef  int
 #undef  int
 #endif
 
-#define int int64
+#ifdef  int32
+#undef  int32
+#endif
+
+#ifdef  int64
+#undef  int64
+#endif
+
+#if   INT_SIZE == 64
+  #define int32   int32_t
+  #define int64   int64_t
+  #define int     int64
+
+#elif INT_SIZE == 32
+  #define int32   int32_t
+  #define int     int32
+
+#else
+  #error "⚡️ION⚡️: `int` type size must be 64 or 32."
+#endif

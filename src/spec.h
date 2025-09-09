@@ -13,7 +13,7 @@
 //#include "spec/json_decode.c"
 //#include "spec/json_decode_array.c"
 //#include "spec/json_decode_bool.c"
-#include "spec/json_decode_dec.c"
+//#include "spec/json_decode_dec.c"
 //#include "spec/json_decode_enum.c"
 //#include "spec/json_decode_int.c"
 //#include "spec/json_decode_list.c"

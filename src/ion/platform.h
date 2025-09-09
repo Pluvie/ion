@@ -17,5 +17,5 @@
   #include "platform/macos.h"
 
 #else
-  #error "Unsupported platform."
+  #error "⚡️ION⚡️: Unsupported platform."
 #endif
