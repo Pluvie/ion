@@ -5,10 +5,11 @@ static inline void json_decode_dec_direct (
 )
 {
   dec result = 0;
-  char* cursor = io->cursor;
+  #define cursor io->cursor
   #define STRING_TO_NUMBER__DECIMAL
   #include "../procedures/string_to_number.c"
   #undef  STRING_TO_NUMBER__DECIMAL
+  #undef  cursor
 
 procedure_success:
   if (unlikely(!reflection_validate(rfx, &result)))
@@ -34,10 +35,11 @@ static inline void json_decode_dec_buffered (
   io_reserve(io, 128);
 
   dec result = 0;
-  char* cursor = io->cursor;
+  #define cursor io->cursor
   #define STRING_TO_NUMBER__DECIMAL
   #include "../procedures/string_to_number.c"
   #undef  STRING_TO_NUMBER__DECIMAL
+  #undef  cursor
 
 procedure_success:
   if (unlikely(!reflection_validate(rfx, &result)))

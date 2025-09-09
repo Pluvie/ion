@@ -29,7 +29,7 @@
 #include "functions/io_open.c"
 #include "functions/io_reserve.c"
 #include "functions/json_decode.c"
-//#include "functions/json_decode_dec.c"
+#include "functions/json_decode_dec.c"
 #include "functions/json_decode_string.c"
 #include "functions/json_decode_value.c"
 #include "functions/json_discard_array.c"

@@ -30,7 +30,7 @@ spec( json_decode_dec ) {
         io_close(io);
     } end();
 
-    when("the input is an decimal json number without fractional part") {
+    when("the input truncates at the fractional part") {
       string source = s("123.");
       apply(preconditions);
 
@@ -46,7 +46,7 @@ spec( json_decode_dec ) {
         io_close(io);
     } end();
 
-    when("the input is an decimal json number without exponent part") {
+    when("the input truncates at the exponent part") {
       string source = s("123.77e");
       apply(preconditions);
 
@@ -94,6 +94,24 @@ spec( json_decode_dec ) {
         verify(io_exhausted(io->direct));
       must("store the parsed number in the reflection target");
         verify(number == 12345.6789);
+      success();
+        io_close(io);
+    } end();
+
+    when("the input is a valid decimal json number with exponent") {
+      string source = s("12345.6789e-4");
+      apply(preconditions);
+
+      json_decode_dec(io->direct, rfx, target);
+
+      must("not fail");
+        verify(failure.occurred == false);
+      must("correctly parse until the end of the string");
+        int parsed_length = io->direct->cursor - io->direct->data->pointer;
+        verify(parsed_length == source.length);
+        verify(io_exhausted(io->direct));
+      must("store the parsed number in the reflection target");
+        verify(number == 1.23456789);
       success();
         io_close(io);
     } end();
