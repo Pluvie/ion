@@ -1,5 +1,6 @@
 #include "functions/alloc_resize.h"
 #include "functions/alloc_resize_zero.h"
+#include "functions/clz.h"
 #include "functions/cmp.h"
 #include "functions/failure_add_io_info.h"
 #include "functions/failure_add_reflection_info.h"

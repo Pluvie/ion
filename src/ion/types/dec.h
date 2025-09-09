@@ -17,8 +17,14 @@
 #if   DEC_SIZE == 64
   #define dec   double
 
+  #define DEC_EXP_MAX       308
+  #define DEC_EXP_MAXCHARS  3
+
 #elif DEC_SIZE == 32
   #define dec   float
+
+  #define DEC_EXP_MAX       38
+  #define DEC_EXP_MAXCHARS  2
 
 #else
   #error "⚡️ION⚡️: `dec` type size must be 64 or 32."

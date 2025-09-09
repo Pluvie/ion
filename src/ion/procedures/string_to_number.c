@@ -21,11 +21,11 @@
 
   int integral_length = 0;
   int decimal_length = 0;
-  //int exponent_length = 0;
+  int exponent_length = 0;
 
   char* integral_start = source->pointer;
   char* decimal_start = source->pointer;
-  //char* exponent_start = source->pointer;
+  char* exponent_start = source->pointer;
 #endif
 
   /* Number starts with 0-9. Go parse the integral part. */
@@ -100,14 +100,14 @@ parse_exponent:
 #ifndef STRING_TO_NUMBER__DISCARD
   number = accumulator;
   accumulator = 0;
-  //exponent_start = cursor;
+  exponent_start = cursor;
 #endif
 
   if (*cursor >= '0' && *cursor <= '9') {
     #include "string_to_number_parse_digit.c"
 #ifndef STRING_TO_NUMBER__DISCARD
     exponent = accumulator;
-    //exponent_length = cursor - exponent_start;
+    exponent_length = cursor - exponent_start;
 #endif
     goto parse_success;
 
@@ -131,30 +131,42 @@ parse_success:
   goto procedure_success;
 
 #else
-  /* Overflow checks. */
-  //if (exponent_length > 3 && exponent > DEC_EXP_MAX)
+  dec number_dec = 0;
 
+  if (number == 0)
+    goto convert_result;
+
+  /* Overflow checks. */
+  int number_length = integral_length + decimal_length;
+  print("");
+  print("number: %li", number);
+  print("exponent: %li", exponent);
+  if (unlikely(number_length > INT_MAXCHARS || clz(number) == 0)) {
+    fail("number overflow");
+    goto procedure_failure;
+  }
+
+  if (unlikely(exponent_length > DEC_EXP_MAXCHARS || exponent > DEC_EXP_MAX)) {
+    fail("exponent overflow");
+    goto procedure_failure;
+  }
   /* End of overflow checks. */
 
   if (negative_exponent)
     exponent = -exponent;
 
-  if (exponent != 0)
-    decimal_length -= exponent;
-
-  dec number_dec = 0;
-
-  if (decimal_length > 0)
-    number_dec = (dec) number / (dec) powers_of_ten[decimal_length];
-  else if (decimal_length < 0)
-    number_dec = (dec) number * (dec) powers_of_ten[-decimal_length];
-  else
+  int exponent_offset = exponent - decimal_length;
+  print("exponent offset: %li", exponent_offset);
+  print("power of ten: %f", powers_of_ten[exponent_offset]);
+  if (exponent_offset == 0)
     number_dec = (dec) number;
-  
-  print("");
-  print("----> exponent: |%li|", exponent);
-  print("----> decimal length: |%li|", decimal_length);
-  print("---------> parsed: |%f|", number_dec);
+  else if (exponent_offset < 0)
+    number_dec = (dec) number / powers_of_ten[-exponent_offset];
+  else
+    number_dec = (dec) number * powers_of_ten[exponent_offset];
+
+  print("number dec: %f", number_dec);
+convert_result:
   #ifdef STRING_TO_NUMBER__INTEGER
     result = (int) number_dec;
   #endif

@@ -28,9 +28,13 @@
   #define int64   int64_t
   #define int     int64
 
+  #define INT_MAXCHARS  19
+
 #elif INT_SIZE == 32
   #define int32   int32_t
   #define int     int32
+
+  #define INT_MAXCHARS  10
 
 #else
   #error "⚡️ION⚡️: `int` type size must be 64 or 32."
