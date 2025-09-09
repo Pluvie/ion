@@ -1,27 +1,206 @@
 spec( string_to_dec ) {
 
-  argument(string source);
+  argument(string* source);
 
-  when("the source string contains a valid decimal number") {
-    source = s("177.88");
+  precondition("a valid source string");
+  precondition("the source string must have at least one padding character at the end");
+    #define preconditions \
+      source = memory_alloc(spec_allocator, sizeof(string));
+
+  when("the source string contains a valid number") {
+    apply(preconditions);
+    *source = s("17788");
     dec result = string_to_dec(source);
 
     must("not fail");
       verify(failure.occurred == false);
 
-    must("convert the string to its decimal equivalent");
-      verify((dec) 177.88 == result);
+    must("parse the source string");
+      verify(*source->pointer == '\0');
+
+    must("return its decimal equivalent");
+      verify((dec) 17788 == result);
 
     success();
   } end();
 
-  when("the source string does not contain a valid decimal number") {
-    source = s("17aaa:0");
+  when("the source string contains a valid number with a decimal part") {
+    apply(preconditions);
+    *source = s("17788.44");
+    dec result = string_to_dec(source);
+
+    must("not fail");
+      verify(failure.occurred == false);
+
+    must("parse the source string");
+      verify(*source->pointer == '\0');
+
+    must("return its decimal equivalent");
+      verify((dec) 17788.44 == result);
+
+    success();
+  } end();
+
+  when("the source string contains a valid number with a decimal part and exponent") {
+    apply(preconditions);
+    *source = s("17788.44e-3");
+    dec result = string_to_dec(source);
+
+    must("not fail");
+      verify(failure.occurred == false);
+
+    must("parse the source string");
+      verify(*source->pointer == '\0');
+
+    must("return its decimal equivalent");
+      verify((dec) 17.78844 == result);
+
+    success();
+  } end();
+
+  when("the source string contains a valid number with an exponent") {
+    apply(preconditions);
+    *source = s("17788e+2");
+    dec result = string_to_dec(source);
+
+    must("not fail");
+      verify(failure.occurred == false);
+
+    must("parse the source string");
+      verify(*source->pointer == '\0');
+
+    must("return its decimal equivalent");
+      verify((dec) 1778800 == result);
+
+    success();
+  } end();
+
+  when("the source string contains a valid number with a big exponent") {
+    apply(preconditions);
+    *source = s("17788.99e+199");
+    dec result = string_to_dec(source);
+
+    must("not fail");
+      verify(failure.occurred == false);
+
+    must("parse the source string");
+      verify(*source->pointer == '\0');
+
+    must("return its decimal equivalent");
+      print("");
+      print("res: %f", result);
+      dec exp = result / 1e199;
+      print("exp: %f", exp);
+      hexdump(&exp, sizeof(dec));
+      print("<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>");
+      hexdump(&result, sizeof(dec));
+      verify((dec) 17788.99 == (result / 1e199));
+
+    success();
+  } end();
+
+  when("the source string contains a valid number with a small exponent") {
+    apply(preconditions);
+    *source = s("17788.99e-199");
+    dec result = string_to_dec(source);
+
+    must("not fail");
+      verify(failure.occurred == false);
+
+    must("parse the source string");
+      verify(*source->pointer == '\0');
+
+    must("return its decimal equivalent");
+      print("");
+      print("res: %f", result);
+      print("exp: %f", result * 1e199);
+      verify((dec) 17788.99 == (result * 1e199));
+
+    success();
+  } end();
+
+  when("the source string contains a valid number followed by other characters") {
+    apply(preconditions);
+    *source = s("17aaa:0");
+    dec result = string_to_dec(source);
+
+    must("not fail");
+      verify(failure.occurred == false);
+
+    must("parse the source string");
+      verify(*source->pointer == 'a');
+
+    must("return its decimal equivalent");
+      verify((dec) 17 == result);
+
+    success();
+  } end();
+
+  when("the source string contains an overflowing number") {
+    apply(preconditions);
+    *source = s("9.223372036854775936");
     dec result = string_to_dec(source);
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(failure_is("cannot convert `17aaa:0` to dec: invalid characters detected"));
+      verify(failure_is("number overflow"));
+
+    must("parse the source string");
+      verify(*source->pointer == '\0');
+
+    must("return 0");
+      verify((dec) 0 == result);
+
+    success();
+  } end();
+
+  when("the source string contains a double overflowing number") {
+    apply(preconditions);
+    *source = s("9.223372036854775939223372036854775936");
+    dec result = string_to_dec(source);
+
+    must("fail with a specific error");
+      verify(failure.occurred == true);
+      verify(failure_is("number overflow"));
+
+    must("parse the source string");
+      verify(*source->pointer == '\0');
+
+    must("return 0");
+      verify((dec) 0 == result);
+
+    success();
+  } end();
+
+  when("the source string contains a valid number and an overflowing exponent") {
+    apply(preconditions);
+    *source = s("777e+400");
+    dec result = string_to_dec(source);
+
+    must("fail with a specific error");
+      verify(failure.occurred == true);
+      verify(failure_is("exponent overflow"));
+
+    must("parse the source string");
+      verify(*source->pointer == '\0');
+
+    must("return 0");
+      verify((dec) 0 == result);
+
+    success();
+  } end();
+
+  when("the source string does not contain a valid number") {
+    apply(preconditions);
+    *source = s("aaa:0");
+    dec result = string_to_dec(source);
+
+    must("fail with a specific error");
+      verify(failure.occurred == true);
+      verify(failure_is("expected a number"));
+
+    must("not parse the source string");
+      verify(*source->pointer == 'a');
 
     must("return 0");
       verify((dec) 0 == result);

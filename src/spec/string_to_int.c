@@ -88,7 +88,6 @@ spec( string_to_int ) {
 
     must("return its integer equivalent");
       verify((int) 17 == result);
-      verify((int) 17 == result);
 
     success();
   } end();
@@ -102,7 +101,7 @@ spec( string_to_int ) {
       verify(failure.occurred == true);
       verify(failure_is("number overflow"));
 
-    must("not parse the source string");
+    must("parse the source string");
       verify(*source->pointer == '\0');
 
     must("return 0");
@@ -120,7 +119,7 @@ spec( string_to_int ) {
       verify(failure.occurred == true);
       verify(failure_is("number overflow"));
 
-    must("not parse the source string");
+    must("parse the source string");
       verify(*source->pointer == '\0');
 
     must("return 0");
@@ -136,9 +135,9 @@ spec( string_to_int ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(failure_is("number overflow"));
+      verify(failure_is("exponent overflow"));
 
-    must("not parse the source string");
+    must("parse the source string");
       verify(*source->pointer == '\0');
 
     must("return 0");

@@ -37,7 +37,5 @@
 #include "functions/stream_read.c"
 #include "functions/stream_size.c"
 #include "functions/stream_suppress.c"
-#include "functions/string_to_dec.c"
-//#include "functions/string_to_int.c"
 #include "functions/time_now.c"
 #include "functions/time_to_string.c"

@@ -51,6 +51,7 @@
 #include "functions/string_char_at.h"
 #include "functions/string_index.h"
 #include "functions/string_starts.h"
+#include "functions/string_to_dec.h"
 #include "functions/string_to_int.h"
 #include "functions/substring.h"
 
@@ -93,7 +94,5 @@
 #include "functions/platform/stream_read.h"
 #include "functions/platform/stream_size.h"
 #include "functions/platform/stream_suppress.h"
-#include "functions/platform/string_to_dec.h"
-//#include "functions/platform/string_to_int.h"
 #include "functions/platform/time_now.h"
 #include "functions/platform/time_to_string.h"

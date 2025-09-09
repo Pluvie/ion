@@ -136,11 +136,13 @@ parse_success:
   if (number == 0)
     goto convert_result;
 
-  /* Overflow checks. */
+  if (negative_exponent)
+    exponent = -exponent;
+
+  int exponent_offset = exponent - decimal_length;
   int number_length = integral_length + decimal_length;
-  print("");
-  print("number: %li", number);
-  print("exponent: %li", exponent);
+
+  /* Overflow checks. */
   if (unlikely(number_length > INT_MAXCHARS || clz(number) == 0)) {
     fail("number overflow");
     goto procedure_failure;
@@ -150,14 +152,15 @@ parse_success:
     fail("exponent overflow");
     goto procedure_failure;
   }
+
+#ifdef STRING_TO_NUMBER__INTEGER
+  if (unlikely(integral_length + exponent_offset >= INT_MAXCHARS)) {
+    fail("exponent overflow");
+    goto procedure_failure;
+  }
+#endif
   /* End of overflow checks. */
 
-  if (negative_exponent)
-    exponent = -exponent;
-
-  int exponent_offset = exponent - decimal_length;
-  print("exponent offset: %li", exponent_offset);
-  print("power of ten: %f", powers_of_ten[exponent_offset]);
   if (exponent_offset == 0)
     number_dec = (dec) number;
   else if (exponent_offset < 0)
@@ -165,15 +168,14 @@ parse_success:
   else
     number_dec = (dec) number * powers_of_ten[exponent_offset];
 
-  print("number dec: %f", number_dec);
 convert_result:
-  #ifdef STRING_TO_NUMBER__INTEGER
-    result = (int) number_dec;
-  #endif
+#ifdef STRING_TO_NUMBER__INTEGER
+  result = (int) number_dec;
+#endif
   
-  #ifdef STRING_TO_NUMBER__DECIMAL
-    result = number_dec;
-  #endif
+#ifdef STRING_TO_NUMBER__DECIMAL
+  result = number_dec;
+#endif
 
   if (negative)
     result = -result;

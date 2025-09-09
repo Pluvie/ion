@@ -51,6 +51,7 @@
 #include "functions/string_char_at.c"
 #include "functions/string_index.c"
 #include "functions/string_starts.c"
+#include "functions/string_to_dec.c"
 #include "functions/string_to_int.c"
 #include "functions/substring.c"
 
