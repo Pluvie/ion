@@ -15,5 +15,9 @@ void failure_add_io_info_buffered (
     struct io_buffered* io
 )
 {
-  fail("to be implemented");
+  char* io_begin = io->buffer.data;
+  char* io_end = io->buffer.data + io->buffer.position;
+  char* io_cursor = io->cursor;
+
+  #include "../procedures/failure_add_io_info.c"
 }

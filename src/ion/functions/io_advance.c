@@ -4,15 +4,6 @@ static inline void io_advance_direct (
 )
 {
   io->cursor += amount;
-  /*
-  if (likely(io->cursor < io->end)) {
-    io->cursor += amount;
-    return;
-  }
-
-  io->cursor = EMPTY_STRING;
-  return;
-  */
 }
 
 
@@ -22,20 +13,12 @@ static inline void io_advance_buffered (
     int amount
 )
 {
-/*
-  void* address = memory_alloc(io->buffer, amount);
-  switch (io->channel) {
-  case IO_FILE:
-    file_read(io->file, address, amount);
-  case IO_PIPE:
-    pipe_read(io->file, address, amount);
-  case IO_SOCKET:
-    socket_read(io->file, address, amount, 0);
-  case IO_STREAM:
-    stream_read(io->file, address, amount);
-  default:
-    fail("io: unsupported channel");
-  }
+  int cursor_position = io->cursor - io->buffer.data;
+  int available_amount = (cursor_position - io->buffer.position);
+
+  if (amount > available_amount)
+    io_reserve(io, io->buffer.window_size);
+
+  io->cursor += amount;
   return;
-*/
 }

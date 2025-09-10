@@ -6,7 +6,7 @@ void io_close (
   case IO_DIRECT:
     return;
   case IO_BUFFERED:
-    /* To be implemented. */
+    alloc_release(io->buffered->buffer.data);
     return;
   default:
     fail("io close: unrecognized io type");

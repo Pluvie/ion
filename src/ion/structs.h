@@ -1,6 +1,8 @@
 #include "structs/error.h"
 #include "structs/file.h"
 #include "structs/io.h"
+#include "structs/io_buffered.h"
+#include "structs/io_direct.h"
 #include "structs/iterator.h"
 #include "structs/pipe.h"
 #include "structs/reflection.h"

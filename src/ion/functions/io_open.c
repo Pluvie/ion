@@ -29,11 +29,13 @@ static inline struct io io_open_pipe (
 )
 {
   struct io_buffered* io_buffered = memory_alloc(allocator, sizeof(struct io_buffered));
+
   *io_buffered = (struct io_buffered) {
-    .buffer = { 0 },
-    .cursor = EMPTY_STRING,
     .channel = IO_PIPE,
+    .pipe = source,
   };
+  io_buffered->buffer.window_size = 1024;
+  io_reserve(io_buffered, io_buffered->buffer.window_size);
 
   struct io result = {
     .buffered = io_buffered,
@@ -42,6 +44,5 @@ static inline struct io io_open_pipe (
     .allocator = allocator,
   };
 
-  io_reserve(io_buffered, 1024);
   return result;
 }

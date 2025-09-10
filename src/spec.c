@@ -64,8 +64,8 @@ int32 main (
   spec_add( socket_open );
   spec_add( string_index );
   spec_add( string_starts );
-  spec_focus( string_to_dec );
-  spec_focus( string_to_int );
+  spec_add( string_to_dec );
+  spec_add( string_to_int );
   spec_add( substring );
   spec_add( time_now );
   spec_add( time_to_string );

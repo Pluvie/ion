@@ -99,13 +99,11 @@ spec( json_decode_string ) {
     } end();
   } end();
 
-
-  /*
   when("the io is buffered") {
     when("the input is not a string") {
       struct pipe source = pipe_open();
-      apply(preconditions);
       pipe_write(&source, slice("123"));
+      apply(preconditions);
 
       json_decode_string(io->buffered, rfx, target);
 
@@ -121,8 +119,8 @@ spec( json_decode_string ) {
 
     when("the input is an unterminated json string") {
       struct pipe source = pipe_open();
-      apply(preconditions);
       pipe_write(&source, slice("\"abc"));
+      apply(preconditions);
 
       json_decode_string(io->buffered, rfx, target);
 
@@ -138,8 +136,8 @@ spec( json_decode_string ) {
 
     when("the input is an invalid json string") {
       struct pipe source = pipe_open();
-      apply(preconditions);
       pipe_write(&source, slice("\"abc\ndef\""));
+      apply(preconditions);
 
       json_decode_string(io->buffered, rfx, target);
 
@@ -155,8 +153,8 @@ spec( json_decode_string ) {
 
     when("the input is a valid json string") {
       struct pipe source = pipe_open();
-      apply(preconditions);
       pipe_write(&source, slice("\"abc def\""));
+      apply(preconditions);
 
       json_decode_string(io->buffered, rfx, target);
 
@@ -174,8 +172,8 @@ spec( json_decode_string ) {
 
     when("the input is a valid json string with escaped characters") {
       struct pipe source = pipe_open();
-      apply(preconditions);
       pipe_write(&source, slice("\"abc\\ndef\""));
+      apply(preconditions);
 
       json_decode_string(io->buffered, rfx, target);
 
@@ -191,7 +189,6 @@ spec( json_decode_string ) {
         io_close(io);
     } end();
   } end();
-  */
 
   #undef preconditions
 }
