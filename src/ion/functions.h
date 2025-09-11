@@ -76,6 +76,7 @@
 #include "functions/platform/pipe_close.h"
 #include "functions/platform/pipe_open.h"
 #include "functions/platform/pipe_read.h"
+#include "functions/platform/pipe_set_blocking.h"
 #include "functions/platform/pipe_write.h"
 #include "functions/platform/signal_catch.h"
 #include "functions/platform/signal_send.h"

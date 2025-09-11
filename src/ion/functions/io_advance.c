@@ -14,7 +14,7 @@ static inline void io_advance_buffered (
 )
 {
   int cursor_position = io->cursor - io->buffer.data;
-  int available_amount = (cursor_position - io->buffer.position);
+  int available_amount = io->buffer.position - cursor_position;
 
   if (amount > available_amount)
     io_reserve(io, io->buffer.window_size);

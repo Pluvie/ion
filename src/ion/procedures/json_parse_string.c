@@ -1,4 +1,10 @@
 
+  /* Procedure prerequisites on local variables:
+   *
+   * - `io->cursor` must be a `char*`: it must point to the string to be parsed.
+   * - `target` must be a `void*`: it shall be reinterpreted as a `string*` and
+   *   shall store the resulting parsed string. */
+
   bool escaped = false;
 
 #ifndef JSON_DISCARD
@@ -51,11 +57,7 @@ parse_failure:
   *result = (string) { 0 };
 
   if (unlikely(failure.occurred)) {
-    /* Some I/O failure occurred. Nothing to add. */
-
-  } else if (io_exhausted(io)) {
-    io->cursor--;
-    fail("unterminated string");
+    /* Keeps the I/O failure message. */
 
   } else if (io->cursor > begin) {
     fail("invalid string");

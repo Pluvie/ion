@@ -39,9 +39,9 @@ spec( json_decode_string ) {
       must("fail with a specific error");
         verify(failure.occurred == true);
         verify(failure_is(
-          "unterminated string, at position 3:\n"\
+          "invalid string, at position 4:\n"\
           "\"abc\n"\
-          "   ^\n"));
+          "    ^\n"));
       success();
         io_close(io);
     } end();
@@ -81,7 +81,7 @@ spec( json_decode_string ) {
     } end();
 
     when("the input is a valid json string with escaped characters") {
-      string source = s("\"abc def\"");
+      string source = s("\"abc\\ndef\"");
       apply(preconditions);
 
       json_decode_string(io->direct, rfx, target);
@@ -93,7 +93,7 @@ spec( json_decode_string ) {
         verify(parsed_length == source.length);
         verify(io_exhausted(io->direct));
       must("store the parsed string in the reflection target, without quotes");
-        verify(eq(name, "abc def"));
+        verify(eq(name, "abc\\ndef"));
       success();
         io_close(io);
     } end();
@@ -102,6 +102,7 @@ spec( json_decode_string ) {
   when("the io is buffered") {
     when("the input is not a string") {
       struct pipe source = pipe_open();
+      pipe_set_blocking(&source, false);
       pipe_write(&source, slice("123"));
       apply(preconditions);
 
@@ -119,6 +120,7 @@ spec( json_decode_string ) {
 
     when("the input is an unterminated json string") {
       struct pipe source = pipe_open();
+      pipe_set_blocking(&source, false);
       pipe_write(&source, slice("\"abc"));
       apply(preconditions);
 
@@ -127,15 +129,16 @@ spec( json_decode_string ) {
       must("fail with a specific error");
         verify(failure.occurred == true);
         verify(failure_is(
-          "unterminated string, at position 3:\n"\
+          "invalid string, at position 4:\n"\
           "\"abc\n"\
-          "   ^\n"));
+          "    ^\n"));
       success();
         io_close(io);
     } end();
 
     when("the input is an invalid json string") {
       struct pipe source = pipe_open();
+      pipe_set_blocking(&source, false);
       pipe_write(&source, slice("\"abc\ndef\""));
       apply(preconditions);
 
@@ -151,8 +154,28 @@ spec( json_decode_string ) {
         io_close(io);
     } end();
 
+    when("the input channel has a failure") {
+      struct pipe source = pipe_open();
+      pipe_set_blocking(&source, false);
+      /* Does not write anything on the pipe on purpose, to trigger an io failure
+       * when reading from the pipe channel due to the pipe being non blocking. */
+      apply(preconditions);
+
+      json_decode_string(io->buffered, rfx, target);
+
+      must("fail with a specific error");
+        verify(failure.occurred == true);
+        verify(failure_is(
+          "pipe read error: Resource temporarily unavailable, at position 0:\n"\
+          "\n"\
+          "^\n"));
+      success();
+        io_close(io);
+    } end();
+
     when("the input is a valid json string") {
       struct pipe source = pipe_open();
+      pipe_set_blocking(&source, false);
       pipe_write(&source, slice("\"abc def\""));
       apply(preconditions);
 
@@ -172,6 +195,7 @@ spec( json_decode_string ) {
 
     when("the input is a valid json string with escaped characters") {
       struct pipe source = pipe_open();
+      pipe_set_blocking(&source, false);
       pipe_write(&source, slice("\"abc\\ndef\""));
       apply(preconditions);
 
@@ -184,7 +208,7 @@ spec( json_decode_string ) {
         verify(parsed_length == 10);
         verify(io_exhausted(io->buffered));
       must("store the parsed string in the reflection target, without quotes");
-        verify(eq(name, "abc\ndef"));
+        verify(eq(name, "abc\\ndef"));
       success();
         io_close(io);
     } end();

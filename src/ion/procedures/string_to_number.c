@@ -6,6 +6,7 @@
    *   the string must not be the last valid character of the number to parse.
    * - `result` must be a `int` or `dec`, depending on which type the parser
    *   must output. */
+
   char* begin = cursor;
 
 #ifndef STRING_TO_NUMBER__DISCARD

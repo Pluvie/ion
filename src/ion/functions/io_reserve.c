@@ -35,7 +35,7 @@ read_from_channel:
     goto adjust_position;
 
   default:
-    fail("to be implemented");
+    fail("io_reserve: other channels yet to be implemented");
     return;
   }
 

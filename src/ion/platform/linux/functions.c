@@ -18,6 +18,7 @@
 #include "functions/file_write.c"
 #include "functions/pipe_close.c"
 #include "functions/pipe_open.c"
+#include "functions/pipe_set_blocking.c"
 #include "functions/pipe_read.c"
 #include "functions/pipe_write.c"
 #include "functions/signal_catch.c"
