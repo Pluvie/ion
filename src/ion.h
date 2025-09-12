@@ -13,4 +13,3 @@
 #include "ion/structs.h"
 #include "ion/globals.h"
 #include "ion/functions.h"
-#include "ion/containers.h"

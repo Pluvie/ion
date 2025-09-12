@@ -1,1 +1,0 @@
-#define SOCKET_IPV4_MAXLEN  16

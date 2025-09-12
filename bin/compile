@@ -12,9 +12,9 @@ fi
 
 # Compile source: captures the preprocessor run into the `prep` variable.
 # Then runs the `ion.py` mangler only if the preprocessor ran successfully.
-if prep=$(gcc src/$1.c -I ./src -Wall -Werror -E); then
-  printf '%s' "$prep" | python3 bin/ion.py > tmp/$1.c   &&
-  gcc tmp/$1.c -I ./src -Wall -Werror ${@:2}            &&
+if prep=$(gcc src/$1.c -I ./src -std=c2x -Wall -Werror -DPLATFORM=LINUX -E); then
+  printf '%s' "$prep" | python3 bin/ion.py > tmp/$1.c                     &&
+  gcc tmp/$1.c -I ./src -std=c2x -Wall -Werror -DPLATFORM=LINUX ${@:2}    &&
   rm -f tmp/$1.c
 else
   exit -1

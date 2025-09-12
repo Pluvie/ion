@@ -1,15 +1,8 @@
-void memory_release (
-    memory* allocator
+void  memory_release (
+    void* address
 )
 {
-  if (allocator->data != NULL)
-    alloc_release(allocator->data);
-
-  for (int i = 0; i < allocator->regions.count; i++)
-    alloc_release(allocator->regions.addresses[i]);
-
-  if (allocator->regions.addresses != NULL)
-    alloc_release(allocator->regions.addresses);
-
-  zero_out(allocator, sizeof(memory));
+#if platform(LINUX)
+  #include "../platform/linux/functions/memory_release.c"
+#endif
 }

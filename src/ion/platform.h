@@ -1,20 +1,16 @@
-#define LINUX   1
-#define WINDOWS 2
-#define MACOS   3
-
 #define platform(name) PLATFORM == name
 
-#if   defined(__linux__)
-  #define PLATFORM LINUX
+#if   platform(LINUX)
   #include "platform/linux.h"
 
-#elif defined(__WIN32__)
-  #define PLATFORM WINDOWS
-  #include "platform/windows.h"
+#elif platform(TEXAS_MSP430)
+  #include "platform/texas_msp430.h"
 
-#elif defined(__APPLE__)
-  #define PLATFORM MACOS
-  #include "platform/macos.h"
+#elif platform(WINDOWS_32)
+  #include "platform/windows_32.h"
+
+#elif platform(WINDOWS_64)
+  #include "platform/windows_64.h"
 
 #else
   #error "⚡️ION⚡️: Unsupported platform."

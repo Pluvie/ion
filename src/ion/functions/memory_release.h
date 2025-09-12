@@ -1,3 +1,3 @@
-void memory_release (
-    memory* allocator
+void  memory_release (
+    void* address
 );

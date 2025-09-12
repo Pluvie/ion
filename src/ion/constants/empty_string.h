@@ -1,1 +1,0 @@
-#define EMPTY_STRING  ""

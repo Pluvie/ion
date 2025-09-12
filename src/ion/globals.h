@@ -1,8 +1,1 @@
-#include "globals/date_string.h"
 #include "globals/failure.h"
-#include "globals/powers_of_ten.h"
-#include "globals/signal_received.h"
-#include "globals/stderr.h"
-#include "globals/stdin.h"
-#include "globals/stdout.h"
-#include "globals/time_string.h"
