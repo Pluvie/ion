@@ -1,24 +1,21 @@
 /*
   Format specifier using generic selector to use with printf-like functions.
 */
-struct print_arg {
-  const char type;
-  const void* value;
-};
 
-#define f(v)                                                \
-  _Generic((v),                                             \
-    bool:               &(struct print_arg) { 'b', &(v) },  \
-    char:               &(struct print_arg) { 'c', &(v) },  \
-    unsigned char:      &(struct print_arg) { 'k', &(v) },  \
-    short:              &(struct print_arg) { 's', &(v) },  \
-    unsigned short:     &(struct print_arg) { 'h', &(v) },  \
-    int0:               &(struct print_arg) { 'i', &(v) },  \
-    unsigned:           &(struct print_arg) { 'u', &(v) },  \
-    long:               &(struct print_arg) { 'l', &(v) },  \
-    unsigned long:      &(struct print_arg) { 'v', &(v) },  \
-    long long:          &(struct print_arg) { 'w', &(v) },  \
-    unsigned long long: &(struct print_arg) { 'y', &(v) },  \
-    char*:              &(struct print_arg) { 's', &(v) },  \
-    void*:              &(struct print_arg) { 'p', &(v) }   \
+#define f(v)                                                                            \
+  _Generic((v),                                                                         \
+    bool:               &(struct print_arg) { 0, PRINT_ARG__BOOL,       &(v) },         \
+    char:               &(struct print_arg) { 0, PRINT_ARG__CHAR,       &(v) },         \
+    unsigned char:      &(struct print_arg) { 0, PRINT_ARG__UCHAR,      &(v) },         \
+    short:              &(struct print_arg) { 0, PRINT_ARG__SHORT,      &(v) },         \
+    unsigned short:     &(struct print_arg) { 0, PRINT_ARG__USHORT,     &(v) },         \
+    int0:               &(struct print_arg) { 0, PRINT_ARG__INT,        &(v) },         \
+    unsigned:           &(struct print_arg) { 0, PRINT_ARG__UINT,       &(v) },         \
+    long:               &(struct print_arg) { 0, PRINT_ARG__LONG,       &(v) },         \
+    unsigned long:      &(struct print_arg) { 0, PRINT_ARG__ULONG,      &(v) },         \
+    long long:          &(struct print_arg) { 0, PRINT_ARG__LONGLONG,   &(v) },         \
+    unsigned long long: &(struct print_arg) { 0, PRINT_ARG__ULONGLONG,  &(v) },         \
+    dec:                &(struct print_arg) { 0, PRINT_ARG__DEC,        &(v) },         \
+    char*:              &(struct print_arg) { 0, PRINT_ARG__CHAR_P,     &(v) },         \
+    void*:              &(struct print_arg) { 0, PRINT_ARG__VOID_P,     &(v) }          \
   )

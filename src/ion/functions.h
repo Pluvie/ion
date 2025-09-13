@@ -2,7 +2,7 @@
 #include "functions/bit_count_leading_zeros.h"
 #include "functions/fail.h"
 #include "functions/fatal.h"
-#include "functions/print.h"
+#include "functions/print_formatted.h"
 
 #include "functions/memory_release.h"
 #include "functions/memory_require.h"
