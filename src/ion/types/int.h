@@ -36,9 +36,11 @@
   This is why ⚡️ION⚡️ defines `int` as:
   > the widest possible integer that can be operated with a single hardware instruction
     on the target architecture.
-
 */
 
+#if INT_BIT_WIDTH != 64 && INT_BIT_WIDTH != 32
+#error "⚡️ION⚡️ supports only 64 or 32 bit wide integers."
+#endif
 
 /*
   `native_int_t` must be defined in each platform header file. It must be always

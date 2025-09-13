@@ -8,6 +8,4 @@ typedef int             native_int_t;   /* 32 bit */
 #define INT_BIT_WIDTH   64
 #define INT_MAXCHARS    19  /* 9223372036854775807 = (2^63 - 1) */
 
-#define HEAP_SYSTEM         /* To enable ⚡️ION⚡️ memory functions. */
-
 #include "linux/system.h"

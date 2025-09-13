@@ -1,3 +1,4 @@
+#include "macros/f.h"
 #include "macros/likely.h"
 #include "macros/log2.h"
 #include "macros/next_pow2.h"

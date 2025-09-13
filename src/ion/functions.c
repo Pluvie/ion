@@ -2,8 +2,8 @@
 #include "functions/bit_count_leading_zeros.c"
 #include "functions/fail.c"
 #include "functions/fatal.c"
+#include "functions/print.c"
 
-#ifdef  HEAP_SYSTEM
 #include "functions/memory_release.c"
 #include "functions/memory_require.c"
 #include "functions/memory_resize.c"
@@ -15,4 +15,3 @@ void*             allocator_push(struct allocator* space, int amount);
 void              allocator_release(struct allocator* space);
 void              allocator_reset(struct allocator* space);
 */
-#endif

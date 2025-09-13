@@ -3,9 +3,6 @@
 #if   platform(LINUX)
   #include "platform/linux.h"
 
-#elif platform(TEXAS_MSP430)
-  #include "platform/texas_msp430.h"
-
 #elif platform(WINDOWS_32)
   #include "platform/windows_32.h"
 
