@@ -14,7 +14,7 @@ spec( memory_resize ) {
     memory_resize(address, amount);
 
     must("fatally fail with a specific message");
-      verify(strcmp(sim.fatal, "memory_resize: amount must not be zero") == 0);
+      verify(eq(sim.fatal, "memory_resize: amount must not be zero"));
 
     success();
       memory_release(address);
@@ -29,7 +29,7 @@ spec( memory_resize ) {
       memory_resize(address, amount);
 
       must("fatally fail with a specific message");
-        verify(strcmp(sim.fatal, "memory_resize: not enough memory") == 0);
+        verify(eq(sim.fatal, "memory_resize: not enough memory"));
 
       success();
         memory_release(address);

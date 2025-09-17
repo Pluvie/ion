@@ -1,3 +1,4 @@
+#include "macros/eq.h"
 #include "macros/likely.h"
 #include "macros/log2.h"
 #include "macros/next_mul2.h"
