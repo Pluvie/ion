@@ -38,10 +38,6 @@
     on the target architecture.
 */
 
-#if INT_BIT_WIDTH != 64 && INT_BIT_WIDTH != 32
-#error "⚡️ION⚡️ supports only 64 or 32 bit wide integers."
-#endif
-
 /*
   `native_int_t` must be defined in each platform header file. It must be always
   defined as `typedef int native_int_t;` in order to capture the native int type.

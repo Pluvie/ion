@@ -2,11 +2,14 @@
 #include "functions/bit_count_leading_zeros.h"
 #include "functions/fail.h"
 #include "functions/fatal.h"
-#include "functions/print_formatted.h"
-
+#include "functions/memory_acquire.h"
+#include "functions/memory_copy.h"
 #include "functions/memory_release.h"
-#include "functions/memory_require.h"
 #include "functions/memory_resize.h"
+
+/* Platform specific functions. */
+#include "functions/platform/memory_acquire_aligned.h"
+#include "functions/platform/memory_release_aligned.h"
 
 /*
 struct allocator  allocator_init(int initial_capacity, int alignment);

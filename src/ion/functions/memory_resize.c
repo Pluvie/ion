@@ -1,10 +1,13 @@
 void* memory_resize (
     void* address,
-    int amount,
-    int alignment
+    unsigned int amount
 )
 {
-#if platform(LINUX)
-  #include "../platform/linux/functions/memory_resize.c"
-#endif
+  void* new_address;
+
+  new_address = realloc(address, amount);
+  if (unlikely(address == nullptr))
+    fatal("memory_resize: not enough memory");
+
+  return new_address;
 }

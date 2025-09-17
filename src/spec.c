@@ -1,22 +1,33 @@
 #include "spec.h"
-#include "ion.c"
+
+spec( memory_acquire );
 
 int0 main (
     int0 argc,
     char** argv
 )
 {
-  void* address = memory_require(1024, 0);
-  address = memory_resize(address, 2048, 0);
+  /*
+  void* address = memory_acquire(1024);
+  address = memory_resize(address, 2048);
   memory_release(address);
+  if (spec__memory_acquire())
+    printf("success");
+  else
+    printf("fail");
 
-  int number = 999'999'999'999'999;
-  int other = 1e15;
-  dec decimal = 1.7e-3;
-
-  print("my number is: ", f(number), " or ", f(other), " or even: ", f(decimal));
-
-  printf("my number is: %lli or %lli or even: %f\n", number, other, decimal);
+  printl("hey printing works ", f((int) { 100 }), "%!!!");
+  printf("sizeof int: %li\n", sizeof(int));
 
   return EXIT_SUCCESS;
+  */
+
+  spec_focus( memory_acquire );
+
+  specs_run();
+
+  if (specs_passed)
+    return EXIT_SUCCESS;
+  else
+    return EXIT_FAILURE;
 }
