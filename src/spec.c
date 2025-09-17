@@ -1,6 +1,7 @@
 #include "spec.h"
 
 spec( memory_acquire );
+spec( memory_resize );
 
 int0 main (
     int0 argc,
@@ -23,6 +24,7 @@ int0 main (
   */
 
   spec_focus( memory_acquire );
+  spec_focus( memory_resize );
 
   specs_run();
 

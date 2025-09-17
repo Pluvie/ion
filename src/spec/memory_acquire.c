@@ -27,7 +27,7 @@ spec( memory_acquire ) {
     } end();
 
     when("the malloc function succeeds") {
-      sim.malloc = (void*) 0x77;
+      sim.malloc = (void*) 0x99;
       void* result = memory_acquire(amount);
 
       must("not fail");
@@ -39,3 +39,5 @@ spec( memory_acquire ) {
     } end();
   } end();
 }
+
+#undef memory_acquire
