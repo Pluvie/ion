@@ -3,13 +3,11 @@
 #include "functions/fail.h"
 #include "functions/fatal.h"
 #include "functions/memory_acquire.h"
+//#include "functions/memory_acquire_aligned.h"
 #include "functions/memory_copy.h"
 #include "functions/memory_release.h"
+//#include "functions/memory_release_aligned.h"
 #include "functions/memory_resize.h"
-
-/* Platform specific functions. */
-#include "functions/platform/memory_acquire_aligned.h"
-#include "functions/platform/memory_release_aligned.h"
 
 /*
 struct allocator  allocator_init(int initial_capacity, int alignment);

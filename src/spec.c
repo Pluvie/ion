@@ -23,7 +23,7 @@ int0 main (
   return EXIT_SUCCESS;
   */
 
-  spec_focus( memory_acquire );
+  spec_add( memory_acquire );
   spec_focus( memory_resize );
 
   specs_run();
