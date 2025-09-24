@@ -1,0 +1,53 @@
+#!/bin/bash
+
+SPEC_FILES=$(find src/spec/*.c -type f | tr '\n' ' ')
+DEFAULT_FLAGS="-std=c2x -Wall -Werror -DPLATFORM=LINUX"
+
+if [[ $1 == "spec" ]]; then
+
+  if [[ $2 == "prep" ]]; then
+    gcc src/spec.c                  \
+      src/ion/libraries.c           \
+      $SPEC_FILES $DEFAULT_FLAGS    \
+      -E -include src/ion.h         \
+      > tmp/spec.c
+    exit 0
+  fi
+
+  gcc src/spec.c                  \
+    src/ion/libraries.c           \
+    $SPEC_FILES $DEFAULT_FLAGS    \
+    -include src/ion.h            \
+    -g3 -o exe/spec
+
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+
+  if [ $# -eq 1 ] || [[ $2 == "run" ]]; then
+    valgrind                        \
+      --track-origins=yes           \
+      --leak-check=full             \
+      --show-leak-kinds=all         \
+      exe/spec
+    echo
+
+  elif [[ $2 == "debug" ]]; then
+    gdb --args exe/spec ${@:2}
+
+  else
+    echo "Usage: bin/ion spec [run|debug|prep]"
+    exit 1
+  fi
+
+elif [[ $1 == "build" ]]; then
+  gcc src/ion.c                   \
+    $DEFAULT_FLAGS                \
+    -include src/ion.h            \
+    -o exe/libion.so              \
+    -shared -fPIC
+
+else
+  echo "Usage: bin/ion [spec|build]"
+  exit 1
+fi

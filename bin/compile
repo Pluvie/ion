@@ -3,14 +3,26 @@
 mkdir -p exe
 mkdir -p tmp
 
-if [ "$#" -lt 1 ]; then
-    echo "Specify a source to compile."
-    exit -1
+if [ $# -lt 1 ]; then
+  echo "Specify a source to compile."
+  exit 1
 fi
 
 DEFAULT_FLAGS="-std=c2x -Wall -Werror -DPLATFORM=LINUX"
 
-gcc src/$1.c $DEFAULT_FLAGS -E > tmp/$1.prep.c
+
+if [[ $1 == "spec" ]]; then
+  BASE_FILES="src/spec.c src/ion/libraries.c"
+  EXTRA_FILES=$(find src/spec/*.c -type f | tr '\n' ' ')
+elif [[ $1 == "ion" ]]; then
+  BASE_FILES="src/ion.c"
+  EXTRA_FILES=""
+else
+  echo "Usage: bin/compile [ion|spec]"
+  exit 1
+fi
+
+gcc $BASE_FILES $DEFAULT_FLAGS -E > tmp/$1.prep.c
 if [ $? -ne 0 ]; then
   exit 1
 fi
@@ -20,7 +32,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-gcc tmp/$1.c $DEFAULT_FLAGS ${@:2}
+gcc tmp/$1.c $EXTRA_FILES -include src/ion.h $DEFAULT_FLAGS ${@:2}
 if [ $? -ne 0 ]; then
   exit 1
 fi
