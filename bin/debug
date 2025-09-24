@@ -1,4 +1,0 @@
-#!/bin/bash
-bin/compile src/$1.c -g3 -o exe/$1 &&
-  gdb --args exe/$1 ${@:2}
-echo

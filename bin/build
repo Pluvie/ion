@@ -1,6 +1,0 @@
-#!/bin/bash
-bin/compile src/ion.c     \
-  --include ./src/ion.h   \
-  -O3 -march=native       \
-  -o exe/libion.so        \
-  -shared -fPIC

@@ -1,23 +1,29 @@
 #!/bin/bash
 
-SPEC_FILES=$(find src/spec/*.c -type f | tr '\n' ' ')
+if [[ $# -lt 1 ]]; then
+  echo "Usage: bin/ion [spec|build]"
+  exit 1
+fi
+
+IONIZED_DIR=$(bin/ionize src)
 DEFAULT_FLAGS="-std=c2x -Wall -Werror -DPLATFORM=LINUX"
 
 if [[ $1 == "spec" ]]; then
+  SPEC_FILES=$(find $IONIZED_DIR/spec/*.c -type f | tr '\n' ' ')
 
   if [[ $2 == "prep" ]]; then
-    gcc src/spec.c                  \
-      src/ion/libraries.c           \
-      $SPEC_FILES $DEFAULT_FLAGS    \
-      -E -include src/ion.h         \
+    gcc $IONIZED_DIR/spec.c           \
+      $IONIZED_DIR/ion/libraries.c    \
+      $SPEC_FILES $DEFAULT_FLAGS      \
+      -E -include $IONIZED_DIR/ion.h  \
       > tmp/spec.c
     exit 0
   fi
 
-  gcc src/spec.c                  \
-    src/ion/libraries.c           \
+  gcc $IONIZED_DIR/spec.c         \
+    $IONIZED_DIR/ion/libraries.c  \
     $SPEC_FILES $DEFAULT_FLAGS    \
-    -include src/ion.h            \
+    -include $IONIZED_DIR/ion.h   \
     -g3 -o exe/spec
 
   if [ $? -ne 0 ]; then
@@ -25,10 +31,10 @@ if [[ $1 == "spec" ]]; then
   fi
 
   if [ $# -eq 1 ] || [[ $2 == "run" ]]; then
-    valgrind                        \
-      --track-origins=yes           \
-      --leak-check=full             \
-      --show-leak-kinds=all         \
+    valgrind                  \
+      --track-origins=yes     \
+      --leak-check=full       \
+      --show-leak-kinds=all   \
       exe/spec
     echo
 
@@ -41,13 +47,9 @@ if [[ $1 == "spec" ]]; then
   fi
 
 elif [[ $1 == "build" ]]; then
-  gcc src/ion.c                   \
+  gcc $IONIZED_DIR/ion.c          \
     $DEFAULT_FLAGS                \
-    -include src/ion.h            \
+    -include $IONIZED_DIR/ion.h   \
     -o exe/libion.so              \
     -shared -fPIC
-
-else
-  echo "Usage: bin/ion [spec|build]"
-  exit 1
 fi

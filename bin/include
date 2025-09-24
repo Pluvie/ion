@@ -1,4 +1,0 @@
-#!/bin/bash
-sudo mkdir -p /usr/include/ion    &&
-sudo rm -rf /usr/include/ion/*    &&
-sudo cp -r src/* /usr/include/ion
