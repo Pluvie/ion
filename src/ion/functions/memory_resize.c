@@ -7,6 +7,7 @@ void* memory_resize (
     fatal("memory_resize: amount must not be zero");
 
   void* new_address = realloc(address, amount);
+
   if (unlikely(new_address == nullptr))
     fatal("memory_resize: not enough memory");
 

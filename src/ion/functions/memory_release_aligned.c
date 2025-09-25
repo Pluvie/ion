@@ -1,3 +1,6 @@
-#if platform(LINUX)
-  #include "../../platform/linux/functions/memory_release_aligned.c"
-#endif
+void memory_release_aligned (
+    void* aligned_address
+)
+{
+  aligned_free(aligned_address);
+}

@@ -1,6 +1,7 @@
 #include "spec.h"
 
 spec( memory_acquire );
+spec( memory_acquire_aligned );
 spec( memory_release );
 spec( memory_resize );
 
@@ -10,6 +11,7 @@ int0 main (
 )
 {
   spec_add( memory_acquire );
+  spec_add( memory_acquire_aligned );
   spec_add( memory_release );
   spec_add( memory_resize );
 

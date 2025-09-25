@@ -6,6 +6,7 @@ void* memory_acquire (
     fatal("memory_acquire: amount must not be zero");
 
   void* address = malloc(amount);
+
   if (unlikely(address == nullptr))
     fatal("memory_acquire: not enough memory");
 

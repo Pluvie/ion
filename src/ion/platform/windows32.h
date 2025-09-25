@@ -7,3 +7,5 @@ typedef int             native_int_t;   /* 32 bit */
 
 #define INT_BIT_WIDTH   32
 #define INT_MAXCHARS    10  /* 2147483647 = (2^32 - 1) */
+
+#include "windows32/libraries.h"

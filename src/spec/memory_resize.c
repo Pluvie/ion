@@ -52,5 +52,3 @@ spec( memory_resize ) {
 
   #undef preconditions
 }
-
-#undef memory_resize

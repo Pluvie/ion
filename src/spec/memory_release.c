@@ -18,5 +18,3 @@ spec( memory_release ) {
 
   #undef preconditions
 }
-
-#undef memory_release

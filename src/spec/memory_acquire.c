@@ -39,5 +39,3 @@ spec( memory_acquire ) {
     } end();
   } end();
 }
-
-#undef memory_acquire
