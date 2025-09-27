@@ -10,7 +10,7 @@ spec( memory_acquire_aligned ) {
     memory_acquire_aligned(amount, alignment);
 
     must("fatally fail with a specific message");
-      verify(eq(sim.fatal, "memory_acquire_aligned: amount must not be zero"));
+      verify(streq(sim.fatal, "memory_acquire_aligned: amount must not be zero"));
 
     success();
   } end();
@@ -37,7 +37,7 @@ spec( memory_acquire_aligned ) {
         memory_acquire_aligned(amount, alignment);
 
         must("fatally fail with a specific message");
-          verify(eq(sim.fatal, "memory_acquire_aligned: not enough memory"));
+          verify(streq(sim.fatal, "memory_acquire_aligned: not enough memory"));
 
         success();
       } end();

@@ -8,8 +8,8 @@
 ⚡️ION⚡️ is a C substratum that aims to provide many useful features through *syntax
 elegance* and *semantic cohesion*.
 
-It is designed to be a single library to be included directly in your source code or
-to be linked in dynamic loading.
+It is designed to be a single library to be included directly in your source code. Its
+minimum standard requirement is C11, but newer standards are supported as well.
 
 ## Features
 

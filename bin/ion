@@ -6,7 +6,7 @@ if [[ $# -lt 1 ]]; then
 fi
 
 IONIZED_DIR=$(bin/ionize src)
-DEFAULT_FLAGS="-std=c2x -Wall -Werror -DPLATFORM=LINUX"
+DEFAULT_FLAGS="-std=c11 -Wall -Werror -DPLATFORM=LINUX"
 
 if [[ $1 == "spec" ]]; then
   SPEC_FILES=$(find $IONIZED_DIR/spec/*.c -type f | tr '\n' ' ')
