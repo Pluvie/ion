@@ -51,5 +51,6 @@ elif [[ $1 == "build" ]]; then
     $DEFAULT_FLAGS                \
     -include $IONIZED_DIR/ion.h   \
     -o exe/libion.so              \
+    -O3 -march=native             \
     -shared -fPIC
 fi

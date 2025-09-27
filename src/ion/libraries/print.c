@@ -82,7 +82,7 @@ int32_t print_variadic (
 )
 {
   va_list args;
-  va_start(args);
+  va_start(args, length);
 
   struct print_arg* arg = nullptr;
   bool printing_on_string = length >= 0;
