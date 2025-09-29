@@ -7,6 +7,13 @@
 #define PRINT_STREAM_DEFAULT sstream
 
 /*
+  Global variable that stores the original value of stderr.
+  All specs by default suppresses any printout.
+*/
+extern void* sstream;
+
+
+/*
   Defines a function specification.
 */
 #define spec(function) \
@@ -34,9 +41,9 @@
   Defines a function specification codepath.
 */
 #define when(cond) \
-  memset(&sim, 0, sizeof(sim)); \
   spec_print("when " cond); \
-  spec_indentation++;
+  spec_indentation++; \
+  memory_set(&sim, 0, sizeof(sim));
 
 /*
   Defines a function specification condition that must be verified.
@@ -62,6 +69,18 @@
 */
 #define end() \
   spec_indentation--;
+
+/*
+  Defines a spec dependency.
+*/
+#define dependency(func) \
+  dependency__ ## func
+
+/*
+  Defines a specced function copy.
+*/
+#define specced(func) \
+  specced__ ## func
 
 /*
   Holds the current indentation level.

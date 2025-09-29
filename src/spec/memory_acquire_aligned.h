@@ -1,8 +1,3 @@
-/*
-  Adds required dependencies for this translation unit.
-*/
-#include "../ion/functions/bit_count_leading_zeros.c"
-
 #include "spec_framework.h"
 
 static struct {
@@ -13,6 +8,7 @@ static struct {
   } aligned_alloc;
 } sim = { 0 };
 
+#undef  fatal
 #define fatal(msg)  return sim.fatal = msg, nullptr;
 #define aligned_alloc(align, ...) \
   sim.aligned_alloc.result; sim.aligned_alloc.alignment = align;

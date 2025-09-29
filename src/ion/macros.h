@@ -1,5 +1,7 @@
 #include "macros/check_sizeof.h"
 #include "macros/compile_time_check.h"
+#include "macros/fail.h"
+#include "macros/fatal.h"
 #include "macros/likely.h"
 #include "macros/log2.h"
 #include "macros/next_mul2.h"

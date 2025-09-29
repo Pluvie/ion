@@ -1,10 +1,3 @@
-/*
-  Adds required dependencies for this translation unit.
-*/
-#include "../ion/functions/fatal.c"
-#include "../ion/functions/memory_acquire.c"
-#include "../ion/functions/memory_release.c"
-
 #include "spec_framework.h"
 
 static struct {
@@ -12,8 +5,9 @@ static struct {
   char* fatal;
 } sim = { 0 };
 
-#define realloc(...)  sim.realloc
+#undef  fatal
 #define fatal(msg)    return sim.fatal = msg, nullptr;
+#define realloc(...)  sim.realloc
 
 /*
   Creates a spec-specific copy of the function so that the linker does not find

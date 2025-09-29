@@ -1,5 +1,5 @@
-void fail (
-    const char* format,
+void print_failure (
+    bool is_fatal,
     ...
 )
 {
@@ -7,9 +7,12 @@ void fail (
   char message[sizeof(failure.message)] = { 0 };
 
   va_list args;
-  va_start(args, format);
-  vsnprintf(message, sizeof(message), format, args);
+  va_start(args, is_fatal);
+  print_args(message, sizeof(message), args);
   va_end(args);
 
   memory_copy(failure.message, message, sizeof(message));
+
+  if (is_fatal)
+    abort();
 }

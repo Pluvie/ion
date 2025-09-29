@@ -5,8 +5,9 @@ static struct {
   char* fatal;
 } sim = { 0 };
 
-#define malloc(...)   sim.malloc
+#undef  fatal
 #define fatal(msg)    return sim.fatal = msg, nullptr;
+#define malloc(...)   sim.malloc
 
 /*
   Creates a spec-specific copy of the function so that the linker does not find

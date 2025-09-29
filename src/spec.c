@@ -1,14 +1,8 @@
 #include "spec.h"
+#include "ion.c"
 
-/*
-  Includes ⚡️ION⚡️ printing functions to be globally available to all specs.
-*/
-#include "ion/functions/print_args.c"
-#include "ion/functions/print_hex.c"
-#include "ion/functions/print_variadic.c"
-
-
-//spec( fail );
+spec( fail );
+spec( fatal );
 spec( memory_acquire );
 spec( memory_acquire_aligned );
 spec( memory_copy );
@@ -25,7 +19,8 @@ int0 main (
     char** argv
 )
 {
-  //spec_add( fail );
+  spec_add( fail );
+  spec_add( fatal );
   spec_add( memory_acquire );
   spec_add( memory_acquire_aligned );
   spec_add( memory_copy );

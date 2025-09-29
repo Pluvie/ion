@@ -1,10 +1,4 @@
 /*
-  Global variable that stores the original value of stderr.
-  All specs by default suppresses any printout.
-*/
-extern void* sstream;
-
-/*
   Holds the current indentation level.
 */
 extern int spec_indentation;

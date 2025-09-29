@@ -47,6 +47,7 @@ if [[ $1 == "spec" ]]; then
 elif [[ $1 == "build" ]]; then
   gcc $IONIZED_DIR/ion.c          \
     $DEFAULT_FLAGS                \
+    -D ION_LIB                    \
     -include $IONIZED_DIR/ion.h   \
     -o exe/libion.so              \
     -O3 -march=native             \
