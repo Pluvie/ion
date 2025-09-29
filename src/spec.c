@@ -1,5 +1,6 @@
 #include "spec.h"
 
+//spec( fail );
 spec( memory_acquire );
 spec( memory_acquire_aligned );
 spec( memory_copy );
@@ -13,6 +14,7 @@ int0 main (
     char** argv
 )
 {
+  //spec_add( fail );
   spec_add( memory_acquire );
   spec_add( memory_acquire_aligned );
   spec_add( memory_copy );
