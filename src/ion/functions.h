@@ -8,6 +8,7 @@
 #include "functions/memory_release.h"
 #include "functions/memory_release_aligned.h"
 #include "functions/memory_resize.h"
+#include "functions/memory_set.h"
 
 /*
 struct allocator  allocator_init(int initial_capacity, int alignment);

@@ -7,16 +7,16 @@ unsigned int bit_count_leading_zeros (
   If not, resorts to using the compiler builtins.
 */
 #if   INT_BIT_WIDTH == 64
-  #if __STDC_VERSION__ <= 201711L   /* C17 */
-    return __builtin_clzll(value);
-  #else
+  #if standard(>= C23)
     return stdc_leading_zeros_ull(value);
+  #else
+    return __builtin_clzll(value);
   #endif
 #elif INT_BIT_WIDTH == 32
-  #if __STDC_VERSION__ <= 201711L   /* C17 */
-    return __builtin_clzl(value);
-  #else
+  #if standard(>= C23)
     return stdc_leading_zeros_ul(value);
+  #else
+    return __builtin_clzl(value);
   #endif
 #endif
 }

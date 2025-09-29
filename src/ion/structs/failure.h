@@ -16,13 +16,13 @@
  }
 
  int0 main (
-     int argc,
+     int0 argc,
      char** argv
  )
  {
    failing_function();
    if (unlikely(failure.occurred)) {
-     error_print();
+     failure_print();
      return EXIT_FAILURE;
    }
 

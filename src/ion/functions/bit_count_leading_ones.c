@@ -7,16 +7,16 @@ unsigned int bit_count_leading_ones (
   If not, resorts to using the compiler builtins.
 */
 #if   INT_BIT_WIDTH == 64
-  #if __STDC_VERSION__ <= 201711L   /* C17 */
-    return __builtin_popcountll(value);
-  #else
+  #if standard(>= C23)
     return stdc_leading_ones_ull(value);
+  #else
+    return __builtin_popcountll(value);
   #endif
 #elif INT_BIT_WIDTH == 32
-  #if __STDC_VERSION__ <= 201711L   /* C17 */
-    return __builtin_popcountl(value);
-  #else
+  #if standard(>= C23)
     return stdc_leading_ones_ul(value);
+  #else
+    return __builtin_popcountl(value);
   #endif
 #endif
 }

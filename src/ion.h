@@ -5,6 +5,7 @@
  *
  */
 
+#include "ion/standard.h"
 #include "ion/platform.h"
 #include "ion/libraries.h"
 #include "ion/macros.h"
