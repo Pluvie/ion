@@ -13,6 +13,7 @@ spec( memory_set );
 spec( print );
 spec( printl );
 spec( prints );
+spec( reflection );
 
 int0 main (
     int0 argc,
@@ -31,6 +32,7 @@ int0 main (
   spec_add( print );
   spec_add( printl );
   spec_add( prints );
+  spec_focus( reflection );
 
   specs_run();
 
