@@ -60,51 +60,50 @@ void specs_run (
     void
 )
 {
-  sstream = stderr;
-
-  if (focused_specs[0] == NULL) {
-    stderr = fopen("/dev/null", "w");
+  if (focused_specs[0] == nullptr) {
+    sstream = fopen("/dev/null", "w");
     for (int i = 0; i < added_specs_count; i++) {
       spec_indentation = 0;
-      fprintf(sstream, PRINT_COLOR_MAGENTA);
-      fprintf(sstream, "\n%s", added_spec_names[i]);
-      fprintf(sstream, PRINT_COLOR_NONE);
-      fflush(sstream);
+      fprintf(stderr, PRINT_COLOR_MAGENTA);
+      fprintf(stderr, "\n%s", added_spec_names[i]);
+      fprintf(stderr, PRINT_COLOR_NONE);
+      fflush(stderr);
       spec_indentation = 1;
       added_specs[i]();
     }
   } else {
+    sstream = stderr;
     for (int i = 0; i < focused_specs_count; i++) {
       spec_indentation = 0;
-      fprintf(sstream, PRINT_COLOR_MAGENTA);
-      fprintf(sstream, "\n%s", focused_spec_names[i]);
-      fprintf(sstream, PRINT_COLOR_NONE);
-      fflush(sstream);
+      fprintf(stderr, PRINT_COLOR_MAGENTA);
+      fprintf(stderr, "\n%s", focused_spec_names[i]);
+      fprintf(stderr, PRINT_COLOR_NONE);
+      fflush(stderr);
       focused_specs[i]();
     }
   }
 
   if (specs_passed) {
-    fprintf(sstream, "\n");
-    fprintf(sstream, "\n");
-    fprintf(sstream, PRINT_COLOR_GREEN);
-    if (focused_specs[0] == NULL)
-      fprintf(sstream, "Completed %li specs.\n", added_specs_count);
+    fprintf(stderr, "\n");
+    fprintf(stderr, "\n");
+    fprintf(stderr, PRINT_COLOR_GREEN);
+    if (focused_specs[0] == nullptr)
+      fprintf(stderr, "Completed %li specs.\n", added_specs_count);
     else
-      fprintf(sstream, "Completed %li focused spec(s).\n", focused_specs_count);
-    fprintf(sstream, "All specs passed successfully.");
-    fprintf(sstream, "\n");
-    fprintf(sstream, PRINT_COLOR_NONE);
+      fprintf(stderr, "Completed %li focused spec(s).\n", focused_specs_count);
+    fprintf(stderr, "All specs passed successfully.");
+    fprintf(stderr, "\n");
+    fprintf(stderr, PRINT_COLOR_NONE);
   } else {
-    fprintf(sstream, "\n");
-    fprintf(sstream, "\n");
-    fprintf(sstream, PRINT_COLOR_RED);
-    fprintf(sstream, "Some specs did not pass. Check for errors above.");
-    fprintf(sstream, "\n");
-    fprintf(sstream, PRINT_COLOR_NONE);
+    fprintf(stderr, "\n");
+    fprintf(stderr, "\n");
+    fprintf(stderr, PRINT_COLOR_RED);
+    fprintf(stderr, "Some specs did not pass. Check for errors above.");
+    fprintf(stderr, "\n");
+    fprintf(stderr, PRINT_COLOR_NONE);
   }
 
-  fclose(sstream);
-  if (focused_specs[0] == NULL)
-    fclose(stderr);
+  fclose(stderr);
+  if (focused_specs[0] == nullptr)
+    fclose(sstream);
 }

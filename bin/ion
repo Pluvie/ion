@@ -13,7 +13,6 @@ if [[ $1 == "spec" ]]; then
 
   if [[ $2 == "prep" ]]; then
     gcc $IONIZED_DIR/spec.c           \
-      $IONIZED_DIR/ion/libraries.c    \
       $SPEC_FILES $DEFAULT_FLAGS      \
       -E -include $IONIZED_DIR/ion.h  \
       > tmp/spec.c
@@ -21,7 +20,6 @@ if [[ $1 == "spec" ]]; then
   fi
 
   gcc $IONIZED_DIR/spec.c         \
-    $IONIZED_DIR/ion/libraries.c  \
     $SPEC_FILES $DEFAULT_FLAGS    \
     -include $IONIZED_DIR/ion.h   \
     -g3 -o exe/spec

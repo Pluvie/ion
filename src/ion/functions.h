@@ -9,6 +9,9 @@
 #include "functions/memory_release_aligned.h"
 #include "functions/memory_resize.h"
 #include "functions/memory_set.h"
+#include "functions/print_args.h"
+#include "functions/print_hex.h"
+#include "functions/print_variadic.h"
 
 /*
 struct allocator  allocator_init(int initial_capacity, int alignment);

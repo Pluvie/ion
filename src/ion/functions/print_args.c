@@ -15,64 +15,10 @@ int print_args (
 
     int printed_bytes = 0;
 
-    if (arg->flag != 0) {
-      printed_bytes = (length < 0 ?
-        fprintf(output, "%s", (const char*) arg) :
-        snprintf(output, length, "%s", (const char*) arg)
-      );
-    } else {
-      switch (arg->type) {
-      case PRINT_ARG_TYPE_BOOL:
-        const char* bool_output = *(bool*) arg->value ? "true" : "false";
-        printed_bytes = (length < 0 ?
-          fprintf(output, "%s", bool_output) :
-          snprintf(output, length, "%s", bool_output)
-        );
-        break;
-
-      case PRINT_ARG_TYPE_CHAR:
-        printed_bytes = (length < 0 ?
-          fprintf(output, "%c", *(char*) arg->value) :
-          snprintf(output, length, "%c", *(char*) arg->value)
-        );
-        break;
-
-      case PRINT_ARG_TYPE_INT:
-        printed_bytes = (length < 0 ?
-          fprintf(output, INT_FORMAT, *(int*) arg->value) :
-          snprintf(output, length, INT_FORMAT, *(int*) arg->value)
-        );
-        break;
-
-      case PRINT_ARG_TYPE_UNSIGNED_INT:
-        printed_bytes = (length < 0 ?
-          fprintf(output, INT_UFORMAT, *(unsigned int*) arg->value) :
-          snprintf(output, length, INT_UFORMAT, *(unsigned int*) arg->value)
-        );
-        break;
-
-      case PRINT_ARG_TYPE_DEC:
-        printed_bytes = (length < 0 ?
-          fprintf(output, "%f", *(dec*) arg->value) :
-          snprintf(output, length, "%f", *(dec*) arg->value)
-        );
-        break;
-
-      case PRINT_ARG_TYPE_CHAR_POINTER:
-        printed_bytes = (length < 0 ?
-          fprintf(output, "%s", (char*) arg->value) :
-          snprintf(output, length, "%s", (char*) arg->value)
-        );
-        break;
-
-      case PRINT_ARG_TYPE_VOID_POINTER:
-        printed_bytes = (length < 0 ?
-          fprintf(output, "%p", (void*) arg->value) :
-          snprintf(output, length, "%p", (void*) arg->value)
-        );
-        break;
-      }
-    }
+    if (arg->flag != 0)
+      printed_bytes = print_dispatch(output, length, "%s", (const char*) arg);
+    else
+      printed_bytes = arg->functor(output, length, arg->value);
 
     total_printed_bytes += printed_bytes;
     if (printing_on_string) {
@@ -87,4 +33,32 @@ int print_args (
     fflush(output);
 
   return total_printed_bytes;
+}
+
+int print_bool (void* output, int length, bool* value) {
+  return print_dispatch(output, length, "%s", *value ? "true" : "false");
+}
+int print_char (void* output, int length, char* value) {
+  return print_dispatch(output, length, "%c", *value);
+}
+int print_char_unsigned (void* output, int length, unsigned char* value) {
+  return print_dispatch(output, length, "%02x", *value);
+}
+int print_int0 (void* output, int length, int0* value) {
+  return print_dispatch(output, length, "%i", *value);
+}
+int print_int (void* output, int length, int* value) {
+  return print_dispatch(output, length, INT_FORMAT, *value);
+}
+int print_int_unsigned (void* output, int length, unsigned int* value) {
+  return print_dispatch(output, length, INT_UFORMAT, *value);
+}
+int print_dec (void* output, int length, dec* value) {
+  return print_dispatch(output, length, "%f", *value);
+}
+int print_char_pointer (void* output, int length, char** value) {
+  return print_dispatch(output, length, "\"%s\"", *value);
+}
+int print_void_pointer (void* output, int length, void** value) {
+  return print_dispatch(output, length, "%p", *value);
 }

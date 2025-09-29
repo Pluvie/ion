@@ -26,12 +26,12 @@ void spec_print (
     const char* text
 )
 {
-  fprintf(sstream, "\n");
+  fprintf(stderr, "\n");
 
   for (int i = 0; i < spec_indentation; i++)
-    fprintf(sstream, "  ");
+    fprintf(stderr, "  ");
     
-  fprintf(sstream, "%s", text);
+  fprintf(stderr, "%s", text);
 }
 
 /*
@@ -44,15 +44,15 @@ void spec_failed (
 )
 {
   specs_passed = false;
-  fprintf(sstream, PRINT_COLOR_RED);
-  fprintf(sstream, "█");
-  fprintf(sstream, PRINT_COLOR_NONE);
-  fprintf(sstream, "\n");
+  fprintf(stderr, PRINT_COLOR_RED);
+  fprintf(stderr, "█");
+  fprintf(stderr, PRINT_COLOR_NONE);
+  fprintf(stderr, "\n");
   for (int i = 0; i < spec_indentation; i++)
-    fprintf(sstream, "  ");
-  fprintf(sstream, PRINT_COLOR_RED);
-  fprintf(sstream, "%s (%s:%li) ", text, file, line);
-  fprintf(sstream, PRINT_COLOR_NONE);
+    fprintf(stderr, "  ");
+  fprintf(stderr, PRINT_COLOR_RED);
+  fprintf(stderr, "%s (%s:%li) ", text, file, line);
+  fprintf(stderr, PRINT_COLOR_NONE);
 }
 
 /*
@@ -63,8 +63,8 @@ void spec_verified (
 )
 {
   if (spec_print_verification_enabled) {
-    fprintf(sstream, PRINT_COLOR_GREEN);
-    fprintf(sstream, "█");
-    fprintf(sstream, PRINT_COLOR_NONE);
+    fprintf(stderr, PRINT_COLOR_GREEN);
+    fprintf(stderr, "█");
+    fprintf(stderr, PRINT_COLOR_NONE);
   }
 }

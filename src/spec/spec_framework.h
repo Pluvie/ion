@@ -1,4 +1,12 @@
 /*
+  Suppresses by default all spec printouts.
+*/
+#ifdef  PRINT_STREAM_DEFAULT
+#undef  PRINT_STREAM_DEFAULT
+#endif
+#define PRINT_STREAM_DEFAULT sstream
+
+/*
   Defines a function specification.
 */
 #define spec(function) \
