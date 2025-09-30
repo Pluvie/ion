@@ -1,6 +1,7 @@
 #include "spec.h"
 #include "ion.c"
 
+spec( allocator_init );
 spec( fail );
 spec( fatal );
 spec( memory_acquire );
@@ -20,6 +21,7 @@ int0 main (
     char** argv
 )
 {
+  spec_add( allocator_init );
   spec_add( fail );
   spec_add( fatal );
   spec_add( memory_acquire );
@@ -32,7 +34,7 @@ int0 main (
   spec_add( print );
   spec_add( printl );
   spec_add( prints );
-  spec_focus( reflection );
+  spec_add( reflection );
 
   specs_run();
 

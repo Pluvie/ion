@@ -1,3 +1,4 @@
+#include "functions/allocator_init.c"
 #include "functions/bit_count_leading_ones.c"
 #include "functions/bit_count_leading_zeros.c"
 #include "functions/memory_acquire.c"
