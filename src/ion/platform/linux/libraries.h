@@ -11,4 +11,6 @@
 #include <string.h>
 #include <threads.h>
 
+#if standard(>= C11)
 #define aligned_free  free
+#endif

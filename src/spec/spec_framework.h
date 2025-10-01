@@ -43,7 +43,7 @@ extern void* sstream;
 #define when(cond) \
   spec_print("when " cond); \
   spec_indentation++; \
-  memory_set(&sim, 0, sizeof(sim));
+  memset(&sim, 0, sizeof(sim));
 
 /*
   Defines a function specification condition that must be verified.

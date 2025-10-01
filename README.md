@@ -6,10 +6,8 @@
 ## Introduction
 
 ⚡️ION⚡️ is a C substratum that aims to provide many useful features through *syntax
-elegance* and *semantic cohesion*.
-
-It is designed to be a single library to be included directly in your source code. Its
-minimum standard requirement is C11, but newer standards are supported as well.
+elegance* and *semantic cohesion*. It is designed to be a single library to be included
+directly in your source code.
 
 ## Features
 
@@ -27,6 +25,18 @@ and many other minor improvements like:
 
   - normalize [io operations](#io) on files, sockets, and memory objects.
   - [standardize data types](#types): integers, decimals, strings, etc.
+
+## Compatibility
+
+⚡️ION⚡️ minimum standard requirement is C99, but newer standards are supported as well.
+We suggest targeting for C11 or higher standard, mainly because this enables a more
+convenient way to use data structures through the use of the `_Generic` construct.
+
+C89 standard (or ANSI C) is not supported. Even though
+[Eskil Steenberg](https://www.quelsolaar.com/about/index.html) -- who I personally
+admire and hold in high esteem -- is correctly advising C89 as the most dependable
+language, he is still using a subset of C99 due to important funcionalities like
+`snprintf` which are not part of ANSI C.
 
 ## Motivation
 

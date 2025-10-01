@@ -2,16 +2,22 @@
 
 static struct {
   char* fatal;
-  struct {
-    void* result;
-    unsigned int alignment;
-  } aligned_alloc;
-} sim = { 0 };
+  bool allocation_fails;
+} sim;
 
 #undef  fatal
 #define fatal(msg)  return sim.fatal = msg, nullptr;
+
+#if standard(>= C11)
 #define aligned_alloc(align, ...) \
-  sim.aligned_alloc.result; sim.aligned_alloc.alignment = align;
+  sim.allocation_fails ? nullptr : (void*) (10*alignment)
+
+#else
+#define malloc(...) \
+  sim.allocation_fails ? nullptr : (void*) 0x01
+
+#define memory_set(...)
+#endif
 
 /*
   Creates a spec-specific copy of the function so that the linker does not find

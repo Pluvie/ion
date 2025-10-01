@@ -21,19 +21,8 @@ spec( memory_acquire_aligned ) {
     when("the alignment is not a power of two") {
       alignment = 17;
 
-      memory_acquire_aligned(amount, alignment);
-
-      must("change the alignment to its next power of two");
-        verify(sim.aligned_alloc.alignment == next_pow2(alignment));
-
-      success();
-    } end();
-
-    when("the alignment is a power of two") {
-      alignment = 64;
-
-      when("the aligned_alloc function fails") {
-        sim.aligned_alloc.result = nullptr;
+      when("the memory allocation fails") {
+        sim.allocation_fails = true;
         memory_acquire_aligned(amount, alignment);
 
         must("fatally fail with a specific message");
@@ -42,14 +31,40 @@ spec( memory_acquire_aligned ) {
         success();
       } end();
 
-      when("the aligned_alloc function succeeds") {
-        sim.aligned_alloc.result = (void*) 0x99;
+      when("the memory allocation succeeds") {
+        sim.allocation_fails = false;
         void* result = memory_acquire_aligned(amount, alignment);
 
         must("not fail");
           verify(sim.fatal == nullptr);
-        must("return the allocated address");
-          verify(result == sim.aligned_alloc.result);
+        must("return the allocated address with alignment changed to its next power of two");
+          verify((unsigned int) result % next_pow2(alignment) == 0);
+
+        success();
+      } end();
+    } end();
+
+    when("the alignment is a power of two") {
+      alignment = 64;
+
+      when("the memory allocation fails") {
+        sim.allocation_fails = true;
+        memory_acquire_aligned(amount, alignment);
+
+        must("fatally fail with a specific message");
+          verify(streq(sim.fatal, "memory_acquire_aligned: not enough memory"));
+
+        success();
+      } end();
+
+      when("the memory allocation succeeds") {
+        sim.allocation_fails = false;
+        void* result = memory_acquire_aligned(amount, alignment);
+
+        must("not fail");
+          verify(sim.fatal == nullptr);
+        must("return the allocated address with the given alignment");
+          verify((unsigned int) result % alignment == 0);
 
         success();
       } end();

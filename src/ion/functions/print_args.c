@@ -48,10 +48,10 @@ int print_int0 (void* output, int length, int0* value) {
   return print_dispatch(output, length, "%i", *value);
 }
 int print_int (void* output, int length, int* value) {
-  return print_dispatch(output, length, INT_FORMAT, *value);
+  return print_dispatch(output, length, INT_FORMAT "i", *value);
 }
 int print_int_unsigned (void* output, int length, unsigned int* value) {
-  return print_dispatch(output, length, INT_UFORMAT, *value);
+  return print_dispatch(output, length, INT_FORMAT "u", *value);
 }
 int print_dec (void* output, int length, dec* value) {
   return print_dispatch(output, length, "%f", *value);

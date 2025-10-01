@@ -11,6 +11,8 @@
 #include <string.h>
 #include <threads.h>
 
+#if standard(>= C11)
 #include <malloc.h>
 #define aligned_alloc _aligned_alloc
 #define aligned_free  _aligned_free
+#endif

@@ -5,8 +5,13 @@ static struct {
 } sim = { 0 };
 
 #define memory_acquire_aligned(...) (sim.acquired = (void*) 0x80);
+
+#if standard(>= C11)
 #undef  aligned_free
-#define aligned_free(...)           (sim.acquired = nullptr);
+#define aligned_free(...)   (sim.acquired = nullptr);
+#else
+#define free(...)           (sim.acquired = nullptr);
+#endif
 
 /*
   Creates a spec-specific copy of the function so that the linker does not find
