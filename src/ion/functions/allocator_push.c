@@ -65,15 +65,15 @@ append_region:
 
 increase_capacity:
   /*
-    Increase the allocator capacity: if the amount is greater than the current
+    Increase the allocator capacity: if the amount is greater than double the current
     capacity, use it to calculate a new fitting capacity. Otherwise, just double the
     previous capacity.
   */
-  if (amount > allocator->capacity)
-    allocator->capacity = next_pow2(amount + allocator->capacity);
-  else
-    allocator->capacity *= 2;
+  int new_capacity = allocator->capacity * 2;
+  if (amount > new_capacity)
+    new_capacity = next_pow2(amount);
 
+  allocator->capacity = new_capacity;
   allocator->data = memory_acquire(allocator->capacity);
 
 allocate:
