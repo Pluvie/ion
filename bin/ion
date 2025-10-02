@@ -5,23 +5,47 @@ if [[ $# -lt 1 ]]; then
   exit 1
 fi
 
-IONIZED_DIR=$(bin/ionize src)
-DEFAULT_FLAGS="-std=c11 -Wall -Werror -DPLATFORM=LINUX"
+PLATFORM="LINUX"
+DEFAULT_FLAGS="-std=c11 -Wall -Werror"
 
 if [[ $1 == "spec" ]]; then
-  SPEC_FILES=$(find $IONIZED_DIR/spec/*.c -type f | tr '\n' ' ')
+  SPEC_UNITS=$(find src/spec/*.c -type f | tr '\n' ' ')
+  MAIN_UNIT="src/spec.c"
 
-  if [[ $2 == "prep" ]]; then
-    gcc $IONIZED_DIR/spec.c           \
-      $SPEC_FILES $DEFAULT_FLAGS      \
-      -E -include $IONIZED_DIR/ion.h  \
-      > tmp/spec.c
-    exit 0
+  for spec_unit in $SPEC_UNITS; do
+    gcc $spec_unit                \
+      $DEFAULT_FLAGS              \
+      -D ION_PREP                 \
+      -D PLATFORM=$PLATFORM       \
+      -include src/ion.h          \
+      -E > "${unit%.c}.ion.c"
+
+    if [ $? -ne 0 ]; then
+      exit 1
+    fi
+
+    bin/ionize "${unit%.c}.ion.c"
+  done
+
+  gcc $MAIN_UNIT                  \
+    $DEFAULT_FLAGS                \
+    -D ION_PREP                   \
+    -D PLATFORM=$PLATFORM         \
+    -include src/ion.h            \
+    -E > "${MAIN_UNIT%.c}.ion.c"
+
+  bin/ionize "${MAIN_UNIT%.c}.ion.c"
+
+  if [ $? -ne 0 ]; then
+    exit 1
   fi
 
-  gcc $IONIZED_DIR/spec.c         \
-    $SPEC_FILES $DEFAULT_FLAGS    \
-    -include $IONIZED_DIR/ion.h   \
+  gcc src/spec.c                \
+    $SPEC_UNITS                 \
+    $DEFAULT_FLAGS              \
+    -D ION_EXEC                 \
+    -D PLATFORM=$PLATFORM       \
+    -include src/ion.h          \
     -g3 -o exe/spec
 
   if [ $? -ne 0 ]; then
@@ -39,8 +63,11 @@ if [[ $1 == "spec" ]]; then
   elif [[ $2 == "debug" ]]; then
     gdb --args exe/spec ${@:2}
 
+  elif [[ $2 == "clear" ]]; then
+    find src/spec/*.ion.c -type f -delete
+
   else
-    echo "Usage: bin/ion spec [run|debug|prep]"
+    echo "Usage: bin/ion spec [run|debug|clear]"
     exit 1
   fi
 
@@ -48,6 +75,7 @@ elif [[ $1 == "build" ]]; then
   gcc $IONIZED_DIR/ion.c          \
     $DEFAULT_FLAGS                \
     -D ION_LIB                    \
+    -D PLATFORM=$PLATFORM         \
     -include $IONIZED_DIR/ion.h   \
     -o exe/libion.so              \
     -O3 -march=native             \

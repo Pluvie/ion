@@ -2,6 +2,7 @@
 #include "macros/compile_concat.h"
 #include "macros/compile_stringize.h"
 #include "macros/compile_time_check.h"
+#include "macros/countof.h"
 #include "macros/cvar.h"
 #include "macros/fail.h"
 #include "macros/fatal.h"
@@ -13,6 +14,7 @@
 #include "macros/padding.h"
 #include "macros/print.h"
 #include "macros/print_sizeof.h"
+#include "macros/string.h"
 #include "macros/streq.h"
 #include "macros/unlikely.h"
 

@@ -7,4 +7,6 @@
 #define print_sizeof(type) \
   static char __fake_var[sizeof(type)] = { __fake_error(&__fake_var) };
 
+#ifdef ION_EXEC
 char __fake_error(int);
+#endif

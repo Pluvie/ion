@@ -16,11 +16,3 @@
 #include "functions/print_failure.c"
 #include "functions/print_hex.c"
 #include "functions/print_variadic.c"
-
-/*
-struct allocator  allocator_init(int initial_capacity, int alignment);
-void*             allocator_pop(struct allocator* space, int amount);
-void*             allocator_push(struct allocator* space, int amount);
-void              allocator_release(struct allocator* space);
-void              allocator_reset(struct allocator* space);
-*/

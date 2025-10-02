@@ -7,13 +7,6 @@
 #define PRINT_STREAM_DEFAULT sstream
 
 /*
-  Global variable that stores the original value of stderr.
-  All specs by default suppresses any printout.
-*/
-extern void* sstream;
-
-
-/*
   Defines a function specification.
 */
 #define spec(function) \
@@ -81,6 +74,12 @@ extern void* sstream;
 */
 #define specced(func) \
   specced__ ## func
+
+/*
+  Global variable that stores the original value of stderr.
+  All specs by default suppresses any printout.
+*/
+extern void* sstream;
 
 /*
   Holds the current indentation level.
