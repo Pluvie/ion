@@ -6,12 +6,7 @@
 #define INT_MAXCHARS    19    /* 9223372036854775807 = (2^63 - 1) */
 #define INT_FORMAT      "%l"
 
+typedef int             native_int_t;   /* 32 bit */
 #define widest_int_t    long int        /* 64 bit */
 
-#ifdef ION_EXEC         /* Defines the `native_int_t` only in compilation phase. */
-
-typedef int             native_int_t;   /* 32 bit */
-
 #include "linux/libraries.h"
-
-#endif

@@ -7,6 +7,7 @@
 #include "macros/fail.h"
 #include "macros/fatal.h"
 #include "macros/likely.h"
+#include "macros/list.h"
 #include "macros/log2.h"
 #include "macros/next_mul2.h"
 #include "macros/next_pow2.h"
@@ -14,8 +15,8 @@
 #include "macros/padding.h"
 #include "macros/print.h"
 #include "macros/print_sizeof.h"
-#include "macros/string.h"
 #include "macros/streq.h"
+#include "macros/string.h"
 #include "macros/unlikely.h"
 
 #include "macros/reflection/field.h"

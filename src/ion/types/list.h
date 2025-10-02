@@ -3,7 +3,6 @@
 #define T _type(list_of)
 
 #include "list/struct.h"
-#include "list/macros.h"
 #include "list/functions.h"
 #include "list/reflection.h"
 

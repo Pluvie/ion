@@ -4,9 +4,9 @@ spec( list ) {
 
   precondition("a valid list of elements of that type")
     #define valid_elements { \
-        { s("Jane Shepard"), SOLDIER, 800, 400 }, \
-        { s("Garrus Vakarian"), INFILTRATOR, 600, 600 }, \
-        { s("Liara T'Soni"), ADEPT, 200, 800 }, \
+        { string("Jane Shepard"),     SOLDIER,      800,  400 }, \
+        { string("Garrus Vakarian"),  INFILTRATOR,  600,  600 }, \
+        { string("Liara T'Soni"),     ADEPT,        200,  800 }, \
       }
 
   must("create a frozen stack allocated list of the given elements");

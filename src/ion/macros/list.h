@@ -1,6 +1,3 @@
-#ifndef LIST_MACROS
-#define LIST_MACROS
-
 /*
   This file contains all list related macros.
   
@@ -63,8 +60,7 @@
  Create a list literal. A list literal is *frozen*: it cannot be modified because it
  has fixed length and capacity, and no allocator.
 */
-#define list(T, ...)                            \
-  (list<T>) {                                   \
+#define list(T, ...) {                          \
     .data = (T []) __VA_ARGS__ ,                \
     .length = countof((T []) __VA_ARGS__ ),     \
     .capacity = countof((T []) __VA_ARGS__ ),   \
@@ -106,5 +102,3 @@
   __VA_OPT__(                                                                           \
     for (int __VA_ARGS__ = iter.index;  iter.gate & (1<<1); iter.gate &= ~(1<<1))       \
   )
-
-#endif

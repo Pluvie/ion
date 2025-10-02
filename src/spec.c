@@ -1,25 +1,25 @@
 #include "spec.h"
-#include "ion.c"
+#include "spec/types.ion.h"
 
 spec( allocator_init );
 spec( allocator_pop );
-//spec( allocator_push );
-//spec( allocator_release );
-//spec( allocator_reset );
-//spec( list );
-//spec( fail );
-//spec( fatal );
-//spec( memory_acquire );
-//spec( memory_acquire_aligned );
-//spec( memory_copy );
-//spec( memory_release );
-//spec( memory_release_aligned );
-//spec( memory_resize );
-//spec( memory_set );
-//spec( print );
-//spec( printl );
-//spec( prints );
-//spec( reflection );
+spec( allocator_push );
+spec( allocator_release );
+spec( allocator_reset );
+spec( list );
+spec( fail );
+spec( fatal );
+spec( memory_acquire );
+spec( memory_acquire_aligned );
+spec( memory_copy );
+spec( memory_release );
+spec( memory_release_aligned );
+spec( memory_resize );
+spec( memory_set );
+spec( print );
+spec( printl );
+spec( prints );
+spec( reflection );
 
 int0 main (
     int0 argc,
@@ -28,23 +28,23 @@ int0 main (
 {
   spec_add( allocator_init );
   spec_add( allocator_pop );
-  //spec_add( allocator_push );
-  //spec_add( allocator_release );
-  //spec_add( allocator_reset );
-  //spec_add( list );
-  //spec_add( fail );
-  //spec_add( fatal );
-  //spec_add( memory_acquire );
-  //spec_add( memory_acquire_aligned );
-  //spec_add( memory_copy );
-  //spec_add( memory_release );
-  //spec_add( memory_release_aligned );
-  //spec_add( memory_resize );
-  //spec_add( memory_set );
-  //spec_add( print );
-  //spec_add( printl );
-  //spec_add( prints );
-  //spec_add( reflection );
+  spec_add( allocator_push );
+  spec_add( allocator_release );
+  spec_add( allocator_reset );
+  spec_add( list );
+  spec_add( fail );
+  spec_add( fatal );
+  spec_add( memory_acquire );
+  spec_add( memory_acquire_aligned );
+  spec_add( memory_copy );
+  spec_add( memory_release );
+  spec_add( memory_release_aligned );
+  spec_add( memory_resize );
+  spec_add( memory_set );
+  spec_add( print );
+  spec_add( printl );
+  spec_add( prints );
+  spec_add( reflection );
 
   specs_run();
 
