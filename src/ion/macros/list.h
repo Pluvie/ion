@@ -70,27 +70,27 @@
  * Initialize a stack allocated list. This list can be modified but may grow only up
  * to its defined capacity. */
 #define list_init(T, c) \
-  list<T>_init(c, (T [c]) { 0 })
+  list_function((T) { 0 }, init)(c, (T [c]) { 0 })
 
 /**
  * Allocate a list. This list can be modified an may grow indefinitely. */
 #define list_alloc(T, c, a, ...) \
-  list<T>_alloc(c, a, __VA_OPT__(__VA_ARGS__ +) 0)
+  list_function((T) { 0 }, alloc)(c, a, if_va_args(__VA_ARGS__) ? __VA_ARGS__ : nullptr)
 
 /**
  * Append an element to the end of list. */
 #define list_push(l, e) \
-  list_function(l, push)(l, e)
+  list_function(*l->data, push)(l, e)
 
 /**
  * Remove an element from the end of the list. */
 #define list_pop(l) \
-  list_function(l, pop)(l)
+  list_function(*l->data, pop)(l)
 
 /**
  * Return an element at a specific position in the list. */
 #define list_at(l, p) \
-  list_function(l, at)(l, p)
+  list_function(*l->data, at)(l, p)
 
 /**
  * Loops over the elements of the list, with optional index name. */

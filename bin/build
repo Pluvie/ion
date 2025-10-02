@@ -1,0 +1,10 @@
+#!/bin/bash
+#  ION="$(bin/ionize --directory src)"
+#  gcc $ION/ion.c          \
+#    $DEFAULT_FLAGS                \
+#    -D ION_LIB                    \
+#    -D PLATFORM=$PLATFORM         \
+#    -include $ION/ion.h   \
+#    -o exe/libion.so              \
+#    -O3 -march=native             \
+#    -shared -fPIC

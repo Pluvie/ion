@@ -1,0 +1,39 @@
+#!/bin/bash
+
+if [[ $# -lt 1 ]]; then
+  echo "Usage: bin/ion [spec|build]"
+  exit 1
+fi
+
+PLATFORM="LINUX"
+DEFAULT_FLAGS="-std=c11 -Wall -Werror"
+
+if [[ $1 == "spec" ]]; then
+  SPECS="$(find app/spec -name "*.c" -type f | tr '\n' ' ')"
+
+  gcc $SPECS                    \
+    $DEFAULT_FLAGS              \
+    -D PLATFORM=$PLATFORM       \
+    -I ./src                    \
+    -g3 -o exe/spec
+
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+
+  if [ $# -eq 1 ]; then
+    valgrind                    \
+      --track-origins=yes       \
+      --leak-check=full         \
+      --show-leak-kinds=all     \
+      exe/spec
+    echo
+
+  elif [[ $2 == "debug" ]]; then
+    gdb --args exe/spec ${@:2}
+
+  else
+    echo "Usage: bin/run spec [debug]"
+    exit 1
+  fi
+fi

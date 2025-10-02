@@ -24,28 +24,40 @@ module Ion
     return false if not File.file?(target)
     return File.mtime(target) > File.mtime(source)
   end
+
+  ##
+  # Normalizes the type.
+  def normalize_type(type)
+    type
+      .gsub(/[\s]*,[\s]*/, ", ")
+      .gsub(/[\s]*\*[\s]*/, "*")
+      .gsub(/[\s]+/, ' ')
+  end
   
   ##
   # Inflects the Ion container type, i.e. `list<char*>` becomes `list_char_p`.
-  def inflect_type(type)
-    type
-      .gsub(/[ ]*,[ ]*/, '_')
-      .gsub(/[ ]*\*/, "_p")
-      .gsub(/[ ]+/, '_')
+  def inflect_type(normalized_type)
+    normalized_type
+      .gsub(/[,\s]/, '_')
+      .gsub(/\*/, "_p")
   end
   
   ##
   # Ionizes the file, which means finding all Ion type containers, and inflecting their
   # name. Just that.
   def ionize_file(source, target)
+    types = Set.new
     source = File.expand_path(source)
     target ||= source
     content = File.read(source)
     content.gsub!(/([A-z][A-z_]+)(<[A-z][A-z0-9_,\* ]+>)/) do |match|
       container, type = match[..-2].split('<')
-      "#{container}_#{inflect_type(type)}"
+      normalized_type = normalize_type(type)
+      types << [ container, normalized_type ]
+      "#{container}_#{inflect_type(normalized_type)}"
     end
     File.write(target, content)
+    types
   end
 
   ##
@@ -57,6 +69,7 @@ module Ion
     prefix_start = common_prefix_start(source, target)
     target_dir = File.join(target, source[prefix_start..])
     target_existing = Set.new(Dir.glob(File.join(target_dir, "**", "*.{c,h}")))
+    types = Set.new
 
     # For each source file in the source directory, finds its target path, creates the
     # directory if not present, and ionizes the file. Skips files that have not changed
@@ -70,8 +83,17 @@ module Ion
       target_existing.delete(target_file)
       FileUtils.mkdir_p(target_dir_path)
       next if file_is_unchanged?(file, target_file)
-      ionize_file(file, target_file)
+      types |= ionize_file(file, target_file)
     end
+
+    File.write(File.join(target_dir, "containers.h"),
+      types.map do |container, type|
+        "#define #{container}_of #{type}\n#include \"ion/containers/#{container}.h\""
+      end.join("\n"))
+    File.write(File.join(target_dir, "containers.c"),
+      types.map do |container, type|
+        "#define #{container}_of #{type}\n#include \"ion/containers/#{container}.c\""
+      end.join("\n"))
 
     # Deletes obsolete files in the target directory.
     target_existing.each do |file|
