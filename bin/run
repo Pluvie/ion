@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ $# -lt 1 ]]; then
-  echo "Usage: bin/run [spec|build]"
+  echo "Usage: bin/run [spec|cli]"
   exit 1
 fi
 
@@ -9,9 +9,10 @@ PLATFORM="LINUX"
 DEFAULT_FLAGS="-std=c11 -Wall -Werror"
 
 if [[ $1 == "spec" ]]; then
-  SPECS="$(find app/spec -name "*.c" -type f | tr '\n' ' ')"
+  SPECS=$(find app/spec/specs/ -name "*.c" -type f | tr '\n' ' ')
+  FILES="app/spec/main.c app/spec/framework.c app/spec/containers.c $SPECS"
 
-  gcc $SPECS                    \
+  gcc $FILES                    \
     -no-integrated-cpp -B ./bin \
     $DEFAULT_FLAGS              \
     -D PLATFORM=$PLATFORM       \
@@ -35,6 +36,36 @@ if [[ $1 == "spec" ]]; then
 
   else
     echo "Usage: bin/run spec [debug]"
+    exit 1
+  fi
+
+if [[ $1 == "cli" ]]; then
+  FILES="app/cli/main.c app/cli/cli.c"
+
+  gcc $FILES                    \
+    -no-integrated-cpp -B ./bin \
+    $DEFAULT_FLAGS              \
+    -D PLATFORM=$PLATFORM       \
+    -I ./src                    \
+    -g3 -o exe/cli
+
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+
+  elif [[ $2 == "build" ]]; then
+    valgrind                    \
+      --track-origins=yes       \
+      --leak-check=full         \
+      --show-leak-kinds=all     \
+      exe/cli
+    echo
+
+  elif [[ $2 == "debug" ]]; then
+    gdb --args exe/cli ${@:2}
+
+  else
+    echo "Usage: bin/run cli [build|debug]"
     exit 1
   fi
 fi

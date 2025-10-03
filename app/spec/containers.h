@@ -19,5 +19,5 @@ struct squadmate {
 
 #define list_function(type, func, ...)                  \
   _Generic(type,                                        \
-    struct squadmate : list_struct_squadmate_ ## func   \
+    struct squadmate : list<struct squadmate>_ ## func  \
   )
