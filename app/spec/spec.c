@@ -7,7 +7,7 @@ spec( allocator_pop );
 spec( allocator_push );
 spec( allocator_release );
 spec( allocator_reset );
-//spec( list );
+spec( list );
 spec( fail );
 spec( fatal );
 spec( memory_acquire );
@@ -32,7 +32,7 @@ int0 main (
   spec_add( allocator_push );
   spec_add( allocator_release );
   spec_add( allocator_reset );
-  //spec_add( list );
+  spec_add( list );
   spec_add( fail );
   spec_add( fatal );
   spec_add( memory_acquire );
