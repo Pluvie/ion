@@ -1,4 +1,4 @@
-#include "../framework.h"
+#include "../spec.h"
 
 static struct {
   void* acquired;

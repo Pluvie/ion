@@ -72,33 +72,38 @@
 #define list_init(T, c) \
   list_function((T) { 0 }, init)(c, (T [c]) { 0 })
 
-/**
- * Allocate a list. This list can be modified an may grow indefinitely. */
+/*
+  Allocate a list. This list can be modified an may grow indefinitely.
+*/
 #define list_alloc(T, c, a, ...) \
   list_function((T) { 0 }, alloc)(c, a, if_va_args(__VA_ARGS__) ? __VA_ARGS__ : nullptr)
 
-/**
- * Append an element to the end of list. */
+/*
+  Append an element to the end of list.
+*/
 #define list_push(l, e) \
-  list_function(*l->data, push)(l, e)
+  list_function(*(l->data), push)(l, e)
 
-/**
- * Remove an element from the end of the list. */
+/*
+  Remove an element from the end of the list.
+*/
 #define list_pop(l) \
-  list_function(*l->data, pop)(l)
+  list_function(*(l->data), pop)(l)
 
-/**
- * Return an element at a specific position in the list. */
+/*
+  Return an element at a specific position in the list.
+*/
 #define list_at(l, p) \
-  list_function(*l->data, at)(l, p)
+  list_function(*(l->data), at)(l, p)
 
-/**
- * Loops over the elements of the list, with optional index name. */
+/*
+  Loops over the elements of the list, with optional index name.
+*/
 #define list_each(l, e, ...)                                                            \
   (struct iterator iter = { 0 };                                                        \
     list_function(l, each)(l, &iter);                                                   \
     iter.position++, iter.index++)                                                      \
-  for (e = (l)->data + iter.position;   iter.gate & (1<<0); iter.gate &= ~(1<<0))       \
+  for (e = l->data + iter.position; iter.gate & (1<<0); iter.gate &= ~(1<<0))           \
   __VA_OPT__(                                                                           \
-    for (int __VA_ARGS__ = iter.index;  iter.gate & (1<<1); iter.gate &= ~(1<<1))       \
+    for (int __VA_ARGS__ = iter.index; iter.gate & (1<<1); iter.gate &= ~(1<<1))        \
   )

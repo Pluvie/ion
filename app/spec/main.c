@@ -1,7 +1,7 @@
-#include <ion.h>
-#include <ion.c>
 #include "spec.h"
 #include "spec.c"
+
+#include <ion.c>
 
 spec( allocator_init );
 spec( allocator_pop );

@@ -1,3 +1,91 @@
+/*
+  Global variable that stores the final result of all specs.
+*/
+bool specs_passed = true;
+
+/*
+  Global variable that stores the original value of stderr.
+  All specs by default suppresses any printout.
+*/
+void* sstream = nullptr;
+
+/*
+  Global variable that stores registered specs to be run.
+*/
+int added_specs_count = 0;
+void (*added_specs[8192])(void) = { 0 };
+char* added_spec_names[8192] = { 0 };
+
+/*
+  Global variable that stores focused specs to be run.
+*/
+int focused_specs_count = 0;
+void (*focused_specs[16])(void) = { 0 };
+char* focused_spec_names[16] = { 0 };
+
+/*
+  Holds the current indentation level.
+*/
+int spec_indentation = 0;
+
+/*
+  Global variable that enables/disables the printing of spec verifications.
+*/
+bool spec_print_verification_enabled = false;
+
+/*
+  Prints a spec text with indentation.
+*/
+void spec_print (
+    const char* text
+)
+{
+  fprintf(stderr, "\n");
+
+  for (int i = 0; i < spec_indentation; i++)
+    fprintf(stderr, "  ");
+    
+  fprintf(stderr, "%s", text);
+}
+
+/*
+  Prints a failed spec condition.
+*/
+void spec_failed (
+    const char* text,
+    const char* file,
+    int line
+)
+{
+  specs_passed = false;
+  fprintf(stderr, PRINT_COLOR_RED);
+  fprintf(stderr, "█");
+  fprintf(stderr, PRINT_COLOR_NONE);
+  fprintf(stderr, "\n");
+  for (int i = 0; i < spec_indentation; i++)
+    fprintf(stderr, "  ");
+  fprintf(stderr, PRINT_COLOR_RED);
+  fprintf(stderr, "%s (%s:%li) ", text, file, line);
+  fprintf(stderr, PRINT_COLOR_NONE);
+}
+
+/*
+  Prints a verified spec condition.
+*/
+void spec_verified (
+    void
+)
+{
+  if (spec_print_verification_enabled) {
+    fprintf(stderr, PRINT_COLOR_GREEN);
+    fprintf(stderr, "█");
+    fprintf(stderr, PRINT_COLOR_NONE);
+  }
+}
+
+/*
+  Runs the registered specs. If there is one or more focused specs, runs only those.
+*/
 void specs_run (
     void
 )

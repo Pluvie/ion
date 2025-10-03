@@ -1,4 +1,4 @@
-#include "../framework.h"
+#include "../spec.h"
 
 /*
   Creates a spec-specific copy of the function so that the linker does not find

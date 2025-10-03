@@ -10,7 +10,7 @@ DEFAULT_FLAGS="-std=c11 -Wall -Werror"
 
 if [[ $1 == "spec" ]]; then
   SPECS=$(find app/spec/specs/ -name "*.c" -type f | tr '\n' ' ')
-  FILES="app/spec/main.c app/spec/framework.c app/spec/containers.c $SPECS"
+  FILES="app/spec/main.c app/spec/containers.c $SPECS"
 
   gcc $FILES                    \
     -no-integrated-cpp -B ./bin \
@@ -39,27 +39,21 @@ if [[ $1 == "spec" ]]; then
     exit 1
   fi
 
-if [[ $1 == "cli" ]]; then
-  FILES="app/cli/main.c app/cli/cli.c"
+elif [[ $1 == "cli" ]]; then
 
-  gcc $FILES                    \
-    -no-integrated-cpp -B ./bin \
-    $DEFAULT_FLAGS              \
-    -D PLATFORM=$PLATFORM       \
-    -I ./src                    \
-    -g3 -o exe/cli
+  if [[ $2 == "build" ]]; then
+    FILES="app/cli/main.c app/cli/cli.c"
 
-  if [ $? -ne 0 ]; then
-    exit 1
-  fi
+    gcc $FILES                    \
+      -no-integrated-cpp -B ./bin \
+      $DEFAULT_FLAGS              \
+      -D PLATFORM=$PLATFORM       \
+      -I ./src                    \
+      -g3 -o exe/cli
 
-  elif [[ $2 == "build" ]]; then
-    valgrind                    \
-      --track-origins=yes       \
-      --leak-check=full         \
-      --show-leak-kinds=all     \
-      exe/cli
-    echo
+    if [ $? -ne 0 ]; then
+      exit 1
+    fi
 
   elif [[ $2 == "debug" ]]; then
     gdb --args exe/cli ${@:2}
