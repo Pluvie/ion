@@ -79,7 +79,8 @@
   Defines a function specification codepath success.
 */
 #define success() \
-  spec_print_verification_enabled = false;
+  spec_print_verification_enabled = false; \
+  memset(&failure, 0, sizeof(failure));
 
 /*
   Ends a specification codepath.

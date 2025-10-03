@@ -12,10 +12,6 @@ if [[ $1 == "spec" ]]; then
   SPECS=$(find app/spec/specs/ -name "*.c" -type f | tr '\n' ' ')
   FILES="app/spec/main.c app/spec/containers.c $SPECS"
 
-  if [ $? -ne 0 ]; then
-    exit 1
-  fi
-
   if [ $# -eq 1 ]; then
     gcc $FILES                    \
       -no-integrated-cpp -B ./bin \
@@ -23,6 +19,10 @@ if [[ $1 == "spec" ]]; then
       -D PLATFORM=$PLATFORM       \
       -I ./src                    \
       -g3 -o exe/spec
+
+    if [ $? -ne 0 ]; then
+      exit 1
+    fi
 
     valgrind                    \
       --track-origins=yes       \

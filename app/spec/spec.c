@@ -108,7 +108,8 @@ void specs_run (
       fflush(stderr);
       spec_indentation = 1;
       added_specs[i]();
-      allocator_reset(spec_allocator);
+      allocator_release(spec_allocator);
+      memory_set(&failure, 0, sizeof(failure));
     }
   } else {
     sstream = stderr;
@@ -119,7 +120,8 @@ void specs_run (
       fprintf(stderr, PRINT_COLOR_NONE);
       fflush(stderr);
       focused_specs[i]();
-      allocator_reset(spec_allocator);
+      allocator_release(spec_allocator);
+      memory_set(&failure, 0, sizeof(failure));
     }
   }
 
