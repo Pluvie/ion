@@ -12,24 +12,31 @@ if [[ $1 == "spec" ]]; then
   SPECS=$(find app/spec/specs/ -name "*.c" -type f | tr '\n' ' ')
   FILES="app/spec/main.c app/spec/containers.c $SPECS"
 
-  gcc $FILES                    \
-    -no-integrated-cpp -B ./bin \
-    $DEFAULT_FLAGS              \
-    -D PLATFORM=$PLATFORM       \
-    -I ./src                    \
-    -g3 -o exe/spec
-
   if [ $? -ne 0 ]; then
     exit 1
   fi
 
   if [ $# -eq 1 ]; then
+    gcc $FILES                    \
+      -no-integrated-cpp -B ./bin \
+      $DEFAULT_FLAGS              \
+      -D PLATFORM=$PLATFORM       \
+      -I ./src                    \
+      -g3 -o exe/spec
+
     valgrind                    \
       --track-origins=yes       \
       --leak-check=full         \
       --show-leak-kinds=all     \
       exe/spec
     echo
+
+  elif [[ $2 == "prep" ]]; then
+    gcc $FILES                    \
+      $DEFAULT_FLAGS              \
+      -D PLATFORM=$PLATFORM       \
+      -I ./src                    \
+      -E | bin/inflect > tmp/spec.c
 
   elif [[ $2 == "debug" ]]; then
     gdb --args exe/spec ${@:2}

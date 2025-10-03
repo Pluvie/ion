@@ -1,13 +1,28 @@
 /*
+  Global variable that stores the original value of stderr.
+  All specs by default suppresses any printout.
+*/
+void* sstream = nullptr;
+
+/*
   Global variable that stores the final result of all specs.
 */
 bool specs_passed = true;
 
 /*
-  Global variable that stores the original value of stderr.
-  All specs by default suppresses any printout.
+  Holds the current indentation level.
 */
-void* sstream = nullptr;
+int spec_indentation = 0;
+
+/*
+  Global variable that enables/disables the printing of spec verifications.
+*/
+bool spec_print_verification_enabled = false;
+
+/*
+  Global variable that helps allocating temporary data for specs.
+*/
+struct allocator* spec_allocator;
 
 /*
   Global variable that stores registered specs to be run.
@@ -22,16 +37,6 @@ char* added_spec_names[8192] = { 0 };
 int focused_specs_count = 0;
 void (*focused_specs[16])(void) = { 0 };
 char* focused_spec_names[16] = { 0 };
-
-/*
-  Holds the current indentation level.
-*/
-int spec_indentation = 0;
-
-/*
-  Global variable that enables/disables the printing of spec verifications.
-*/
-bool spec_print_verification_enabled = false;
 
 /*
   Prints a spec text with indentation.
@@ -90,6 +95,9 @@ void specs_run (
     void
 )
 {
+  spec_allocator = memory_acquire(sizeof(*spec_allocator));
+  *spec_allocator = allocator_init(0);
+
   if (focused_specs[0] == nullptr) {
     sstream = fopen("/dev/null", "w");
     for (int i = 0; i < added_specs_count; i++) {
@@ -100,6 +108,7 @@ void specs_run (
       fflush(stderr);
       spec_indentation = 1;
       added_specs[i]();
+      allocator_reset(spec_allocator);
     }
   } else {
     sstream = stderr;
@@ -110,6 +119,7 @@ void specs_run (
       fprintf(stderr, PRINT_COLOR_NONE);
       fflush(stderr);
       focused_specs[i]();
+      allocator_reset(spec_allocator);
     }
   }
 
@@ -132,6 +142,9 @@ void specs_run (
     fprintf(stderr, "\n");
     fprintf(stderr, PRINT_COLOR_NONE);
   }
+
+  allocator_release(spec_allocator);
+  memory_release(spec_allocator);
 
   fclose(stderr);
   if (focused_specs[0] == nullptr)

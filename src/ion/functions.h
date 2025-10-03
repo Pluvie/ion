@@ -1,6 +1,8 @@
 #include "functions/allocator_init.h"
+#include "functions/allocator_pop.h"
 #include "functions/allocator_push.h"
 #include "functions/allocator_release.h"
+#include "functions/allocator_reset.h"
 #include "functions/bit_count_leading_ones.h"
 #include "functions/bit_count_leading_zeros.h"
 #include "functions/memory_acquire.h"
