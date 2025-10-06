@@ -20,3 +20,4 @@
 #include "functions/print_failure.c"
 #include "functions/print_hex.c"
 #include "functions/print_variadic.c"
+#include "functions/string_equal.c"

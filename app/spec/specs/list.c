@@ -1,7 +1,7 @@
 #include "list.h"
 
 spec( list ) {
-  precondition("a valid list of elements of that type")
+  precondition("a valid list of elements for the list")
     #define valid_elements { \
         { string("Jane Shepard"),     SOLDIER,      800,  400 }, \
         { string("Garrus Vakarian"),  INFILTRATOR,  600,  600 }, \

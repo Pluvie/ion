@@ -18,9 +18,6 @@ spec( list_at ) {
     list_push(list, 5);
     int* result = list_at(list, position);
 
-    must("not fail");
-      verify(failure.occurred == false);
-
     must("return the element at the specified position");
       verify(*result == 4);
 

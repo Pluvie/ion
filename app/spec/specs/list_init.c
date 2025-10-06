@@ -1,7 +1,6 @@
 #include "list_init.h"
 
 spec( list_init ) {
-
   precondition("a greater than zero capacity")
     #define valid_capacity 8
 

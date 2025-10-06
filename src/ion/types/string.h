@@ -8,5 +8,5 @@
 
 typedef struct string {
   char* chars;
-  int length;
+  unsigned int length;
 } string;

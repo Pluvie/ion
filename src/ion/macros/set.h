@@ -136,7 +136,7 @@
   Occupies a set position.
 */
 #define set_pos_occupy(s, p, h) \
-  (s)->hashes[p] = ((unsigned int) h | (((unsigned int) 1)<<(INT_BIT_WIDTH-1)))
+  (s)->hashes[p] = ((unsigned int) h | SET_HASH_MASK)
 
 /*
   Empties a set position.

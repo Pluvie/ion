@@ -9,17 +9,17 @@ unsigned int set<T>_add (
   if (set->allocator != NULL)
     goto rehash;
 
-  /* If the set is stack-allocated (set->allocator == NULL) and fully-loaded
+  /* If the set is stack-allocated (set->allocator == nullptr) and fully-loaded
    * (set->length >= set->load_limit), and the element to be added is already present
    * in the set, we want the `set_add` function to allow this operation without failing.
    * Of course, adding an already present element to a set means, in reality, doing
    * exactly nothing. */
-  int position = set<T>_pos(set, element);
-  if (position >= 0)
+  unsigned int position = set<T>_pos(set, element);
+  if (position != (unsigned int) -1)
     return position;
 
-  fail("add: stack allocated set is full");
-  return -1;
+  fatal("add: stack allocated set is full");
+  return (unsigned int) -1;
 
 
 rehash:
@@ -27,12 +27,12 @@ rehash:
 
 add:
   position = set<T>_pos(set, element);
-  if (unlikely(position == -1)) {
+  if (unlikely(position == (unsigned int) -1)) {
     /* NOTE(Pluvie): this is dead code, a program should never reach this point due
      * to how the load limit behaves. Nevertheless, a failing guard is placed just
      * in case someone breaks this implementation. */
-    fail("add: load limit behavior not respected");
-    return -1;
+    fatal("add: load limit behavior not respected");
+    return (unsigned int) -1;
   }
 
   if (set_pos_is_free(set, position))

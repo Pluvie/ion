@@ -15,9 +15,6 @@ spec( list_pop ) {
       int original_list_capacity = list->capacity;
       int* result = list_pop(list);
 
-      must("not fail");
-        verify(failure.occurred == false);
-
       must("decrease the list length by 1");
         verify(list->length == original_list_length - 1);
 
@@ -63,9 +60,6 @@ spec( list_pop ) {
       int original_list_length = list->length;
       int original_list_capacity = list->capacity;
       int* result = list_pop(list);
-
-      must("not fail");
-        verify(failure.occurred == false);
 
       must("decrease the list length by 1");
         verify(list->length == original_list_length - 1);

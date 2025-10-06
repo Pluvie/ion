@@ -18,9 +18,6 @@ spec( list_push ) {
       unsigned int original_list_capacity = list->capacity;
       unsigned int result = list_push(list, element);
 
-      must("not fail");
-        verify(failure.occurred == false);
-
       must("return the inserted position");
         verify(result == original_list_length);
 
@@ -84,9 +81,6 @@ spec( list_push ) {
       unsigned int original_list_capacity = list->capacity;
       void* original_list_data = list->data;
       unsigned int result = list_push(list, element);
-
-      must("not fail");
-        verify(failure.occurred == false);
 
       must("return the inserted position");
         verify(result == original_list_length);

@@ -21,7 +21,7 @@ static struct {
 #include <ion/containers/list/functions/list_at.c>
 
 /*
-  Redefines the list at macro to point to the specced function.
+  Redefines the `list_at` macro to point to the specced function.
 */
 #undef  list_at
 #define list_at(l,e) \

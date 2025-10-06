@@ -17,7 +17,7 @@ static struct {
 #include <ion/containers/list/functions/list_push.c>
 
 /*
-  Redefines the `list_push` macro to point to the specced function.
+  Redefines the list push macro to point to the specced function.
 */
 #undef  list_push
 #define list_push(l,e) \

@@ -9,18 +9,17 @@ set<T>* set<T>_alloc (
   else
     capacity = next_pow2(initial_capacity);
 
-  set<T>* set;
-  if (address == nullptr) {
-    set = memory_alloc_zero(allocator, sizeof(set<T>));
-  } else {
-    zero_out(address, sizeof(set<T>));
-    set = address;
-  }
+  set<T>* set = allocator_push(allocator, sizeof(set<T>));
+  memory_set(set, 0, sizeof(set<T>));
 
   set->capacity = capacity;
   set->allocator = allocator;
-  set->data = memory_alloc_zero(allocator, capacity * sizeof(T));
-  set->hashes = memory_alloc_zero(allocator, capacity * sizeof(int));
+  set->data = allocator_push(allocator, capacity * sizeof(T));
+  set->hashes = allocator_push(allocator, capacity * sizeof(unsigned int));
   set->load_limit = set_load_limit(set);
+
+  memory_set(set->data, 0, capacity * sizeof(T));
+  memory_set(set->hashes, 0, capacity * sizeof(unsigned int));
+
   return set;
 }

@@ -9,8 +9,10 @@ unsigned int list<T>_push (
     goto grow;
 
 grow:
-  if (list->allocator == nullptr)
+  if (list->allocator == nullptr) {
     fatal("push: stack allocated list is full");
+    return (unsigned int) -1;
+  }
 
   list->capacity *= 2;
   T* new_data = allocator_push(list->allocator, list->capacity * sizeof(T));

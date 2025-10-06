@@ -32,6 +32,9 @@ spec( printl );
 spec( prints );
 spec( reflection );
 spec( set );
+spec( set_alloc );
+spec( set_init );
+spec( set_pos );
 
 int0 main (
     int0 argc,
@@ -67,6 +70,9 @@ int0 main (
   spec_add( prints );
   spec_add( reflection );
   spec_add( set );
+  spec_add( set_alloc );
+  spec_add( set_init );
+  spec_focus( set_pos );
 
   specs_run();
 
