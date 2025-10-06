@@ -3,7 +3,7 @@ list<T>* list<T>_alloc (
     struct allocator* allocator
 )
 {
-  int capacity = initial_capacity;
+  unsigned int capacity = initial_capacity;
   if (initial_capacity < 16)
     capacity = 16;
   else

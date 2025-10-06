@@ -20,7 +20,7 @@ struct reflection {
   };
   bool (*validator)(void*, struct reflection*);
   struct {
-    void* (*creator)(unsigned int, struct allocator*);
+    void (*creator)(void*, unsigned int, struct allocator*);
     unsigned int (*adder)(void*, void*);
   } container;
   padding(22);

@@ -315,39 +315,38 @@ spec( reflection ) {
 
   } end();
 
-  /*
-  when("reflecting a list type") {
+  when("reflecting a list container") {
     when("the list reflection has no limits") {
       list<struct squadmate> squad;
 
       struct reflection rfx = {
-        type(LIST), of({
-          type(STRUCT, struct squadmate), fields({
-            { field(name, STRING, struct squadmate) },
-            { field(class, ENUM, struct squadmate) },
-            { field(health, INT, struct squadmate) },
-            { field(shields, INT, struct squadmate) },
-          }),
-        }),
+        reflect(list<struct squadmate>, LIST), container(list, struct squadmate), of(
+          reflect(struct squadmate, STRUCT), fields(
+            { field(struct squadmate, STRING, name) },
+            { field(struct squadmate, ENUM,   class) },
+            { field(struct squadmate, INT,    health) },
+            { field(struct squadmate, INT,    shields) },
+          ),
+        ),
       };
 
       must("correctly define the reflection");
         verify(rfx.type == LIST);
         verify(rfx.name == nullptr);
-        verify(rfx.type_name == nullptr);
+        verify(streq(rfx.type_name, "list_struct_squadmate"));
         verify(rfx.size == sizeof(squad));
-        verify(rfx.offset == 0);
-        verify(rfx.element != nullptr);
+        verify(rfx.container.creator == list<struct squadmate>_reflection_creator);
+        verify(rfx.container.adder == list<struct squadmate>_reflection_adder);
 
+        verify(rfx.element != nullptr);
         struct reflection* element_rfx = rfx.element;
         verify(element_rfx->type == STRUCT);
         verify(element_rfx->name == nullptr);
         verify(streq(element_rfx->type_name, "struct squadmate"));
         verify(element_rfx->size == sizeof(struct squadmate));
         verify(element_rfx->offset == 0);
-        verify(element_rfx->fields != nullptr);
-        verify(element_rfx->fields->length == 4);
 
+        verify(element_rfx->fields != nullptr);
         struct reflection* field_rfx;
         field_rfx = element_rfx->fields + 0;
         verify(field_rfx->type == STRING);
@@ -380,6 +379,7 @@ spec( reflection ) {
       success();
     } end();
 
+    /*
     when("the list reflection has limits") {
       list<struct squadmate> squad;
 
@@ -481,6 +481,6 @@ spec( reflection ) {
 
       success();
     } end();
-  } end();
   */
+  } end();
 }
