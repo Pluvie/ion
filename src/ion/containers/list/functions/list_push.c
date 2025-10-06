@@ -1,4 +1,4 @@
-bool list<T>_push (
+unsigned int list<T>_push (
     list<T>* list,
     T element
 )
@@ -9,10 +9,8 @@ bool list<T>_push (
     goto grow;
 
 grow:
-  if (list->allocator == nullptr) {
-    fail("push: stack allocated list is full");
-    return false;
-  }
+  if (list->allocator == nullptr)
+    fatal("push: stack allocated list is full");
 
   list->capacity *= 2;
   T* new_data = allocator_push(list->allocator, list->capacity * sizeof(T));
@@ -21,7 +19,8 @@ grow:
   list->data = new_data;
 
 push:
+  unsigned int position = list->length;
   list->data[list->length] = element;
   list->length++;
-  return true;
+  return position;
 }

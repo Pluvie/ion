@@ -3,14 +3,14 @@ struct reflection {
   padding(4);
   const char* type_name;
   const char* name;
-  int size;
+  unsigned int size;
   union {
-    int offset;
-    int index;
+    unsigned int offset;
+    unsigned int index;
   };
   struct {
-    int min;
-    int max;
+    unsigned int min;
+    unsigned int max;
   } size_limits;
   struct reflection* parent;
   struct reflection* self;
@@ -18,10 +18,11 @@ struct reflection {
     struct reflection* fields;
     struct reflection* element;
   };
-  bool  (*validator)(void*, struct reflection*);
-  int   (*container_adder)(void*, void*);
-  //void* (*container_creator)(int, struct allocator*, void*);
-  void* (*container_creator)(int, void*, void*);
+  bool (*validator)(void*, struct reflection*);
+  struct {
+    void (*creator)(void*, unsigned int, struct allocator*);
+    unsigned int (*adder)(void*, void*);
+  } container;
   padding(22);
 };
 check_sizeof(128, struct reflection);

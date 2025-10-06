@@ -1,4 +1,4 @@
-bool list<T>_push (
+unsigned int list<T>_push (
     list<T>* list,
     T element
 );

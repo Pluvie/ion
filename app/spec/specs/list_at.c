@@ -33,14 +33,11 @@ spec( list_at ) {
     list_push(list, 1);
     list_push(list, 2);
     list_push(list, 3);
-    int* result = list_at(list, position);
+    list_at(list, position);
 
-    must("fail with a specific error");
-      verify(failure.occurred == true);
-      verify(streq(failure.message, "3: overbound list position"));
-
-    must("return nullptr");
-      verify(result == nullptr);
+    must("fatally fail with a specific message");
+      printl(">>>> ", sim.fatal);
+      verify(streq(sim.fatal, "3: overbound list position"));
 
     success();
   } end();

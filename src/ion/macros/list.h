@@ -80,8 +80,8 @@
 /*
   Allocate a list. This list can be modified an may grow indefinitely.
 */
-#define list_alloc(T, c, a, ...) \
-  list_function((T) { 0 }, alloc)(c, a, if_va_args(__VA_ARGS__) ? __VA_ARGS__ : nullptr)
+#define list_alloc(T, c, a) \
+  list_function((T) { 0 }, alloc)(c, a)
 
 /*
   Append an element to the end of list.

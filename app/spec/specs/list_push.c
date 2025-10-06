@@ -14,15 +14,15 @@ spec( list_push ) {
       list<int> stack_list = list_init(int, 16);
       list = &stack_list;
       list->length = list->capacity - 3;
-      int original_list_length = list->length;
-      int original_list_capacity = list->capacity;
-      bool result = list_push(list, element);
+      unsigned int original_list_length = list->length;
+      unsigned int original_list_capacity = list->capacity;
+      unsigned int result = list_push(list, element);
 
       must("not fail");
         verify(failure.occurred == false);
 
-      must("return true");
-        verify(result == true);
+      must("return the inserted position");
+        verify(result == original_list_length);
 
       must("increase the list length by 1");
         verify(list->length == original_list_length + 1);
@@ -41,23 +41,10 @@ spec( list_push ) {
       list<int> stack_list = list_init(int, 16);
       list = &stack_list;
       list->length = list->capacity;
-      int original_list_length = list->length;
-      int original_list_capacity = list->capacity;
-      bool result = list_push(list, element);
+      list_push(list, element);
 
-      must("fail with a specific error");
-        verify(failure.occurred == true);
-        verify(streq(failure.message, "push: stack allocated list is full"));
-
-      must("return false");
-        verify(result == false);
-
-      must("not copy the element on the list");
-        verify(*(list->data + original_list_length - 1) == 0);
-
-      must("leave the list length and capacity unchanged");
-        verify(list->length == original_list_length);
-        verify(list->capacity == original_list_capacity);
+      must("fatally fail with a specific message");
+        verify(streq(sim.fatal, "push: stack allocated list is full"));
 
       success();
     } end();
@@ -68,12 +55,12 @@ spec( list_push ) {
       apply(preconditions);
       list = list_alloc(int, 16, spec_allocator);
       list->length = list->capacity - 3;
-      int original_list_length = list->length;
-      int original_list_capacity = list->capacity;
-      bool result = list_push(list, element);
+      unsigned int original_list_length = list->length;
+      unsigned int original_list_capacity = list->capacity;
+      unsigned int result = list_push(list, element);
 
-      must("return true");
-        verify(result == true);
+      must("return the inserted position");
+        verify(result == original_list_length);
 
       must("increase the list length by 1");
         verify(list->length == original_list_length + 1);
@@ -93,16 +80,16 @@ spec( list_push ) {
       apply(preconditions);
       list = list_alloc(int, 16, spec_allocator);
       list->length = list->capacity;
-      int original_list_length = list->length;
-      int original_list_capacity = list->capacity;
+      unsigned int original_list_length = list->length;
+      unsigned int original_list_capacity = list->capacity;
       void* original_list_data = list->data;
-      bool result = list_push(list, element);
+      unsigned int result = list_push(list, element);
 
       must("not fail");
         verify(failure.occurred == false);
 
-      must("return true");
-        verify(result == true);
+      must("return the inserted position");
+        verify(result == original_list_length);
 
       must("increase the list length by 1");
         verify(list->length == original_list_length + 1);

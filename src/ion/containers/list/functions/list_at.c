@@ -6,6 +6,6 @@ T* list<T>_at (
   if (position < list->length)
     return list->data + position;
 
-  fail(f(position), ": overbound list position");
+  fatal(f(position), ": overbound list position");
   return nullptr;
 }
