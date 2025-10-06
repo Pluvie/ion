@@ -1,5 +1,5 @@
 list<T> list<T>_init (
-    int capacity,
+    unsigned int capacity,
     T* data
 )
 {

@@ -1,7 +1,6 @@
 list<T>* list<T>_alloc (
     unsigned int initial_capacity,
-    struct allocator* allocator,
-    void* address
+    struct allocator* allocator
 )
 {
   int capacity = initial_capacity;
@@ -10,19 +9,13 @@ list<T>* list<T>_alloc (
   else
     capacity = next_pow2(initial_capacity);
 
-  list<T>* list;
-
-  if (address == nullptr) {
-    list = allocator_push(allocator, sizeof(list<T>));
-    memory_set(list, 0, sizeof(list<T>));
-  } else {
-    memory_set(address, 0, sizeof(list<T>));
-    list = address;
-  }
+  list<T>* list = allocator_push(allocator, sizeof(list<T>));
+  memory_set(list, 0, sizeof(list<T>));
 
   list->capacity = capacity;
   list->allocator = allocator;
   list->data = allocator_push(allocator, capacity * sizeof(T));
   memory_set(list->data, 0, capacity * sizeof(T));
+
   return list;
 }
