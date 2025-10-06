@@ -64,17 +64,16 @@
   Create a set literal. A set literal is *frozen*: it cannot be modified because it
   has fixed length and capacity, and no allocator.
 */
-#define set(T, ...) {                                               \
-    .data = (T []) __VA_ARGS__ ,                                    \
-    .length = countof((T []) __VA_ARGS__ ),                         \
-    .capacity = countof((T []) __VA_ARGS__ ),                       \
-    .hashes = (unsigned int [countof((T []) __VA_ARGS__ )]) { 0 }   \
-  }
+#define set(T, ...) \
+  set_function((T) { 0 }, literal)( \
+    countof((T []) __VA_ARGS__), \
+    (T []) __VA_ARGS__, \
+    (unsigned int [countof((T []) __VA_ARGS__)]) { 0 })
 
 /*
   Initialize a stack allocated set. This set can be modified but may grow only up
   to its defined capacity.
-  */
+*/
 #define set_init(T, c) \
   set_function((T) { 0 }, init)(c, (T [c]) { 0 }, (unsigned int [c]) { 0 })
 

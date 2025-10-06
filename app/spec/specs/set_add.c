@@ -1,4 +1,3 @@
-/*
 #include "set_add.h"
 
 spec( set_add ) {
@@ -25,11 +24,8 @@ spec( set_add ) {
         int original_set_capacity = set->capacity;
         int result = set_add(set, element);
 
-        must("not fail");
-          verify(failure.occurred == false);
-
         must("return a valid inserted position");
-          verify(result >= 0);
+          verify(result != (unsigned int) -1);
 
         must("leave the set length unchanged");
           verify(set->length == original_set_length);
@@ -48,11 +44,8 @@ spec( set_add ) {
         int original_set_capacity = set->capacity;
         int result = set_add(set, element);
 
-        must("not fail");
-          verify(failure.occurred == false);
-
         must("return a valid inserted position");
-          verify(result >= 0);
+          verify(result != (unsigned int) -1);
 
         must("increase the set length by one");
           verify(set->length == original_set_length + 1);
@@ -85,11 +78,8 @@ spec( set_add ) {
         int original_set_capacity = set->capacity;
         int result = set_add(set, element);
 
-        must("not fail");
-          verify(failure.occurred == false);
-
         must("return a valid inserted position");
-          verify(result >= 0);
+          verify(result != (unsigned int) -1);
 
         must("leave the set length unchanged");
           verify(set->length == original_set_length);
@@ -104,22 +94,10 @@ spec( set_add ) {
         element = "z";
         apply(stack_allocated_set_condition);
         apply(set_length_condition);
-        int original_set_length = set->length;
-        int original_set_capacity = set->capacity;
-        int result = set_add(set, element);
+        set_add(set, element);
 
-        must("fail with a specific error");
-          verify(failure.occurred == true);
-          verify(failure_is("add: stack allocated set is full"));
-
-        must("return -1");
-          verify(result == -1);
-
-        must("leave the set length unchanged");
-          verify(set->length == original_set_length);
-
-        must("leave the set capacity unchanged");
-          verify(set->capacity == original_set_capacity);
+        must("fatally fail with a specific message");
+          verify(streq(sim.fatal, "add: stack allocated set is full"));
 
         success();
       } end();
@@ -149,11 +127,8 @@ spec( set_add ) {
         int original_set_capacity = set->capacity;
         int result = set_add(set, element);
 
-        must("not fail");
-          verify(failure.occurred == false);
-
         must("return a valid inserted position");
-          verify(result >= 0);
+          verify(result != (unsigned int) -1);
 
         must("leave the set length unchanged");
           verify(set->length == original_set_length);
@@ -172,11 +147,8 @@ spec( set_add ) {
         int original_set_capacity = set->capacity;
         int result = set_add(set, element);
 
-        must("not fail");
-          verify(failure.occurred == false);
-
         must("return a valid inserted position");
-          verify(result >= 0);
+          verify(result != (unsigned int) -1);
 
         must("increase the set length by one");
           verify(set->length == original_set_length + 1);
@@ -204,11 +176,8 @@ spec( set_add ) {
         int original_set_capacity = set->capacity;
         int result = set_add(set, element);
 
-        must("not fail");
-          verify(failure.occurred == false);
-
         must("return a valid inserted position");
-          verify(result >= 0);
+          verify(result != (unsigned int) -1);
 
         must("leave the set length unchanged");
           verify(set->length == original_set_length);
@@ -227,11 +196,8 @@ spec( set_add ) {
         int original_set_capacity = set->capacity;
         int result = set_add(set, element);
 
-        must("not fail");
-          verify(failure.occurred == false);
-
         must("return a valid inserted position");
-          verify(result >= 0);
+          verify(result != (unsigned int) -1);
 
         must("increase the set length by one");
           verify(set->length == original_set_length + 1);
@@ -246,4 +212,3 @@ spec( set_add ) {
   } end();
   #undef heap_allocated_set_condition
 }
-*/

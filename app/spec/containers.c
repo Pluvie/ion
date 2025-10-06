@@ -26,6 +26,6 @@
 #include <ion/containers/set.c>
 
 #define set_of struct squadmate
-#define set_cmp_function(v, u) string_equal(v.name, u.name)
-#define set_hash_function(v) hash_djb2(v.name.chars, v.name.length)
+#define set_cmp_function(v, u) string_equal((v).name, (u).name)
+#define set_hash_function(v) hash_djb2((v).name.chars, (v).name.length)
 #include <ion/containers/set.c>

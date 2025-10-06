@@ -42,7 +42,11 @@ add:
 
 occupy_pos:
   set->data[position] = element;
-  set_pos_occupy(set, position, hash(element));
+#ifdef set_hash_function
+  set_pos_occupy(set, position, set_hash_function(element));
+#else
+  set_pos_occupy(set, position, hash_djb2(&element, sizeof(T)));
+#endif
   set->length++;
 
   return position;

@@ -6,19 +6,19 @@ static struct {
 } sim;
 
 #undef  fatal
-#define fatal(msg)    return sim.fatal = msg, 0;
+#define fatal(msg)  sim.fatal = msg
 
 /*
   Creates a spec-specific copy of the function so that the linker does not find
   multiple definitions of this function with the same name.
 */
-#define T       int
-#define _push   _push_specced
-#include <ion/containers/list/functions/list_push.c>
+#define T       char*
+#define _add    _add_specced
+#include <ion/containers/set/functions/set_add.c>
 
 /*
-  Redefines the list push macro to point to the specced function.
+  Redefines the `set_add` macro to point to the specced function.
 */
-#undef  list_push
-#define list_push(l,e) \
-  list<T>_push_specced(l, e)
+#undef  set_add
+#define set_add(l,e) \
+  set<T>_add_specced(l, e)
