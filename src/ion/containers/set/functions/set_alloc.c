@@ -1,4 +1,4 @@
-set<T>* set<T>_alloc (
+set<T> set<T>_alloc (
     unsigned int initial_capacity,
     struct allocator* allocator
 )
@@ -9,17 +9,16 @@ set<T>* set<T>_alloc (
   else
     capacity = next_pow2(initial_capacity);
 
-  set<T>* set = allocator_push(allocator, sizeof(set<T>));
-  memory_set(set, 0, sizeof(set<T>));
+  set<T> set = { 0 };
 
-  set->capacity = capacity;
-  set->allocator = allocator;
-  set->data = allocator_push(allocator, capacity * sizeof(T));
-  set->hashes = allocator_push(allocator, capacity * sizeof(unsigned int));
-  set->load_limit = set_load_limit(set);
+  set.capacity = capacity;
+  set.allocator = allocator;
+  set.data = allocator_push(allocator, capacity * sizeof(T));
+  set.hashes = allocator_push(allocator, capacity * sizeof(unsigned int));
+  set.load_limit = set_load_limit(&set);
 
-  memory_set(set->data, 0, capacity * sizeof(T));
-  memory_set(set->hashes, 0, capacity * sizeof(unsigned int));
+  memory_set(set.data, 0, capacity * sizeof(T));
+  memory_set(set.hashes, 0, capacity * sizeof(unsigned int));
 
   return set;
 }

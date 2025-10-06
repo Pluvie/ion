@@ -1,7 +1,6 @@
 #include "set_add.h"
 
 spec( set_add ) {
-
   argument(set<char*>* set);
   argument(char* element);
 
@@ -108,7 +107,8 @@ spec( set_add ) {
 
   when("the set is heap allocated") {
     #define heap_allocated_set_condition \
-      set<char*>* set = set_alloc(char*, 16, spec_allocator); \
+      set = allocator_push(spec_allocator, sizeof(*set)); \
+      *set = set_alloc(char*, 16, spec_allocator); \
       set_add(set, "a"); \
       set_add(set, "b"); \
       set_add(set, "c");

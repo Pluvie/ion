@@ -3,8 +3,8 @@ bool set<T>_has (
     T element
 )
 {
-  int position = set<T>_pos(set, element);
-  if (position < 0)
+  unsigned int position = set<T>_pos(set, element);
+  if (position == (unsigned int) -1)
     return false;
 
   return set_pos_is_occupied(set, position);

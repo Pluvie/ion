@@ -6,7 +6,8 @@ spec( set_pos ) {
 
   precondition("a valid set");
     #define preconditions \
-      set = set_alloc(char*, 16, spec_allocator);
+      set = allocator_push(spec_allocator, sizeof(*set)); \
+      *set = set_alloc(char*, 16, spec_allocator);
 
   when("the element is present in the set") {
     #define element_is_present_condition \

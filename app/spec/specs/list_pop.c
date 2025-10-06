@@ -53,7 +53,8 @@ spec( list_pop ) {
 
   when("the list is heap allocated") {
     when("the list has at least one element") {
-      list = list_alloc(int, 16, spec_allocator);
+      list = allocator_push(spec_allocator, sizeof(*list));
+      *list = list_alloc(int, 16, spec_allocator);
       list_push(list, 7);
       list_push(list, 8);
       list_push(list, 9);
@@ -74,7 +75,8 @@ spec( list_pop ) {
     } end();
 
     when("the list has no elements") {
-      list = list_alloc(int, 16, spec_allocator);
+      list = allocator_push(spec_allocator, sizeof(*list));
+      *list = list_alloc(int, 16, spec_allocator);
       list->length = 0;
       int original_list_capacity = list->capacity;
       int* result = list_pop(list);

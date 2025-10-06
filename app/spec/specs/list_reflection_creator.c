@@ -15,13 +15,13 @@ spec( list_reflection_creator ) {
     allocator = spec_allocator;
 
   must("behave exactly like list_alloc");
-    list<int>* other_list = list_alloc(int, capacity, allocator);
+    list<int> other_list = list_alloc(int, capacity, allocator);
     list<int>_reflection_creator(address, capacity, allocator);
 
     verify(list.data != nullptr);
-    verify(list.length == other_list->length);
-    verify(list.capacity == other_list->capacity);
-    verify(list.allocator == other_list->allocator);
+    verify(list.length == other_list.length);
+    verify(list.capacity == other_list.capacity);
+    verify(list.allocator == other_list.allocator);
 
   success();
 }

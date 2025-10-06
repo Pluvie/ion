@@ -10,7 +10,8 @@ spec( list_at ) {
 
   when("the position is inferior to the list length") {
     apply(preconditions);
-    list = list_alloc(int, 16, spec_allocator);
+    list = allocator_push(spec_allocator, sizeof(*list));
+    *list = list_alloc(int, 16, spec_allocator);
     list_push(list, 1);
     list_push(list, 2);
     list_push(list, 3);
@@ -26,7 +27,8 @@ spec( list_at ) {
 
   when("the position is greater or equal than the list length") {
     apply(preconditions);
-    list = list_alloc(int, 16, spec_allocator);
+    list = allocator_push(spec_allocator, sizeof(*list));
+    *list = list_alloc(int, 16, spec_allocator);
     list_push(list, 1);
     list_push(list, 2);
     list_push(list, 3);

@@ -98,8 +98,8 @@
 /*
   Determine whether an element is in the set.
 */
-#define set_has(s) \
-  set_function(*((s)->data), has)(s)
+#define set_has(s, e) \
+  set_function(*((s)->data), has)(s, e)
 
 /*
   Return an element at a specific position in the set.

@@ -1,7 +1,7 @@
-unsigned int list<T>_reflection_adder (
-    void* list,
+unsigned int set<T>_reflection_adder (
+    void* set,
     void* element
 )
 {
-  return list<T>_push(list, *(T*) element);
+  return set<T>_push(set, *(T*) element);
 }

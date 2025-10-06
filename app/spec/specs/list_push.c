@@ -50,7 +50,8 @@ spec( list_push ) {
   when("the list is heap allocated") {
     when("the list length is inferior to its capacity") {
       apply(preconditions);
-      list = list_alloc(int, 16, spec_allocator);
+      list = allocator_push(spec_allocator, sizeof(*list));
+      *list = list_alloc(int, 16, spec_allocator);
       list->length = list->capacity - 3;
       unsigned int original_list_length = list->length;
       unsigned int original_list_capacity = list->capacity;
@@ -75,7 +76,8 @@ spec( list_push ) {
 
     when("the list length is equal to its capacity") {
       apply(preconditions);
-      list = list_alloc(int, 16, spec_allocator);
+      list = allocator_push(spec_allocator, sizeof(*list));
+      *list = list_alloc(int, 16, spec_allocator);
       list->length = list->capacity;
       unsigned int original_list_length = list->length;
       unsigned int original_list_capacity = list->capacity;
