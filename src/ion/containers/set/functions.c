@@ -1,5 +1,5 @@
 //#include "functions/set_add.c"
-#include "functions/set_alloc.c"
+//#include "functions/set_alloc.c"
 //#include "functions/set_del.c"
 //#include "functions/set_each.c"
 //#include "functions/set_has.c"

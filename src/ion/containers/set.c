@@ -9,3 +9,5 @@
 #undef __type
 
 #undef set_of
+#undef set_cmp_function
+#undef set_hash_function

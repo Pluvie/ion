@@ -5,6 +5,8 @@
 #include "functions/allocator_reset.c"
 #include "functions/bit_count_leading_ones.c"
 #include "functions/bit_count_leading_zeros.c"
+#include "functions/hash_djb2.c"
+#include "functions/hash_djb2_str.c"
 #include "functions/memory_acquire.c"
 #include "functions/memory_acquire_aligned.c"
 #include "functions/memory_compare.c"

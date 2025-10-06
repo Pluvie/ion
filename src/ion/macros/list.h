@@ -46,7 +46,7 @@
   function inflected name:
 
   ```c
-  list_push(string_list, s("abc"));
+  list_push(string_list, string("abc"));
   // The real function call would have been:
   // `list<string>_push(string_list, s("abc"))`.
 

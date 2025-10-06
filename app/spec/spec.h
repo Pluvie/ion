@@ -169,3 +169,24 @@ void spec_failed (
 void spec_verified (
     void
 );
+
+/*
+  Some types defined in the specs to give examples on user defined types.
+*/
+
+enum classes {
+  SOLDIER,
+  VANGUARD,
+  INFILTRATOR,
+  ENGINEER,
+  SENTINEL,
+  ADEPT,
+};
+
+struct squadmate {
+  string name;
+  enum classes class;
+  unsigned int health;
+  unsigned int shields;
+};
+

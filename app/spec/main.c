@@ -31,6 +31,7 @@ spec( print );
 spec( printl );
 spec( prints );
 spec( reflection );
+spec( set );
 
 int0 main (
     int0 argc,
@@ -65,6 +66,7 @@ int0 main (
   spec_add( printl );
   spec_add( prints );
   spec_add( reflection );
+  spec_add( set );
 
   specs_run();
 

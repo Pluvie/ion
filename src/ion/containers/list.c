@@ -9,3 +9,4 @@
 #undef __type
 
 #undef list_of
+#undef list_cmp_function

@@ -16,6 +16,7 @@
 #include "macros/padding.h"
 #include "macros/print.h"
 #include "macros/print_sizeof.h"
+#include "macros/set.h"
 #include "macros/streq.h"
 #include "macros/string.h"
 #include "macros/unlikely.h"

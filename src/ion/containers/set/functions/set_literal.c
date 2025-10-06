@@ -13,7 +13,11 @@ set<T> set<T>_literal (
   };
 
   for (int i = 0; i < capacity; i++)
-    set_pos_occupy(&set, i, hash(data[i]));
+#ifdef set_hash_function
+    set_pos_occupy(&set, i, set_hash_function(data[i]));
+#else
+    set_pos_occupy(&set, i, hash_djb2(data + i, sizeof(T)));
+#endif
 
   return set;
 }

@@ -10,7 +10,7 @@ set<T>* set<T>_alloc (
     capacity = next_pow2(initial_capacity);
 
   set<T>* set;
-  if (address == NULL) {
+  if (address == nullptr) {
     set = memory_alloc_zero(allocator, sizeof(set<T>));
   } else {
     zero_out(address, sizeof(set<T>));
