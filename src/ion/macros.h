@@ -10,6 +10,7 @@
 #include "macros/likely.h"
 #include "macros/list.h"
 #include "macros/log2.h"
+#include "macros/map.h"
 #include "macros/max.h"
 #include "macros/min.h"
 #include "macros/next_mul2.h"

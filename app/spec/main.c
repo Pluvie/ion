@@ -21,6 +21,7 @@ spec( list_reflection_creator );
 spec( list_push );
 spec( fail );
 spec( fatal );
+spec( map );
 spec( memory_acquire );
 spec( memory_acquire_aligned );
 spec( memory_copy );
@@ -65,6 +66,7 @@ int0 main (
   spec_add( list_push );
   spec_add( fail );
   spec_add( fatal );
+  spec_add( map );
   spec_add( memory_acquire );
   spec_add( memory_acquire_aligned );
   spec_add( memory_copy );

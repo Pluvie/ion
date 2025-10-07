@@ -92,8 +92,8 @@
 /*
   Remove an element from the set.
 */
-#define set_del(s) \
-  set_function(*((s)->data), del)(s)
+#define set_del(s, e) \
+  set_function(*((s)->data), del)(s, e)
 
 /*
   Determine whether an element is in the set.

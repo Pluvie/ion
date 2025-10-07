@@ -31,3 +31,12 @@
 #define set_cmp_function(v, u) string_equal(v.name, u.name)
 #define set_hash_function(v) hash_djb2(v.name.chars, v.name.length)
 #include <ion/containers/set.c>
+
+/*
+  Maps.
+*/
+
+#define map_of char*, struct squadmate
+#define map_cmp_function(v, u) streq(v, u)
+#define map_hash_function(v) hash_djb2_str(v)
+#include <ion/containers/map.c>

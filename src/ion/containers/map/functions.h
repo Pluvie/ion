@@ -1,0 +1,11 @@
+#include "functions/map_alloc.h"
+#include "functions/map_del.h"
+#include "functions/map_each.h"
+#include "functions/map_get.h"
+#include "functions/map_has.h"
+#include "functions/map_init.h"
+#include "functions/map_literal.h"
+#include "functions/map_set.h"
+
+#include "functions/reflection/adder.h"
+#include "functions/reflection/creator.h"
