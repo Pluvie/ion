@@ -21,3 +21,5 @@
 #include "functions/print_hex.h"
 #include "functions/print_variadic.h"
 #include "functions/string_equal.h"
+#include "functions/string_to_dec.h"
+#include "functions/string_to_int.h"

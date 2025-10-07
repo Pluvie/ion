@@ -49,6 +49,8 @@ spec( set_init );
 spec( set_pos );
 spec( set_reflection_adder );
 spec( set_reflection_creator );
+spec( string_to_int );
+spec( string_to_dec );
 
 int0 main (
     int0 argc,
@@ -101,6 +103,8 @@ int0 main (
   spec_add( set_pos );
   spec_add( set_reflection_adder );
   spec_add( set_reflection_creator );
+  spec_add( string_to_int );
+  spec_add( string_to_dec );
 
   specs_run();
 

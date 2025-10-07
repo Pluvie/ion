@@ -3,7 +3,7 @@
 */
 
 #define INT_BIT_WIDTH   32
-#define INT_MAXCHARS    10    /* 2147483647 = (2^32 - 1) */
+#define INT_MAXNUM      "2147483647"    /* 2^31 - 1 */
 #define INT_FORMAT      "%"
 
 typedef int             native_int_t;   /* 32 bit */
