@@ -20,7 +20,7 @@
   list<int> list2 = list_init(int, 256);
 
   // To create an allocated list<int>. It may grow indefinitely.
-  list<int>* list3 = list_alloc(int, 0, allocator);
+  list<int> list3 = list_alloc(int, 0, allocator);
   ```
 
   Also, in order to simplify all list function invocations, you may implement the

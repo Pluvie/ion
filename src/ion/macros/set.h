@@ -20,7 +20,7 @@
   set<int> set2 = set_init(int, 256);
 
   // To create an allocated set<int>. It may grow indefinitely.
-  set<int>* set3 = set_alloc(int, 0, allocator);
+  set<int> set3 = set_alloc(int, 0, allocator);
   ```
 
   Also, in order to simplify all set function invocations, you may implement the

@@ -35,5 +35,5 @@ static struct {
   Redefines the `set_pos` macro to point to the specced function.
 */
 #undef  set_pos
-#define set_pos(l,e) \
-  set<T>_pos_specced(l, e)
+#define set_pos(s, e) \
+  set<T>_pos_specced(s, e)

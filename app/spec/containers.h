@@ -38,12 +38,16 @@
   Maps.
 */
 
+#define map_of char*, int
+#include <ion/containers/map.h>
+
 #define map_of char*, struct squadmate
 #include <ion/containers/map.h>
 
 #define map_function(key_type, value_type, func, ...)             \
   _Generic(key_type,                                              \
     char* : _Generic(value_type,                                  \
-      struct squadmate : map<char*, struct squadmate>_ ## func    \
+      int :               map<char*, int>_ ## func,               \
+      struct squadmate :  map<char*, struct squadmate>_ ## func   \
     )                                                             \
   )

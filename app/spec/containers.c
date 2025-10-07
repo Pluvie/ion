@@ -36,6 +36,11 @@
   Maps.
 */
 
+#define map_of char*, int
+#define map_cmp_function(v, u) streq(v, u)
+#define map_hash_function(v) hash_djb2_str(v)
+#include <ion/containers/map.c>
+
 #define map_of char*, struct squadmate
 #define map_cmp_function(v, u) streq(v, u)
 #define map_hash_function(v) hash_djb2_str(v)

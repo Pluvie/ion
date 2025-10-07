@@ -20,5 +20,5 @@ static struct {
   Redefines the `list_push` macro to point to the specced function.
 */
 #undef  list_push
-#define list_push(l,e) \
+#define list_push(l, e) \
   list<T>_push_specced(l, e)

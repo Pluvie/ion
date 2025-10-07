@@ -20,5 +20,5 @@ static struct {
   Redefines the `set_add` macro to point to the specced function.
 */
 #undef  set_add
-#define set_add(l,e) \
-  set<T>_add_specced(l, e)
+#define set_add(s, e) \
+  set<T>_add_specced(s, e)

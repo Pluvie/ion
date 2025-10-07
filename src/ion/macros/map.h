@@ -5,22 +5,22 @@
   first. Example:
 
   ```c
-  #define map_of int
+  #define map_of char*, int
   #include <ion/types/map.h>
-  // Now `map<int>` type is available for use in the code.
+  // Now `map<char*, int>` type is available for use in the code.
 
-  #define map_of int
+  #define map_of char*, int
   #include <ion/types/map.c>
-  // Now `map<int>` related functions are available for use in the code.
+  // Now `map<char*, int>` related functions are available for use in the code.
 
-  // To create a map<int> literal.
-  map<int> map1 = map(int, { 3, 4, 5 });
+  // To create a map<char*, int> literal.
+  map<int> map1 = map(int, { { "a", 3 }, { "b", 4 }, { "c", 5 } });
 
-  // To create a map<int> on the stack. It may only grow only up to its capacity.
-  map<int> map2 = map_init(int, 256);
+  // To create a map<char*, int> on the stack. It may only grow only up to its capacity.
+  map<int> map2 = map_init(char*, int, 256);
 
   // To create an allocated map<int>. It may grow indefinitely.
-  map<int>* map3 = map_alloc(int, 0, allocator);
+  map<int> map3 = map_alloc(char*, int, 0, allocator);
   ```
 
   Also, in order to simplify all map function invocations, you may implement the
@@ -29,16 +29,18 @@
   not compile. Here is an example implementation:
 
   ```c
-  #define map_of int
+  #define map_of char*, int
   #include <ion/types/map.h>
 
-  #define map_of string
+  #define map_of char*, dec
   #include <ion/types/map.h>
 
-  #define map_function(type, func, ...)   \
-    _Generic(type,                        \
-      int     : map<int>_ ## func,        \
-      string  : map<string>_ ## func      \
+  #define map_function(key_type, value_type, func, ...)   \
+    _Generic(key_type,                                    \
+      char* : _Generic(value_type,                        \
+        int : map<char*, int>_ ## func,                   \
+        dec : map<char*, dec>_ ## func                    \
+      )                                                   \
     )
   ```
 
@@ -46,13 +48,13 @@
   function inflected name:
 
   ```c
-  map_add(string_map, string("abc"));
+  map_set(int_map, "abc", 123);
   // The real function call would have been:
-  // `map<string>_add(string_map, string("abc"))`.
+  // `map<char*, int>_set(int_map, "abc", 123)`.
 
-  map_add(int_map, 123);
+  map_add(dec_map, 123.456);
   // The real function call would have been:
-  // `map<int>_add(int_map, 123)`.
+  // `map<char*, dec>_set(dec_map, "abc", 123.456)`.
   ```
 
   The `map_function` macro shall automatically select the correct function based
@@ -77,7 +79,8 @@
   to its defined capacity.
 */
 #define map_init(K, V, c) \
-  map_function((K) { 0 }, (V) { 0 }, init)(c, (K [c]) { 0 }, (unsigned int [c]) { 0 })
+  map_function((K) { 0 }, (V) { 0 }, init)( \
+    c, (K [c]) { 0 }, (V [c]) { 0 }, (unsigned int [c]) { 0 })
 
 /*
   Allocate a map. This map can be modified an may grow indefinitely.
@@ -114,7 +117,7 @@
 */
 #define map_each(m, k, v, ...)                                                          \
   (struct iterator iter = { 0 };                                                        \
-    map_function(*((m)->keys.data), each)(m, &iter);                                    \
+    map_function(*((m)->keys.data), *((m)->values), each)(m, &iter);                    \
     iter.position++, iter.index++)                                                      \
   for (k = (m)->keys.data + iter.position; iter.gate & (1<<0); iter.gate &= ~(1<<0))    \
   for (v = (m)->values + iter.position; iter.gate & (1<<1); iter.gate &= ~(1<<1))       \

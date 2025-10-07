@@ -24,5 +24,5 @@ static struct {
   Redefines the `list_at` macro to point to the specced function.
 */
 #undef  list_at
-#define list_at(l,e) \
+#define list_at(l, e) \
   list<T>_at_specced(l, e)
