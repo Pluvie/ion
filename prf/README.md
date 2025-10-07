@@ -8,4 +8,5 @@
 Landing page for all performance benchmarks of ⚡️ION⚡️ features.
 
 - [map](map.md) type container
+- [json](json.md) parsing
 - More to come
