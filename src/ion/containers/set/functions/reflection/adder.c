@@ -3,5 +3,5 @@ unsigned int set<T>_reflection_adder (
     void* element
 )
 {
-  return set<T>_push(set, *(T*) element);
+  return set<T>_add(set, *(T*) element);
 }

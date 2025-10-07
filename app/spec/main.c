@@ -11,6 +11,7 @@ spec( allocator_reset );
 spec( list );
 spec( list_alloc );
 spec( list_at );
+spec( list_del );
 spec( list_each );
 spec( list_init );
 spec( list_pop );
@@ -38,6 +39,8 @@ spec( set_each );
 spec( set_alloc );
 spec( set_init );
 spec( set_pos );
+spec( set_reflection_adder );
+spec( set_reflection_creator );
 
 int0 main (
     int0 argc,
@@ -52,6 +55,7 @@ int0 main (
   spec_add( list );
   spec_add( list_alloc );
   spec_add( list_at );
+  spec_add( list_del );
   spec_add( list_each );
   spec_add( list_init );
   spec_add( list_pop );
@@ -79,6 +83,8 @@ int0 main (
   spec_add( set_alloc );
   spec_add( set_init );
   spec_add( set_pos );
+  spec_add( set_reflection_adder );
+  spec_add( set_reflection_creator );
 
   specs_run();
 

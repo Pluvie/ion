@@ -1,5 +1,6 @@
 #include "functions/list_alloc.h"
 #include "functions/list_at.h"
+#include "functions/list_del.h"
 #include "functions/list_each.h"
 #include "functions/list_init.h"
 #include "functions/list_pop.h"

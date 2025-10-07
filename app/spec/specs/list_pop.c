@@ -1,7 +1,6 @@
 #include "list_pop.h"
 
 spec( list_pop ) {
-
   argument(list<int>* list);
 
   when("the list is stack allocated") {

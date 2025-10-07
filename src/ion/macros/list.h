@@ -96,6 +96,12 @@
   list_function(*((l)->data), pop)(l)
 
 /*
+  Remove an element from the list.
+*/
+#define list_del(l, e) \
+  list_function(*((l)->data), del)(l, e)
+
+/*
   Return an element at a specific position in the list.
 */
 #define list_at(l, p) \

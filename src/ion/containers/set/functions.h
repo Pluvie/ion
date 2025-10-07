@@ -8,5 +8,5 @@
 #include "functions/set_pos.h"
 #include "functions/set_rehash.h"
 
-//#include "functions/reflection/adder.h"
-//#include "functions/reflection/creator.h"
+#include "functions/reflection/adder.h"
+#include "functions/reflection/creator.h"

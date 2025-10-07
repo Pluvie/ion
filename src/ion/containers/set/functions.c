@@ -8,5 +8,5 @@
 #include "functions/set_pos.c"
 #include "functions/set_rehash.c"
 
-//#include "functions/reflection/adder.c"
-//#include "functions/reflection/creator.c"
+#include "functions/reflection/adder.c"
+#include "functions/reflection/creator.c"

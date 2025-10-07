@@ -1,7 +1,6 @@
 #include "list_each.h"
 
 spec( list_each ) {
-
   precondition("a valid list");
     #define preconditions \
       list<int> list = list(int, { 3, 4, 5 });

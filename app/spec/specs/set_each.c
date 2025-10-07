@@ -1,7 +1,6 @@
 #include "set_each.h"
 
 spec( set_each ) {
-
   precondition("a valid set");
     #define preconditions \
       set<int> set = set(int, { 3, 4, 5 });
