@@ -7,6 +7,7 @@
 #include "functions/bit_count_leading_zeros.c"
 #include "functions/hash_djb2.c"
 #include "functions/hash_djb2_str.c"
+#include "functions/json_decode_direct.c"
 #include "functions/memory_acquire.c"
 #include "functions/memory_acquire_aligned.c"
 #include "functions/memory_compare.c"

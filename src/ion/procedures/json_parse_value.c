@@ -1,71 +1,51 @@
-#ifdef JSON_DISCARD
-  #include "json_parse_spaces.c"
 
-  switch(*io->cursor) {
+  switch(*io_cursor(io)) {
   case '{':
-    return json_discard_object(io);
-  
+    json_parse_object;
+    break;
+
   case '[':
-    return json_discard_array(io);
-  
+    json_parse_array;
+    break;
+
+  case '"':
+    json_parse_string;
+    break;
+
+  case '-':
+  case '0':
+  case '1':
+  case '2':
+  case '3':
+  case '4':
+  case '5':
+  case '6':
+  case '7':
+  case '9':
+    json_parse_number;
+    break;
+
   default:
-    if (json_discard_string(io))
-      return true;
-  
-    if (json_discard_number(io))
-      return true;
-  
-    if (json_discard_bool(io))
-      return true;
-  
-    if (json_discard_null(io))
-      return true;
-  
-    if (unlikely(failure.occurred))
-      return false;
-  
-    fail("expected a json value");
-    failure_add_io_info(io);
-    return false;
+    if (io_contains(io, "null", 4)) {
+      json_parse_null;
+      io_advance(io, 4);
+      break;
+    }
+
+    if (io_contains(io, "true", 4)) {
+      json_parse_true;
+      io_advance(io, 4);
+      break;
+    }
+
+    if (io_contains(io, "false", 5)) {
+      json_parse_false;
+      io_advance(io, 5);
+      break;
+    }
+
+    if (io_exhausted(io))
+      fail("unexpected end of io");
+    else
+      fail("unrecognized token");
   }
-
-#else
-  /*
-  #include "json_parse_spaces.c"
-
-  if (json_decode_null(io, target))
-    return true;
-  
-  switch (io->rfx->type) {
-  case INT:
-    return json_decode_int(io, target);
-  case DEC:
-    return json_decode_dec(io, target);
-  case BOOL:
-    return json_decode_bool(io, target);
-  case ENUM:
-    return json_decode_enum(io, target);
-  case STRING:
-    return json_decode_string(io, target);
-  case STRUCT:
-    return json_decode_struct(io, target);
-  case ARRAY:
-    return json_decode_array(io, target);
-  case POINTER:
-    return json_decode_pointer(io, target);
-  case SELF:
-    return json_decode_self(io, target);
-  case LIST:
-    return json_decode_list(io, target);
-  case SET:
-    return json_decode_set(io, target);
-  case MAP:
-    return json_decode_map(io, target);
-  default:
-    fail("unsupported reflection type");
-  }
-  */
-
-  return false;
-  
-#endif

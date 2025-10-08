@@ -8,6 +8,7 @@ spec( allocator_pop );
 spec( allocator_push );
 spec( allocator_release );
 spec( allocator_reset );
+spec( json_decode_direct );
 spec( list );
 spec( list_alloc );
 spec( list_at );
@@ -62,6 +63,7 @@ int0 main (
   spec_add( allocator_push );
   spec_add( allocator_release );
   spec_add( allocator_reset );
+  spec_focus( json_decode_direct );
   spec_add( list );
   spec_add( list_alloc );
   spec_add( list_at );

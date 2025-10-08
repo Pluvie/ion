@@ -1,43 +1,39 @@
 
-  if (unlikely(*io->cursor != '['))
-    goto parse_failure;
+  if (unlikely(*io_cursor(io) != '[')) {
+    fail("expected array begin");
+    return;
+  }
 
   io_advance(io, 1);
 
-parse_value:
-#ifndef JSON_DISCARD
-  // json_decode_value(io, target);
-  /* Here logic to decode value. */
-#else
-  if (json_discard_value(io))
-    goto parse_comma_or_end;
-
-  if (*io->cursor == ']') {
-    io_advance(io, 1);
-    goto parse_success;
-  }
-
-  fail("expected an array element or array end");
-  goto parse_failure;
-#endif
-
-parse_comma_or_end:
+  json_parse_array_init;
   #include "json_parse_spaces.c"
 
-  switch(*io->cursor) {
+  if (*io_cursor(io) == ']') {
+    io_advance(io, 1);
+    return;
+  }
+
+parse_member:
+  #include "json_parse_spaces.c"
+
+  json_parse_array_member;
+  if (unlikely(failure.occurred))
+    return;
+
+  #include "json_parse_spaces.c"
+
+  switch(*io_cursor(io)) {
   case ',':
     io_advance(io, 1);
-    goto parse_value;
+    goto parse_member;
 
   case ']':
     io_advance(io, 1);
-    goto parse_success;
+    return;
 
   default:
-    if (failure.occurred)
-      goto parse_failure;
-
     fail("expected comma or array end");
   }
 
-  goto parse_failure;
+  return;

@@ -1,67 +1,57 @@
 
-  if (unlikely(*io->cursor != '{'))
-    goto parse_failure;
+  if (unlikely(*io_cursor(io) != '{')) {
+    fail("expected object begin");
+    return;
+  }
 
   io_advance(io, 1);
 
-parse_field:
+  json_parse_object_init;
   #include "json_parse_spaces.c"
 
-#ifndef JSON_DISCARD
-  // string* field;
-  // json_decode_string(io, &field);
-  /* Here logic to find the field in the rfx. */
-#else
-  if (json_discard_string(io))
-    goto parse_colon;
-
-  if (*io->cursor == '}')
-    goto parse_success;
-
-  fail("expected an object field or object end");
-  goto parse_failure;
-#endif
-
-parse_colon:
-  #include "json_parse_spaces.c"
-
-  if (*io->cursor == ':') {
+  if (*io_cursor(io) == '}') {
     io_advance(io, 1);
-    goto parse_value;
+    return;
   }
 
-  fail("expected colon after object field");
-  goto parse_failure;
-
-
-parse_value:
-#ifndef JSON_DISCARD
-  // json_decode_value(io, target);
-  /* Here logic to decode value. */
-#else
-  if (json_discard_value(io))
-    goto parse_comma_or_end;
-
-  goto parse_failure;
-#endif
-
-parse_comma_or_end:
+parse_member:
   #include "json_parse_spaces.c"
 
-  switch(*io->cursor) {
+  string object_member_name = { 0 };
+  #define result object_member_name
+  #include "json_parse_string.c"
+
+  json_parse_object_member_name;
+  if (unlikely(failure.occurred))
+    return;
+
+  #include "json_parse_spaces.c"
+
+  if (unlikely(*io_cursor(io) != ':')) {
+    fail("expected colon after object member name");
+    return;
+  }
+
+  io_advance(io, 1);
+  #include "json_parse_spaces.c"
+
+  json_parse_object_member_value;
+  if (unlikely(failure.occurred))
+    return;
+
+  #include "json_parse_spaces.c"
+
+  switch(*io_cursor(io)) {
   case ',':
     io_advance(io, 1);
-    goto parse_field;
+    goto parse_member;
 
   case '}':
     io_advance(io, 1);
-    goto parse_success;
+    return;
 
   default:
-    if (failure.occurred)
-      goto parse_failure;
-
     fail("expected comma or object end");
   }
 
-  goto parse_failure;
+  return;
