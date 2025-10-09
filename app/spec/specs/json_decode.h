@@ -29,9 +29,10 @@ static struct reflection example_reflection =
     { field(struct example, DEC, decimal) },
     { field(struct example, STR, string) },
     { field(struct example, BOOL, boolean) },
-    { field(struct example, SET, strings), of(reflect(str, STR)) },
+    { field(struct example, SET, strings), of(reflect(str, STR)), container(set, str) },
     { field(struct example, MAP, squad), of(
-        reflect(str, STR, of(squadmate_reflection))
+        reflect(str, STR, of(squadmate_reflection)),
+        container(map, str, struct squadmate)
     )},
   )
 );

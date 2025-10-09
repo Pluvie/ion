@@ -6,7 +6,7 @@
 #include "functions/bit_count_leading_ones.h"
 #include "functions/bit_count_leading_zeros.h"
 #include "functions/hash_djb2.h"
-#include "functions/hash_djb2_str.h"
+#include "functions/hash_djb2_cstr.h"
 #include "functions/json_decode.h"
 #include "functions/memory_acquire.h"
 #include "functions/memory_acquire_aligned.h"

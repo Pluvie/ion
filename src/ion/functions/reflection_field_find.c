@@ -5,7 +5,7 @@ struct reflection* reflection_field_find (
 {
   struct reflection* field = reflection->fields;
   while (field != nullptr) {
-    if (str_equal(field->name, *field_name))
+    if (str_equal(field->name, *field_name)) {
       field->parent = reflection;
       return field;
     }

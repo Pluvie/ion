@@ -1,4 +1,4 @@
-unsigned int hash_djb2_str (
+unsigned int hash_djb2_cstr (
     char* data
 )
 {

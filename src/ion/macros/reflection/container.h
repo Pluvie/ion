@@ -1,5 +1,8 @@
 /*
   Defines the container used for reflection.
 */
-#define container(n, T) \
-  .container = { n<T>_reflection_creator, n<T>_reflection_adder }
+#define container(n, ...)               \
+  .container = {                        \
+    n<__VA_ARGS__>_reflection_creator,  \
+    n<__VA_ARGS__>_reflection_adder,    \
+  }

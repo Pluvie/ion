@@ -47,12 +47,30 @@ spec( json_decode ) {
 
     json_decode(source, target, reflection, allocator);
 
-    printl();
-    if (failure.occurred)
-      printl(PRINT_COLOR_RED, failure.message, PRINT_COLOR_NONE);
-
-    must("do something");
-      verify(true);
+    must("correctly decode the JSON to the target struct");
+      verify(failure.occurred == false);
+      verify(example.integer == 12345);
+      verify(example.decimal == 777.7E-30);
+      verify(str_equal(example.string, string("value")));
+      verify(example.boolean == true);
+      verify(example.strings.length == 4);
+      verify(set<str>_has(&example.strings, string("string 1")));
+      verify(set<str>_has(&example.strings, string("string 2")));
+      verify(set<str>_has(&example.strings, (str) { 0 }));
+      verify(set<str>_has(&example.strings, string("string 4")));
+      verify(example.squad.length == 2);
+      struct squadmate* garrus = map<str, struct squadmate>_get(&example.squad, string("garrus"));
+      verify(garrus != nullptr);
+      verify(str_equal(garrus->name, string("Garrus Vakarian")));
+      verify(garrus->class == INFILTRATOR);
+      verify(garrus->health == 200);
+      verify(garrus->shields == 400);
+      struct squadmate* wrex = map<str, struct squadmate>_get(&example.squad, string("wrex"));
+      verify(wrex != nullptr);
+      verify(str_equal(wrex->name, string("Urdnot Wrex")));
+      verify(wrex->class == VANGUARD);
+      verify(wrex->health == 800);
+      verify(wrex->shields == 800);
 
     success();
   } end();

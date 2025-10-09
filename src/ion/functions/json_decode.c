@@ -278,6 +278,9 @@ static inline void json_decode_number (
   if (reflection->type == INT)
     return json_decode_number_as_int(source, target, reflection);
 
+  if (reflection->type == ENUM)
+    return json_decode_number_as_int(source, target, reflection);
+
   fail("incompatible reflection type");
   return;
 }
@@ -352,7 +355,7 @@ static inline void json_decode_object (
     return json_discard_object(source);
 
   if (reflection->type == STRUCT)
-    return json_decode_object_as_map(source, target, reflection, allocator);
+    return json_decode_object_as_struct(source, target, reflection, allocator);
 
   if (reflection->type == MAP &&
       reflection->element != nullptr &&
