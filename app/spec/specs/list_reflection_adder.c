@@ -19,7 +19,7 @@ spec( list_reflection_adder ) {
     list_push(&list_with_push, 4);
 
     void* result = list<int>_reflection_adder(generic_list, generic_element);
-    unsigned int list_result = result - (void*) list.data;
+    unsigned int list_result = (int*) result - list.data;
     unsigned int list_with_push_result = list_push(&list_with_push, element);
 
     verify(list_result == list_with_push_result);

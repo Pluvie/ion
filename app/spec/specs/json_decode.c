@@ -53,19 +53,24 @@ spec( json_decode ) {
       verify(example.decimal == 777.7E-30);
       verify(str_equal(example.string, string("value")));
       verify(example.boolean == true);
+
       verify(example.strings.length == 4);
       verify(set<str>_has(&example.strings, string("string 1")));
       verify(set<str>_has(&example.strings, string("string 2")));
       verify(set<str>_has(&example.strings, (str) { 0 }));
       verify(set<str>_has(&example.strings, string("string 4")));
       verify(example.squad.length == 2);
-      struct squadmate* garrus = map<str, struct squadmate>_get(&example.squad, string("garrus"));
+
+      struct squadmate* garrus =
+        map<str, struct squadmate>_get(&example.squad, string("garrus"));
       verify(garrus != nullptr);
       verify(str_equal(garrus->name, string("Garrus Vakarian")));
       verify(garrus->class == INFILTRATOR);
       verify(garrus->health == 200);
       verify(garrus->shields == 400);
-      struct squadmate* wrex = map<str, struct squadmate>_get(&example.squad, string("wrex"));
+
+      struct squadmate* wrex =
+        map<str, struct squadmate>_get(&example.squad, string("wrex"));
       verify(wrex != nullptr);
       verify(str_equal(wrex->name, string("Urdnot Wrex")));
       verify(wrex->class == VANGUARD);

@@ -19,7 +19,7 @@ spec( set_reflection_adder ) {
     set_add(&set_with_add, 4);
 
     void* result = set<int>_reflection_adder(generic_set, generic_element);
-    unsigned int set_result = result - (void*) set.data;
+    unsigned int set_result = (int*) result - set.data;
     unsigned int set_with_add_result = set_add(&set_with_add, element);
 
     verify(set_result == set_with_add_result);

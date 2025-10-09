@@ -26,6 +26,7 @@
 
 #include "macros/reflection/container.h"
 #include "macros/reflection/field.h"
+#include "macros/reflection/field_nested.h"
 #include "macros/reflection/fields.h"
 #include "macros/reflection/o.h"
 #include "macros/reflection/of.h"

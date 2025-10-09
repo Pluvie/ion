@@ -37,8 +37,8 @@ spec( reflection ) {
       */
       struct reflection rfx = reflect(chess_board, ARRAY, of(
         reflect(struct chess_square, STRUCT, fields(
-          { field(struct chess_square, BOOL, is_occupied) },
-          { field(struct chess_square, STR, piece) },
+          field(struct chess_square, BOOL, is_occupied),
+          field(struct chess_square, STR, piece),
         ))
       ));
 
@@ -91,14 +91,13 @@ spec( reflection ) {
         field inside the `struct example`.
       */
       struct reflection rfx = reflect(struct example, STRUCT, fields(
-        { field(struct example, INT, value_int) },
-        { field(struct example, ARRAY, why), of(
-            reflect(typeof(o(struct example)->why), STRUCT, fields(
-              { field(typeof(*o(struct example)->why), INT, value_int) },
-              { field(typeof(*o(struct example)->why), DEC, value_dec) },
-            ))
-          )
-        },
+        field(struct example, INT, value_int),
+        field(struct example, ARRAY, why, of(
+          reflect(typeof(o(struct example)->why), STRUCT, fields(
+            field(typeof(*o(struct example)->why), INT, value_int),
+            field(typeof(*o(struct example)->why), DEC, value_dec),
+          )))
+        ),
       ));
 
       must("correctly define the reflection");
@@ -159,8 +158,8 @@ spec( reflection ) {
       };
 
       struct reflection rfx = reflect(struct example, STRUCT, fields(
-        { field(struct example, INT, value_int) },
-        { field(struct example, DEC, value_dec) },
+        field(struct example, INT, value_int),
+        field(struct example, DEC, value_dec),
       ));
 
       must("correctly define the reflection");
@@ -213,16 +212,16 @@ spec( reflection ) {
       */
       #define t struct example
       struct reflection rfx = reflect(t, STRUCT, fields(
-        { field(t, INT,     value_int) },
-        { field(t, DEC,     value_dec) },
-        { field(t, STRUCT,  inside_1), fields(
-          { field(t, POINTER, number_ptr, inside_1), of(reflect(int, INT)) },
-          { field(t, INT,     number,     inside_1) },
-          { field(t, STRUCT,  inside_2,   inside_1), fields(
-            { field(t, POINTER, number_ptr, inside_1.inside_2), of(reflect(int, INT)) },
-            { field(t, INT,     number,     inside_1.inside_2) },
-          )},
-        )},
+        field(t, INT,     value_int),
+        field(t, DEC,     value_dec),
+        field(t, STRUCT,  inside_1, fields(
+          field_nested(t, POINTER, number_ptr, inside_1, of(reflect(int, INT))),
+          field_nested(t, INT,     number,     inside_1),
+          field_nested(t, STRUCT,  inside_2,   inside_1, fields(
+            field_nested(t, POINTER, number_ptr, inside_1.inside_2, of(reflect(int, INT))),
+            field_nested(t, INT,     number,     inside_1.inside_2),
+          )),
+        )),
       ));
       #undef t
 
@@ -311,10 +310,10 @@ spec( reflection ) {
 
       struct reflection rfx = reflect(list<struct squadmate>, LIST, of(
         reflect(struct squadmate, STRUCT, fields(
-          { field(struct squadmate, STR,  name) },
-          { field(struct squadmate, ENUM, class) },
-          { field(struct squadmate, INT,  health) },
-          { field(struct squadmate, INT,  shields) },
+          field(struct squadmate, STR,  name),
+          field(struct squadmate, ENUM, class),
+          field(struct squadmate, INT,  health),
+          field(struct squadmate, INT,  shields),
         ))),
         container(list, struct squadmate)
       );
