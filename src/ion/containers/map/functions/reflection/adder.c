@@ -1,7 +1,9 @@
-unsigned int map<K, V>_reflection_adder (
-    void* map,
-    void* key
+void* map<K, V>_reflection_adder (
+    void* generic_map,
+    void* generic_key
 )
 {
-  return map<K, V>_set(map, *(K*) key, (V) { 0 });
+  map<K, V>* map = (map<K, V>*) generic_map;
+  unsigned int position = map<K, V>_set(map, *(K*) generic_key, (V) { 0 });
+  return map->values + position;
 }

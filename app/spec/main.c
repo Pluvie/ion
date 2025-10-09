@@ -63,7 +63,7 @@ int0 main (
   spec_add( allocator_push );
   spec_add( allocator_release );
   spec_add( allocator_reset );
-  spec_add( json_decode );
+  spec_focus( json_decode );
   spec_add( list );
   spec_add( list_alloc );
   spec_add( list_at );

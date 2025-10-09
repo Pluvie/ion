@@ -1,30 +1,31 @@
 #include "list_reflection_adder.h"
 
 spec( list_reflection_adder ) {
-  argument(void* list);
-  argument(void* element);
+  argument(void* generic_list);
+  argument(void* generic_element);
 
   precondition("a valid list");
-    list<int> valid_list = list_alloc(int, 8, spec_allocator);
-    list_push(&valid_list, 3);
-    list_push(&valid_list, 4);
-    list = &valid_list;
+    list<int> list = list_alloc(int, 8, spec_allocator);
+    list_push(&list, 3);
+    list_push(&list, 4);
+    generic_list = &list;
 
   precondition("a valid element")
-    int _element = 5; element = &_element;
+    int element = 5; generic_element = &element;
 
   must("behave exactly like list_push");
-    list<int> other_list = list_alloc(int, 8, spec_allocator);
-    list_push(&other_list, 3);
-    list_push(&other_list, 4);
+    list<int> list_with_push = list_alloc(int, 8, spec_allocator);
+    list_push(&list_with_push, 3);
+    list_push(&list_with_push, 4);
 
-    unsigned int result = list<int>_reflection_adder(list, element);
-    unsigned int other_list_result = list_push(&other_list, *(int*) element);
+    void* result = list<int>_reflection_adder(generic_list, generic_element);
+    unsigned int list_result = result - (void*) list.data;
+    unsigned int list_with_push_result = list_push(&list_with_push, element);
 
-    verify(result == other_list_result);
-    verify(valid_list.length == other_list.length);
-    verify(valid_list.capacity == other_list.capacity);
-    verify(valid_list.allocator == other_list.allocator);
+    verify(list_result == list_with_push_result);
+    verify(list.length == list_with_push.length);
+    verify(list.capacity == list_with_push.capacity);
+    verify(list.allocator == list_with_push.allocator);
 
   success();
 }

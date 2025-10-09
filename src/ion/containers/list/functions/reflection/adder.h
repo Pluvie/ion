@@ -1,4 +1,4 @@
-unsigned int list<T>_reflection_adder (
-    void* list,
-    void* element
+void* list<T>_reflection_adder (
+    void* generic_list,
+    void* generic_element
 );

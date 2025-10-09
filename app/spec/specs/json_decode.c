@@ -4,12 +4,15 @@ spec( json_decode ) {
   argument(str* source);
   argument(void* target);
   argument(struct reflection* reflection);
+  argument(struct allocator* allocator);
 
   precondition("a valid reflection");
   precondition("a valid target for that reflection");
+  precondition("a valid allocator");
   #define preconditions \
     reflection = &example_reflection; \
-    target = &example;
+    target = &example; \
+    allocator = spec_allocator;
 
   when("the io contains a valid JSON") {
     source = &string(
@@ -42,7 +45,7 @@ spec( json_decode ) {
     );
     apply(preconditions);
 
-    json_decode(source, target, reflection);
+    json_decode(source, target, reflection, allocator);
 
     printl();
     if (failure.occurred)

@@ -1,7 +1,9 @@
-unsigned int list<T>_reflection_adder (
-    void* list,
-    void* element
+void* list<T>_reflection_adder (
+    void* generic_list,
+    void* generic_element
 )
 {
-  return list<T>_push(list, *(T*) element);
+  list<T>* list = (list<T>*) generic_list;
+  unsigned int position = list<T>_push(list, *(T*) generic_element);
+  return list->data + position;
 }
