@@ -66,12 +66,12 @@
   Create a map literal. A map literal is *frozen*: it cannot be modified because it
   has fixed length and capacity, and no allocator.
 */
-#define map(K, V, ...) \
-  map_function((map<K, V>) { 0 }, literal)( \
-    countof((struct { K k; V v; } []) __VA_ARGS__), \
-    (K [countof((struct { K k; V v; } []) __VA_ARGS__)]) { 0 }, \
-    (V [countof((struct { K k; V v; } []) __VA_ARGS__)]) { 0 }, \
-    (unsigned int [countof((struct { K k; V v; } []) __VA_ARGS__)]) { 0 }, \
+#define map(K, V, ...)                                                                  \
+  map<K, V>_literal(                                                                    \
+    countof((struct { K k; V v; } []) __VA_ARGS__),                                     \
+    (K [countof((struct { K k; V v; } []) __VA_ARGS__)]) { 0 },                         \
+    (V [countof((struct { K k; V v; } []) __VA_ARGS__)]) { 0 },                         \
+    (unsigned int [countof((struct { K k; V v; } []) __VA_ARGS__)]) { 0 },              \
     (struct { K k; V v; } []) __VA_ARGS__)
 
 /*
@@ -79,15 +79,22 @@
   to its defined capacity.
 */
 #define map_init(K, V, c) \
-  map_function((map<K, V>) { 0 }, init)( \
-    c, (K [c]) { 0 }, (V [c]) { 0 }, (unsigned int [c]) { 0 })
+  map<K, V>_init(c, (K [c]) { 0 }, (V [c]) { 0 }, (unsigned int [c]) { 0 })
 
 /*
   Allocate a map. This map can be modified an may grow indefinitely.
 */
 #define map_alloc(K, V, c, a) \
-  map_function((map<K, V>) { 0 }, alloc)(c, a)
+  map<K, V>_alloc(c, a)
 
+
+/*
+  The following macros can be used only when compiling for C11 standard or above,
+  as they require the definition of a `map_function` macro with the `_Generic` keyword.
+  This keyword has been introduced in C11, and works by selecting the appropriate map
+  function depending on its type.
+*/
+#if standard(>= C11)
 /*
   Get the value of a key in the map.
 */
@@ -123,3 +130,4 @@
   __VA_OPT__(                                                                           \
     for (int __VA_ARGS__ = iter.index; iter.gate & (1<<2); iter.gate &= ~(1<<2))        \
   )
+#endif

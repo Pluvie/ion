@@ -32,7 +32,6 @@ static struct reflection example_reflection =
     { field(struct example, SET, strings), of(reflect(str, STR)) },
     { field(struct example, MAP, squad), of(
         reflect(str, STR, of(squadmate_reflection))
-      )
-    },
+    )},
   )
 );

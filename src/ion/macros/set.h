@@ -64,10 +64,10 @@
   Create a set literal. A set literal is *frozen*: it cannot be modified because it
   has fixed length and capacity, and no allocator.
 */
-#define set(T, ...) \
-  set_function((set<T>) { 0 }, literal)( \
-    countof((T []) __VA_ARGS__), \
-    (T []) __VA_ARGS__, \
+#define set(T, ...)                                       \
+  set<T>_literal(                                         \
+    countof((T []) __VA_ARGS__),                          \
+    (T []) __VA_ARGS__,                                   \
     (unsigned int [countof((T []) __VA_ARGS__)]) { 0 })
 
 /*
@@ -75,14 +75,22 @@
   to its defined capacity.
 */
 #define set_init(T, c) \
-  set_function((set<T>) { 0 }, init)(c, (T [c]) { 0 }, (unsigned int [c]) { 0 })
+  set<T>_init(c, (T [c]) { 0 }, (unsigned int [c]) { 0 })
 
 /*
   Allocate a set. This set can be modified an may grow indefinitely.
 */
 #define set_alloc(T, c, a) \
-  set_function((set<T>) { 0 }, alloc)(c, a)
+  set<T>_alloc(c, a)
 
+
+/*
+  The following macros can be used only when compiling for C11 standard or above,
+  as they require the definition of a `set_function` macro with the `_Generic` keyword.
+  This keyword has been introduced in C11, and works by selecting the appropriate set
+  function depending on its type.
+*/
+#if standard(>= C11)
 /*
   Add an element to the set.
 */
@@ -114,6 +122,18 @@
   set_function(*(s), rehash)(s, p)
 
 /*
+  Loops over the elements of the set, with optional index name.
+*/
+#define set_each(s, e, ...)                                                             \
+  (struct iterator iter = { 0 };                                                        \
+    set_function(*(s), each)(s, &iter); iter.position++, iter.index++)                  \
+  for (e = (s)->data + iter.position; iter.gate & (1<<0); iter.gate &= ~(1<<0))         \
+  __VA_OPT__(                                                                           \
+    for (int __VA_ARGS__ = iter.index; iter.gate & (1<<1); iter.gate &= ~(1<<1))        \
+  )
+#endif
+
+/*
   Calculates the set load limit given its capacity.
 */
 #define set_load_limit(s) \
@@ -142,14 +162,3 @@
 */
 #define set_pos_free(s, p) \
   (s)->hashes[p] = (unsigned int) 0
-
-/*
-  Loops over the elements of the set, with optional index name.
-*/
-#define set_each(s, e, ...)                                                             \
-  (struct iterator iter = { 0 };                                                        \
-    set_function(*(s), each)(s, &iter); iter.position++, iter.index++)                  \
-  for (e = (s)->data + iter.position; iter.gate & (1<<0); iter.gate &= ~(1<<0))         \
-  __VA_OPT__(                                                                           \
-    for (int __VA_ARGS__ = iter.index; iter.gate & (1<<1); iter.gate &= ~(1<<1))        \
-  )

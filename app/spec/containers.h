@@ -8,11 +8,13 @@
 #define list_of struct squadmate
 #include <ion/containers/list.h>
 
+#if standard(>= C11)
 #define list_function(type, func, ...)                          \
   _Generic(type,                                                \
     list<int>               : list<int>_ ## func,               \
     list<struct squadmate>  : list<struct squadmate>_ ## func   \
   )
+#endif
 
 /*
   Sets.
@@ -30,6 +32,7 @@
 #define set_of struct squadmate
 #include <ion/containers/set.h>
 
+#if standard(>= C11)
 #define set_function(type, func, ...)                         \
   _Generic(type,                                              \
     set<int>              : set<int>_ ## func,                \
@@ -37,6 +40,7 @@
     set<str>              : set<str>_ ## func,             \
     set<struct squadmate> : set<struct squadmate>_ ## func    \
   )
+#endif
 
 /*
   Maps.
@@ -51,9 +55,11 @@
 #define map_of str, struct squadmate
 #include <ion/containers/map.h>
 
+#if standard(>= C11)
 #define map_function(type, func, ...)                                       \
   _Generic(type,                                                            \
     map<char*, int>               : map<char*, int>_ ## func,               \
     map<char*, struct squadmate>  : map<char*, struct squadmate>_ ## func,  \
     map<str, struct squadmate>    : map<str, struct squadmate>_ ## func  \
   )
+#endif

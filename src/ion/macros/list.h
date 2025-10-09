@@ -75,14 +75,22 @@
   to its defined capacity.
   */
 #define list_init(T, c) \
-  list_function((list<T>) { 0 }, init)(c, (T [c]) { 0 })
+  list<T>_init(c, (T [c]) { 0 })
 
 /*
   Allocate a list. This list can be modified an may grow indefinitely.
 */
 #define list_alloc(T, c, a) \
-  list_function((list<T>) { 0 }, alloc)(c, a)
+  list<T>_alloc(c, a)
 
+
+/*
+  The following macros can be used only when compiling for C11 standard or above,
+  as they require the definition of a `list_function` macro with the `_Generic` keyword.
+  This keyword has been introduced in C11, and works by selecting the appropriate list
+  function depending on its type.
+*/
+#if standard(>= C11)
 /*
   Append an element to the end of list.
 */
@@ -117,3 +125,4 @@
   __VA_OPT__(                                                                           \
     for (int __VA_ARGS__ = iter.index; iter.gate & (1<<1); iter.gate &= ~(1<<1))        \
   )
+#endif

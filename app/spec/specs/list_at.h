@@ -26,3 +26,8 @@ static struct {
 #undef  list_at
 #define list_at(l, e) \
   list<T>_at_specced(l, e)
+
+#if standard(<= C99)
+#define list_push(l, e) \
+  list<int>_push(l, e)
+#endif

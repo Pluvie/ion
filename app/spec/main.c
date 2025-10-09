@@ -40,7 +40,7 @@ spec( memory_set );
 spec( print );
 spec( printl );
 spec( prints );
-//spec( reflection );
+spec( reflection );
 spec( set );
 spec( set_add );
 spec( set_del );
@@ -63,7 +63,7 @@ int0 main (
   spec_add( allocator_push );
   spec_add( allocator_release );
   spec_add( allocator_reset );
-  spec_focus( json_decode );
+  spec_add( json_decode );
   spec_add( list );
   spec_add( list_alloc );
   spec_add( list_at );
@@ -95,7 +95,7 @@ int0 main (
   spec_add( print );
   spec_add( printl );
   spec_add( prints );
-  //spec_add( reflection );
+  spec_add( reflection );
   spec_add( set );
   spec_add( set_add );
   spec_add( set_del );
