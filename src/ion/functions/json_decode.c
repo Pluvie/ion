@@ -1,126 +1,4 @@
-static inline void json_decode_array (
-    str* source,
-    void* target,
-    struct reflection* reflection,
-    struct allocator* allocator
-);
-
-static inline void json_decode_array_as_array (
-    str* source,
-    void* target,
-    struct reflection* reflection,
-    struct allocator* allocator
-);
-
-static inline void json_decode_array_as_list (
-    str* source,
-    void* target,
-    struct reflection* reflection,
-    struct allocator* allocator
-);
-
-static inline void json_decode_array_as_set (
-    str* source,
-    void* target,
-    struct reflection* reflection,
-    struct allocator* allocator
-);
-
-static inline void json_decode_false (
-    str* source,
-    void* target,
-    struct reflection* reflection
-);
-
-static inline void json_decode_null (
-    str* source,
-    void* target,
-    struct reflection* reflection
-);
-
-static inline void json_decode_number (
-    str* source,
-    void* target,
-    struct reflection* reflection
-);
-
-static inline void json_decode_number_as_dec (
-    str* source,
-    void* target,
-    struct reflection* reflection
-);
-
-static inline void json_decode_number_as_int (
-    str* source,
-    void* target,
-    struct reflection* reflection
-);
-
-static inline void json_decode_object (
-    str* source,
-    void* target,
-    struct reflection* reflection,
-    struct allocator* allocator
-);
-
-static inline void json_decode_object_as_struct (
-    str* source,
-    void* target,
-    struct reflection* reflection,
-    struct allocator* allocator
-);
-
-static inline void json_decode_object_as_map (
-    str* source,
-    void* target,
-    struct reflection* reflection,
-    struct allocator* allocator
-);
-
-static inline void json_decode_string (
-    str* source,
-    void* target,
-    struct reflection* reflection
-);
-
-static inline void json_decode_true (
-    str* source,
-    void* target,
-    struct reflection* reflection
-);
-
-static inline void json_decode_value (
-    str* source,
-    void* target,
-    struct reflection* reflection,
-    struct allocator* allocator
-);
-
-static inline void json_discard_array (
-    str* source
-);
-
-static inline void json_discard_object (
-    str* source
-);
-
-static inline void json_discard_number (
-    str* source
-);
-
-#define json_advance(source, amount)          source->chars += amount
-#define json_contains(source, value, length)  memory_equal(source->chars, value, length)
-#define json_cursor(source)                   (source->chars)
-#define json_exhausted(source)                (*(source->chars) == 0)
-
-#define json_parse_array    json_decode_array(source, target, reflection, allocator)
-#define json_parse_false    json_decode_false(source, target, reflection)
-#define json_parse_null     json_decode_null(source, target, reflection)
-#define json_parse_number   json_decode_number(source, target, reflection)
-#define json_parse_object   json_decode_object(source, target, reflection, allocator)
-#define json_parse_string   json_decode_string(source, target, reflection)
-#define json_parse_true     json_decode_true(source, target, reflection)
-#define json_parse_value    json_decode_value(source, target, reflection, allocator)
+#include "json_decode_internal.c"
 
 void json_decode (
     str* source,
@@ -134,14 +12,18 @@ void json_decode (
   json_decode_value(source, target, reflection, allocator);
 
   if (unlikely(failure.occurred)) {
-    char error[1024] = { 0 };
+    char error[4096] = { 0 };
     unsigned int position = source->chars - source_begin;
-    printl(">>>>>>> position: ", f(position));
     memory_copy(error, source_begin, source->length);
     error[position] = '@';
-    fail("json error: ", failure.message, "\n", error);
+    printl(error);
   }
 }
+
+#define json_advance(source, amount)          source->chars += amount
+#define json_contains(source, value, length)  memory_equal(source->chars, value, length)
+#define json_cursor(source)                   (source->chars)
+#define json_exhausted(source)                (*(source->chars) == 0)
 
 static inline void json_decode_array (
     str* source,
@@ -173,6 +55,26 @@ static inline void json_decode_array_as_array (
     struct allocator* allocator
 )
 {
+  struct reflection* array_element_reflection = reflection->element;
+  void* array_element_target = nullptr;
+  int array_element_index = 0;
+  unsigned int array_max_index = reflection->size / array_element_reflection->size;
+  unsigned int array_element_position = 0;
+
+  #define json_parse_array_init
+  #define json_parse_array_member \
+    if (array_element_index < array_max_index) { \
+      array_element_position = array_element_index * array_element_reflection->size; \
+      array_element_target = target + array_element_position; \
+      json_decode_value(source, array_element_target, array_element_reflection, allocator); \
+      array_element_index++; \
+    } else { \
+      fail("array maximum size is ", f(array_max_index)); \
+    }
+
+  #include "../procedures/json_parse_array.c"
+  #undef json_parse_array_init
+  #undef json_parse_array_member
 }
 
 static inline void json_decode_array_as_list (
@@ -182,6 +84,19 @@ static inline void json_decode_array_as_list (
     struct allocator* allocator
 )
 {
+  struct reflection* list_element_reflection = reflection->element;
+  void* list_element_target = allocator_push(allocator, list_element_reflection->size);
+
+  #define json_parse_array_init \
+    reflection->container.creator(target, 8, allocator);
+
+  #define json_parse_array_member \
+    json_decode_value(source, list_element_target, list_element_reflection, allocator); \
+    reflection->container.adder(target, list_element_target);
+
+  #include "../procedures/json_parse_array.c"
+  #undef json_parse_array_init
+  #undef json_parse_array_member
 }
 
 static inline void json_decode_array_as_set (
@@ -211,7 +126,8 @@ static inline void json_discard_array (
 )
 {
   #define json_parse_array_init
-  #define json_parse_array_member json_decode_value(source, nullptr, nullptr, nullptr)
+  #define json_parse_array_member \
+    json_decode_value(source, nullptr, nullptr, nullptr)
   #include "../procedures/json_parse_array.c"
   #undef json_parse_array_init
   #undef json_parse_array_member
@@ -460,17 +376,26 @@ static inline void json_decode_value (
     struct allocator* allocator
 )
 {
-  #include "../procedures/json_parse_value.c"
-}
+  #define json_parse_array    json_decode_array(source, target, reflection, allocator)
+  #define json_parse_false    json_decode_false(source, target, reflection)
+  #define json_parse_null     json_decode_null(source, target, reflection)
+  #define json_parse_number   json_decode_number(source, target, reflection)
+  #define json_parse_object   json_decode_object(source, target, reflection, allocator)
+  #define json_parse_string   json_decode_string(source, target, reflection)
+  #define json_parse_true     json_decode_true(source, target, reflection)
+  #define json_parse_value    json_decode_value(source, target, reflection, allocator)
 
-#undef json_parse_array
-#undef json_parse_false
-#undef json_parse_null
-#undef json_parse_number
-#undef json_parse_object
-#undef json_parse_string
-#undef json_parse_true
-#undef json_parse_value
+  #include "../procedures/json_parse_value.c"
+
+  #undef json_parse_array
+  #undef json_parse_false
+  #undef json_parse_null
+  #undef json_parse_number
+  #undef json_parse_object
+  #undef json_parse_string
+  #undef json_parse_true
+  #undef json_parse_value
+}
 
 #undef json_advance
 #undef json_contains

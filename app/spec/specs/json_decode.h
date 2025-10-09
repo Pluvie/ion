@@ -12,6 +12,8 @@ static struct example {
   bool boolean;
   set<str> strings;
   map<str, struct squadmate> squad;
+  list<int> numbers;
+  dec matrix[3][3];
 } example;
 
 static struct reflection squadmate_reflection =
@@ -37,5 +39,10 @@ static struct reflection example_reflection =
       of(reflect(str, STR, of(squadmate_reflection))),
       container(map, str, struct squadmate)
     ),
+    field(struct example, LIST, numbers,
+      of(reflect(int, INT)),
+      container(list, int)
+    ),
+    field(struct example, ARRAY, matrix, of(reflect(dec, DEC))),
   )
 );

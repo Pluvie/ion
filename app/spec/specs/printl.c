@@ -17,7 +17,8 @@ spec( printl ) {
   must("print the arguments on the string according to their format and add a newline");
     char output[1024] = { 0 };
     fseek(tmp, 0L, SEEK_SET);
-    fread(output, sizeof(output), 1, tmp);
+    int result = fread(output, sizeof(output), 1, tmp);
+    verify(result != -1);
     verify(cstreq(output, "trueyff-8888-77.700000\"abc\"(nil)\n"));
 
   success();

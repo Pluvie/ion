@@ -40,7 +40,18 @@ spec( json_decode ) {
       "      \"health\": 800,"                "\n"
       "      \"shields\": 800"                "\n"
       "    }"                                 "\n"
-      "  }"                                   "\n"
+      "  },"                                  "\n"
+      "  \"numbers\": ["                      "\n"
+      "    0,"                                "\n"
+      "    1,"                                "\n"
+      "    2,"                                "\n"
+      "    3"                                 "\n"
+      "  ],"                                  "\n"
+      "  \"matrix\": ["                       "\n"
+      "    1.1, 1.1, 1.1,"                    "\n"
+      "    2.2, 2.2, 2.2,"                    "\n"
+      "    3.3, 3.3, 3.3"                     "\n"
+      "  ]"                                   "\n"
       "}"
     );
     apply(preconditions);
@@ -76,6 +87,22 @@ spec( json_decode ) {
       verify(wrex->class == VANGUARD);
       verify(wrex->health == 800);
       verify(wrex->shields == 800);
+
+      verify(example.numbers.length == 4);
+      verify(*list<int>_at(&example.numbers, 0) == 0);
+      verify(*list<int>_at(&example.numbers, 1) == 1);
+      verify(*list<int>_at(&example.numbers, 2) == 2);
+      verify(*list<int>_at(&example.numbers, 3) == 3);
+
+      verify(example.matrix[0][0] == 1.1);
+      verify(example.matrix[0][1] == 1.1);
+      verify(example.matrix[0][2] == 1.1);
+      verify(example.matrix[1][0] == 2.2);
+      verify(example.matrix[1][1] == 2.2);
+      verify(example.matrix[1][2] == 2.2);
+      verify(example.matrix[2][0] == 3.3);
+      verify(example.matrix[2][1] == 3.3);
+      verify(example.matrix[2][2] == 3.3);
 
     success();
   } end();

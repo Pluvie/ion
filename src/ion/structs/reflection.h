@@ -1,6 +1,5 @@
 struct reflection {
   enum reflection_types type;
-  padding(4);
   str name;
   const char* type_name;
   unsigned int size;
@@ -19,10 +18,11 @@ struct reflection {
     struct reflection* element;
   };
   bool (*validator)(void*, struct reflection*);
+  int (*enumerator)(str);
   struct {
     void (*creator)(void*, unsigned int, struct allocator*);
     void* (*adder)(void*, void*);
   } container;
-  padding(14);
+  padding(8);
 };
 check_sizeof(128, struct reflection);
