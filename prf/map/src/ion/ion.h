@@ -3,7 +3,7 @@
 
 #define set_function(type, func, ...)   \
   _Generic(type,                        \
-    int :   set<int>_ ## func           \
+    set<int> : set<int>_ ## func        \
   )
 
 #define set_of int
@@ -15,11 +15,9 @@
 #define map_of int, int
 #include <ion/containers/map.h>
 
-#define map_function(key_type, value_type, func, ...)   \
+#define map_function(type, func, ...)                   \
   _Generic(key_type,                                    \
-    int : _Generic(value_type,                          \
-      int :   map<int, int>_ ## func                    \
-    )                                                   \
+    map<int, int> : map<int, int>_ ## func              \
   )
 
 #define map_of int, int

@@ -36,7 +36,7 @@ spec( list_at ) {
 
     must("fatally fail with a specific message");
       printl(">>>> ", sim.fatal);
-      verify(streq(sim.fatal, "3: overbound list position"));
+      verify(cstreq(sim.fatal, "3: overbound list position"));
 
     success();
   } end();

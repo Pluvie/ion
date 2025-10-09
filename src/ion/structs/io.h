@@ -12,14 +12,6 @@ struct io {
 check_sizeof(32, struct io);
 */
 
-
-struct io_direct {
-  string* data;
-  char* cursor;
-};
-check_sizeof(16, struct io_direct);
-
-
 /*
 struct io_buffered {
   struct io_channel* channel;

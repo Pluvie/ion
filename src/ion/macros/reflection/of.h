@@ -3,4 +3,4 @@
   Usually seen in presence of pointers and arrays.
 */
 #define of(...) \
-  .element = &(struct reflection) { __VA_ARGS__ }
+  .element = & __VA_ARGS__

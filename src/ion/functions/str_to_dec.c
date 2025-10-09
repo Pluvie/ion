@@ -1,5 +1,5 @@
-dec string_to_dec (
-    string* source
+dec str_to_dec (
+    str* source
 )
 {
   dec result = 0;

@@ -1,11 +1,11 @@
 
   while (true) {
-    switch (*io_cursor(io)) {
+    switch (*json_cursor(source)) {
     case ' ':
     case '\n':
     case '\r':
     case '\t':
-      io_advance(io, 1);
+      json_advance(source, 1);
       continue;
     }
 

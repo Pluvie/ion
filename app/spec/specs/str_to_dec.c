@@ -1,17 +1,17 @@
-#include "string_to_dec.h"
+#include "str_to_dec.h"
 
-spec( string_to_dec ) {
-  argument(string* source);
+spec( str_to_dec ) {
+  argument(str* source);
 
   precondition("a valid source string");
   precondition("the source string must have at least one padding character at the end");
     #define preconditions \
-      source = allocator_push(spec_allocator, sizeof(string));
+      source = allocator_push(spec_allocator, sizeof(str));
 
   when("the source string contains a valid number") {
     apply(preconditions);
     *source = string("17788");
-    dec result = string_to_dec(source);
+    dec result = str_to_dec(source);
 
     must("not fail");
       verify(failure.occurred == false);
@@ -25,7 +25,7 @@ spec( string_to_dec ) {
   when("the source string contains a valid number with a decimal part") {
     apply(preconditions);
     *source = string("17788.44");
-    dec result = string_to_dec(source);
+    dec result = str_to_dec(source);
 
     must("not fail");
       verify(failure.occurred == false);
@@ -39,7 +39,7 @@ spec( string_to_dec ) {
   when("the source string contains a valid number with a decimal part and exponent") {
     apply(preconditions);
     *source = string("17788.44e-3");
-    dec result = string_to_dec(source);
+    dec result = str_to_dec(source);
 
     must("not fail");
       verify(failure.occurred == false);
@@ -53,7 +53,7 @@ spec( string_to_dec ) {
   when("the source string contains a valid number with an exponent") {
     apply(preconditions);
     *source = string("17788e+2");
-    dec result = string_to_dec(source);
+    dec result = str_to_dec(source);
 
     must("not fail");
       verify(failure.occurred == false);
@@ -67,7 +67,7 @@ spec( string_to_dec ) {
   when("the source string contains a valid number with a big exponent") {
     apply(preconditions);
     *source = string("17788.99e+159");
-    dec result = string_to_dec(source);
+    dec result = str_to_dec(source);
 
     must("not fail");
       verify(failure.occurred == false);
@@ -81,7 +81,7 @@ spec( string_to_dec ) {
   when("the source string contains a valid number with a small exponent") {
     apply(preconditions);
     *source = string("17788.99e-199");
-    dec result = string_to_dec(source);
+    dec result = str_to_dec(source);
 
     must("not fail");
       verify(failure.occurred == false);
@@ -95,7 +95,7 @@ spec( string_to_dec ) {
   when("the source string contains a valid number followed by other characters") {
     apply(preconditions);
     *source = string("17aaa:0");
-    dec result = string_to_dec(source);
+    dec result = str_to_dec(source);
 
     must("not fail");
       verify(failure.occurred == false);
@@ -109,11 +109,11 @@ spec( string_to_dec ) {
   when("the source string contains an overflowing number") {
     apply(preconditions);
     *source = string("9.223372036854775936");
-    dec result = string_to_dec(source);
+    dec result = str_to_dec(source);
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message, "number overflow"));
+      verify(cstreq(failure.message, "number overflow"));
 
     must("return 0");
       verify((dec) 0 == result);
@@ -124,11 +124,11 @@ spec( string_to_dec ) {
   when("the source string contains a double overflowing number") {
     apply(preconditions);
     *source = string("9.223372036854775939223372036854775936");
-    dec result = string_to_dec(source);
+    dec result = str_to_dec(source);
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message, "number overflow"));
+      verify(cstreq(failure.message, "number overflow"));
 
     must("return 0");
       verify((dec) 0 == result);
@@ -139,11 +139,11 @@ spec( string_to_dec ) {
   when("the source string contains a valid number and an overflowing exponent") {
     apply(preconditions);
     *source = string("777e+400");
-    dec result = string_to_dec(source);
+    dec result = str_to_dec(source);
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message, "exponent overflow"));
+      verify(cstreq(failure.message, "exponent overflow"));
 
     must("return 0");
       verify((dec) 0 == result);
@@ -154,11 +154,11 @@ spec( string_to_dec ) {
   when("the source string does not contain a valid number") {
     apply(preconditions);
     *source = string("aaa:0");
-    dec result = string_to_dec(source);
+    dec result = str_to_dec(source);
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(streq(failure.message, "expected a number"));
+      verify(cstreq(failure.message, "expected a number"));
 
     must("return 0");
       verify((dec) 0 == result);

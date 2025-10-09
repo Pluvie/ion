@@ -1,25 +1,26 @@
 
-  if (unlikely(*io_cursor(io) != '{')) {
+  if (unlikely(*json_cursor(source) != '{')) {
     fail("expected object begin");
     return;
   }
 
-  io_advance(io, 1);
+  json_advance(source, 1);
 
   json_parse_object_init;
   #include "json_parse_spaces.c"
 
-  if (*io_cursor(io) == '}') {
-    io_advance(io, 1);
+  if (*json_cursor(source) == '}') {
+    json_advance(source, 1);
     return;
   }
 
 parse_member:
   #include "json_parse_spaces.c"
 
-  string object_member_name = { 0 };
+  str object_member_name = { 0 };
   #define result object_member_name
   #include "json_parse_string.c"
+  #undef result
 
   json_parse_object_member_name;
   if (unlikely(failure.occurred))
@@ -27,12 +28,12 @@ parse_member:
 
   #include "json_parse_spaces.c"
 
-  if (unlikely(*io_cursor(io) != ':')) {
+  if (unlikely(*json_cursor(source) != ':')) {
     fail("expected colon after object member name");
     return;
   }
 
-  io_advance(io, 1);
+  json_advance(source, 1);
   #include "json_parse_spaces.c"
 
   json_parse_object_member_value;
@@ -41,13 +42,13 @@ parse_member:
 
   #include "json_parse_spaces.c"
 
-  switch(*io_cursor(io)) {
+  switch(*json_cursor(source)) {
   case ',':
-    io_advance(io, 1);
+    json_advance(source, 1);
     goto parse_member;
 
   case '}':
-    io_advance(io, 1);
+    json_advance(source, 1);
     return;
 
   default:

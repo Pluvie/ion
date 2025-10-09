@@ -41,7 +41,7 @@ spec( list_push ) {
       list_push(list, element);
 
       must("fatally fail with a specific message");
-        verify(streq(sim.fatal, "push: stack allocated list is full"));
+        verify(cstreq(sim.fatal, "push: stack allocated list is full"));
 
       success();
     } end();

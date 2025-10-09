@@ -8,7 +8,7 @@ spec( fail ) {
   fail("some error ", f(error_number), ", reutilizing ", previous_message);
 
   must("set the failure message using the formatted input");
-    verify(streq(failure.message, "some error 42, reutilizing previous message"));
+    verify(cstreq(failure.message, "some error 42, reutilizing previous message"));
 
   success();
 }

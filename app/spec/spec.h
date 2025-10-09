@@ -184,7 +184,7 @@ enum classes {
 };
 
 struct squadmate {
-  string name;
+  str name;
   enum classes class;
   unsigned int health;
   unsigned int shields;

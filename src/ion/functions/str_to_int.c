@@ -1,5 +1,5 @@
-int string_to_int (
-    string* source
+int str_to_int (
+    str* source
 )
 {
   int result = 0;

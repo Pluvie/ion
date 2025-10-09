@@ -67,7 +67,7 @@
   has fixed length and capacity, and no allocator.
 */
 #define map(K, V, ...) \
-  map_function((K) { 0 }, (V) { 0 }, literal)( \
+  map_function((map<K, V>) { 0 }, literal)( \
     countof((struct { K k; V v; } []) __VA_ARGS__), \
     (K [countof((struct { K k; V v; } []) __VA_ARGS__)]) { 0 }, \
     (V [countof((struct { K k; V v; } []) __VA_ARGS__)]) { 0 }, \
@@ -79,46 +79,45 @@
   to its defined capacity.
 */
 #define map_init(K, V, c) \
-  map_function((K) { 0 }, (V) { 0 }, init)( \
+  map_function((map<K, V>) { 0 }, init)( \
     c, (K [c]) { 0 }, (V [c]) { 0 }, (unsigned int [c]) { 0 })
 
 /*
   Allocate a map. This map can be modified an may grow indefinitely.
 */
 #define map_alloc(K, V, c, a) \
-  map_function((K) { 0 }, (V) { 0 }, alloc)(c, a)
+  map_function((map<K, V>) { 0 }, alloc)(c, a)
 
 /*
   Get the value of a key in the map.
 */
 #define map_get(m, k) \
-  map_function(*((m)->keys.data), *((m)->values), get)(m, k)
+  map_function(*(m), get)(m, k)
 
 /*
   Set a key / value pair in the map.
 */
 #define map_set(m, k, v) \
-  map_function(*((m)->keys.data), *((m)->values), set)(m, k, v)
+  map_function(*(m), set)(m, k, v)
 
 /*
   Remove a key and its associated value from the map.
 */
 #define map_del(m, k) \
-  map_function(*((m)->keys.data), *((m)->values), del)(m, k)
+  map_function(*(m), del)(m, k)
 
 /*
   Determine whether an key is in the map.
 */
 #define map_has(m, k) \
-  map_function(*((m)->keys.data), *((m)->values), has)(m, k)
+  map_function(*(m), has)(m, k)
 
 /*
   Loops over the key / value pairs of the map, with optional index name.
 */
 #define map_each(m, k, v, ...)                                                          \
   (struct iterator iter = { 0 };                                                        \
-    map_function(*((m)->keys.data), *((m)->values), each)(m, &iter);                    \
-    iter.position++, iter.index++)                                                      \
+    map_function(*(m), each)(m, &iter); iter.position++, iter.index++)                  \
   for (k = (m)->keys.data + iter.position; iter.gate & (1<<0); iter.gate &= ~(1<<0))    \
   for (v = (m)->values + iter.position; iter.gate & (1<<1); iter.gate &= ~(1<<1))       \
   __VA_OPT__(                                                                           \

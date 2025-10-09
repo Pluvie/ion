@@ -54,7 +54,7 @@
     int           : print_arg(&value, print_int),           \
     unsigned int  : print_arg(&value, print_int_unsigned),  \
     dec           : print_arg(&value, print_dec),           \
-    string        : print_arg(&value, print_string),        \
+    str           : print_arg(&value, print_str),           \
     char*         : print_arg(&value, print_char_pointer),  \
     void*         : print_arg(&value, print_void_pointer),  \
     print_custom(value)                                     \

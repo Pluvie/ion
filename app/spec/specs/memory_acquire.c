@@ -8,7 +8,7 @@ spec( memory_acquire ) {
     memory_acquire(amount);
 
     must("fatally fail with a specific message");
-      verify(streq(sim.fatal, "memory_acquire: amount must not be zero"));
+      verify(cstreq(sim.fatal, "memory_acquire: amount must not be zero"));
 
     success();
   } end();
@@ -21,7 +21,7 @@ spec( memory_acquire ) {
       memory_acquire(amount);
 
       must("fatally fail with a specific message");
-        verify(streq(sim.fatal, "memory_acquire: not enough memory"));
+        verify(cstreq(sim.fatal, "memory_acquire: not enough memory"));
 
       success();
     } end();

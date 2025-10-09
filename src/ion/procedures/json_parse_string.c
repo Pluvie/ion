@@ -1,28 +1,28 @@
 
-  if (unlikely(*io_cursor(io) != '"')) {
+  if (unlikely(*json_cursor(source) != '"')) {
     fail("expected a string");
     return;
   }
 
   /* Removes the quote " at the beginning. */
-  result.chars = io_cursor(io) + 1;
+  result.chars = json_cursor(source) + 1;
 
   do {
-    io_advance(io, 1);
+    json_advance(source, 1);
 
-    if (*io_cursor(io) == 92) {
-      io_advance(io, 2);
+    if (*json_cursor(source) == 92) {
+      json_advance(source, 2);
       continue;
     }
 
-    if (unlikely(*io_cursor(io) <= 31)) {
+    if (unlikely(*json_cursor(source) <= 31)) {
       /* ASCII control characters are not allowed in JSON strings. */
       fail("invalid characters in string");
       return;
     }
 
-  } while(*io_cursor(io) != '"');
+  } while(*json_cursor(source) != '"');
 
-  io_advance(io, 1);
+  json_advance(source, 1);
   /* Removes the quote " at the end. */
-  result.length = (io_cursor(io) - result.chars) - 1;
+  result.length = (json_cursor(source) - result.chars) - 1;

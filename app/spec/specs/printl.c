@@ -18,7 +18,7 @@ spec( printl ) {
     char output[1024] = { 0 };
     fseek(tmp, 0L, SEEK_SET);
     fread(output, sizeof(output), 1, tmp);
-    verify(streq(output, "trueyff-8888-77.700000\"abc\"(nil)\n"));
+    verify(cstreq(output, "trueyff-8888-77.700000\"abc\"(nil)\n"));
 
   success();
     fclose(tmp);

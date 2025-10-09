@@ -1,16 +1,16 @@
 
-  if (unlikely(*io_cursor(io) != '[')) {
+  if (unlikely(*json_cursor(source) != '[')) {
     fail("expected array begin");
     return;
   }
 
-  io_advance(io, 1);
+  json_advance(source, 1);
 
   json_parse_array_init;
   #include "json_parse_spaces.c"
 
-  if (*io_cursor(io) == ']') {
-    io_advance(io, 1);
+  if (*json_cursor(source) == ']') {
+    json_advance(source, 1);
     return;
   }
 
@@ -23,13 +23,13 @@ parse_member:
 
   #include "json_parse_spaces.c"
 
-  switch(*io_cursor(io)) {
+  switch(*json_cursor(source)) {
   case ',':
-    io_advance(io, 1);
+    json_advance(source, 1);
     goto parse_member;
 
   case ']':
-    io_advance(io, 1);
+    json_advance(source, 1);
     return;
 
   default:

@@ -1,5 +1,5 @@
 /*
-  Helper to create a `string` type from double quoted literal.
+  Helper to create a `str` type from double quoted literal.
 */
-#define string(str) \
-  (string) { str, sizeof(str) - 1 }
+#define string(literal) \
+  (str) { literal, sizeof(literal) - 1 }

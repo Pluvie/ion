@@ -1,6 +1,6 @@
-bool string_equal (
-    string v,
-    string u
+bool str_equal (
+    str v,
+    str u
 )
 {
   if (v.chars == nullptr && u.chars == nullptr)

@@ -1,5 +1,5 @@
 
-  switch(*io_cursor(io)) {
+  switch(*json_cursor(source)) {
   case '{':
     json_parse_object;
     break;
@@ -21,30 +21,31 @@
   case '5':
   case '6':
   case '7':
+  case '8':
   case '9':
     json_parse_number;
     break;
 
   default:
-    if (io_contains(io, "null", 4)) {
+    if (json_contains(source, "null", 4)) {
       json_parse_null;
-      io_advance(io, 4);
+      json_advance(source, 4);
       break;
     }
 
-    if (io_contains(io, "true", 4)) {
+    if (json_contains(source, "true", 4)) {
       json_parse_true;
-      io_advance(io, 4);
+      json_advance(source, 4);
       break;
     }
 
-    if (io_contains(io, "false", 5)) {
+    if (json_contains(source, "false", 5)) {
       json_parse_false;
-      io_advance(io, 5);
+      json_advance(source, 5);
       break;
     }
 
-    if (io_exhausted(io))
+    if (json_exhausted(source))
       fail("unexpected end of io");
     else
       fail("unrecognized token");

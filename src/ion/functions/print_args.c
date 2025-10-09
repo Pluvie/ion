@@ -56,7 +56,7 @@ int print_int_unsigned (void* output, int length, unsigned int* value) {
 int print_dec (void* output, int length, dec* value) {
   return print_dispatch(output, length, "%f", *value);
 }
-int print_string (void* output, int length, string* value) {
+int print_str (void* output, int length, str* value) {
   return print_dispatch(output, length, "\"%.*s\"", (int0) value->length, value->chars);
 }
 int print_char_pointer (void* output, int length, char** value) {
