@@ -12,13 +12,13 @@ fi
 # Ion
 if [ $# -eq 0 ] || [[ $1 == "ion" ]]; then
   cd ../..
-  mkdir -p tmp
-  gcc prf/json/src/ion/ion.c -I ./src -Wall -Werror -E  |   \
-  python3 bin/ion.py > tmp/ion.c                            &&
-  gcc tmp/ion.c -I ./src -Wall -Werror                      \
-    -O3 -march=native                                       \
+  gcc prf/json/src/ion/ion.c    \
+    -no-integrated-cpp -B ./bin \
+    -std=c11 -Wall -Werror      \
+    -D PLATFORM=LINUX           \
+    -I ./src                    \
+    -O3 -march=native           \
     -o prf/json/exe/ion
-  rm tmp/ion.c
   cd -
 fi
 

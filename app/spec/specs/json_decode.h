@@ -46,3 +46,36 @@ static struct reflection example_reflection =
     field(struct example, ARRAY, matrix, of(reflect(dec, DEC))),
   )
 );
+
+
+
+struct coordinate {
+  dec x;
+  dec y;
+  dec z;
+};
+
+#define list_of struct coordinate
+#include <ion/containers/list.h>
+
+#define list_of struct coordinate
+#include <ion/containers/list.c>
+
+static struct coordinates_data {
+  list<struct coordinate> coordinates;
+} coordinates_data;
+
+struct reflection coordinate_reflection =
+  reflect(struct coordinate, STRUCT, fields(
+    field(struct coordinate, DEC, x),
+    field(struct coordinate, DEC, y),
+    field(struct coordinate, DEC, z),
+  )
+);
+
+struct reflection coordinates_data_reflection =
+  reflect(struct coordinates_data, STRUCT, fields(
+    field(struct coordinates_data, LIST, coordinates,
+      of(coordinate_reflection), container(list, struct coordinate)),
+  )
+);

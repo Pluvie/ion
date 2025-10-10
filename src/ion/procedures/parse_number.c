@@ -188,13 +188,35 @@ parse_success:
   /* Overflow checks. */
   if (unlikely(number_length >= INT_MAXCHARS)) {
     if (number_length > INT_MAXCHARS) {
-      /* If the number length is greater than the maximum chars that can be contained in
-        an integer, then we have an overflow for sure. For example, on 32-bit systems,
-        the maximum number of chars in an integer is 10: the highest integer is infact
-        2147483647 (2^32 - 1), which is 10 characters long. So if we end up having 11 or
-        more chars we have overflowed. */
-      fail("number overflow");
-      goto procedure_failure;
+      /* If the number length is greater than the maximum chars that can be contained
+        in an integer, and we have only an integral part, then we have an overflow for
+        sure. For example, on 32-bit systems, the maximum number of chars in an integer
+        is 10: the highest integer is infact 2147483647 (2^32 - 1), which is 10
+        characters long. So if we end up having 11 or more chars we have overflowed. */
+      if (decimal_length == 0) {
+        fail("number overflow");
+        goto procedure_failure;
+      }
+
+      /* If we have a decimal part, and the integral part is '0', we can parse as
+        many extra digits as we have leading zeroes in the decimal part. For example,
+        in a 64-bit system, the number 0.00000789789789789789 has 21 digits, which are
+        more than the INT_MAXCHARS (19 in 64-bit) but it won't overflow because all the
+        zero multiplications do not increas the number value until finding the first
+        non-zero digit. */
+      if (decimal_length > 0 && *integral_start == '0') {
+        int decimal_leading_zeros = 0;
+        for (int i = 0; i < decimal_length; i++) {
+          if (*(decimal_start + i) != '0')
+            break;
+          decimal_leading_zeros++;
+        }
+
+        if (number_length - decimal_leading_zeros - 1 > INT_MAXCHARS) {
+          fail("number overflow");
+          goto procedure_failure;
+        }
+      }
     }
 
     /* If the number length is equal than the maximum chars of an integer, we have an
@@ -208,8 +230,7 @@ parse_success:
 
       We then compare the integral part and the decimal part (if present) char by char
       with the INT_MAXNUM constant, and if the comparison shows that at least one char
-      is greater than the corresponding char in INT_MAXNUM, then we have an overflow.
-    */
+      is greater than the corresponding char in INT_MAXNUM, then we have an overflow. */
     char* integral_maxnum = INT_MAXNUM;
     if (memory_compare(integral_start, integral_maxnum, integral_length) > 0) {
       fail("number overflow");

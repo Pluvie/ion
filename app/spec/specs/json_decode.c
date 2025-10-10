@@ -6,15 +6,11 @@ spec( json_decode ) {
   argument(struct reflection* reflection);
   argument(struct allocator* allocator);
 
-  precondition("a valid reflection");
-  precondition("a valid target for that reflection");
   precondition("a valid allocator");
   #define preconditions \
-    reflection = &example_reflection; \
-    target = &example; \
     allocator = spec_allocator;
 
-  when("the io contains a valid JSON") {
+  when("the JSON is valid and all fields are reflected") {
     source = &string(
       "{"                                     "\n"
       "  \"integer\": 12345,"                 "\n"
@@ -55,6 +51,8 @@ spec( json_decode ) {
       "}"
     );
     apply(preconditions);
+    reflection = &example_reflection;
+    target = &example;
 
     json_decode(source, target, reflection, allocator);
 
@@ -106,4 +104,58 @@ spec( json_decode ) {
 
     success();
   } end();
+
+  when("the JSON is valid and there are unreflected fields") {
+    source = &string(
+      "{"                                       "\n"
+      "  \"coordinates\": ["                    "\n"
+      "    {"                                   "\n"
+      "      \"x\": -3.78811961027628e-30,"     "\n"
+      "      \"y\": 5.0777519828370644e+29,"    "\n"
+      "      \"z\": 0.3911777618872192,"        "\n"
+      "      \"name\": \"wrilcf 4052\","        "\n"
+      "      \"opts\": {"                       "\n"
+      "        \"1\": ["                        "\n"
+      "          1,"                            "\n"
+      "          true"                          "\n"
+      "        ]"                               "\n"
+      "      }"                                 "\n"
+      "    },"                                  "\n"
+      "    {"                                   "\n"
+      "      \"x\": -3.8364965301388495e-30,"   "\n"
+      "      \"y\": 4.6040112540920864e+30,"    "\n"
+      "      \"z\": 0.41726476470994134,"       "\n"
+      "      \"name\": \"xgjvnu 1782\","        "\n"
+      "      \"opts\": {"                       "\n"
+      "        \"1\": ["                        "\n"
+      "          1,"                            "\n"
+      "          true"                          "\n"
+      "        ]"                               "\n"
+      "      }"                                 "\n"
+      "    },"                                  "\n"
+      "    {"                                   "\n"
+      "      \"x\": -8.960830174173817e-31,"    "\n"
+      "      \"y\": 3.204940355350686e+30,"     "\n"
+      "      \"z\": 0.36483814414317295,"       "\n"
+      "      \"name\": \"xsqzng 5051\","        "\n"
+      "      \"opts\": {"                       "\n"
+      "        \"1\": ["                        "\n"
+      "          1,"                            "\n"
+      "          true"                          "\n"
+      "        ]"                               "\n"
+      "      }"                                 "\n"
+      "    }"                                   "\n"
+      "  ],"                                    "\n"
+      "  \"info\": \"some info\""               "\n"
+      "}"
+    );
+    apply(preconditions);
+    target = &coordinates_data;
+    reflection = &coordinates_data_reflection;
+
+    json_decode(source, target, reflection, allocator);
+
+    must("correctly decode the JSON to the target struct");
+      verify(failure.occurred == false);
+  }
 }

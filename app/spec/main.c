@@ -8,6 +8,8 @@ spec( allocator_pop );
 spec( allocator_push );
 spec( allocator_release );
 spec( allocator_reset );
+spec( fail );
+spec( fatal );
 spec( json_decode );
 spec( list );
 spec( list_alloc );
@@ -15,13 +17,11 @@ spec( list_at );
 spec( list_del );
 spec( list_each );
 spec( list_init );
-spec( list_pop );
 spec( list_init );
+spec( list_pop );
+spec( list_push );
 spec( list_reflection_adder );
 spec( list_reflection_creator );
-spec( list_push );
-spec( fail );
-spec( fatal );
 spec( map );
 spec( map_alloc );
 spec( map_del );
@@ -43,15 +43,15 @@ spec( prints );
 spec( reflection );
 spec( set );
 spec( set_add );
+spec( set_alloc );
 spec( set_del );
 spec( set_each );
-spec( set_alloc );
 spec( set_init );
 spec( set_pos );
 spec( set_reflection_adder );
 spec( set_reflection_creator );
-spec( str_to_int );
 spec( str_to_dec );
+spec( str_to_int );
 
 int0 main (
     int0 argc,
@@ -63,6 +63,8 @@ int0 main (
   spec_add( allocator_push );
   spec_add( allocator_release );
   spec_add( allocator_reset );
+  spec_add( fail );
+  spec_add( fatal );
   spec_add( json_decode );
   spec_add( list );
   spec_add( list_alloc );
@@ -70,13 +72,11 @@ int0 main (
   spec_add( list_del );
   spec_add( list_each );
   spec_add( list_init );
-  spec_add( list_pop );
   spec_add( list_init );
+  spec_add( list_pop );
+  spec_add( list_push );
   spec_add( list_reflection_adder );
   spec_add( list_reflection_creator );
-  spec_add( list_push );
-  spec_add( fail );
-  spec_add( fatal );
   spec_add( map );
   spec_add( map_alloc );
   spec_add( map_del );
@@ -98,15 +98,15 @@ int0 main (
   spec_add( reflection );
   spec_add( set );
   spec_add( set_add );
+  spec_add( set_alloc );
   spec_add( set_del );
   spec_add( set_each );
-  spec_add( set_alloc );
   spec_add( set_init );
   spec_add( set_pos );
   spec_add( set_reflection_adder );
   spec_add( set_reflection_creator );
-  spec_add( str_to_int );
   spec_add( str_to_dec );
+  spec_add( str_to_int );
 
   specs_run();
 
