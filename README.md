@@ -82,9 +82,10 @@ language.
 
 To give an example, a single add statement in Python, translates into roughly 100 CPU
 instructions. In C, in translates to 1. Yes, just one! This is confirmed by our
-benchmarks on parsing a ~100 MB JSON file. C takes about 170ms, where Python around 13
-seconds. That's a 94x time improvement! Imagine that on your phone: a 94x improvement
-means that your battery will last from a mere day to.. *more than 3 months!*.
+[benchmarks](prf/json/benchmark.png) on parsing a ~100 MB JSON file. C takes about
+170ms, where Python around 13 seconds. That's a 94x time improvement! Imagine that on
+your phone: a 94x improvement means that your battery will last from a mere day to..
+*more than 3 months!*.
 
 This is why ⚡️ION⚡️ is born. We want to empower people to write efficient software by
 democratizing C. We want to uplift program execution speed and quality. This is our
