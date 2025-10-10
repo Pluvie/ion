@@ -5,28 +5,30 @@
   }
 
   json_advance(source, 1);
+  goto init_callback;
 
-  json_parse_object_init;
-  #include "json_parse_spaces.c"
+init_resume:
+  json_parse_spaces(source);
 
   if (*json_cursor(source) == '}') {
     json_advance(source, 1);
     return;
   }
 
-parse_member:
-  #include "json_parse_spaces.c"
+next_member:
+  json_parse_spaces(source);
 
   str object_member_name = { 0 };
   #define result object_member_name
   #include "json_parse_string.c"
   #undef result
+  goto member_key_callback;
 
-  json_parse_object_member_name;
+member_key_resume:
   if (unlikely(failure.occurred))
     return;
 
-  #include "json_parse_spaces.c"
+  json_parse_spaces(source);
 
   if (unlikely(*json_cursor(source) != ':')) {
     fail("expected colon after object member name");
@@ -34,18 +36,19 @@ parse_member:
   }
 
   json_advance(source, 1);
-  #include "json_parse_spaces.c"
+  json_parse_spaces(source);
+  goto member_value_callback;
 
-  json_parse_object_member_value;
+member_value_resume:
   if (unlikely(failure.occurred))
     return;
 
-  #include "json_parse_spaces.c"
+  json_parse_spaces(source);
 
   switch(*json_cursor(source)) {
   case ',':
     json_advance(source, 1);
-    goto parse_member;
+    goto next_member;
 
   case '}':
     json_advance(source, 1);

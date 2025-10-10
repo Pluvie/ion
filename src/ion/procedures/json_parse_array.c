@@ -5,28 +5,30 @@
   }
 
   json_advance(source, 1);
+  goto init_callback;
 
-  json_parse_array_init;
-  #include "json_parse_spaces.c"
+init_resume:
+  json_parse_spaces(source);
 
   if (*json_cursor(source) == ']') {
     json_advance(source, 1);
     return;
   }
 
-parse_member:
-  #include "json_parse_spaces.c"
+next_member:
+  json_parse_spaces(source);
+  goto member_callback;
 
-  json_parse_array_member;
+member_resume:
   if (unlikely(failure.occurred))
     return;
 
-  #include "json_parse_spaces.c"
+  json_parse_spaces(source);
 
   switch(*json_cursor(source)) {
   case ',':
     json_advance(source, 1);
-    goto parse_member;
+    goto next_member;
 
   case ']':
     json_advance(source, 1);
