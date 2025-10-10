@@ -5,9 +5,12 @@
 
 ## Introduction
 
-⚡️ION⚡️ is a C substratum that aims to provide many useful features through *syntax
-elegance* and *semantic cohesion*. It is designed to be a single library to be included
-directly in your source code.
+⚡️ION⚡️ is a C library that aims to provide many useful features through *syntax
+elegance* and *semantic cohesion*.
+
+It is designed to be a single header to be included directly in your source code. Due
+to its innovative approach, its main audience are brand new projects or complete
+refactors.
 
 ## Features
 
@@ -26,155 +29,72 @@ and many other minor improvements like:
   - normalize [io operations](#io) on files, sockets, and memory objects.
   - [standardize data types](#types): integers, decimals, strings, etc.
 
-## Compatibility
-
-⚡️ION⚡️ minimum standard requirement is C99, but newer standards are supported as well.
-We suggest targeting for C11 or higher standard, mainly because this enables a more
-convenient way to use data structures through the use of the `_Generic` construct.
-
-C89 standard (or ANSI C) is not supported. Even though
-[Eskil Steenberg](https://www.quelsolaar.com/about/index.html) -- who I personally
-admire and hold in high esteem -- is correctly advising C89 as the most dependable
-language, he is still using a subset of C99 due to important funcionalities like
-`snprintf` which are not part of ANSI C.
+See [here for a full documentation](docs/README.md) of ⚡️ION⚡️ features and APIs.
 
 ## Motivation
 
-C is [old](https://dl.acm.org/doi/10.1145/155360.155580). Probably older than most of
-us reading this text. It has resisted the trial of time, and still runs under the vast
-majority of our machines.
+At the time of writing this (2025) the planet we are living on is facing some serious
+challenges.
 
-And rightfully so. Its concept and design are pristine and simple. Its speed, unmatched.
-⚡️ION⚡️ wants to capitalize upon this heritage, by giving tools that can can extend its
-usage in the current programming landscape.
+> Demand for energy is growing across many countries in the world, as people get richer
+> and populations increase.
+>
+> If this increased demand is not offset by **improvements in energy efficiency
+> elsewhere**, then our global energy consumption will continue to grow year-on-year.
+> Growing energy consumption makes the challenge of transitioning our energy systems
+> away from fossil fuels towards low-carbon sources of energy more difficult: new
+> low-carbon energy has to meet this additional demand and try to displace existing
+> fossil fuels in the energy mix.
+>
+> [Energy Production and Consumption](https://ourworldindata.org/energy-production-consumption)
 
-We believe that the status of the modern software ecosystem is bad. Programs are slow
-and expensive. This is, in our opinion, due to two main reasons:
+All this is happening while the very air we have to breathe is getting more and more
+polluted, plastic bottles are replacing fish in our oceans, and more than three billions
+of people still live under the poverty line.
 
-  1. the programming language landscape is all about abstraction and object-oriented
-     approach, but this has [little to do](https://caseymuratori.com/blog_0015) with
-     the real computer world and leads to..
-  2. programmers not becoming aware of how the underlying hardware works and thus
-     are unable to optimize for performance.
+Not a bright picture for our beloved Earth 🌍 isn't it?
 
-We hope to show that achieving code clarity and efficiency is not only still possible,
-but it has been so since the early days. Only by choosing the wrong evolution path did
-we reach this stagnation point. We need to return to our roots and build again from
-there: this is why ⚡️ION⚡️ is born.
+As bad as that sounds, talking about it isn't gonna change anything. The time to act is
+now. But what can a single person, who is a software programmer for a living, can
+do about this?
 
-## Data Structures
+Well, it turns out that researchers are showing that our computers are consuming a
+substantial chunk of all that produced energy, and that is likely to increase even more
+due to the [AI surge](https://davidmytton.blog/how-much-energy-do-data-centers-use/).
 
-A big part of computer science theory revolves around algorithms and data structures.
-They have been extensively used to [solve real-world problems](
-https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg) in the most efficient
-way possible.
+We might not be able to do much about plastic or help reduce the poverty line, but we
+damn well can do something about that energy consumption and all the pollution that
+follows!
 
-However, back in the 1970s, when C was born, computers were not as widespread as they
-are now, and a lot of research had yet to be done. Over the following years, it became
-more and more evident how we could rapidly solve complex computational problems by
-simply implementing the correct -- and mathematically already well-defined -- algorithm
-and/or data structure.
+How? By producing better and more efficient software! Humanity's greatest challenge is
+learing how to live on this planet without burning every resource completely and
+annihilating every other organism and ecosystem. After all, we surely would not want
+to discover that AI is going to give us [the Agent Smith's speech](
+https://www.youtube.com/watch?v=YK7nwbtlQV8) in 50 years from now!
 
-This is why C lags behind in this compartment compared to newer languages. It is not
-the fact that it's not possible to *implement* these things in C -- it is of course
-[Turing Complete](https://en.wikipedia.org/wiki/Turing_completeness) -- but rather the
-fact that it does not expose a syntactical and type-safe way to do so.
+We already poured an enormous amount of energy and economy in developing a tech stack
+around the C language. Instead of reinventing the wheel every time, we should capitalize
+on this heritage and start focusing on the quality and efficiency of our products,
+rather than reinventing new ways to package the exacts same products (plastics, anyone?).
+Whether people realize it or not, C is going to stick with us for the foreseeable future.
+And fortunately, that is a good thing! C, turns out, is an *extremely efficient*
+language.
 
-We posit that all that is required to achieve this is a __symbol inflection__ directly
-[integrated in the preprocessor](bin/ion.py). Using ⚡️ION⚡️, it is possible to do things
-like:
+To give an example, a single add statement in Python, translates into roughly 100 CPU
+instructions. In C, in translates to 1. Yes, just one! This is confirmed by our
+benchmarks on parsing a ~100 MB JSON file. C takes about 170ms, where Python around 13
+seconds. That's a 94x time improvement! Imagine that on your phone: a 94x improvement
+means that your battery will last from a mere day to.. *more than 3 months!*.
 
-```c
-list<char*> fruits = list(char*, { "Apple", "Banana", "Cherry" });
+This is why ⚡️ION⚡️ is born. We want to empower people to write efficient software by
+democratizing C. We want to uplift program execution speed and quality. This is our
+honest take in trying to improve this world a little bit.
 
-list_at(&fruits, 1);  // "Banana"
-list_pop(&fruits);    // Returns an always valid reference to "Cherry"
-list_push(&fruits, "Orange");
-```
+## Contributing
 
-⚡️ION⚡️ data structures work with any type. Suppose a:
+Any contribution is very much welcome, especially regarding testing and code quality.
+We did our best to write a full functional specification of ⚡️ION⚡️ APIs, but we are
+aware that real world use cases are needed to baptize a software as production ready.
 
-```c
-struct rgb {
-  int red;
-  int green;
-  int blue;
-};
-```
-
-It is possible to do:
-
-```c
-map<char*, struct rgb> colors = map(char*, struct rgb, {
-  { "Violet", { 127, 0, 255 } },
-  { "Pink", { 255, 192, 203 } },
-  { "Lime", { 32, 205, 32 } };
-});
-
-map_get(&colors, "Pink");     // { 255, 192, 203 }
-map_has(&colors, "Orange");   // false
-map_set(&colors, "Orange", { 255, 165, 0 });
-map_has(&colors, "Orange");   // true
-```
-
-## Serialization
-
-Converting to and from various data formats has become a very important task that
-programmers must do in order to integrate their software with others. ⚡️ION⚡️ ships
-with ready to use conversion in JSON, CSV, XML and gRPC formats, in order to accomodate
-the most real world scenarios possible.
-
-If the format you need is not one of those, do not worry: the good thing is that,
-through ⚡️ION⚡️ [reflection](#reflection) you can implement it so easily like has never
-seen before in C language.
-
-Let's see a JSON example:
-
-```json
-{
-  "title": "Landline Positions",
-  "names": [ "Alpha", "Bravo", "Charlie" ],
-  "positions": {
-    "Alpha": [ 12.0, 12.0 ],
-    "Bravo": [ -12.0, 8.0 ],
-    "Charlie": [ -8.0, -8.0 ]
-  },
-}
-```
-
-```c
-char* json = ... // See above
-
-struct data {
-  set<string> names;
-  map<string, int[2]> positions;
-  int last_update;
-};
-
-// Here we define the reflection that we want to apply to this struct.
-struct reflection rfx = {
-  type(STRUCT, struct data), fields({
-    // We are not interested in the "title" field, so we just omit it!.
-
-    { field(names, SET, struct data), of({ type(STRING) }) },
-    // The "names" field is a JSON array, but we want a set to ensure that there
-    // are no duplicates.
-
-    { field(positions, MAP, struct data), of({ type(STRING),
-        of({ type(ARRAY, int[2]), of({ type(INT) }) })
-      })
-    },
-    // The "positions" field is a dynamic map with strings and a pair of coordinates.
-    // We could have used the `list<int>` type, but instead we use an array `int[2]`
-    // to clarify that we expect only 2 values.
-
-    { field(last_update, INT, struct data) },
-    // This field is missing in the JSON, but no worries: it shall be initialized to 0.
-  })
-};
-
-json_decode(json, &data, &rfx, allocator);
-print(data.names);        // [ "Alpha", "Bravo", "Charlie" ]
-print(data.positions);    // { "Alpha": [ 12.0, 12.0 ], ... }
-print(data.last_update);  // 0, field was missing.
-```
+The only requirement to contributions is that they must adhere and maintain the existing
+code style, purely for aesthetic purposes.
