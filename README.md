@@ -46,7 +46,8 @@ challenges.
 > low-carbon energy has to meet this additional demand and try to displace existing
 > fossil fuels in the energy mix.
 >
-> [Energy Production and Consumption](https://ourworldindata.org/energy-production-consumption)
+> From [Energy Production and Consumption](
+https://ourworldindata.org/energy-production-consumption) - OurWorldinData.org
 
 All this is happening while the very air we have to breathe is getting more and more
 polluted, plastic bottles are replacing fish in our oceans, and more than three billions
