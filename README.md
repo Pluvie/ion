@@ -67,7 +67,7 @@ damn well can do something about that energy consumption* and all the pollution 
 follows!
 
 How? By producing better and more efficient software! Humanity's greatest challenge is
-learing how to live on this planet without burning every resource completely and
+learning how to live on this planet without burning every resource completely and
 annihilating every other organism and ecosystem. After all, we surely would not want
 to discover that AI is going to give us [the Agent Smith's speech](
 https://www.youtube.com/watch?v=YK7nwbtlQV8) in 50 years from now!
