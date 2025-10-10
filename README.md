@@ -53,17 +53,17 @@ All this is happening while the very air we have to breathe is getting more and 
 polluted, plastic bottles are replacing fish in our oceans, and more than three billions
 of people still live under the poverty line.
 
-Not a bright picture for our beloved Earth 🌍 isn't it?
+**Not a bright picture for our beloved Earth 🌍, isn't it?**
 
 As bad as that sounds, talking about it isn't gonna change anything. The time to act is
 now. But what can a single person, who is a software programmer for a living, can
 do about this? Well, it turns out that researchers are showing that our computers are
-consuming a substantial chunk of all that produced energy, and that is likely to
+consuming a *substantial chunk* of all that produced energy, and that is likely to
 increase even more due to the [AI surge](
 https://davidmytton.blog/how-much-energy-do-data-centers-use/).
 
-We might not be able to do much about plastic or help reduce the poverty line, but we
-damn well can do something about that energy consumption and all the pollution that
+We might not be able to do much about plastic or help reduce the poverty line, but *we
+damn well can do something about that energy consumption* and all the pollution that
 follows!
 
 How? By producing better and more efficient software! Humanity's greatest challenge is
