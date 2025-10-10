@@ -202,7 +202,7 @@ parse_success:
         many extra digits as we have leading zeroes in the decimal part. For example,
         in a 64-bit system, the number 0.00000789789789789789 has 21 digits, which are
         more than the INT_MAXCHARS (19 in 64-bit) but it won't overflow because all the
-        zero multiplications do not increas the number value until finding the first
+        zero multiplications do not increase the number value until finding the first
         non-zero digit. */
       if (decimal_length > 0 && *integral_start == '0') {
         int decimal_leading_zeros = 0;

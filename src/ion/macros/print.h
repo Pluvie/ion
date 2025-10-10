@@ -31,31 +31,18 @@
   )
 
 /*
-  This macro builds a `struct print_arg*` using the provided value and functor.
+  This macro passes the correct print_arg struct depending on the type of `value`.
 */
-#define print_arg(value, functor) \
-  &(struct print_arg) { 0, (int (*)(void*, int, const void*)) functor, value }
-
-/*
-  This macro is used to define custom print types. By default, it points to nothing.
-*/
-#define print_custom(value) \
-  default: nullptr
-
-/*
-  This macro selects the correct print function depending on the type of `value`.
-*/
-#define f(value)                                            \
-  _Generic((value),                                         \
-    bool          : print_arg(&value, print_bool),          \
-    char          : print_arg(&value, print_char),          \
-    unsigned char : print_arg(&value, print_char_unsigned), \
-    int0          : print_arg(&value, print_int0),          \
-    int           : print_arg(&value, print_int),           \
-    unsigned int  : print_arg(&value, print_int_unsigned),  \
-    dec           : print_arg(&value, print_dec),           \
-    str           : print_arg(&value, print_str),           \
-    char*         : print_arg(&value, print_char_pointer),  \
-    void*         : print_arg(&value, print_void_pointer),  \
-    print_custom(value)                                     \
-  )
+#define f(value)                                                  \
+  _Generic(value,                                                 \
+    bool          : &(struct print_arg) { 0, PRINT_ARG__BOOL },   \
+    int0          : &(struct print_arg) { 0, PRINT_ARG__INT0 },   \
+    int           : &(struct print_arg) { 0, PRINT_ARG__INT },    \
+    unsigned int  : &(struct print_arg) { 0, PRINT_ARG__UINT },   \
+    dec           : &(struct print_arg) { 0, PRINT_ARG__DEC },    \
+    str           : &(struct print_arg) { 0, PRINT_ARG__STR },    \
+    char          : &(struct print_arg) { 0, PRINT_ARG__CHAR },   \
+    unsigned char : &(struct print_arg) { 0, PRINT_ARG__UCHAR },  \
+    char*         : &(struct print_arg) { 0, PRINT_ARG__CHAR_P }, \
+    void*         : &(struct print_arg) { 0, PRINT_ARG__VOID_P }  \
+  ), value

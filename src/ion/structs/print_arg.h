@@ -1,5 +1,4 @@
 struct print_arg {
-  const char flag;
-  int (*functor)(void*, int, const void*);
-  const void* value;
+  unsigned char flag;
+  enum print_arg_types type;
 };

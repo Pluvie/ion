@@ -7,19 +7,12 @@ void json_decode (
     struct allocator* allocator
 )
 {
-  printl();
   //char* source_begin = source->chars;
   json_decode_value(source, target, reflection, allocator);
 
-  /*
   if (unlikely(failure.occurred)) {
-    char error[4096] = { 0 };
-    unsigned int position = source->chars - source_begin;
-    memory_copy(error, source_begin, sizeof(error));
-    error[position] = '@';
-    printl(error);
+    /* Expose the error in a nice way. */
   }
-  */
 }
 
 #include "json_decode_internal.c"
