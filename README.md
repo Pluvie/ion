@@ -16,20 +16,23 @@ refactors.
 
 ⚡️ION⚡️ shall provide efficient language constructs to:
 
-  - offer ready to use data structures like [lists](#data-structures),
-    [maps](#data-structures) and [sets](#data-structures) which can hold any type.
-  - [serialize](#serialization) to / from many data formats like JSON, XML, CSV,
+  - offer ready to use data structures like [lists](doc/README.md#data-structures),
+    [maps](doc/README.md#data-structures) and [sets](doc/README.md#data-structures)
+    which are fully type safe and can hold any type.
+  - [serialize](doc/README.md#serialization) to / from many data formats like JSON, XML, CSV,
     etc. and provide an easy way to create your serialization in any other new format.
-  - enable the introspection of any C language struct through [reflection](#reflection).
-  - introduce a [memory management](#memory) approach that can revolutionize
+  - enable the introspection of any C language struct through [reflection](
+    doc/README.md#reflection).
+  - introduce a [memory management](doc/README.md#memory) approach that can revolutionize
     the way C code is written.
 
 and many other minor improvements like:
 
-  - normalize [io operations](#io) on files, sockets, and memory objects.
-  - [standardize data types](#types): integers, decimals, strings, etc.
+  - normalize [io operations](doc/README.md#io) on files, sockets, and memory objects.
+  - [standardize data types](doc/README.md#types): integers, decimals, strings, etc.
 
-See [here for a full documentation](docs/README.md) of ⚡️ION⚡️ features and APIs.
+See [here for a full technical documentation](docs/README.md) of ⚡️ION⚡️ features and
+API.
 
 ## Motivation
 

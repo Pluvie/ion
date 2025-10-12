@@ -2,7 +2,7 @@
 #if standard(>= C23)
 #include <stdbit.h>
 #endif
-#if standard(<= C17)
+#if standard(< C23)
 #include <stdbool.h>
 #endif
 #include <stddef.h>

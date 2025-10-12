@@ -152,3 +152,20 @@ print(data.names);        // [ "Alpha", "Bravo", "Charlie" ]
 print(data.positions);    // { "Alpha": [ 12.0, 12.0 ], ... }
 print(data.last_update);  // 0, field was missing.
 ```
+
+## Spec
+
+- [Spec system](spec.md)
+
+### Things that need more documentation
+
+- A feature of `json_decode_string` which, if the io channel is memory, and it is not
+  buffered, it does not use the allocator to make a copy of the string, but instead
+  points to the io memory area directly.
+
+- More spec cases for `io_error_extract` and `reflection_error_extract`: they should
+  cover many more edge cases.
+
+- `reflection_error_extract`: what if *rfx* is NULL?
+
+- `json_decode` et al, produce more robusts specs, accouting also for parsing failures.

@@ -1,4 +1,6 @@
-#if standard(<= C17)
+#if standard(< C23)
+check_sizeof(1, bool);
+
 #undef true
 #undef false
 
