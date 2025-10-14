@@ -29,6 +29,8 @@ spec( map_each );
 spec( map_get );
 spec( map_has );
 spec( map_init );
+spec( map_reflection_adder );
+spec( map_reflection_creator );
 spec( map_set );
 spec( memory_acquire );
 spec( memory_acquire_aligned );
@@ -84,6 +86,8 @@ int0 main (
   spec_add( map_get );
   spec_add( map_has );
   spec_add( map_init );
+  spec_add( map_reflection_adder );
+  spec_add( map_reflection_creator );
   spec_add( map_set );
   spec_add( memory_acquire );
   spec_add( memory_acquire_aligned );
