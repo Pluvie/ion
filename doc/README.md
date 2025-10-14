@@ -63,7 +63,7 @@ documentation](data_structures.md).
 ### Types
 
 ⚡️ION⚡️ wants to simplfy and bring some clarity to C primitive types. Long time C
-programmers know that this is a very hard topic, so ⚡️ION⚡️ offers a **very hot** take.
+programmers know that this is a very hard topic, so we offer a **very hot** take.
 The only primitive types available when programming with ⚡️ION⚡️ library are:
 
 ```c
@@ -87,21 +87,21 @@ The reasoning behind this drastic approach are several. Let's talk about the `in
 >
 > [ion.h](../src/ion.h)
 
-Historically, hardware has evolved and changed its CPU register widths (and even the
-amount of bits in a byte!) to account for higher arithmetic capabilities. Therefore,
+Historically, hardware evolution has changed CPU register widths (and even the amount
+of bits in a byte!) to account for higher arithmetic capabilities. Therefore,
 the C language has adapted by first introducing the `long` keyword, and then by
-explicitly defining integer widths with `<stdint.h>` -- `int32_t`, `int64_t` and so on.
-Eventually, the `intmax_t` type was introduced, with the idea of collecting the greatest
-int type like ⚡️ION⚡️ does, but without enforcing the single instruction operation.
+explicitly defining integer widths with like `int32_t`, `int64_t` and so on. Eventually,
+the `intmax_t` type was introduced, with the idea of collecting the greatest int type
+like ⚡️ION⚡️ does, but without enforcing the single instruction operation.
 
 All these changes did not solve the problem, and nowadays we find ourselves in a real
 int-type nightmare, with dozens of types, very little portability, and backwards
-compatibility issues. This has happened in our opinion because the definition of int
+compatibility issues. This has happened in our opinion because the definition of these
 types is coming from inside the language, therefore opening to wrong cases where an
-`int64_t` might not even exist on the target architecture, or worse, type implementation
-changes which [break the ABI](https://thephd.dev/intmax_t-hell-c++-c).
+`int64_t` might not even exist on the target architecture, or worse, when type
+implementation changes [break the ABI](https://thephd.dev/intmax_t-hell-c++-c).
 
-We instead think that the language should be type-width agnostic, and only when
+We instead posit that the language should be type-width agnostic, and only when
 compiling a program for a specific architecture it must fix the width of its type to
 that compilation target. This is done in ⚡️ION⚡️ by introducing the concept of
 [PLATFORM](../src/ion/platform.h). It's not something entirely new, as software has
@@ -109,20 +109,19 @@ always been compiled for various architectures due to their different ISAs (x86,
 arm64, etc.). We just take this step a little further and add the `int` size into the
 mix. This ensures:
 
-  - simplicity: we just have one `int` type and the code adapts when compiled.
-  - portability: for the same reason, the best portable code is code written once and
-    compiled many times for different architectures, without intervention.
-  - efficiency: `int` is operated in a single hardware instruction and therefore is the
-    fastest type for the target architecture.
+  - **simplicity**: we just have one `int` type and the code adapts when compiled.
+  - **portability**: for the same reason, the best portable code is code written once
+    and compiled many times for different architectures, without intervention.
+  - **efficiency**: `int` is operated in a single hardware instruction and therefore is
+    the fastest type for the target architecture.
 
 In summary we think that the solution to hardware changes *must not come from inside
 the language*, but instead must be defined outside. Over time, ⚡️ION⚡️ wants to map
 all relevant platforms as compilation targets, and define its widths and boundaries
-once and for all. When new platforms will come -- think about 128 and 256 bit
-architectures -- we will have to just define their platform header and make no changes
-to the code base. This is much better than the standard C way which would be to
-introduce `int128_t` and `int256_t` types that add more confusion and potentially break
-ABI compatibility on libraries as seen before.
+once and for all. When new platforms will come -- like 128 and 256 bit architectures --
+we will have to just define their platform header and make no changes to the code base.
+This is much better than the other way used until now which would be to introduce
+`int128_t` and `int256_t` types that add more confusion and reduce portability.
 
 #### Pointers and Main
 
@@ -153,8 +152,43 @@ int type is needed.
 ### Memory
 
 C is infamous for its difficulty in managing memory and providing a safe way to program
-against it. While this is true to some extent, it has largely been exaggerated ...
-it is only because of C inherent control that gives to the programmer.
+against it. While this is true to some extent, it has largely been exaggerated. Between
+tools and programming practices, the memory problem *has been effectively solved* in C.
+The only ones who still do not know it are people that are not involved into C
+programming anymore and continue to spread misinformation.
+
+It is of couse still possible to create a memory bug -- buffer overrun, stack overflow,
+heap corruption, double free and the likes of it -- because it simply it is allowed:
+the inherent control that C gives to the programmers exposes them to this possibility.
+
+But the mere existance of a possibility must not scare away people, if the probability
+of its occurence is low or can be lowered, just as you still go outside every day even
+though there is the chance of a meteor landing right on your head. As we said, tools and
+programming practices have significantly reduced the memory bug probability to a value
+close to 0, and you still retain the full control of the C language. To cite [Eskil
+Steenberg](https://www.youtube.com/watch?v=443UNeGrFoM):
+
+> At the beginning, all you want are results.
+> In the end, all you want is control.
+
+So what's the point of having a "safe" language (*cough* Rust *cough*) with an
+**unsafe** keyword? It's like paying a whole year of subscription to the gym and go
+there just once or twice. When you program with a "safe" language you pay this cost
+every single line of code. Safety is not free. It's better to pay for its cost only when
+it's actually needed. With C, tools like Valgrind or ASan can be run against automated
+test suites or during handrolled checks, therefore reducing their cost by a significant
+amount, and leaving the development phase clean and fluent.
+
+Other than that, the best programming practice for avoiding a substantial amount of
+memory related bugs is the use of allocators -- or also called arenas. It is not our
+desire to explain this topic in detail here, since a [lot of information](
+https://www.rfleury.com/p/untangling-lifetimes-the-arena-allocator) can be found on it
+by simply searching online. The core concept behind allocators is that program objects
+are best allocated and deallocated in bulk, rather than micromanaged using the `malloc`
+/`free` interface. Identifying a program lifetime -- such as a web request, a videogame
+frame, a UI screen -- and tying objects to that lifetime not only simplifies the
+program code but also eliminates almost all memory related problems by simply reducing
+the attack surface.
 
 ### Serialization
 

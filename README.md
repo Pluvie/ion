@@ -31,7 +31,7 @@ and many other minor improvements like:
   - normalize [io operations](doc/README.md#io) on files, sockets, and memory objects.
   - [standardize data types](doc/README.md#types): integers, decimals, strings, etc.
 
-See [here for a full technical documentation](docs/README.md) of ⚡️ION⚡️ features and
+See [here for a full technical documentation](doc/README.md) of ⚡️ION⚡️ features and
 API.
 
 ## Motivation
