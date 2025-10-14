@@ -96,7 +96,7 @@ spec( set_add ) {
         set_add(set, element);
 
         must("fatally fail with a specific message");
-          verify(cstreq(sim.fatal, "add: stack allocated set is full"));
+          verify(cstr_equal(sim.fatal, "add: stack allocated set is full"));
 
         success();
       } end();

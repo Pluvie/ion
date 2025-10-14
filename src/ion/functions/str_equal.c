@@ -6,14 +6,11 @@ bool str_equal (
   if (v.chars == nullptr && u.chars == nullptr)
     return true;
 
-  if (v.chars == nullptr && u.chars != nullptr)
-    return false;
-
-  if (v.chars != nullptr && u.chars == nullptr)
+  if (v.chars == nullptr || u.chars == nullptr)
     return false;
 
   if (v.length != u.length)
     return false;
 
-  return memory_equal(v.chars, u.chars, min(v.length, u.length));
+  return memory_equal(v.chars, u.chars, v.length);
 }

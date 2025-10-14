@@ -1,3 +1,3 @@
 bool str_empty (
-    str v
+    str source
 );

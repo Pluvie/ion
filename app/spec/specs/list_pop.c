@@ -35,7 +35,7 @@ spec( list_pop ) {
 
       must("fail with a specific error");
         verify(failure.occurred == true);
-        verify(cstreq(failure.message, "pop: empty list"));
+        verify(cstr_equal(failure.message, "pop: empty list"));
 
       must("return nullptr");
         verify(result == nullptr);
@@ -82,7 +82,7 @@ spec( list_pop ) {
 
       must("fail with a specific error");
         verify(failure.occurred == true);
-        verify(cstreq(failure.message, "pop: empty list"));
+        verify(cstr_equal(failure.message, "pop: empty list"));
 
       must("return nullptr");
         verify(result == nullptr);

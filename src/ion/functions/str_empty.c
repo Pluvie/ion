@@ -1,6 +1,6 @@
 bool str_empty (
-    str v
+    str source
 )
 {
-  return v.chars == nullptr || v.length == 0;
+  return source.chars == nullptr || source.length == 0;
 }

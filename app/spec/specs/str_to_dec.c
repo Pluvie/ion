@@ -113,7 +113,7 @@ spec( str_to_dec ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(cstreq(failure.message, "number overflow"));
+      verify(cstr_equal(failure.message, "number overflow"));
 
     must("return 0");
       verify((dec) 0 == result);
@@ -128,7 +128,7 @@ spec( str_to_dec ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(cstreq(failure.message, "number overflow"));
+      verify(cstr_equal(failure.message, "number overflow"));
 
     must("return 0");
       verify((dec) 0 == result);
@@ -143,7 +143,7 @@ spec( str_to_dec ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(cstreq(failure.message, "exponent overflow"));
+      verify(cstr_equal(failure.message, "exponent overflow"));
 
     must("return 0");
       verify((dec) 0 == result);
@@ -158,7 +158,7 @@ spec( str_to_dec ) {
 
     must("fail with a specific error");
       verify(failure.occurred == true);
-      verify(cstreq(failure.message, "expected a number"));
+      verify(cstr_equal(failure.message, "expected a number"));
 
     must("return 0");
       verify((dec) 0 == result);

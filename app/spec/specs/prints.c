@@ -15,7 +15,7 @@ spec( prints ) {
   );
 
   must("print the arguments on the string according to their format");
-    verify(cstreq(output, "trueyff-8888-77.700000\"abc\"(nil)"));
+    verify(cstr_equal(output, "trueyff-8888-77.700000\"abc\"(nil)"));
 
   success();
 }

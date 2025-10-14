@@ -13,15 +13,15 @@ spec( map_each ) {
       for map_each(&map, char** key, int* value) {
         switch (index) {
         case 0:
-          verify(cstreq(*key, "a"))
+          verify(cstr_equal(*key, "a"))
           verify(*value == 3);
           break;
         case 1:
-          verify(cstreq(*key, "b"))
+          verify(cstr_equal(*key, "b"))
           verify(*value == 4);
           break;
         case 2:
-          verify(cstreq(*key, "c"))
+          verify(cstr_equal(*key, "c"))
           verify(*value == 5);
           break;
         }
@@ -39,15 +39,15 @@ spec( map_each ) {
       for map_each(&map, char** key, int* value, custom_index) {
         switch (index) {
         case 0:
-          verify(cstreq(*key, "a"))
+          verify(cstr_equal(*key, "a"))
           verify(*value == 3);
           break;
         case 1:
-          verify(cstreq(*key, "b"))
+          verify(cstr_equal(*key, "b"))
           verify(*value == 4);
           break;
         case 2:
-          verify(cstreq(*key, "c"))
+          verify(cstr_equal(*key, "c"))
           verify(*value == 5);
         }
 

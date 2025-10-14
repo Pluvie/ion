@@ -27,7 +27,7 @@ static struct {
 */
 #define T       char*
 #define _pos    _pos_specced
-#define set_cmp_function(v, u) cstreq(v, u)
+#define set_cmp_function(v, u) cstr_equal(v, u)
 #define set_hash_function(v) sim.hash_result
 #include <ion/containers/set/functions/set_pos.c>
 

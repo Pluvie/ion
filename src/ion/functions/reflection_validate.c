@@ -6,6 +6,5 @@ void reflection_validate (
   if (reflection->validator == nullptr)
     return;
 
-  if (reflection->validator(target, reflection))
-    return;
+  reflection->validator(target, reflection);
 }

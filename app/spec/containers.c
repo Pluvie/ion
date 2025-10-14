@@ -23,7 +23,7 @@
 #include <ion/containers/set.c>
 
 #define set_of char*
-#define set_cmp_function(v, u) cstreq(v, u)
+#define set_cmp_function(v, u) cstr_equal(v, u)
 #define set_hash_function(v) hash_djb2_cstr(v)
 #include <ion/containers/set.c>
 
@@ -42,12 +42,12 @@
 */
 
 #define map_of char*, int
-#define map_cmp_function(v, u) cstreq(v, u)
+#define map_cmp_function(v, u) cstr_equal(v, u)
 #define map_hash_function(v) hash_djb2_cstr(v)
 #include <ion/containers/map.c>
 
 #define map_of char*, struct squadmate
-#define map_cmp_function(v, u) cstreq(v, u)
+#define map_cmp_function(v, u) cstr_equal(v, u)
 #define map_hash_function(v) hash_djb2_cstr(v)
 #include <ion/containers/map.c>
 

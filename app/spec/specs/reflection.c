@@ -12,14 +12,14 @@ spec( reflection ) {
       must("correctly define the reflection");
         verify(rfx.type == ARRAY);
         verify(str_empty(rfx.name));
-        verify(cstreq(rfx.type_name, "long int[3][3][3]"));
+        verify(cstr_equal(rfx.type_name, "long int[3][3][3]"));
         verify(rfx.size == sizeof(cube));
 
         verify(rfx.element != nullptr);
         struct reflection* element_rfx = rfx.element;
         verify(element_rfx->type == INT);
         verify(str_empty(element_rfx->name));
-        verify(cstreq(element_rfx->type_name, "long int"));
+        verify(cstr_equal(element_rfx->type_name, "long int"));
         verify(element_rfx->size == sizeof(int));
 
       success();
@@ -45,14 +45,14 @@ spec( reflection ) {
       must("correctly define the reflection");
         verify(rfx.type == ARRAY);
         verify(str_empty(rfx.name));
-        verify(cstreq(rfx.type_name, "chess_board"));
+        verify(cstr_equal(rfx.type_name, "chess_board"));
         verify(rfx.size == sizeof(chess_board));
 
         verify(rfx.element != nullptr);
         struct reflection* element_rfx = rfx.element;
         verify(element_rfx->type == STRUCT);
         verify(str_empty(element_rfx->name));
-        verify(cstreq(element_rfx->type_name, "struct chess_square"));
+        verify(cstr_equal(element_rfx->type_name, "struct chess_square"));
         verify(element_rfx->size == sizeof(struct chess_square));
 
         verify(element_rfx->fields != nullptr);
@@ -103,7 +103,7 @@ spec( reflection ) {
       must("correctly define the reflection");
         verify(rfx.type == STRUCT);
         verify(str_empty(rfx.name));
-        verify(cstreq(rfx.type_name, "struct example"));
+        verify(cstr_equal(rfx.type_name, "struct example"));
         verify(rfx.size == sizeof(struct example));
 
         verify(rfx.fields != nullptr);
@@ -127,7 +127,7 @@ spec( reflection ) {
         element_rfx = field_rfx->element;
         verify(element_rfx->type == STRUCT);
         verify(str_empty(element_rfx->name));
-        verify(cstreq(element_rfx->type_name, "typeof(((struct example*) 0)->why)"));
+        verify(cstr_equal(element_rfx->type_name, "typeof(((struct example*) 0)->why)"));
         verify(element_rfx->size == sizeof(o(struct example)->why));
 
         verify(element_rfx->fields != nullptr);
@@ -165,7 +165,7 @@ spec( reflection ) {
       must("correctly define the reflection");
         verify(rfx.type == STRUCT);
         verify(str_empty(rfx.name));
-        verify(cstreq(rfx.type_name, "struct example"));
+        verify(cstr_equal(rfx.type_name, "struct example"));
         verify(rfx.size == sizeof(struct example));
 
         verify(rfx.fields != nullptr);
@@ -228,7 +228,7 @@ spec( reflection ) {
       must("correctly define the reflection");
         verify(rfx.type == STRUCT);
         verify(str_empty(rfx.name));
-        verify(cstreq(rfx.type_name, "struct example"));
+        verify(cstr_equal(rfx.type_name, "struct example"));
         verify(rfx.size == sizeof(struct example));
 
         verify(rfx.fields != nullptr);
@@ -321,7 +321,7 @@ spec( reflection ) {
       must("correctly define the reflection");
         verify(rfx.type == LIST);
         verify(str_empty(rfx.name));
-        verify(cstreq(rfx.type_name, "list_struct_squadmate"));
+        verify(cstr_equal(rfx.type_name, "list_struct_squadmate"));
         verify(rfx.size == sizeof(squad));
         verify(rfx.container.creator == list<struct squadmate>_reflection_creator);
         verify(rfx.container.adder == list<struct squadmate>_reflection_adder);
@@ -330,7 +330,7 @@ spec( reflection ) {
         struct reflection* element_rfx = rfx.element;
         verify(element_rfx->type == STRUCT);
         verify(str_empty(element_rfx->name));
-        verify(cstreq(element_rfx->type_name, "struct squadmate"));
+        verify(cstr_equal(element_rfx->type_name, "struct squadmate"));
         verify(element_rfx->size == sizeof(struct squadmate));
         verify(element_rfx->offset == 0);
 
@@ -395,7 +395,7 @@ spec( reflection ) {
         struct reflection* element_rfx = rfx.element;
         verify(element_rfx->type == STRUCT);
         verify(str_empty(element_rfx->name));
-        verify(cstreq(element_rfx->type_name, "struct squadmate"));
+        verify(cstr_equal(element_rfx->type_name, "struct squadmate"));
         verify(element_rfx->size == sizeof(struct squadmate));
         verify(element_rfx->offset == 0);
         verify(element_rfx->fields != nullptr);

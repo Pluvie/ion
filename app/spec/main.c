@@ -10,6 +10,8 @@ spec( allocator_release );
 spec( allocator_reset );
 spec( bit_count_leading_ones );
 spec( bit_count_leading_zeros );
+spec( cstr_compare );
+spec( cstr_equal );
 spec( hash_djb2 );
 spec( hash_djb2_cstr );
 spec( fail );
@@ -47,6 +49,8 @@ spec( print );
 spec( printl );
 spec( prints );
 spec( reflection );
+spec( reflection_field_find );
+spec( reflection_validate );
 spec( set );
 spec( set_add );
 spec( set_alloc );
@@ -56,6 +60,8 @@ spec( set_init );
 spec( set_pos );
 spec( set_reflection_adder );
 spec( set_reflection_creator );
+spec( str_empty );
+spec( str_equal );
 spec( str_to_dec );
 spec( str_to_int );
 
@@ -71,6 +77,8 @@ int0 main (
   spec_add( allocator_reset );
   spec_add( bit_count_leading_ones );
   spec_add( bit_count_leading_zeros );
+  spec_add( cstr_compare );
+  spec_add( cstr_equal );
   spec_add( hash_djb2 );
   spec_add( hash_djb2_cstr );
   spec_add( fail );
@@ -108,6 +116,8 @@ int0 main (
   spec_add( printl );
   spec_add( prints );
   spec_add( reflection );
+  spec_add( reflection_field_find );
+  spec_add( reflection_validate );
   spec_add( set );
   spec_add( set_add );
   spec_add( set_alloc );
@@ -117,6 +127,8 @@ int0 main (
   spec_add( set_pos );
   spec_add( set_reflection_adder );
   spec_add( set_reflection_creator );
+  spec_add( str_empty );
+  spec_add( str_equal );
   spec_add( str_to_dec );
   spec_add( str_to_int );
 

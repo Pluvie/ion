@@ -5,6 +5,8 @@
 #include "functions/allocator_reset.h"
 #include "functions/bit_count_leading_ones.h"
 #include "functions/bit_count_leading_zeros.h"
+#include "functions/cstr_compare.h"
+#include "functions/cstr_equal.h"
 #include "functions/hash_djb2.h"
 #include "functions/hash_djb2_cstr.h"
 #include "functions/json_decode.h"

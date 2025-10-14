@@ -17,7 +17,7 @@ struct reflection {
     struct reflection* fields;
     struct reflection* element;
   };
-  bool (*validator)(void*, struct reflection*);
+  void (*validator)(void*, struct reflection*);
   int (*enumerator)(str);
   struct {
     void (*creator)(void*, unsigned int, struct allocator*);
