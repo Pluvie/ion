@@ -1,9 +1,9 @@
-/**
- *
- *     ⚡️ION⚡️
- *  Super C harge!
- *
- */
+/*
+
+     ⚡️ION⚡️
+  Super C harge!
+
+*/
 
 #include "ion/standard.h"
 #include "ion/platform.h"

@@ -16,7 +16,6 @@ spec( hash_djb2 );
 spec( hash_djb2_cstr );
 spec( fail );
 spec( fatal );
-spec( json_decode );
 spec( list );
 spec( list_alloc );
 spec( list_at );
@@ -83,7 +82,6 @@ int0 main (
   spec_add( hash_djb2_cstr );
   spec_add( fail );
   spec_add( fatal );
-  spec_add( json_decode );
   spec_add( list );
   spec_add( list_alloc );
   spec_add( list_at );

@@ -58,7 +58,6 @@ elif [[ $1 == "cli" ]]; then
       -no-integrated-cpp -B ./bin \
       $DEFAULT_FLAGS              \
       -D PLATFORM=$PLATFORM       \
-      -D ION_SHARED_LIB           \
       -I ./src                    \
       -O3 -o exe/cli
 
@@ -78,8 +77,8 @@ elif [[ $1 == "lib" ]]; then
 
   gcc $ION/ion.c            \
     $DEFAULT_FLAGS          \
-    -D ION_LIB              \
     -D PLATFORM=$PLATFORM   \
+    -D ION_SHARED_LIB       \
     -o exe/libion.so        \
     -O3 -march=native       \
     -shared -fPIC

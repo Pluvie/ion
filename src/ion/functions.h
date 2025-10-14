@@ -9,7 +9,6 @@
 #include "functions/cstr_equal.h"
 #include "functions/hash_djb2.h"
 #include "functions/hash_djb2_cstr.h"
-#include "functions/json_decode.h"
 #include "functions/memory_acquire.h"
 #include "functions/memory_acquire_aligned.h"
 #include "functions/memory_compare.h"

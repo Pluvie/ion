@@ -9,7 +9,6 @@
 #include "functions/cstr_equal.c"
 #include "functions/hash_djb2.c"
 #include "functions/hash_djb2_cstr.c"
-#include "functions/json_decode.c"
 #include "functions/memory_acquire.c"
 #include "functions/memory_acquire_aligned.c"
 #include "functions/memory_compare.c"
