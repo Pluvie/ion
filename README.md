@@ -5,8 +5,8 @@
 
 ## Introduction
 
-⚡️ION⚡️ is a C library that aims to provide many useful features through *syntax
-elegance* and *semantic cohesion*.
+⚡️ION⚡️ is a library that aims to uplift and strenghten the C programming language.
+Hence the name *Super C harge*.
 
 It is designed to be a single header to be included directly in your source code. Due
 to its innovative approach, its main audience are brand new projects or complete
@@ -16,23 +16,15 @@ refactors.
 
 ⚡️ION⚡️ shall provide efficient language constructs to:
 
-  - offer ready to use data structures like [lists](doc/README.md#data-structures),
-    [maps](doc/README.md#data-structures) and [sets](doc/README.md#data-structures)
-    which are fully type safe and can hold any type.
-  - [serialize](doc/README.md#serialization) to / from many data formats like JSON, XML, CSV,
-    etc. and provide an easy way to create your serialization in any other new format.
-  - enable the introspection of any C language struct through [reflection](
-    doc/README.md#reflection).
-  - introduce a [memory management](doc/README.md#memory) approach that can revolutionize
-    the way C code is written.
-
-and many other minor improvements like:
-
-  - normalize [io operations](doc/README.md#io) on files, sockets, and memory objects.
+  - offer fully type safe [data structures](doc/README.md#data-structures) like lists,
+    maps and sets, which can hold any type.
+  - enable the [reflection](doc/README.md#reflection) of any C program object.
+  - introduce a [memory management](doc/README.md#memory) approach that can
+    revolutionize the way C code is written.
   - [standardize data types](doc/README.md#types): integers, decimals, strings, etc.
 
-See [here for a full technical documentation](doc/README.md) of ⚡️ION⚡️ features and
-API.
+See [here for a technical overview](doc/README.md) of ⚡️ION⚡️ features and [here for a
+full list](doc/API.md) of ⚡️ION⚡️ APIs.
 
 ## Motivation
 

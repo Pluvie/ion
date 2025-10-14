@@ -10,11 +10,9 @@ Landing page for all documented ⚡️ION⚡️ features and API.
 ## Features
 
 - Type safe an fully qualified [Data Structures](#data-structures).
-- Standardized primitive [Types](#types).
+- [Reflection](#reflection) of any C program object.
 - [Memory](#memory) management.
-- Data formats [Serialization](#serialization).
-- [Reflection](#reflection) of any C code object.
-- Normalized [IO](#io) through files, sockets, pipes, etc.
+- Standardized primitive [Types](#types).
 
 ### Data Structures
 
@@ -59,6 +57,52 @@ type to any of the API the code won't compile.
 
 To get started and know more about ⚡️ION⚡️ data structures refer to the [relative
 documentation](data_structures.md).
+
+### Reflection
+
+TODO
+
+### Memory
+
+C is infamous for its difficulty in managing memory and providing a safe way to program
+against it. While this is true to some extent, it has largely been exaggerated. Between
+tools and programming practices, the memory problem *has been effectively solved* in C.
+The only ones who still do not know it are people that are not involved into C
+programming anymore and continue to spread misinformation.
+
+It is of couse still possible to create a memory bug -- buffer overrun, stack overflow,
+heap corruption, double free and the likes of it -- because it simply **is** allowed:
+the inherent control that C gives to the programmers exposes them to this possibility.
+
+But the mere existance of a possibility must not scare people away -- if the probability
+of its occurence is low or can be lowered -- just as you still go outside every day even
+though there is the chance of a meteor landing right on your head. As we said, tools and
+programming practices have significantly reduced the memory bug probability to a value
+close to 0, and you still retain the full control of the C language. To cite [Eskil
+Steenberg](https://www.youtube.com/watch?v=443UNeGrFoM):
+
+> At the beginning, all you want are results.
+>
+> In the end, all you want is control.
+
+So what's the point of having a "safe" language (*cough* Rust *cough*) with an
+**unsafe** keyword? It's like paying a whole year of subscription to the gym and go
+there just once or twice. When you program with a "safe" language you pay this cost
+every single line of code. Safety is not free. It's better to pay for its cost only when
+it's actually needed. With C, tools like Valgrind or ASan can be run against automated
+test suites or during handrolled checks, therefore reducing their cost by a significant
+amount, and leaving the development phase clean and fluent.
+
+Other than that, the best programming practice for avoiding a substantial amount of
+memory related bugs is the use of allocators -- or also called arenas. It is not our
+desire to explain this topic in detail here, since a [lot of information](
+https://www.rfleury.com/p/untangling-lifetimes-the-arena-allocator) can be found on it
+by simply searching online. The core concept behind allocators is that program objects
+are best allocated and deallocated in bulk, rather than micromanaged using the `malloc`
+/`free` interface. Identifying a program lifetime -- such as a web request, a videogame
+frame, a UI screen -- and tying objects to that lifetime not only simplifies the
+program code but also eliminates almost all memory related problems by simply reducing
+the attack surface.
 
 ### Types
 
@@ -149,53 +193,3 @@ two types coincide (for example, 32-bit Windows). Therefore, ⚡️ION⚡️ exp
 type, which translates directly to the native `int` type, and is then usable as return
 type for the `main` function and all other cases where interoperability with the native
 int type is needed.
-
-### Memory
-
-C is infamous for its difficulty in managing memory and providing a safe way to program
-against it. While this is true to some extent, it has largely been exaggerated. Between
-tools and programming practices, the memory problem *has been effectively solved* in C.
-The only ones who still do not know it are people that are not involved into C
-programming anymore and continue to spread misinformation.
-
-It is of couse still possible to create a memory bug -- buffer overrun, stack overflow,
-heap corruption, double free and the likes of it -- because it simply **is** allowed:
-the inherent control that C gives to the programmers exposes them to this possibility.
-
-But the mere existance of a possibility must not scare people away -- if the probability
-of its occurence is low or can be lowered -- just as you still go outside every day even
-though there is the chance of a meteor landing right on your head. As we said, tools and
-programming practices have significantly reduced the memory bug probability to a value
-close to 0, and you still retain the full control of the C language. To cite [Eskil
-Steenberg](https://www.youtube.com/watch?v=443UNeGrFoM):
-
-> At the beginning, all you want are results.
->
-> In the end, all you want is control.
-
-So what's the point of having a "safe" language (*cough* Rust *cough*) with an
-**unsafe** keyword? It's like paying a whole year of subscription to the gym and go
-there just once or twice. When you program with a "safe" language you pay this cost
-every single line of code. Safety is not free. It's better to pay for its cost only when
-it's actually needed. With C, tools like Valgrind or ASan can be run against automated
-test suites or during handrolled checks, therefore reducing their cost by a significant
-amount, and leaving the development phase clean and fluent.
-
-Other than that, the best programming practice for avoiding a substantial amount of
-memory related bugs is the use of allocators -- or also called arenas. It is not our
-desire to explain this topic in detail here, since a [lot of information](
-https://www.rfleury.com/p/untangling-lifetimes-the-arena-allocator) can be found on it
-by simply searching online. The core concept behind allocators is that program objects
-are best allocated and deallocated in bulk, rather than micromanaged using the `malloc`
-/`free` interface. Identifying a program lifetime -- such as a web request, a videogame
-frame, a UI screen -- and tying objects to that lifetime not only simplifies the
-program code but also eliminates almost all memory related problems by simply reducing
-the attack surface.
-
-### Serialization
-
-### Reflection
-
-### IO
-
-## API
