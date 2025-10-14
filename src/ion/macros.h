@@ -6,7 +6,6 @@
 #include "macros/cvar.h"
 #include "macros/fail.h"
 #include "macros/fatal.h"
-#include "macros/if_va_args.h"
 #include "macros/likely.h"
 #include "macros/list.h"
 #include "macros/log2.h"
