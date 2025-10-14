@@ -58,6 +58,7 @@ elif [[ $1 == "cli" ]]; then
       -no-integrated-cpp -B ./bin \
       $DEFAULT_FLAGS              \
       -D PLATFORM=$PLATFORM       \
+      -D ION_SHARED_LIB           \
       -I ./src                    \
       -O3 -o exe/cli
 

@@ -10,7 +10,7 @@
  Additionally, the global variable is declared `static` in order to be correctly
  addressed by the linker when ⚡️ION⚡️ is used as a shared library.
 */
-#ifdef  ION_LIB
+#ifdef  ION_SHARED_LIB
 static
 #endif
-thread_local struct failure failure = { 0 };
+struct failure failure = { 0 };
