@@ -6,16 +6,16 @@ unsigned int bit_count_leading_zeros (
   If C standard is C23 and up, the stdc_leading_* functions can be used.
   If not, resorts to using the compiler builtins.
 */
-#if   INT_BIT_WIDTH == 64
-  #if standard(>= C23)
+#if standard(>= C23)
+  #if   INT_BIT_WIDTH == 64
     return stdc_leading_zeros_ull(value);
-  #else
-    return __builtin_clzll(value);
-  #endif
-#elif INT_BIT_WIDTH == 32
-  #if standard(>= C23)
+  #elif INT_BIT_WIDTH == 32
     return stdc_leading_zeros_ul(value);
-  #else
+  #endif
+#else
+  #if   INT_BIT_WIDTH == 64
+    return __builtin_clzll(value);
+  #elif INT_BIT_WIDTH == 32
     return __builtin_clzl(value);
   #endif
 #endif
