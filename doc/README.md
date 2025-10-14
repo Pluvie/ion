@@ -79,7 +79,7 @@ With both `int` and `char` that can be also `unsigned`.
 
 **That's it! Quite a change right?**
 
-The reasoning behind this drastic approach are several. Let's talk about the `int` type.
+The reasons behind this drastic approach are several. Let's talk about the `int` type.
 ⚡️ION⚡️ defines this type as:
 
 > [...] the widest possible integer that can be operated with a single hardware
@@ -117,11 +117,12 @@ mix. This ensures:
 
 In summary we think that the solution to hardware changes *must not come from inside
 the language*, but instead must be defined outside. Over time, ⚡️ION⚡️ wants to map
-all relevant platforms as compilation targets, and define its widths and boundaries
+all relevant platforms as compilation targets, and define their widths and boundaries
 once and for all. When new platforms will come -- like 128 and 256 bit architectures --
 we will have to just define their platform header and make no changes to the code base.
-This is much better than the other way used until now which would be to introduce
-`int128_t` and `int256_t` types that add more confusion and reduce portability.
+This is much better than how it has been done until now, where would have had to
+introduce `int128_t` and `int256_t` types that add even more confusion and reduce
+portability.
 
 #### Pointers and Main
 
@@ -158,17 +159,18 @@ The only ones who still do not know it are people that are not involved into C
 programming anymore and continue to spread misinformation.
 
 It is of couse still possible to create a memory bug -- buffer overrun, stack overflow,
-heap corruption, double free and the likes of it -- because it simply it is allowed:
+heap corruption, double free and the likes of it -- because it simply **is** allowed:
 the inherent control that C gives to the programmers exposes them to this possibility.
 
-But the mere existance of a possibility must not scare away people, if the probability
-of its occurence is low or can be lowered, just as you still go outside every day even
+But the mere existance of a possibility must not scare people away -- if the probability
+of its occurence is low or can be lowered -- just as you still go outside every day even
 though there is the chance of a meteor landing right on your head. As we said, tools and
 programming practices have significantly reduced the memory bug probability to a value
 close to 0, and you still retain the full control of the C language. To cite [Eskil
 Steenberg](https://www.youtube.com/watch?v=443UNeGrFoM):
 
 > At the beginning, all you want are results.
+>
 > In the end, all you want is control.
 
 So what's the point of having a "safe" language (*cough* Rust *cough*) with an
