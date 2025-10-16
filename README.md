@@ -23,8 +23,21 @@ refactors.
     revolutionize the way C code is written.
   - [standardize data types](doc/README.md#types): integers, decimals, strings, etc.
 
-See [here for a technical overview](doc/README.md) of ⚡️ION⚡️ features and [here for a
-full list](doc/API.md) of ⚡️ION⚡️ APIs.
+See [here for a feature technical overview](doc/README.md) and [here for a
+full API documentation](doc/API.md).
+
+## Ecosystem
+
+⚡️ION⚡️ comes with an ecosystem of libraries, which are built using its technology and
+share its philosophy. This modular approach allows the user to hand pick the desired
+functionalities. These libraries are:
+
+  - [🗡️SER🛡️](https://github.com/Pluvie/ser): data serialization and deserialization.
+  - 🌐NET📡: networking, ranging from low level TCP primitives to high level HTTP
+    servers.
+  - N💫VA: data persistance layer, for performance oriented coders.
+  - *name to be defined*: textual and visual user interface.
+  - *name to be defined*: 2D/3D graphics.
 
 ## Motivation
 
