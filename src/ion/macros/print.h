@@ -33,8 +33,8 @@
 /*
   This macro passes the correct print_arg struct depending on the type of `value`.
 */
-#define f(value)                                                  \
-  _Generic(value,                                                 \
+#define f(...)                                                    \
+  _Generic(__VA_ARGS__,                                           \
     bool          : &(struct print_arg) { 0, PRINT_ARG__BOOL },   \
     int0          : &(struct print_arg) { 0, PRINT_ARG__INT0 },   \
     int           : &(struct print_arg) { 0, PRINT_ARG__INT },    \
@@ -45,4 +45,4 @@
     unsigned char : &(struct print_arg) { 0, PRINT_ARG__UCHAR },  \
     char*         : &(struct print_arg) { 0, PRINT_ARG__CHAR_P }, \
     void*         : &(struct print_arg) { 0, PRINT_ARG__VOID_P }  \
-  ), value
+  ), __VA_ARGS__
