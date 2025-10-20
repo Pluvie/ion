@@ -4,3 +4,6 @@
 #include "structs/iterator.h"
 #include "structs/print_arg.h"
 #include "structs/reflection.h"
+#if standard(>= C11)
+#include "structs/thread_pool.h"
+#endif

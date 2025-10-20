@@ -1,9 +1,7 @@
 #if standard(< C23)
-check_sizeof(1, bool);
-
-#undef true
-#undef false
-
+#undef  true
 #define true  (bool) 1
+
+#undef  false
 #define false (bool) 0
 #endif

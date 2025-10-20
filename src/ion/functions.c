@@ -28,3 +28,9 @@
 #include "functions/str_equal.c"
 #include "functions/str_to_dec.c"
 #include "functions/str_to_int.c"
+#if standard(>= C11)
+#include "functions/thread_pool_create.c"
+#include "functions/thread_pool_destroy.c"
+#include "functions/thread_pool_enqueue.c"
+#include "functions/thread_pool_wait.c"
+#endif
