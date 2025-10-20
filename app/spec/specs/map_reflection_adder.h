@@ -2,6 +2,6 @@
 #include "../containers.h"
 
 #if standard(<= C99)
-#define map_add(m, k, v) \
-  map<char*, int>_add(m, k, v)
+#define map_set(m, k, v) \
+  map<char*, int>_set(m, k, v)
 #endif
