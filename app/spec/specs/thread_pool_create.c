@@ -4,12 +4,17 @@ spec( thread_pool_create ) {
   argument(unsigned int threads_capacity);
 
   when("the capacity is not a power of two") {
+    printl();
     threads_capacity = 4;
     struct thread_pool* pool = thread_pool_create(threads_capacity);
 
     //must("return an allocator with capacity equal to the next power of two");
     //  verify(result.capacity == next_pow2(capacity));
-    sleep(1000);
+    sleep(1*SECOND);
+    cnd_signal(&(pool->wakeup));
+    sleep(5*SECONDS);
+    pool->active = false;
+    cnd_broadcast(&(pool->wakeup));
     verify(pool != nullptr);
 
     success();
