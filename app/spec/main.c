@@ -63,6 +63,7 @@ spec( str_empty );
 spec( str_equal );
 spec( str_to_dec );
 spec( str_to_int );
+spec( thread_pool_create );
 
 int0 main (
     int0 argc,
@@ -129,6 +130,7 @@ int0 main (
   spec_add( str_equal );
   spec_add( str_to_dec );
   spec_add( str_to_int );
+  spec_focus( thread_pool_create );
 
   specs_run();
 

@@ -1,6 +1,5 @@
 #include "structs/allocator.h"
 #include "structs/failure.h"
-#include "structs/io.h"
 #include "structs/iterator.h"
 #include "structs/print_arg.h"
 #include "structs/reflection.h"

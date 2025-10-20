@@ -1,16 +1,5 @@
 /*
-  Linux - 64 bit architecture.
-*/
-
-#define INT_BIT_WIDTH   64
-#define INT_MAXNUM      "9223372036854775807"   /* 2^63 - 1 */
-#define INT_FORMAT      "%l"
-
-typedef int             native_int_t;           /* 32 bit */
-#define widest_int_t    long int                /* 64 bit */
-
-/*
-  Platform specific code.
+  Linux.
 */
 
 #if standard(>= C11)
@@ -22,3 +11,7 @@ typedef int             native_int_t;           /* 32 bit */
 */
 #define aligned_free  free
 #endif
+
+/* For the `sleep` function. */
+#define _POSIX_C_SOURCE 199309L
+#include <time.h>

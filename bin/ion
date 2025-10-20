@@ -6,6 +6,7 @@ if [[ $# -lt 1 ]]; then
 fi
 
 PLATFORM="LINUX"
+ARCHITECTURE="X64"
 DEFAULT_FLAGS="-std=c11 -Wall -Werror"
 
 if [[ $1 == "spec" ]]; then
@@ -13,20 +14,22 @@ if [[ $1 == "spec" ]]; then
   FILES="app/spec/main.c app/spec/containers.c $SPECS"
 
   if [[ $2 == "prep" ]]; then
-    gcc $FILES                    \
-      $DEFAULT_FLAGS              \
-      -D PLATFORM=$PLATFORM       \
-      -I ./src                    \
+    gcc $FILES                      \
+      $DEFAULT_FLAGS                \
+      -D PLATFORM=$PLATFORM         \
+      -D ARCHITECTURE=$ARCHITECTURE \
+      -I ./src                      \
       -E | bin/inflect > tmp/spec.c
 
     exit $?
   fi
 
-  gcc $FILES                    \
-    -no-integrated-cpp -B ./bin \
-    $DEFAULT_FLAGS              \
-    -D PLATFORM=$PLATFORM       \
-    -I ./src                    \
+  gcc $FILES                        \
+    -no-integrated-cpp -B ./bin     \
+    $DEFAULT_FLAGS                  \
+    -D PLATFORM=$PLATFORM           \
+    -D ARCHITECTURE=$ARCHITECTURE   \
+    -I ./src                        \
     -g3 -o exe/spec
 
   if [ $? -ne 0 ]; then
@@ -54,11 +57,12 @@ elif [[ $1 == "cli" ]]; then
   if [[ $2 == "build" ]]; then
     FILES="app/cli/main.c app/cli/cli.c"
 
-    gcc $FILES                    \
-      -no-integrated-cpp -B ./bin \
-      $DEFAULT_FLAGS              \
-      -D PLATFORM=$PLATFORM       \
-      -I ./src                    \
+    gcc $FILES                      \
+      -no-integrated-cpp -B ./bin   \
+      $DEFAULT_FLAGS                \
+      -D PLATFORM=$PLATFORM         \
+      -D ARCHITECTURE=$ARCHITECTURE \
+      -I ./src                      \
       -O3 -o exe/cli
 
     if [ $? -ne 0 ]; then
@@ -75,12 +79,13 @@ elif [[ $1 == "cli" ]]; then
 
 elif [[ $1 == "lib" ]]; then
 
-  gcc $ION/ion.c            \
-    $DEFAULT_FLAGS          \
-    -D PLATFORM=$PLATFORM   \
-    -D ION_SHARED_LIB       \
-    -o exe/libion.so        \
-    -O3 -march=native       \
+  gcc $ION/ion.c                  \
+    $DEFAULT_FLAGS                \
+    -D PLATFORM=$PLATFORM         \
+    -D ARCHITECTURE=$ARCHITECTURE \
+    -D ION_SHARED_LIB             \
+    -o exe/libion.so              \
+    -O3 -march=native             \
     -shared -fPIC
 
   exit $?
