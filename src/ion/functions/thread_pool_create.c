@@ -46,8 +46,6 @@ struct thread_pool* thread_pool_create (
     }
   }
 
-  printl("pool waiting");
   while (pool->num_threads_alive != pool->threads_capacity) { sleep(100*MILLISECONDS); }
-  printl("pool ready");
   return pool;
 }

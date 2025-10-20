@@ -5,7 +5,6 @@ void thread_pool_enqueue (
 )
 {
   int0 result;
-
   result = mtx_lock(&(pool->queue.sync));
   if (unlikely(result == thrd_error)) {
     fatal("thread_pool_enqueue: queue mutex lock error");

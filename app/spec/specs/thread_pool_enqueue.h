@@ -4,7 +4,7 @@ static struct {
   int results[3];
 } sim;
 
-void example_work (
+void example_work_enqueue (
     void* sleep_ptr
 )
 {

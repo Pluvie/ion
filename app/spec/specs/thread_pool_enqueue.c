@@ -1,0 +1,65 @@
+#include "thread_pool_enqueue.h"
+
+spec( thread_pool_enqueue ) {
+  argument(struct thread_pool* pool);
+  argument(void (*function)(void*));
+  argument(void* argument);
+
+  precondition("a valid thread pool");
+    #define preconditions \
+      pool = memory_acquire(sizeof(*pool)); \
+      memory_set(pool, 0, sizeof(*pool)); \
+      mtx_init(&(pool->queue.sync), mtx_plain); \
+      mtx_init(&(pool->wakeup.sync), mtx_plain); \
+      cnd_init(&(pool->queue.cond)); \
+      cnd_init(&(pool->wakeup.cond));
+
+  when("the pool queue mutex is unlocked") {
+    apply(preconditions);
+    mtx_unlock(&(pool->queue.sync));
+
+    when("the pool queue is empty") {
+      pool->queue.first = nullptr;
+      pool->queue.last = nullptr;
+      function = example_work_enqueue;
+      argument = &(int) { 1 };
+      thread_pool_enqueue(pool, function, argument);
+
+      must("successfully enqueue the job in the pool");
+        verify(pool->queue.first != nullptr);
+        verify(pool->queue.last != nullptr);
+        struct { void* function; int* argument; void* next; }* job = pool->queue.first;
+        verify(job->function == example_work_enqueue);
+        verify(job->next == nullptr);
+        verify(*(job->argument) == 1);
+
+      success();
+        /* The next test is consequential so we destroy the pool there. */
+    } end();
+
+    when("the pool queue is not empty") {
+      verify(pool->queue.first != nullptr);
+      verify(pool->queue.last != nullptr);
+      function = example_work_enqueue;
+      argument = &(int) { 2 };
+      thread_pool_enqueue(pool, function, argument);
+
+      must("successfully enqueue the job in the pool");
+        verify(pool->queue.first != nullptr);
+        verify(pool->queue.last != nullptr);
+
+      must("correctly queue the job after the first");
+        struct { void* function; int* argument; void* next; }* job = pool->queue.last;
+        struct { void* function; int* argument; void* next; }* first = pool->queue.first;
+        verify(first->next == job);
+        verify(job->function == example_work_enqueue);
+        verify(job->next == nullptr);
+        verify(*(job->argument) == 2);
+
+      success();
+        thread_pool_destroy(pool);
+        memory_release(job);
+        memory_release(first);
+    } end();
+  } end();
+}

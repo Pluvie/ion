@@ -2,9 +2,6 @@ void thread_pool_destroy (
     struct thread_pool* pool
 )
 {
-  printl();
-  printl();
-  printl("pool commencing termination");
   /* Shuts down the pool. */
   pool->active = false;
 
@@ -23,5 +20,4 @@ void thread_pool_destroy (
 
   memory_release(pool->threads);
   memory_release(pool);
-  printl("pool terminated");
 }
