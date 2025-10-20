@@ -21,7 +21,7 @@ spec( thread_pool_enqueue ) {
     when("the pool queue is empty") {
       pool->queue.first = nullptr;
       pool->queue.last = nullptr;
-      function = example_work_enqueue;
+      function = spec_thread_pool_enqueue__example_work;
       argument = &(int) { 1 };
       thread_pool_enqueue(pool, function, argument);
 
@@ -29,7 +29,7 @@ spec( thread_pool_enqueue ) {
         verify(pool->queue.first != nullptr);
         verify(pool->queue.last != nullptr);
         struct { void* function; int* argument; void* next; }* job = pool->queue.first;
-        verify(job->function == example_work_enqueue);
+        verify(job->function == spec_thread_pool_enqueue__example_work);
         verify(job->next == nullptr);
         verify(*(job->argument) == 1);
 
@@ -40,7 +40,7 @@ spec( thread_pool_enqueue ) {
     when("the pool queue is not empty") {
       verify(pool->queue.first != nullptr);
       verify(pool->queue.last != nullptr);
-      function = example_work_enqueue;
+      function = spec_thread_pool_enqueue__example_work;
       argument = &(int) { 2 };
       thread_pool_enqueue(pool, function, argument);
 
@@ -52,7 +52,7 @@ spec( thread_pool_enqueue ) {
         struct { void* function; int* argument; void* next; }* job = pool->queue.last;
         struct { void* function; int* argument; void* next; }* first = pool->queue.first;
         verify(first->next == job);
-        verify(job->function == example_work_enqueue);
+        verify(job->function == spec_thread_pool_enqueue__example_work);
         verify(job->next == nullptr);
         verify(*(job->argument) == 2);
 
@@ -61,5 +61,34 @@ spec( thread_pool_enqueue ) {
         memory_release(job);
         memory_release(first);
     } end();
+  } end();
+
+  when("the pool queue mutex is locked") {
+    apply(preconditions);
+
+    int lock_time = time(nullptr);
+    thrd_t locking_thread;
+    thrd_create(&locking_thread, spec_thread_pool_enqueue__example_unlock, pool);
+    while (sim.lock_acquired == false)
+      sleep(10*MILLISECONDS); /* Lets the locking thread acquire the mutex lock. */
+
+    function = spec_thread_pool_enqueue__example_work;
+    argument = &(int) { 1 };
+    thread_pool_enqueue(pool, function, argument);
+
+    must("wait the mutex to unlock and then successfully enqueue the job in the pool");
+      int unlock_time = time(nullptr);
+      verify(unlock_time - lock_time >= 1);
+      verify(pool->queue.first != nullptr);
+      verify(pool->queue.last != nullptr);
+      struct { void* function; int* argument; void* next; }* job = pool->queue.first;
+      verify(job->function == spec_thread_pool_enqueue__example_work);
+      verify(job->next == nullptr);
+      verify(*(job->argument) == 1);
+
+    success();
+      thrd_join(locking_thread, nullptr);
+      thread_pool_destroy(pool);
+      memory_release(job);
   } end();
 }
