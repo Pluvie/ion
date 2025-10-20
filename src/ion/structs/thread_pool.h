@@ -10,6 +10,7 @@ struct thread_pool {
   } wakeup;
   struct {
     mtx_t sync;
+    cnd_t cond;
     void* first;
     void* last;
   } queue;

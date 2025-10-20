@@ -16,7 +16,8 @@ spec( thread_pool_create ) {
     thread_pool_enqueue(pool, example_work, &(int) { 2 });
     thread_pool_enqueue(pool, example_work, &(int) { 1 });
 
-    sleep(7*SECONDS);
+    //sleep(7*SECONDS);
+    thread_pool_wait(pool);
 
     success();
       thread_pool_destroy(pool);

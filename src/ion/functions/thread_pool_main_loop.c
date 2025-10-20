@@ -6,13 +6,7 @@ static int0 thread_main_loop (
   struct thread_pool* pool = thread->pool;
   pool->num_threads_alive++;
   printl("thread [", f(thread->number), "] started");
-  /*
-    Lock the mutex `pool->wakeup.sync`.
-    Wait on the condition `pool->wakeup.cond`.
-    Pull work from the queue.
-    Do work.
-    Rinse and repeat.
-  */
+
 wait_for_next_job:
   int0 result;
   result = mtx_lock(&(pool->wakeup.sync));
@@ -74,6 +68,14 @@ wait_for_next_job:
 
 job_done:
   pool->num_threads_working--;
+  if (pool->num_threads_working == 0) {
+    result = cnd_signal(&(pool->queue.cond));
+    if (unlikely(result == thrd_error)) {
+      fatal("thread_pool_main_loop: queue cond signal error");
+      thrd_exit(EXIT_FAILURE);
+    }
+  }
+
   if (pool->active)
     goto wait_for_next_job;
 

@@ -12,17 +12,22 @@ struct thread_pool* thread_pool_create (
   pool->threads = memory_acquire(threads_capacity * sizeof(*(pool->threads)));
 
   if (mtx_init(&(pool->queue.sync), mtx_plain) != thrd_success) {
-    fail("thread pool: could not create mutex");
+    fail("thread pool: could not create queue mutex");
     return nullptr;
   }
 
   if (mtx_init(&(pool->wakeup.sync), mtx_plain) != thrd_success) {
-    fail("thread pool: could not create mutex");
+    fail("thread pool: could not create wakeup mutex");
+    return nullptr;
+  }
+
+  if (cnd_init(&(pool->queue.cond)) != thrd_success) {
+    fail("thread pool: could not create queue condition");
     return nullptr;
   }
 
   if (cnd_init(&(pool->wakeup.cond)) != thrd_success) {
-    fail("thread pool: could not create condition");
+    fail("thread pool: could not create wakeup condition");
     return nullptr;
   }
 
@@ -42,7 +47,7 @@ struct thread_pool* thread_pool_create (
   }
 
   printl("pool waiting");
-  while (pool->num_threads_alive != pool->threads_capacity) { sleep(100); }
+  while (pool->num_threads_alive != pool->threads_capacity) { sleep(100*MILLISECONDS); }
   printl("pool ready");
   return pool;
 }
