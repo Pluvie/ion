@@ -10,12 +10,13 @@ spec( thread_pool_create ) {
 
     //must("return an allocator with capacity equal to the next power of two");
     //  verify(result.capacity == next_pow2(capacity));
-    sleep(1*SECOND);
-    cnd_signal(&(pool->wakeup));
-    sleep(5*SECONDS);
-    pool->active = false;
-    cnd_broadcast(&(pool->wakeup));
     verify(pool != nullptr);
+
+    thread_pool_enqueue(pool, example_work, &(int) { 3 });
+    thread_pool_enqueue(pool, example_work, &(int) { 2 });
+    thread_pool_enqueue(pool, example_work, &(int) { 1 });
+
+    sleep(7*SECONDS);
 
     success();
       thread_pool_destroy(pool);

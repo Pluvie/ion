@@ -1,13 +1,16 @@
 struct thread_pool {
-  bool active;
   struct thread* threads;
   unsigned int threads_capacity;
-  volatile unsigned int num_threads_alive;
-  volatile unsigned int num_threads_working;
-  mtx_t sync;
-  cnd_t wakeup;
+  volatile atomic bool active;
+  volatile atomic unsigned int num_threads_alive;
+  volatile atomic unsigned int num_threads_working;
   struct {
-    void* head;
-    void* tail;
-  } work_queue;
+    mtx_t sync;
+    cnd_t cond;
+  } wakeup;
+  struct {
+    mtx_t sync;
+    void* first;
+    void* last;
+  } queue;
 };

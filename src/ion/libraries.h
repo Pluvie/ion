@@ -37,4 +37,5 @@
 #if standard(>= C11)
 /* For the `thread_local` macro on the global failure variable, and all threading API. */
 #include <threads.h>
+#define atomic _Atomic
 #endif
