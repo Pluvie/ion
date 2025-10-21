@@ -1,4 +1,5 @@
 #include "structs/allocator.h"
+#include "structs/chrono.h"
 #include "structs/failure.h"
 #include "structs/iterator.h"
 #include "structs/print_arg.h"

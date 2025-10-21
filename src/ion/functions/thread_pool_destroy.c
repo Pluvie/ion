@@ -9,9 +9,9 @@ void thread_pool_destroy (
     cnd_broadcast(&(pool->wakeup.cond));
 
   /* Waits until all threads have finished working. */
-  while (pool->num_threads_working != 0) { sleep(100*MILLISECONDS); }
+  while (pool->num_threads_working != 0) { sleep(10*MILLISECONDS); }
   /* Gives some extra time for thread cleanup after its termination. */
-  sleep(1*SECOND);
+  sleep(100*MILLISECOND);
 
   mtx_destroy(&(pool->queue.sync));
   mtx_destroy(&(pool->wakeup.sync));

@@ -12,6 +12,6 @@
 #define aligned_free  free
 #endif
 
-/* For the `sleep` function. */
-#define _POSIX_C_SOURCE 199309L
+/* For the `sleep` and `clock_gettime` functions. */
+#define _POSIX_C_SOURCE 200809L
 #include <time.h>
