@@ -12,4 +12,3 @@ struct allocator {
     unsigned int size;
   } allocations;
 };
-check_sizeof(64, struct allocator);

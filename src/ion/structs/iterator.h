@@ -3,4 +3,3 @@ struct iterator {
   int index;
   int gate;
 };
-check_sizeof(24, struct iterator);

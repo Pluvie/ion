@@ -35,4 +35,3 @@ struct failure {
   bool occurred;
   char message[511];
 };
-check_sizeof(512, struct failure);

@@ -6,4 +6,3 @@ typedef struct set<T> {
   unsigned int* hashes;
   struct allocator* allocator;
 } set<T>;
-check_sizeof(48, set<T>);

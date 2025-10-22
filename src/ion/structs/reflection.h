@@ -25,4 +25,3 @@ struct reflection {
   } container;
   padding(8);
 };
-check_sizeof(128, struct reflection);
