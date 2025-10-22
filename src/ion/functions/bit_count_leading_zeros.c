@@ -24,7 +24,7 @@ unsigned int bit_count_leading_zeros (
     #endif
 
   #elif compiler(MSVC)
-    unsigned int count = 0;
+    DWORD count = 0;
     #if   INT_BIT_WIDTH == 64
       unsigned char scan = _BitScanReverse64(&count, value);
     #elif INT_BIT_WIDTH == 32
