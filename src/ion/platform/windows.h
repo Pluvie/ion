@@ -22,14 +22,18 @@
   Therefore, we add the `aligned_free` macro as a compatibility layer between platforms.
 */
 #include <malloc.h>
-#define aligned_alloc _aligned_alloc
+#define aligned_alloc _aligned_malloc
 #define aligned_free  _aligned_free
 #endif
+
+/* Deflects INT, BOOL, CHAR old Win32 types to avoid conflict with reflection enums. */
+#define INT   WIN32_INT
+#define BOOL  WIN32_BOOL
+#define CHAR  WIN32_CHAR
 
 /* For the `Sleep` function. */
 #include <windows.h>
 
-/* Undefines INT, BOOL, CHAR types to avoid conflict with reflection enums. */
 #undef INT
 #undef BOOL
 #undef CHAR
