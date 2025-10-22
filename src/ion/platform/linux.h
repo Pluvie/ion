@@ -14,6 +14,13 @@
   #error "⚡️ION⚡️: Unsupported architecture for Linux platform."
 #endif
 
+/*
+  Allows the extensions of POSIX common functions like `clock_gettime`. These
+  functions are technically outside the C standard, but are nevertheless much needed
+  for real world applications.
+*/
+#define _POSIX_C_SOURCE 200809L
+
 #if standard(>= C11)
 /*
   Linux natively supports the `free` function to be called on memory allocated by the
@@ -26,5 +33,4 @@
 #endif
 
 /* For the `sleep` and `clock_gettime` functions. */
-#define _POSIX_C_SOURCE 200809L
 #include <time.h>
