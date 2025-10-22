@@ -60,6 +60,6 @@
   _Generic(type,                                                            \
     map<char*, int>               : map<char*, int>_ ## func,               \
     map<char*, struct squadmate>  : map<char*, struct squadmate>_ ## func,  \
-    map<str, struct squadmate>    : map<str, struct squadmate>_ ## func  \
+    map<str, struct squadmate>    : map<str, struct squadmate>_ ## func     \
   )
 #endif

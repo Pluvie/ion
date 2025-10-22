@@ -2,6 +2,18 @@
   Linux.
 */
 
+#if   architecture(X64)
+  typedef int             native_int_t;   /* 32 bit */
+  #define widest_int_t    long int        /* 64 bit */
+
+#elif architecture(X86)
+  typedef int             native_int_t;   /* 32 bit */
+  #define widest_int_t    int             /* 32 bit */
+
+#else
+  #error "⚡️ION⚡️: Unsupported architecture for Linux platform."
+#endif
+
 #if standard(>= C11)
 /*
   Linux natively supports the `free` function to be called on memory allocated by the
