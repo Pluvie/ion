@@ -63,9 +63,11 @@ spec( str_empty );
 spec( str_equal );
 spec( str_to_dec );
 spec( str_to_int );
+#if standard(>= C11)
 spec( thread_pool_create );
 spec( thread_pool_enqueue );
 spec( thread_pool_wait );
+#endif
 
 int0 main (
     int0 argc,
@@ -132,9 +134,11 @@ int0 main (
   spec_add( str_equal );
   spec_add( str_to_dec );
   spec_add( str_to_int );
+  #if standard(>= C11)
   spec_add( thread_pool_create );
   spec_add( thread_pool_enqueue );
   spec_add( thread_pool_wait );
+  #endif
 
   specs_run();
 

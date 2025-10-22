@@ -1,5 +1,6 @@
 #include "thread_pool_enqueue.h"
 
+#if standard(>= C11)
 spec( thread_pool_enqueue ) {
   argument(struct thread_pool* pool);
   argument(void (*function)(void*));
@@ -94,3 +95,4 @@ spec( thread_pool_enqueue ) {
       memory_release(job);
   } end();
 }
+#endif

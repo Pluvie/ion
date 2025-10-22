@@ -1,5 +1,6 @@
 #include "thread_pool_wait.h"
 
+#if standard(>= C11)
 spec( thread_pool_wait ) {
   argument(struct thread_pool* pool);
 
@@ -21,3 +22,4 @@ spec( thread_pool_wait ) {
   success();
     thread_pool_destroy(pool);
 }
+#endif

@@ -1,5 +1,6 @@
 #include "thread_pool_create.h"
 
+#if standard(>= C11)
 spec( thread_pool_create ) {
   argument(unsigned int threads_capacity);
 
@@ -13,3 +14,4 @@ spec( thread_pool_create ) {
   success();
     thread_pool_destroy(pool);
 }
+#endif

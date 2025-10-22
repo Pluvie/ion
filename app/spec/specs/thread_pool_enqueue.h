@@ -1,5 +1,6 @@
 #include "../spec.h"
 
+#if standard(>= C11)
 static struct {
   int results[3];
   atomic bool lock_acquired;
@@ -26,3 +27,4 @@ static int0 example_unlock (
   mtx_unlock(&(pool->queue.sync));
   thrd_exit(EXIT_SUCCESS);
 }
+#endif
