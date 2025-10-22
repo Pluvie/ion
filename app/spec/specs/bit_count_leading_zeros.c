@@ -17,7 +17,7 @@ spec( bit_count_leading_zeros ) {
     {
       value = (unsigned int) 0;
       unsigned int result = bit_count_leading_zeros(value);
-      verify(result == INT_BIT_WIDTH - 1);
+      verify(result == INT_BIT_WIDTH);
     }
 
   success();

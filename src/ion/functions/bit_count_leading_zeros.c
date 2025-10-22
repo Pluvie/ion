@@ -13,10 +13,23 @@ unsigned int bit_count_leading_zeros (
     return stdc_leading_zeros_ul(value);
   #endif
 #else
-  #if   INT_BIT_WIDTH == 64
-    return __builtin_clzll(value);
-  #elif INT_BIT_WIDTH == 32
-    return __builtin_clzl(value);
+  #if compiler(GCC) || compiler(CLANG)
+    if (value == 0)
+      return INT_BIT_WIDTH;
+
+    #if   INT_BIT_WIDTH == 64
+      return __builtin_clzll(value);
+    #elif INT_BIT_WIDTH == 32
+      return __builtin_clzl(value);
+    #endif
+
+  #elif compiler(MSVC)
+    unsigned int count = 0;
+    unsigned char scan = _BitScanReverse(&count, value);
+    if (scan == 0)
+      return INT_BIT_WIDTH;
+    else
+      return INT_BIT_WIDTH - count;
   #endif
 #endif
 }
