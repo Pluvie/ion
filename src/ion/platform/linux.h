@@ -3,12 +3,10 @@
 */
 
 #if   architecture(X64)
-  typedef int             native_int_t;   /* 32 bit */
   #define widest_int_t    long int        /* 64 bit */
   #define INT_FORMAT      "%l"
 
 #elif architecture(X86)
-  typedef int             native_int_t;   /* 32 bit */
   #define widest_int_t    int             /* 32 bit */
   #define INT_FORMAT      "%"
 
@@ -21,7 +19,8 @@
   Linux natively supports the `free` function to be called on memory allocated by the
   C11 function `aligned_malloc`. Since other platforms, like Windows, do not support
   this, we define an `aligned_free` symbol to have a compatibility layer between
-  platforms. In case of Linux, as said above, it is just an alias for `free`.
+  platforms. In case of Linux, as said above, it is just an alias for `free`, as
+  it works for memory allocated with both `malloc` and `aligned_malloc`.
 */
 #define aligned_free  free
 #endif

@@ -3,12 +3,10 @@
 */
 
 #if   architecture(X64)
-  typedef int             native_int_t;   /* 32 bit */
   #define widest_int_t    long long int   /* 64 bit */
   #define INT_FORMAT      "%ll"
 
 #elif architecture(X86)
-  typedef int             native_int_t;   /* 32 bit */
   #define widest_int_t    int             /* 32 bit */
   #define INT_FORMAT      "%"
 

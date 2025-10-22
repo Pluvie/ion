@@ -1,18 +1,21 @@
 /*
-  Defines the `int` and `int0` ⚡️ION⚡️ types.
+  Defines the `int` integer ⚡️ION⚡️ types.
 
   `int` is always the widest possible integer that can be operated with a single
-  hardware instruction on the target architecture. For example, on Linux systems, it is
-  64 bit wide. This type can be seen as a signed replacement to `size_t`.
+  hardware instruction on the target architecture. For example, on a 64-bit Linux
+  system, it is 64 bit wide. In this case, this type can be seen as a replacement to
+  `int64_t`.
+
+  Then, defines the `int0` and `uint0` types.
 
   `int0` is the native integer type as implemented on the target architecture. For
   example, on Linux systems, it is 32 bit wide. This serves as a fallback type when the
   original int type is required. For example, using ⚡️ION⚡️, the `main` function must
   return an `int0` because the C standard defines that this function must return the
-  native int type. On a Linux system, if we would have used the `int` type as return
-  type for the `main` function, the program would not compile, because `int` is 64 bit
-  and `int0` is 32 bit. On a Windows32 system, using `int` as return type for the `main`
-  function, would instead compile, because `int` and `int0` are both 32 bit wide.
+  native int type. On a 64-bit Linux system, if we used the `int` type as return type
+  for the `main` function, the program would not compile, because `int` is 64 bit and
+  `int0` is 32 bit. On a 32-bit Windows system, using `int` as return type for the
+  `main` function, would instead compile, because `int` and `int0` are both 32 bit wide.
 
 
   The main reason why ⚡️ION⚡️ wants to use and specify a unique `int` type is for
@@ -26,12 +29,10 @@
   `size_t` pointer, with the increased code clarity and readability.
 
   Why is ⚡️ION⚡️ `int` type not the widest possible integer, in general, on the target
-  architecture? Because [there are cases](https://stackoverflow.com/a/4295225) where in
-  some machines, such as Windows32 or the PDP-11, using the widest possible integer
-  leads to performance degradation, due to hardware using multiple instructions to
-  handle it. For example, Windows32 has support for 64 bit wide integers, rendering it
-  effectively the widest possible integer on its architecture, but it must use multiple
-  hardware instructions to manage two 32 bit registers that compose the 64 bit integer.
+  architecture? Because [some combinations of platform and architecture](
+  https://stackoverflow.com/a/4295225), such as 32-bit Windows, have support for 64-bit
+  wide integers, but they require multiple hardware instructions to operate. Therefore,
+  this leads to unoptimized code and performance degradation, and we want to avoid that.
 
   This is why ⚡️ION⚡️ defines `int` as:
   > the widest possible integer that can be operated with a single hardware instruction
@@ -39,14 +40,26 @@
 */
 
 /*
-  `native_int_t` must be defined in each platform header file. It must be always
-  defined as `typedef int native_int_t;` in order to capture the native int type.
+  `native_int_t` must be defined as `typedef int native_int_t;` in order to capture
+  the native int type.
+*/
+typedef int           native_int_t;
+typedef unsigned int  native_uint_t;
+
+/*
+  Exposes the `int0` and `uint0` type for interoperability with the native int type.
 */
 #ifdef  int0
 #undef  int0
 #endif
 
 #define int0  native_int_t
+
+#ifdef  uint0
+#undef  uint0
+#endif
+
+#define uint0 native_uint_t
 
 /*
   `widest_int_t` must be defined in each platform header file. It must not be defined

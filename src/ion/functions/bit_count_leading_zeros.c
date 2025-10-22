@@ -24,7 +24,10 @@ unsigned int bit_count_leading_zeros (
     #endif
 
   #elif compiler(MSVC)
-    DWORD count = 0;
+    /* See the [intrinsic definition](
+      https://learn.microsoft.com/en-us/cpp/intrinsics/bitscanreverse-bitscanreverse64?view=msvc-170)
+      The `uint0` type captures the `unsigned long * Index` argument. */
+    uint0 count = 0;
     #if   INT_BIT_WIDTH == 64
       unsigned char scan = _BitScanReverse64(&count, value);
     #elif INT_BIT_WIDTH == 32
