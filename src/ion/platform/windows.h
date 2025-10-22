@@ -39,3 +39,8 @@
 #undef INT
 #undef BOOL
 #undef CHAR
+
+#if standard(< C23) && compiler(MSVC)
+/* For the _BitScanReverse builtin. */
+#include <intrin.h>
+#endif
