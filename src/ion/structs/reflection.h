@@ -23,5 +23,4 @@ struct reflection {
     void (*creator)(void*, unsigned int, struct allocator*);
     void* (*adder)(void*, void*);
   } container;
-  padding(8);
 };
