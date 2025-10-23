@@ -19,7 +19,7 @@
   functions are technically outside the C standard, but are nevertheless much needed
   for real world applications.
 */
-#define _POSIX_C_SOURCE 200809L
+#define _GNU_SOURCE
 
 #if standard(>= C11)
 /*
