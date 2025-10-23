@@ -43,7 +43,7 @@ next_arg:
 
   case PRINT_ARG__STR:
     str arg_str = va_arg(args, str);
-    printed_bytes = print_dispatch(output, length, "\"%.*s\"", (int0) arg_str.length, arg_str.chars);
+    printed_bytes = print_dispatch(output, length, "%.*s", (int0) arg_str.length, arg_str.chars);
     break;
 
   case PRINT_ARG__BOOL:
@@ -66,7 +66,7 @@ next_arg:
 
   case PRINT_ARG__CHAR_P:
     char* arg_char_p = va_arg(args, char*);
-    printed_bytes = print_dispatch(output, length, "\"%s\"", arg_char_p);
+    printed_bytes = print_dispatch(output, length, "%s", arg_char_p);
     break;
 
   case PRINT_ARG__VOID_P:

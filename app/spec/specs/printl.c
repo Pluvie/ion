@@ -20,7 +20,7 @@ spec( printl ) {
     fseek(tmp, 0L, SEEK_SET);
     int result = fread(output, sizeof(output), 1, tmp);
     verify(result != -1);
-    verify(cstr_equal(output, "trueyff-8888-77.700000\"abc\"(nil)\n"));
+    verify(cstr_equal(output, "trueyff-8888-77.700000abc(nil)\n"));
 
   success();
     fclose(tmp);
