@@ -28,6 +28,8 @@
 #include "functions/reflection_field_find.c"
 #include "functions/reflection_validate.c"
 #include "functions/sleep.c"
+#include "functions/str_build.c"
+#include "functions/str_builder.c"
 #include "functions/str_empty.c"
 #include "functions/str_equal.c"
 #include "functions/str_to_dec.c"

@@ -59,6 +59,7 @@ spec( set_init );
 spec( set_pos );
 spec( set_reflection_adder );
 spec( set_reflection_creator );
+spec( str_build );
 spec( str_empty );
 spec( str_equal );
 spec( str_to_dec );
@@ -130,6 +131,7 @@ int0 main (
   spec_add( set_pos );
   spec_add( set_reflection_adder );
   spec_add( set_reflection_creator );
+  spec_add( str_build );
   spec_add( str_empty );
   spec_add( str_equal );
   spec_add( str_to_dec );

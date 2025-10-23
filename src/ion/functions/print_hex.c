@@ -3,7 +3,8 @@ void print_hex (
     unsigned int length
 )
 {
-  const char* data = pointer;
+  const char* ascii = pointer;
+  const unsigned char* bytes = pointer;
   unsigned int line_length = 8;
   unsigned int groups = length / line_length;
 
@@ -19,7 +20,7 @@ void print_hex (
         print("   ");
         continue;
       }
-      print(f(data[index]), " ");
+      print(f(bytes[index]), " ");
     }
     print("| ");
     for (unsigned int index = group * line_length;
@@ -29,10 +30,10 @@ void print_hex (
         print("  ");
         continue;
       }
-      if (data[index] <= 31)
+      if (ascii[index] <= 31)
         print("_ ");
       else
-        print(f(data[index]), " ");
+        print(f(ascii[index]), " ");
     }
     print("|\n");
   }
