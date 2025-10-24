@@ -1,6 +1,4 @@
-/*
-  All supported ⚡️ION⚡️ compilers.
-*/
+/* ⚡️ION⚡️ compilers mapping.  */
 
 #define GCC     0
 #define CLANG   1
@@ -9,15 +7,15 @@
 #define compiler(name) (COMPILER == name)
 
 #if   defined(__GNUC__)
-  #ifndef __clang__
-    #define COMPILER  GCC
-  #else
-    #define COMPILER  CLANG
-  #endif
+#ifndef __clang__
+#define COMPILER  GCC
+#else
+#define COMPILER  CLANG
+#endif
 
 #elif defined(_MSC_VER)
-  #define COMPILER  MSVC
+#define COMPILER  MSVC
 
 #else
-  #error "⚡️ION⚡️: Unsupported compiler."
+#error "ION: Unsupported compiler -- contributions to support it are most welcome."
 #endif

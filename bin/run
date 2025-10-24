@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# ⚡️ION⚡️ run script.
+# Works only for Unix-like platforms.
+# For Windows users, see `bin/run.bat`.
+
+if [[ $# -lt 2 ]]; then
+  echo "Usage: bin/run [app] [release|valgrind|debug]"
+  exit 1
+fi
+
+APP=$1
+MODE=$2
+
+if    [[ $MODE == "release" ]]; then
+  bin/compile $APP -O3 -march=native
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+
+  exe/$APP
+  echo
+
+elif  [[ $MODE == "valgrind" ]]; then
+  bin/compile $APP -g3
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+
+  valgrind                    \
+    --track-origins=yes       \
+    --leak-check=full         \
+    --show-leak-kinds=all     \
+    exe/$APP
+  echo
+
+elif  [[ $MODE == "debug" ]]; then
+  bin/compile $APP -g3
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+
+  gdb exe/$APP
+  echo
+
+else
+  echo "Usage: bin/run [app] [release|valgrind|debug]"
+  exit 1
+fi

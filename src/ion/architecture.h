@@ -1,5 +1,7 @@
+/* ⚡️ION⚡️ Hardware architectures mapping.  */
+
 #ifndef ARCHITECTURE
-  #error "⚡️ION⚡️: Specify a target architecture."
+#error "ION: Specify a target architecture."
 #endif
 
 #define X86       0
@@ -18,5 +20,5 @@
   #include "architecture/x64.h"
 
 #else
-  #error "⚡️ION⚡️: Unsupported architecture."
+#error "ION: Unsupported architecture -- contributions to support it are most welcome."
 #endif

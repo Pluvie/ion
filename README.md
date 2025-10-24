@@ -5,8 +5,8 @@
 
 ## Introduction
 
-⚡️ION⚡️ is a library that aims to uplift and strenghten the C programming language.
-Hence the name *Super C harge*.
+⚡️ION⚡️ is an ANSI C library that aims to uplift and strenghten the C programming
+language. Hence the name *Super C harge*.
 
 It is designed to be a single header to be included directly in your source code. Due
 to its innovative approach, its main audience are brand new projects or complete
@@ -16,8 +16,8 @@ refactors.
 
 ⚡️ION⚡️ shall provide efficient language constructs to:
 
-  - offer fully type safe [data structures](doc/README.md#data-structures) like lists,
-    maps and sets, which can hold any type.
+  - offer fully qualified and type safe [data structures](doc/README.md#data-structures)
+    such as lists, maps and sets, which can hold *any* type.
   - enable the [reflection](doc/README.md#reflection) of any C program object.
   - introduce a [memory management](doc/README.md#memory) approach that can
     revolutionize the way C code is written.

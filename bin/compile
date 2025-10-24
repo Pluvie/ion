@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# ⚡️ION⚡️ compilation script.
+# Works only for Unix-like platforms.
+# For Windows users, see `bin/compile.bat`.
+
+if [[ $# -lt 1 ]]; then
+  echo "Usage: bin/compile [app] options"
+  exit 1
+fi
+
+COMPILER="clang"
+PLATFORM="LINUX"
+ARCHITECTURE="X64"
+
+APP=$1
+FILES=$(find app/$APP -name "*.c" -type f | tr '\n' ' ')
+
+GCC_FLAGS="-std=c89 -pedantic -Wall -Werror"
+CLANG_FLAGS="-std=c89 -Wall -Werror"
+
+if    [[ $COMPILER == "gcc"   ]]; then
+  FLAGS=$GCC_FLAGS
+elif  [[ $COMPILER == "clang" ]]; then
+  FLAGS=$CLANG_FLAGS
+fi
+
+mkdir -p exe
+$COMPILER $FILES $FLAGS           \
+  -D PLATFORM=$PLATFORM           \
+  -D ARCHITECTURE=$ARCHITECTURE   \
+  -I ./src                        \
+  ${@:2}                          \
+  -o exe/$APP
+
+
+# To compile ⚡️ION⚡️ as a shared library run:
+#
+# ```
+# bin/compile libion -O3 -march=native -shared -fPIC
+# ```
+#
+# Then rename `exe/libion` to `exe/libion.so`
