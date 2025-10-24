@@ -42,16 +42,10 @@
 */
 
 #define map_of char*, int
-#define map_eq_function(v, u) cstr_equal(v, u)
-#define map_hash_function(v) hash_djb2_cstr(v)
 #include <ion/containers/map.c>
 
 #define map_of char*, struct squadmate
-#define map_eq_function(v, u) cstr_equal(v, u)
-#define map_hash_function(v) hash_djb2_cstr(v)
 #include <ion/containers/map.c>
 
 #define map_of str, struct squadmate
-#define map_eq_function(v, u) str_equal(v, u)
-#define map_hash_function(v) hash_djb2(v.chars, v.length)
 #include <ion/containers/map.c>
