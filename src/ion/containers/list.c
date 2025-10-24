@@ -10,3 +10,4 @@
 
 #undef list_of
 #undef list_cmp_function
+#undef list_eq_function

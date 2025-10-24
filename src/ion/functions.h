@@ -30,6 +30,7 @@
 #include "functions/sleep.h"
 #include "functions/str_build.h"
 #include "functions/str_builder.h"
+#include "functions/str_compare.h"
 #include "functions/str_empty.h"
 #include "functions/str_equal.h"
 #include "functions/str_to_dec.h"

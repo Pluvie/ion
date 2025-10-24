@@ -19,8 +19,8 @@ linear_probing:
   if (set_pos_is_free(set, probe_index))
     return probe_index;
 
-#ifdef set_cmp_function
-  if (set_cmp_function(element, (*probed_element)))
+#ifdef set_eq_function
+  if (set_eq_function(element, (*probed_element)))
 #else
   if (memory_equal((&element), probed_element, sizeof(T)))
 #endif

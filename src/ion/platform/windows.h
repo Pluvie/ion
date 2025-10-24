@@ -5,10 +5,12 @@
 #if   architecture(X64)
   #define widest_int_t    long long int   /* 64 bit */
   #define INT_FORMAT      "%ll"
+  #define INT0_BIT_WIDTH  32
 
 #elif architecture(X86)
   #define widest_int_t    int             /* 32 bit */
   #define INT_FORMAT      "%"
+  #define INT0_BIT_WIDTH  32
 
 #else
   #error "⚡️ION⚡️: Unsupported architecture for Windows platform."

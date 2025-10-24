@@ -5,6 +5,7 @@
 #include "functions/list_init.c"
 #include "functions/list_pop.c"
 #include "functions/list_push.c"
+#include "functions/list_sort.c"
 
 #include "functions/reflection/adder.c"
 #include "functions/reflection/creator.c"

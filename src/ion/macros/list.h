@@ -116,6 +116,12 @@
   list_function(*(l), at)(l, p)
 
 /*
+  Sorts the elements of the list in place using a comparison function.
+*/
+#define list_sort(l, f) \
+  list_function(*(l), sort)(l, f)
+
+/*
   Loops over the elements of the list, with optional index name.
 */
 #define list_each(l, e, ...)                                                            \

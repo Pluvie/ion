@@ -13,8 +13,8 @@ spec( list_del ) {
     list_push(list, 7);
     list_push(list, 8);
     list_push(list, 9);
-    int original_list_length = list->length;
-    int original_list_capacity = list->capacity;
+    unsigned int original_list_length = list->length;
+    unsigned int original_list_capacity = list->capacity;
     unsigned int result = list_del(list, element);
 
     must("decrease the list length by 1");
@@ -44,8 +44,8 @@ spec( list_del ) {
     list_push(list, 7);
     list_push(list, 8);
     list_push(list, 9);
-    int original_list_length = list->length;
-    int original_list_capacity = list->capacity;
+    unsigned int original_list_length = list->length;
+    unsigned int original_list_capacity = list->capacity;
     unsigned int result = list_del(list, element);
 
     must("return -1");

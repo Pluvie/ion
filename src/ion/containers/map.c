@@ -5,8 +5,8 @@
 #define K _key_type(map_of)
 #define V _value_type(map_of)
 
-#ifdef  map_cmp_function
-#define set_cmp_function map_cmp_function
+#ifdef  map_eq_function
+#define set_eq_function map_eq_function
 #endif
 #ifdef  map_hash_function
 #define set_hash_function map_hash_function
@@ -22,7 +22,7 @@
 #undef __value_type
 
 #undef map_of
-#undef map_cmp_function
+#undef map_eq_function
 #undef map_hash_function
-#undef set_cmp_function
+#undef set_eq_function
 #undef set_hash_function

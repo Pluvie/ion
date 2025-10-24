@@ -6,8 +6,8 @@ unsigned int list<T>_del (
   T previous = { 0 };
 
   for(int i = list->length - 1; i >= 0; i--) {
-  #ifdef list_cmp_function
-    if (list_cmp_function(element, list->data[i])) {
+  #ifdef list_eq_function
+    if (list_eq_function(element, list->data[i])) {
   #else
     if (memory_equal((&element), list->data + i, sizeof(T))) {
   #endif

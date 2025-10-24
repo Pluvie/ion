@@ -73,8 +73,8 @@ typedef unsigned int  native_uint_t;
 #define int   widest_int_t
 
 /*
-  Defines the INT_MAXCHARS constant, which is directly derived from the platform
-  dependent INT_MAXNUM constant. On 32-bit systems, the INT_MAXCHARS constant is equal
+  Defines the INT_MAXCHARS constant, which is directly derived from the architecture
+  dependant INT_MAXNUM constant. On 32-bit systems, the INT_MAXCHARS constant is equal
   to 10 -- because 2147483647 is the greatest integer (2^31 - 1), which is 10 digits
   long. On 64-bit systems, the INT_MAXCHARS constant is equal to 19 -- because
   9223372036854775807 is the greatest integer (2^63 - 1).

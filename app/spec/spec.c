@@ -70,7 +70,7 @@ void spec_failed (
   for (int i = 0; i < spec_indentation; i++)
     fprintf(stderr, "  ");
   fprintf(stderr, PRINT_COLOR_RED);
-  fprintf(stderr, "%s (%s:%li) ", text, file, line);
+  fprintf(stderr, "%s (%s:%i) ", text, file, (int0) line);
   fprintf(stderr, PRINT_COLOR_NONE);
 }
 
@@ -130,9 +130,9 @@ void specs_run (
     fprintf(stderr, "\n");
     fprintf(stderr, PRINT_COLOR_GREEN);
     if (focused_specs[0] == nullptr)
-      fprintf(stderr, "Completed %li specs.\n", added_specs_count);
+      fprintf(stderr, "Completed %i specs.\n", (int0) added_specs_count);
     else
-      fprintf(stderr, "Completed %li focused spec(s).\n", focused_specs_count);
+      fprintf(stderr, "Completed %i focused spec(s).\n", (int0) focused_specs_count);
     fprintf(stderr, "All specs passed successfully.");
     fprintf(stderr, "\n");
     fprintf(stderr, PRINT_COLOR_NONE);

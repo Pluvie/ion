@@ -30,6 +30,7 @@
 #include "functions/sleep.c"
 #include "functions/str_build.c"
 #include "functions/str_builder.c"
+#include "functions/str_compare.c"
 #include "functions/str_empty.c"
 #include "functions/str_equal.c"
 #include "functions/str_to_dec.c"

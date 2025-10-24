@@ -33,16 +33,33 @@
 /*
   This macro passes the correct print_arg struct depending on the type of `value`.
 */
-#define f(...)                                                    \
-  _Generic(__VA_ARGS__,                                           \
-    bool          : &(struct print_arg) { 0, PRINT_ARG__BOOL },   \
-    int0          : &(struct print_arg) { 0, PRINT_ARG__INT0 },   \
-    int           : &(struct print_arg) { 0, PRINT_ARG__INT },    \
-    unsigned int  : &(struct print_arg) { 0, PRINT_ARG__UINT },   \
-    dec           : &(struct print_arg) { 0, PRINT_ARG__DEC },    \
-    str           : &(struct print_arg) { 0, PRINT_ARG__STR },    \
-    char          : &(struct print_arg) { 0, PRINT_ARG__CHAR },   \
-    unsigned char : &(struct print_arg) { 0, PRINT_ARG__UCHAR },  \
-    char*         : &(struct print_arg) { 0, PRINT_ARG__CHAR_P }, \
-    void*         : &(struct print_arg) { 0, PRINT_ARG__VOID_P }  \
-  ), __VA_ARGS__
+#if INT_BIT_WIDTH == INT0_BIT_WIDTH
+/* `int` is the same type of `int0`, we can alias the two types. */
+  #define f(...)                                                    \
+    _Generic(__VA_ARGS__,                                           \
+      bool          : &(struct print_arg) { 0, PRINT_ARG__BOOL },   \
+      int           : &(struct print_arg) { 0, PRINT_ARG__INT },    \
+      unsigned int  : &(struct print_arg) { 0, PRINT_ARG__UINT },   \
+      dec           : &(struct print_arg) { 0, PRINT_ARG__DEC },    \
+      str           : &(struct print_arg) { 0, PRINT_ARG__STR },    \
+      char          : &(struct print_arg) { 0, PRINT_ARG__CHAR },   \
+      unsigned char : &(struct print_arg) { 0, PRINT_ARG__UCHAR },  \
+      char*         : &(struct print_arg) { 0, PRINT_ARG__CHAR_P }, \
+      void*         : &(struct print_arg) { 0, PRINT_ARG__VOID_P }  \
+    ), __VA_ARGS__
+#else
+/* `int` is NOT the same type of `int0`, we must add the `int0` case. */
+  #define f(...)                                                    \
+    _Generic(__VA_ARGS__,                                           \
+      bool          : &(struct print_arg) { 0, PRINT_ARG__BOOL },   \
+      int0          : &(struct print_arg) { 0, PRINT_ARG__INT0 },   \
+      int           : &(struct print_arg) { 0, PRINT_ARG__INT },    \
+      unsigned int  : &(struct print_arg) { 0, PRINT_ARG__UINT },   \
+      dec           : &(struct print_arg) { 0, PRINT_ARG__DEC },    \
+      str           : &(struct print_arg) { 0, PRINT_ARG__STR },    \
+      char          : &(struct print_arg) { 0, PRINT_ARG__CHAR },   \
+      unsigned char : &(struct print_arg) { 0, PRINT_ARG__UCHAR },  \
+      char*         : &(struct print_arg) { 0, PRINT_ARG__CHAR_P }, \
+      void*         : &(struct print_arg) { 0, PRINT_ARG__VOID_P }  \
+    ), __VA_ARGS__
+#endif
