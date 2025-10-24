@@ -1,9 +1,10 @@
 void* map<K, V>_reflection_adder (
     void* generic_map,
-    void* generic_key
+    void* generic_entry
 )
 {
   map<K, V>* map = (map<K, V>*) generic_map;
-  unsigned int position = map<K, V>_set(map, *(K*) generic_key, (V) { 0 });
+  struct { K* key; V* value; }* entry = generic_entry;
+  unsigned int position = map<K, V>_set(map, *(entry->key), *(entry->value));
   return map->values + position;
 }

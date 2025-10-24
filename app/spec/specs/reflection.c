@@ -308,7 +308,7 @@ spec( reflection ) {
     when("the list reflection has no limits") {
       list<struct squadmate> squad;
 
-      struct reflection rfx = reflect(list<struct squadmate>, LIST, of(
+      struct reflection rfx = reflect(list<struct squadmate>, CONTAINER, of(
         reflect(struct squadmate, STRUCT, fields(
           field(struct squadmate, STR,  name),
           field(struct squadmate, ENUM, class),
@@ -319,7 +319,7 @@ spec( reflection ) {
       );
 
       must("correctly define the reflection");
-        verify(rfx.type == LIST);
+        verify(rfx.type == CONTAINER);
         verify(str_empty(rfx.name));
         verify(cstr_equal(rfx.type_name, "list_struct_squadmate"));
         verify(rfx.size == sizeof(squad));

@@ -2,7 +2,7 @@
 
 spec( map_reflection_adder ) {
   argument(void* generic_map);
-  argument(void* generic_key);
+  argument(void* generic_entry);
 
   precondition("a valid map");
     map<char*, int> map = map_alloc(char*, int, 8, spec_allocator);
@@ -10,17 +10,19 @@ spec( map_reflection_adder ) {
     map_set(&map, "b", 4);
     generic_map = &map;
 
-  precondition("a valid key")
-    char* key = "c"; generic_key = &key;
+  precondition("a valid entry") \
+    char* entry_key = "c"; int entry_value = 5; \
+    struct { char** key; int* value; } entry = { &entry_key, &entry_value }; \
+    generic_entry = &entry;
 
   must("behave exactly like map_set");
     map<char*, int> map_with_add = map_alloc(char*, int, 8, spec_allocator);
     map_set(&map_with_add, "a", 3);
     map_set(&map_with_add, "b", 4);
 
-    void* result = map<char*, int>_reflection_adder(generic_map, generic_key);
+    void* result = map<char*, int>_reflection_adder(generic_map, generic_entry);
     unsigned int map_result = (int*) result - map.values;
-    unsigned int map_with_add_result = map_set(&map_with_add, key, 5);
+    unsigned int map_with_add_result = map_set(&map_with_add, entry_key, entry_value);
 
     verify(map_result == map_with_add_result);
     verify(map.length == map_with_add.length);

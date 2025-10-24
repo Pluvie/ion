@@ -9,7 +9,5 @@ enum reflection_types {
   ARRAY         = 8,
   POINTER       = 9,
   SELF          = 10,
-  LIST          = 11,
-  SET           = 12,
-  MAP           = 13,
+  CONTAINER     = 11,
 };
