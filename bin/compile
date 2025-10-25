@@ -9,7 +9,7 @@ if [[ $# -lt 1 ]]; then
   exit 1
 fi
 
-COMPILER="clang"
+COMPILER="gcc"
 PLATFORM="LINUX"
 ARCHITECTURE="X64"
 
@@ -17,7 +17,7 @@ APP=$1
 FILES=$(find app/$APP -name "*.c" -type f | tr '\n' ' ')
 
 GCC_FLAGS="-std=c89 -pedantic -Wall -Werror"
-CLANG_FLAGS="-std=c89 -Wall -Werror"
+CLANG_FLAGS="-std=c89 -pedantic -Wall -Werror"
 
 if    [[ $COMPILER == "gcc"   ]]; then
   FLAGS=$GCC_FLAGS

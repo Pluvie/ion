@@ -5,7 +5,7 @@
 
 ## Introduction
 
-⚡️ION⚡️ is an ANSI C library that aims to uplift and strenghten the C programming
+⚡️ION⚡️ is a C89 library that aims to uplift and strenghten the C programming
 language. Hence the name *Super C harge*.
 
 It is designed to be a single header to be included directly in your source code. Due
