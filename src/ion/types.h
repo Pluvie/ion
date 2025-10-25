@@ -43,11 +43,20 @@ typedef unsigned int    uint_t;
 #ifdef int
 #undef int
 #endif
+
+#if compiler(CLANG) /* Ignores the "keyword is hidden warning" emitted only by Clang. */
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wkeyword-macro"
+#endif
 #define int   widest_int_t
+#if compiler(CLANG)
+#pragma clang diagnostic pop   
+#endif
 
 #ifdef uint
 #undef uint
 #endif
+
 #define uint  widest_uint_t
 
 /* Defines the `c str` ⚡️ION⚡️ type.
