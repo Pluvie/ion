@@ -122,14 +122,13 @@ struct reflection {
     uint min;
     uint max;
   } size_limits;
-  struct reflection* parent;
   struct reflection* self;
-  struct reflection* fields;
-  struct reflection* element;
+  struct reflection* parent;
+  struct reflection* children;
   void (*validator)(void*, struct reflection*);
   int (*enumerator)(str);
   struct {
     void (*creator)(void*, uint, struct allocator*);
-    void* (*adder)(void*, void*);
+    void (*adder)(void*, void*);
   } container;
 };

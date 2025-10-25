@@ -1,3 +1,4 @@
+#include "macros/fmt.h"
 #include "macros/likely.h"
 #include "macros/nullptr.h"
 #include "macros/str.h"
