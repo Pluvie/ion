@@ -97,23 +97,24 @@ struct allocator {
 
 /* Defines the `enum reflection_types` ⚡️ION⚡️ type. */
 enum reflection_types {
-  INT,
-  DEC,
-  STR,
-  BOOL,
-  CHAR,
-  ENUM,
-  STRUCT,
-  ARRAY,
-  POINTER,
-  SELF,
-  CONTAINER
+  /* Primitive types. */
+  INT         = 1,
+  DEC         = 2,
+  STR         = 3,
+  BOOL        = 4,
+
+  /* Composite types. */
+  STRUCT      = 11,
+  ARRAY       = 12,
+  POINTER     = 13,
+  SELF        = 14,
+  CONTAINER   = 15
 };
 
 /* Defines the `struct reflection` ⚡️ION⚡️ type. */
 struct reflection {
   enum reflection_types type;
-  str name;
+  str  name;
   cstr type_name;
   uint size;
   uint offset;
@@ -126,7 +127,7 @@ struct reflection {
   struct reflection* parent;
   struct reflection* children;
   void (*validator)(void*, struct reflection*);
-  int (*enumerator)(str);
+  int  (*enumerator)(str);
   struct {
     void (*creator)(void*, uint, struct allocator*);
     void (*adder)(void*, void*);
