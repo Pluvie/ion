@@ -1,5 +1,7 @@
 #include "macros/fmt.h"
 #include "macros/likely.h"
+#include "macros/log2.h"
+#include "macros/next_pow2.h"
 #include "macros/nullptr.h"
 #include "macros/str.h"
 #include "macros/unlikely.h"

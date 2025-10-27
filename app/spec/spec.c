@@ -149,16 +149,23 @@ void set_example (
 {
   int data[] = { 7, 8, 9 };
   struct int_list l = { 0 };
-  struct int_set s = { 0 };
+  struct allocator allocator = allocator_init(0);
+  struct int_set s = int_set_alloc(0, &allocator);
 
   l.data = data;
   l.length = sizeof(data);
   printf("HELLO WORLD! number: {%"fmt(INT)"} [%"fmt(INT)"] --%"fmt(INT)"--\n", 42L, l.length, *int_list_at(&l, 1));
 
+  s.allocator = &allocator;
   int_set_add(&s, 7);
   int_set_add(&s, 8);
   int_set_add(&s, 9);
   printf("set { length: %"fmt(UINT)" }\n", s.length);
+  printf("7? %"fmt(CSTR)"\n", int_set_has(&s, 7) ? "true" : "false");
+  printf("8? %"fmt(CSTR)"\n", int_set_has(&s, 8) ? "true" : "false");
+  printf("9? %"fmt(CSTR)"\n", int_set_has(&s, 9) ? "true" : "false");
+  printf("5? %"fmt(CSTR)"\n", int_set_has(&s, 5) ? "true" : "false");
+  allocator_release(&allocator);
 }
 
 int_t main (

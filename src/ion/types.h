@@ -73,6 +73,9 @@ typedef struct str {
   uint  length;
 } str;
 
+/* Defines the `byte` ⚡️ION⚡️ type. */
+typedef unsigned char byte;
+
 /* Defines the `bool` ⚡️ION⚡️ type. */
 typedef enum bool {
   false,
@@ -81,7 +84,7 @@ typedef enum bool {
 
 /* Defines the `struct allocator` ⚡️ION⚡️ type. */
 struct allocator {
-  void* data;
+  byte* data;
   uint capacity;
   uint position;
   struct {
