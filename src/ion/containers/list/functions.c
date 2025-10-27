@@ -42,11 +42,7 @@ uint container_function(N, del) (
   T previous = { 0 };
 
   for(int i = list->length - 1; i >= 0; i--) {
-  #ifdef list_eq_function
-    if (list_eq_function(element, list->data[i])) {
-  #else
-    if (memory_equal((&element), list->data + i, sizeof(T))) {
-  #endif
+    if (container_equalizer(element, list->data[i])) {
       memory_copy(list->data + i, &previous, sizeof(T));
       list->length--;
       return (uint) i;

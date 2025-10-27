@@ -143,7 +143,18 @@ void reflection_example (
 #define container_hasher(e) e
 #include <ion/containers/set.c>
 
-void set_example (
+#define container_for_key   int
+#define container_for_value int
+#define container_name  int_map
+#include <ion/containers/map.h>
+#define container_for_key   int
+#define container_for_value int
+#define container_name  int_map
+#define container_equalizer(a, b) a == b
+#define container_hasher(e) e
+#include <ion/containers/map.c>
+
+void data_example (
     void
 )
 {
@@ -151,12 +162,12 @@ void set_example (
   struct int_list l = { 0 };
   struct allocator allocator = allocator_init(0);
   struct int_set s = int_set_alloc(0, &allocator);
+  struct int_map m = int_map_alloc(0, &allocator);
 
   l.data = data;
   l.length = sizeof(data);
   printf("HELLO WORLD! number: {%"fmt(INT)"} [%"fmt(INT)"] --%"fmt(INT)"--\n", 42L, l.length, *int_list_at(&l, 1));
 
-  s.allocator = &allocator;
   int_set_add(&s, 7);
   int_set_add(&s, 8);
   int_set_add(&s, 9);
@@ -165,6 +176,15 @@ void set_example (
   printf("8? %"fmt(CSTR)"\n", int_set_has(&s, 8) ? "true" : "false");
   printf("9? %"fmt(CSTR)"\n", int_set_has(&s, 9) ? "true" : "false");
   printf("5? %"fmt(CSTR)"\n", int_set_has(&s, 5) ? "true" : "false");
+
+  int_map_set(&m, 7, 10);
+  int_map_set(&m, 8, 11);
+  int_map_set(&m, 9, 12);
+  printf("map { length: %"fmt(UINT)" }\n", m.length);
+  printf("7: %"fmt(INT)"\n", *int_map_get(&m, 7));
+  printf("8: %"fmt(INT)"\n", *int_map_get(&m, 8));
+  printf("9: %"fmt(INT)"\n", *int_map_get(&m, 9));
+
   allocator_release(&allocator);
 }
 
@@ -173,7 +193,7 @@ int_t main (
     cstr* argv
 )
 {
-  set_example();
+  data_example();
   reflection_example();
 
   return EXIT_SUCCESS;

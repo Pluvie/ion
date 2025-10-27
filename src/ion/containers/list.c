@@ -9,7 +9,6 @@
 #undef N
 #undef container_for
 #undef container_name
+#undef container_equalizer
 #undef container_function
 #undef concat_function
-
-#undef list_of

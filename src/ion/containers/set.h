@@ -12,5 +12,3 @@
 #undef container_name
 #undef container_function
 #undef concat_function
-
-#undef set_of

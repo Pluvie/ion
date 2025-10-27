@@ -76,9 +76,8 @@ struct N container_function(N, alloc) (
   return set;
 }
 
-/*
 uint container_function(N, del) (
-    N* set,
+    struct N* set,
     T element
 )
 {
@@ -94,6 +93,7 @@ uint container_function(N, del) (
   return position;
 }
 
+/*
 bool container_function(N, each) (
     N* set,
     struct iterator* iter
