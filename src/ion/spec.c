@@ -17,16 +17,16 @@ struct allocator* spec_allocator;
 /* Global variable that stores registered specs to be run. */
 int added_specs_count = 0;
 void (*added_specs[8192])(void) = { 0 };
-char* added_spec_names[8192] = { 0 };
+cstr added_spec_names[8192] = { 0 };
 
 /* Global variable that stores focused specs to be run. */
 int focused_specs_count = 0;
 void (*focused_specs[16])(void) = { 0 };
-char* focused_spec_names[16] = { 0 };
+cstr focused_spec_names[16] = { 0 };
 
 /* Prints a spec text with indentation. */
 void spec_print (
-    const char* text
+    const cstr text
 )
 {
   fprintf(stderr, "\n");
@@ -39,8 +39,8 @@ void spec_print (
 
 /* Prints a failed spec condition. */
 void spec_failed (
-    const char* text,
-    const char* file,
+    const cstr text,
+    const cstr file,
     int line
 )
 {

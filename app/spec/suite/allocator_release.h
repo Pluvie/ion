@@ -1,5 +1,4 @@
-#include <ion.h>
-#include <ion/spec.h>
+#include "../spec.h"
 
 static struct {
   int count;

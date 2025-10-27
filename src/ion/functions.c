@@ -2,6 +2,10 @@
 #include "functions/allocator_pop.c"
 #include "functions/allocator_push.c"
 #include "functions/allocator_release.c"
+#include "functions/cstr_compare.c"
+#include "functions/cstr_equal.c"
+#include "functions/hash_djb2.c"
+#include "functions/hash_djb2_cstr.c"
 
 #include "functions/bits.c"
 #include "functions/fatal.c"

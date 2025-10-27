@@ -1,5 +1,5 @@
 void fatal (
-    const char* format,
+    const cstr format,
     ...
 )
 #if compiler(GCC) || compiler(CLANG)

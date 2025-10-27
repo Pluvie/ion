@@ -8,7 +8,9 @@ spec( allocator_init );
 spec( allocator_pop );
 spec( allocator_push );
 spec( allocator_release );
-spec( example );
+spec( cstr_compare );
+spec( cstr_equal );
+spec( map_set );
 
 int_t main (
     int_t argc,
@@ -19,7 +21,9 @@ int_t main (
   spec_add( allocator_pop );
   spec_add( allocator_push );
   spec_add( allocator_release );
-  spec_add( example );
+  spec_add( cstr_compare );
+  spec_add( cstr_equal );
+  spec_add( map_set );
 
   specs_run();
 
