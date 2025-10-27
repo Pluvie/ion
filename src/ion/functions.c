@@ -1,10 +1,8 @@
-/*
 #include "functions/allocator_init.c"
 #include "functions/allocator_pop.c"
 #include "functions/allocator_push.c"
 #include "functions/allocator_release.c"
-*/
-#include "functions/allocator.c"
+
 #include "functions/bits.c"
 #include "functions/fatal.c"
 #include "functions/memory.c"

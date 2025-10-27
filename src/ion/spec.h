@@ -22,6 +22,10 @@
 #define argument(arg) \
   arg
 
+/* Defines a function specification return value. */
+#define returns(value) \
+  value
+
 /* Defines a function specification precondition. */
 #define precondition(cond) \
   spec_print("given " cond);

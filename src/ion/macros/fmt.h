@@ -5,11 +5,11 @@
 #define str_fmt(string) (int_t) string.length, string.chars
 
 /* Defines some standard formats to print the most common types. */
-#define CSTR_FORMAT     "s"
-#define STR_FORMAT      ".*s"
-#define ENUM_FORMAT     "u"
-#define INT_T_FORMAT    "i"
-#define UINT_T_FORMAT   "u"
+#define CSTR_FORMAT         "s"
+#define STR_FORMAT          ".*s"
+#define ENUM_FORMAT         "u"
+#define INT_T_FORMAT        "i"
+#define UINT_T_FORMAT       "u"
 
 /* Defines some colors for printing on the tty. */
 #define FMT_COLOR_BLUE      "\x1b[34m"

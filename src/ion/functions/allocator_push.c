@@ -1,24 +1,3 @@
-struct allocator allocator_init (
-    uint capacity
-)
-{
-  struct allocator result = { 0 };
-  result.capacity = next_pow2(capacity);
-  return result;
-}
-
-void* allocator_pop (
-    struct allocator* allocator,
-    uint amount
-)
-{
-  if (amount > allocator->position)
-    allocator->position = 0;
-  else
-    allocator->position -= amount;
-
-  return allocator->data + allocator->position;
-}
 
 void* allocator_push (
     struct allocator* allocator,
@@ -107,21 +86,4 @@ allocate:
   allocator->allocations.size += amount;
   allocator->allocations.count++;
   return address;
-}
-
-void allocator_release (
-    struct allocator* allocator
-)
-{
-  uint region_index;
-  for (region_index = 0; region_index < allocator->regions.count; region_index++)
-    memory_release(allocator->regions.addresses[region_index]);
-
-  if (allocator->regions.addresses != nullptr)
-    memory_release(allocator->regions.addresses);
-
-  if (allocator->data != nullptr)
-    memory_release(allocator->data);
-
-  memory_set(allocator, 0, sizeof(*allocator));
 }
