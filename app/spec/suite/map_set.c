@@ -8,12 +8,7 @@ spec( map_set ) {
 
   when("the map is not allocated") {
     #define unallocated_map_condition \
-      memory_set(unallocated_map_keys, 0, sizeof(unallocated_map_keys)); \
-      memory_set(unallocated_map_values, 0, sizeof(unallocated_map_values)); \
-      memory_set(unallocated_map_hashes, 0, sizeof(unallocated_map_hashes)); \
-      unallocated_map.keys.data = unallocated_map_keys; \
-      unallocated_map.keys.hashes = unallocated_map_hashes; \
-      unallocated_map.values = unallocated_map_values; \
+      unallocated_map_init(); \
       map = &unallocated_map;
 
     uint original_map_length;

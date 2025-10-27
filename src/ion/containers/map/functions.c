@@ -1,3 +1,5 @@
+#include "functions/map_set.c"
+
 struct N container_function(N, alloc) (
     uint initial_capacity,
     struct allocator* allocator
@@ -64,7 +66,6 @@ bool container_function(N, has) (
   return container_function(S, has)(&map->keys, key);
 }
 
-/*
 struct N container_function(N, init) (
     uint capacity,
     K* keys,
@@ -72,12 +73,14 @@ struct N container_function(N, init) (
     uint* hashes
 )
 {
-  return (struct N) {
-    .keys = container_function(S, init)(capacity, keys, hashes),
-    .values = values,
-  };
+  struct S set = container_function(S, init)(capacity, keys, hashes);
+  struct N map = { 0 };
+  map.keys = set;
+  map.values = values;
+  return map;
 }
 
+/*
 struct N container_function(N, literal) (
     uint capacity,
     K* keys,
@@ -104,29 +107,3 @@ struct N container_function(N, literal) (
   return map;
 }
 */
-
-uint container_function(N, set) (
-    struct N* map,
-    K key,
-    V value
-)
-{
-  uint capacity = map->keys.capacity;
-  uint position = container_function(S, add)(&map->keys, key);
-  if (position == set_pos_invalid) {
-    fatal("set: stack allocated map is full");
-    return set_pos_invalid;
-  }
-
-  if (map->keys.capacity > capacity) {
-    V* new_values = allocator_push(map->keys.allocator, map->keys.capacity * sizeof(V));
-    memory_set(new_values, 0, map->keys.capacity * sizeof(V));
-    memory_copy(new_values, map->values, capacity);
-    map->values = new_values;
-  }
-
-  map->values[position] = value;
-  map->length = map->keys.length;
-
-  return position;
-}

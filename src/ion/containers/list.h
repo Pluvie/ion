@@ -3,7 +3,7 @@
 #define concat_function(name, func) name ## _ ## func
 #define container_function(name, func) concat_function(name, func)
 
-#include "list/type.h"
+#include "list/struct.h"
 #include "list/functions.h"
 
 #undef T

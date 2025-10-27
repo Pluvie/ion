@@ -4,7 +4,7 @@
 /* Autodefines the keys set type. */
 #define N container_function(container_name, keys)
 #define T container_for_key
-#include "set/type.h"
+#include "set/struct.h"
 #include "set/functions.h"
 #undef  N
 #undef  T
@@ -13,7 +13,7 @@
 #define V container_for_value
 #define N container_name
 #define S container_function(container_name, keys)
-#include "map/type.h"
+#include "map/struct.h"
 #include "map/functions.h"
 
 #undef K

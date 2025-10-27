@@ -1,3 +1,5 @@
+#include "functions/map_set.h"
+
 struct N container_function(N, alloc) (
     uint initial_capacity,
     struct allocator* allocator
@@ -25,7 +27,6 @@ bool container_function(N, has) (
     K key
 );
 
-/*
 struct N container_function(N, init) (
     uint capacity,
     K* keys,
@@ -33,6 +34,7 @@ struct N container_function(N, init) (
     uint* hashes
 );
 
+/*
 struct N container_function(N, literal) (
     uint capacity,
     K* keys,
@@ -41,9 +43,3 @@ struct N container_function(N, literal) (
     void* pairs
 );
 */
-
-uint container_function(N, set) (
-    struct N* map,
-    K key,
-    V value
-);
