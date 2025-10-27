@@ -16,7 +16,7 @@ uint container_function(N, del) (
     T element
 );
 
-enum bool container_function(N, each) (
+bool container_function(N, each) (
     struct N* list,
     struct iterator* iter
 );

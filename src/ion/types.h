@@ -73,11 +73,11 @@ typedef struct str {
   uint  length;
 } str;
 
-/* Defines the `enum bool` ⚡️ION⚡️ type. */
-enum bool {
+/* Defines the `bool` ⚡️ION⚡️ type. */
+typedef enum bool {
   false,
   true
-};
+} bool;
 
 /* Defines the `struct allocator` ⚡️ION⚡️ type. */
 struct allocator {
@@ -118,14 +118,11 @@ struct reflection {
   cstr type_name;
   uint size;
   uint offset;
-  uint index;
-  struct {
-    uint min;
-    uint max;
-  } size_limits;
-  struct reflection* self;
-  struct reflection* parent;
-  struct reflection* children;
+  union {
+    struct reflection* self;
+    struct reflection* element;
+    struct reflection* fields;
+  } linked;
   void (*validator)(void*, struct reflection*);
   int  (*enumerator)(str);
   struct {

@@ -1,13 +1,6 @@
 #include <ion.h>
 #include <ion.c>
 
-#define container_for   int
-#define container_name  int_list
-#include <ion/containers/list.h>
-#define container_for   int
-#define container_name  int_list
-#include <ion/containers/list.c>
-
 #define reflect(type, reflection_type) { \
   reflection_type, { 0 }, #type, sizeof(type) }
 #define reflect_field(type, name, struct_type, reflection_type) { \
@@ -31,13 +24,10 @@ struct complex {
   } why[3];
 };
 
-int_t main (
-    int_t argc,
-    cstr* argv
+void reflection_example (
+    void
 )
 {
-  int data[] = { 7, 8, 9 };
-  struct int_list l = { 0 };
   struct reflection rfx = reflect(struct complex, STRUCT);
   struct reflection candoit_rfx = reflect_nested(candoit, struct complex, STRUCT);
   struct reflection candoit_rfx_fields[] = {
@@ -46,7 +36,8 @@ int_t main (
     { 0 }
   };
   struct reflection why_rfx = reflect_nested(why, struct complex, ARRAY);
-  struct reflection why_rfx_element[] = {
+  struct reflection why_rfx_element = reflect_nested(why[0], struct complex, STRUCT);
+  struct reflection why_rfx_element_fields[] = {
     reflect_field_nested(int, oh, struct complex, why[0], INT),
     reflect_field_nested(int, no, struct complex, why[0], INT),
     { 0 }
@@ -62,28 +53,24 @@ int_t main (
     { 0 }
   };
 
-  candoit_rfx.children = candoit_rfx_fields;
-  why_rfx.children = why_rfx_element;
+  candoit_rfx.linked.fields = candoit_rfx_fields;
+  why_rfx_element.linked.fields = why_rfx_element_fields;
+  why_rfx.linked.element = &why_rfx_element;
 
   rfx_fields[2] = candoit_rfx;
   rfx_fields[3] = why_rfx;
-  rfx.children = rfx_fields;
-
-  l.data = data;
-  l.length = sizeof(data);
-
-  printf("HELLO WORLD! number: {%"fmt(INT)"} [%"fmt(INT)"] --%"fmt(INT)"--\n", 42L, l.length, *int_list_at(&l, 1));
+  rfx.linked.fields = rfx_fields;
 
   printf("reflection: { type: %"fmt(ENUM)", type_name: %"fmt(CSTR)", size: %"fmt(INT)" }\n", rfx.type, rfx.type_name, rfx.size);
   {
     struct reflection* field;
-    for (field = rfx.children; field->type != 0; field++) {
-      printf("reflection: {"
-        " name: %"      fmt(STR)      ","
-        " type: %"      fmt(UINT_T)   ","
-        " type_name: %" fmt(CSTR)     ","
-        " size: %"      fmt(INT)      ","
-        " offset: %"    fmt(UINT)     " "
+    for (field = rfx.linked.fields; field->type != 0; field++) {
+      printf("field: {"
+        " name: \"%"      fmt(STR)      "\","
+        " type: %"        fmt(UINT_T)   ","
+        " type_name: \"%" fmt(CSTR)     "\","
+        " size: %"        fmt(INT)      ","
+        " offset: %"      fmt(UINT)     " "
         "}\n",
         str_fmt(field->name),
         field->type,
@@ -94,13 +81,13 @@ int_t main (
   }
   {
     struct reflection* field;
-    for (field = candoit_rfx.children; field->type != 0; field++) {
+    for (field = candoit_rfx.linked.fields; field->type != 0; field++) {
       printf("candoit: {"
-        " name: %"      fmt(STR)      ","
-        " type: %"      fmt(UINT_T)   ","
-        " type_name: %" fmt(CSTR)     ","
-        " size: %"      fmt(INT)      ","
-        " offset: %"    fmt(UINT)     " "
+        " name: \"%"      fmt(STR)      "\","
+        " type: %"        fmt(UINT_T)   ","
+        " type_name: \"%" fmt(CSTR)     "\","
+        " size: %"        fmt(INT)      ","
+        " offset: %"      fmt(UINT)     " "
         "}\n",
         str_fmt(field->name),
         field->type,
@@ -111,13 +98,25 @@ int_t main (
   }
   {
     struct reflection* field;
-    for (field = why_rfx.children; field->type != 0; field++) {
+    printf("why_element: {"
+      " name: \"%"      fmt(STR)      "\","
+      " type: %"        fmt(UINT_T)   ","
+      " type_name: \"%" fmt(CSTR)     "\","
+      " size: %"        fmt(INT)      ","
+      " offset: %"      fmt(UINT)     " "
+      "}\n",
+      str_fmt(why_rfx_element.name),
+      why_rfx_element.type,
+      why_rfx_element.type_name,
+      why_rfx_element.size,
+      why_rfx_element.offset);
+    for (field = why_rfx_element.linked.fields; field->type != 0; field++) {
       printf("why: {"
-        " name: %"      fmt(STR)      ","
-        " type: %"      fmt(UINT_T)   ","
-        " type_name: %" fmt(CSTR)     ","
-        " size: %"      fmt(INT)      ","
-        " offset: %"    fmt(UINT)     " "
+        " name: \"%"      fmt(STR)      "\","
+        " type: %"        fmt(UINT_T)   ","
+        " type_name: \"%" fmt(CSTR)     "\","
+        " size: %"        fmt(INT)      ","
+        " offset: %"      fmt(UINT)     " "
         "}\n",
         str_fmt(field->name),
         field->type,
@@ -126,6 +125,49 @@ int_t main (
         field->offset);
     }
   }
+}
+
+#define container_for   int
+#define container_name  int_list
+#include <ion/containers/list.h>
+#define container_for   int
+#define container_name  int_list
+#include <ion/containers/list.c>
+
+#define container_for   int
+#define container_name  int_set
+#include <ion/containers/set.h>
+#define container_for   int
+#define container_name  int_set
+#define container_equalizer(a, b) a == b
+#define container_hasher(e) e
+#include <ion/containers/set.c>
+
+void set_example (
+    void
+)
+{
+  int data[] = { 7, 8, 9 };
+  struct int_list l = { 0 };
+  struct int_set s = { 0 };
+
+  l.data = data;
+  l.length = sizeof(data);
+  printf("HELLO WORLD! number: {%"fmt(INT)"} [%"fmt(INT)"] --%"fmt(INT)"--\n", 42L, l.length, *int_list_at(&l, 1));
+
+  int_set_add(&s, 7);
+  int_set_add(&s, 8);
+  int_set_add(&s, 9);
+  printf("set { length: %"fmt(UINT)" }\n", s.length);
+}
+
+int_t main (
+    int_t argc,
+    cstr* argv
+)
+{
+  set_example();
+  reflection_example();
 
   return EXIT_SUCCESS;
 }

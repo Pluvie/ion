@@ -60,7 +60,7 @@ uint container_function(N, del) (
 
   return (uint) -1;
 }
-enum bool container_function(N, each) (
+bool container_function(N, each) (
     struct N* list,
     struct iterator* iter
 )
