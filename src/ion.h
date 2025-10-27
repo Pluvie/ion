@@ -11,4 +11,6 @@
 #include "ion/platform.h"
 #include "ion/macros.h"
 #include "ion/types.h"
+#include "ion/enums.h"
+#include "ion/structs.h"
 #include "ion/functions.h"
