@@ -47,9 +47,6 @@ void reflection_example (
     reflect_field(int, there, struct complex, INT),
     { 0 }, /* candoit_rfx */
     { 0 }, /* why_rfx */
-    /*reflect_field(int, candoit.a, struct complex, INT),
-    reflect_field(int, candoit.b, struct complex, INT),
-    reflect_field(((struct complex*) 0)->why, why, struct complex, ARRAY),*/
     { 0 }
   };
 
