@@ -1,5 +1,6 @@
-#include "functions/map_set.c"
+#include "functions/map_each.c"
 #include "functions/map_init.c"
+#include "functions/map_set.c"
 
 struct N container_function(N, alloc) (
     uint initial_capacity,
@@ -26,22 +27,6 @@ V* container_function(N, del) (
   map->length = map->keys.length;
   return map->values + position;
 }
-
-/*
-bool container_function(N, each) (
-    struct N* map,
-    struct iterator* iter
-)
-{
-  iter->gate = ~0;
-
-  for (; iter->position < map->keys.capacity; iter->position++)
-    if (set_pos_is_occupied(&map->keys, iter->position))
-      return true;
-
-  return false;
-}
-*/
 
 V* container_function(N, get) (
     struct N* map,

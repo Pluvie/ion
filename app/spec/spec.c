@@ -12,6 +12,7 @@ spec( bit_count_leading_ones );
 spec( bit_count_leading_zeros );
 spec( cstr_compare );
 spec( cstr_equal );
+spec( map_each );
 spec( map_set );
 spec( memory_acquire );
 spec( memory_acquire_aligned );
@@ -35,6 +36,7 @@ int_t main (
   spec_add( bit_count_leading_zeros );
   spec_add( cstr_compare );
   spec_add( cstr_equal );
+  spec_add( map_each );
   spec_add( map_set );
   spec_add( memory_acquire );
   spec_add( memory_acquire_aligned );

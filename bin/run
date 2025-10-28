@@ -34,6 +34,16 @@ elif  [[ $MODE == "valgrind" ]]; then
     exe/$APP
   echo
 
+
+elif  [[ $MODE == "drmemory" ]]; then
+  bin/compile $APP -g3
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+
+  drmemory -- exe/$APP
+  echo
+
 elif  [[ $MODE == "debug" ]]; then
   bin/compile $APP -g3
   if [ $? -ne 0 ]; then

@@ -46,7 +46,7 @@ void spec_failed (
 {
   specs_passed = false;
   fprintf(stderr, FMT_COLOR_RED);
-  fprintf(stderr, "█");
+  fprintf(stderr, "!");
   fprintf(stderr, FMT_COLOR_NONE);
   fprintf(stderr, "\n");
   { int i; for (i = 0; i < spec_indentation; i++)
@@ -63,7 +63,7 @@ void spec_verified (
 {
   if (spec_print_verification_enabled) {
     fprintf(stderr, FMT_COLOR_GREEN);
-    fprintf(stderr, "█");
+    fprintf(stderr, ".");
     fprintf(stderr, FMT_COLOR_NONE);
   }
 }
