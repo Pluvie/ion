@@ -4,3 +4,5 @@
 !/**/.gitkeep
 
 session.vim
+.vs
+*.pdb

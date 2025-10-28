@@ -12,7 +12,7 @@ void* memory_acquire_aligned (
 
 #if standard(>= C11)
 #if platform(WINDOWS)
-  address = _aligned_alloc(alignment, amount);
+  address = _aligned_malloc(alignment, amount);
 #else
   address = aligned_alloc(alignment, amount);
 #endif

@@ -6,12 +6,11 @@
 
 #define compiler(name) (COMPILER == name)
 
-#if   defined(__GNUC__)
-#ifndef __clang__
-#define COMPILER  GCC
-#else
+#if   defined(__clang__)
 #define COMPILER  CLANG
-#endif
+
+#elif defined(__GNUC__)
+#define COMPILER  GCC
 
 #elif defined(_MSC_VER)
 #define COMPILER  MSVC
