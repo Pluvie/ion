@@ -23,12 +23,15 @@ if "%compiler%" == "" set compiler=MSVC
 if "%compiler%" == "MSVC" (
   cl.exe ^
     /D ARCHITECTURE=X64 /D PLATFORM=WINDOWS ^
-    /I src /Foexe\ /Feexe\ ^
+    /I src /Zi /Foexe\ /Feexe\ ^
     app\%1\%1.c %files:~1%
 
-) else if "%compiler" == "clang" (
+)
+
+if "%compiler" == "clang" (
   clang.exe ^
+    -std=c89 -pedantic -Wall -Werror ^
     -D ARCHITECTURE=X64 -D PLATFORM=WINDOWS ^
-    -I src -o exe\ ^
+    -I src -g3 -o exe\ ^
     %files:~1%
 )
