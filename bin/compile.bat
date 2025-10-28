@@ -34,6 +34,6 @@ if "%compiler%" == "clang" (
   clang.exe ^
     -std=c89 -pedantic -Wall -Werror ^
     -D ARCHITECTURE=X64 -D PLATFORM=WINDOWS ^
-    -I src -g3 -o exe\ ^
+    -I src -g3 -o exe\%1.exe ^
     %files:~1%
 )

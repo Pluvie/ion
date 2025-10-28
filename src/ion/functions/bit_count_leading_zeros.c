@@ -36,7 +36,7 @@ uint bit_count_leading_zeros (
   if (scan == 0)
     return INT_BITSIZE;
   else
-    return INT_BITSIZE - count;
+    return INT_BITSIZE - count - 1;
 #endif
 #endif
 }
