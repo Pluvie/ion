@@ -1,4 +1,5 @@
 #include "functions/set_add.h"
+#include "functions/set_init.h"
 
 struct N container_function(N, alloc) (
     uint initial_capacity,
@@ -20,12 +21,6 @@ bool container_function(N, each) (
 bool container_function(N, has) (
     struct N* set,
     T element
-);
-
-struct N container_function(N, init) (
-    uint capacity,
-    T* data,
-    uint* hashes
 );
 
 /*

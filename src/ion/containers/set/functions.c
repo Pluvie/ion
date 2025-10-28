@@ -1,4 +1,5 @@
 #include "functions/set_add.c"
+#include "functions/set_init.c"
 
 struct N container_function(N, alloc) (
     uint initial_capacity,
@@ -68,20 +69,6 @@ bool container_function(N, has) (
     return false;
 
   return set_pos_is_occupied(set, position);
-}
-
-struct N container_function(N, init) (
-    uint capacity,
-    T* data,
-    uint* hashes
-)
-{
-  struct N set = { 0 };
-  set.data = data;
-  set.hashes = hashes;
-  set.capacity = capacity;
-  set.load_limit = capacity;
-  return set;
 }
 
 /*
