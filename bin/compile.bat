@@ -21,6 +21,7 @@ for /f "delims= tokens=* usebackq" %%f in (`dir /a:-d /b/s app\%1\*.c`) do (
 if "%compiler%" == "" set compiler=MSVC
 
 if "%compiler%" == "MSVC" (
+  echo Compiling with MSVC.
   cl.exe ^
     /D ARCHITECTURE=X64 /D PLATFORM=WINDOWS ^
     /I src /Zi /Foexe\ /Feexe\ ^
@@ -28,7 +29,8 @@ if "%compiler%" == "MSVC" (
 
 )
 
-if "%compiler" == "clang" (
+if "%compiler%" == "clang" (
+  echo Compiling with clang.
   clang.exe ^
     -std=c89 -pedantic -Wall -Werror ^
     -D ARCHITECTURE=X64 -D PLATFORM=WINDOWS ^

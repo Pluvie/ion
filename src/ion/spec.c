@@ -80,7 +80,7 @@ void specs_run (
 
   if (focused_specs[0] == nullptr) {
     #if platform(WINDOWS)
-    fopen_s(sstream, "nul", "w");
+    fopen_s(&sstream, "nul", "w");
     #else
     sstream = fopen("/dev/null", "w");
     #endif
