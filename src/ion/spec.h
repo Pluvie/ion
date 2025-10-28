@@ -68,7 +68,7 @@
 
 /* Global variable that stores the original value of stderr.
   All specs by default suppresses any printout. */
-extern void* sstream;
+extern FILE* sstream;
 
 /* Global variable that stores the final result of all specs. */
 extern bool specs_passed;

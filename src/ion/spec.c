@@ -1,6 +1,6 @@
 /* Global variable that stores the original value of stderr.
   All specs by default suppresses any printout. */
-void* sstream = nullptr;
+FILE* sstream = nullptr;
 
 /* Global variable that stores the final result of all specs. */
 bool specs_passed = true;
@@ -79,7 +79,11 @@ void specs_run (
   *spec_allocator = allocator_init(0);
 
   if (focused_specs[0] == nullptr) {
+    #if platform(WINDOWS)
+    fopen_s(sstream, "nul", "w");
+    #else
     sstream = fopen("/dev/null", "w");
+    #endif
     for (i = 0; i < added_specs_count; i++) {
       spec_indentation = 0;
       fprintf(stderr, FMT_COLOR_MAGENTA);
