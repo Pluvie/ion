@@ -20,7 +20,6 @@ static void unallocated_map_init (
     unallocated_map_keys, unallocated_map_values, unallocated_map_hashes);
 }
 
-#undef  fatal
 #define fatal(msg)  sim.fatal = msg
 
 /* Creates a spec-specific copy of the function so that the linker does not find

@@ -2,15 +2,13 @@
 #include "functions/allocator_pop.c"
 #include "functions/allocator_push.c"
 #include "functions/allocator_release.c"
+#include "functions/bit_count_leading_ones.c"
+#include "functions/bit_count_leading_zeros.c"
 #include "functions/cstr_compare.c"
 #include "functions/cstr_equal.c"
+#include "functions/fatal.c"
 #include "functions/hash_djb2.c"
 #include "functions/hash_djb2_cstr.c"
-
-#include "functions/bits.c"
-#include "functions/fatal.c"
-#include "functions/memory.c"
-/*
 #include "functions/memory_acquire.c"
 #include "functions/memory_acquire_aligned.c"
 #include "functions/memory_compare.c"
@@ -20,4 +18,3 @@
 #include "functions/memory_release_aligned.c"
 #include "functions/memory_resize.c"
 #include "functions/memory_set.c"
-*/
