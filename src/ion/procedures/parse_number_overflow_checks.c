@@ -1,34 +1,33 @@
 
-  if (unlikely(number_length >= INT_MAXCHARS)) {
-    if (number_length > INT_MAXCHARS) {
-      /* If the number length is greater than the maximum chars that can be contained
-        in an integer, and we have only an integral part, then we have an overflow for
-        sure. For example, on 32-bit systems, the maximum number of chars in an integer
-        is 10: the highest integer is infact 2147483647 (2^32 - 1), which is 10
-        characters long. So if we end up having 11 or more chars, all of which
-        representing an integral number with no decimal part, we have overflowed. */
-      if (decimal_length == 0)
-        return Parse_Number_Overflow;
+  if (unlikely(number_length > INT_MAXCHARS)) {
+    /* If the number length is greater than the maximum chars that can be contained
+      in an integer, and we have only an integral part, then we have an overflow for
+      sure. For example, on 32-bit systems, the maximum number of chars in an integer
+      is 10: the highest integer is infact 2147483647 (2^32 - 1), which is 10
+      characters long. So if we end up having 11 or more chars, all of which
+      representing an integral number with no decimal part, we have overflowed. */
+    if (decimal_length == 0)
+      return Parse_Number_Overflow;
 
-      /* If we have a decimal part, and the integral part is '0', we can parse as
-        many extra digits as we have leading zeroes in the decimal part. For example,
-        in a 64-bit system, the number 0.00000789789789789789 has 21 digits, which are
-        more than the INT_MAXCHARS (19 in 64-bit) but it won't overflow because all the
-        zero multiplications do not increase the number value until finding the first
-        non-zero digit. */
-      if (decimal_length > 0 && *integral_start == '0') {
-        int decimal_leading_zeros = 0; int i;
-        for (i = 0; i < decimal_length; i++) {
-          if (*(decimal_start + i) != '0')
-            break;
-          decimal_leading_zeros++;
-        }
-
-        if (number_length - decimal_leading_zeros - 1 > INT_MAXCHARS)
-          return Parse_Number_Overflow;
+    /* If we have a decimal part, and the integral part is '0', we can parse as
+      many extra digits as we have leading zeroes in the decimal part. For example,
+      in a 64-bit system, the number 0.00000789789789789789 has 21 digits, which are
+      more than the INT_MAXCHARS (19 in 64-bit) but it won't overflow because all the
+      zero multiplications do not increase the number value until finding the first
+      non-zero digit. */
+    if (decimal_length > 0 && *integral_start == '0') {
+      int decimal_leading_zeros = 0; int i;
+      for (i = 0; i < decimal_length; i++) {
+        if (*(decimal_start + i) != '0')
+          break;
+        decimal_leading_zeros++;
       }
+
+      if (number_length - decimal_leading_zeros - 1 > INT_MAXCHARS)
+        return Parse_Number_Overflow;
     }
 
+  } else if (unlikely(number_length == INT_MAXCHARS)) {
     /* If the number length is equal than the maximum chars of an integer, we have an
       overflow only if the number is greater than INT_MAXNUM constant.
 
@@ -57,9 +56,23 @@
     return Parse_Number_Overflow_Exponent;
 
 #ifdef PARSE_NUMBER__INTEGER
-  /* When parsing integers, if we have to multiply by an exponent that will exceed the
-    integer max number, it's an overflow. */
-  if (unlikely(integral_length + exponent_offset >= INT_MAXCHARS))
-    return Parse_Number_Overflow_Exponent;
+  /* When parsing integers, we have to check that adding the zeros of the exponent
+    does not overflow the number. For example, on a 32-bit system, consider the number
+    99999 with an exponent of 10^6. The result of the multiplication is 99999000000,
+    which is 11 digits long and therefore higher than the 32-bit INT_MAXNUM
+    (2147483647). */
+  if (unlikely(integral_length + exponent_offset > INT_MAXCHARS)) {
+    return Parse_Number_Overflow;
+
+  } else if (unlikely(integral_length + exponent_offset == INT_MAXCHARS)) {
+    /* When the multiplication of the integer with the exponent results in exactly the
+      number of digits of INT_MAXNUM, then we use the char comparison technique --
+      as did above -- to determine if it is an overflow. */
+    char multiplied_integral[INT_MAXCHARS + 1] = { 0 };
+    memory_copy(multiplied_integral, integral_start, integral_length);
+    memory_set(multiplied_integral + integral_length, '0', exponent_offset);
+    if (memory_compare(multiplied_integral, INT_MAXNUM, INT_MAXCHARS) > 0)
+      return Parse_Number_Overflow;
+  }
 #endif
 

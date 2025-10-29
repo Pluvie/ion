@@ -77,7 +77,11 @@
   char* decimal_start = cursor;
   char* exponent_start = cursor;
 
+#if   defined(PARSE_NUMBER__INTEGER)
+  int result_int = 0;
+#elif defined(PARSE_NUMBER__DECIMAL)
   dec result_dec = 0;
+#endif
 #endif
 
   /* Number starts with 1-9. Go parse the integral part. */
@@ -86,10 +90,7 @@
 
   /* Number starts with 0. Skip any other 0 afterwards. */
   if (*cursor == '0') {
-    cursor_advance;
-
-    while (*cursor == '0')
-      cursor_advance;
+    do { cursor_advance; } while (*cursor == '0');
 
     if (*cursor == '.')
       goto parse_decimal;
@@ -133,18 +134,24 @@ parse_integral:
 
 
 parse_decimal:
-  cursor_advance;
-#ifndef PARSE_NUMBER__DISCARD
+  cursor_advance; /* Advances over the '.'. */
+#ifdef PARSE_NUMBER__DECIMAL
   decimal_start = cursor;
 #endif
 
   if (*cursor >= '0' && *cursor <= '9')
+#ifdef PARSE_NUMBER__DECIMAL
     #include "parse_digit.c"
+#else
+    do { cursor_advance; } while (*cursor >= '0' && *cursor <= '9');
+#endif
   else
     goto parse_failure;
 
 #ifndef PARSE_NUMBER__DISCARD
   number = accumulator;
+#endif
+#ifdef PARSE_NUMBER__DECIMAL
   decimal_length = cursor - decimal_start;
 #endif
 
@@ -153,7 +160,7 @@ parse_decimal:
 
 
 parse_exponent:
-  cursor_advance;
+  cursor_advance; /* Advances over the 'e' or 'E'. */
 
   if (*cursor == '-') {
     cursor_advance;
@@ -193,8 +200,8 @@ parse_failure:
 parse_success:
 #ifdef PARSE_NUMBER__DISCARD
   return Parse_Number_Success;
+#endif
 
-#else
   if (number == 0)
     goto convert_result;
 
@@ -206,27 +213,38 @@ parse_success:
 
   #include "parse_number_overflow_checks.c"
 
+#ifdef PARSE_NUMBER__INTEGER
+  if (exponent_offset == 0)
+    result_int = number;
+  else if (exponent_offset < 0)
+    result_int = number / (int) powers_of_ten[-exponent_offset];
+  else
+    result_int = number * (int) powers_of_ten[exponent_offset];
+#endif
+
+#ifdef PARSE_NUMBER__DECIMAL
   if (exponent_offset == 0)
     result_dec = (dec) number;
   else if (exponent_offset < 0)
     result_dec = (dec) number / powers_of_ten[-exponent_offset];
   else
     result_dec = (dec) number * powers_of_ten[exponent_offset];
+#endif
 
 convert_result:
+#ifdef PARSE_NUMBER__INTEGER
+  if (negative)
+    result_int = -result_int;
+
+  *result = result_int;
+#endif
+#ifdef PARSE_NUMBER__DECIMAL
   if (negative)
     result_dec = -result_dec;
 
-#ifdef PARSE_NUMBER__INTEGER
-  *result = (int) result_dec;
-#endif
-  
-#ifdef PARSE_NUMBER__DECIMAL
   *result = result_dec;
 #endif
-
   return Parse_Number_Success;
-#endif
 
 #undef  PARSE_NUMBER__DISCARD
 #undef  PARSE_NUMBER__DECIMAL

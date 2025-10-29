@@ -8,6 +8,7 @@
 #define CSTR_FORMAT         "s"
 #define STR_FORMAT          ".*s"
 #define ENUM_FORMAT         "u"
+#define DEC_FORMAT          "f"
 #define INT_T_FORMAT        "i"
 #define UINT_T_FORMAT       "u"
 
