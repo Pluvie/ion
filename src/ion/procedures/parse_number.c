@@ -1,5 +1,4 @@
-/*
-  This procedure contains the number parsing logic for both integers and decimals,
+/* This procedure contains the number parsing logic for both integers and decimals,
   written in base 10.
 
   These are the procedure prerequisites on local variables:
@@ -34,8 +33,7 @@
       had an exponent, it shall be calculated and any resulting fractional part shall
       be discarded.
     - `PARSE_NUMBER__DECIMAL`: if this constant is defined, the parsing shall
-      return a decimal on the `result` local variable -- which must be a `dec`.
-*/
+      return a decimal on the `result` local variable -- which must be a `dec`. */
 
   char* cursor_begin = source->chars;
 #define cursor source->chars
