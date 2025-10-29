@@ -13,4 +13,6 @@
 #include "ion/types.h"
 #include "ion/enums.h"
 #include "ion/structs.h"
+#include "ion/attributes.h"
+#include "ion/globals.h"
 #include "ion/functions.h"

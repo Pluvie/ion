@@ -18,3 +18,4 @@
 #include "functions/memory_release_aligned.c"
 #include "functions/memory_resize.c"
 #include "functions/memory_set.c"
+#include "functions/str_to_int.c"

@@ -22,6 +22,7 @@ spec( memory_equal );
 spec( memory_release );
 spec( memory_release_aligned );
 spec( memory_set );
+spec( str_to_int );
 
 int_t main (
     int_t argc,
@@ -46,6 +47,7 @@ int_t main (
   spec_add( memory_release );
   spec_add( memory_release_aligned );
   spec_add( memory_set );
+  spec_add( str_to_int );
 
   specs_run();
 
