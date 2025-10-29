@@ -15,15 +15,21 @@
       more than the INT_MAXCHARS (19 in 64-bit) but it won't overflow because all the
       zero multiplications do not increase the number value until finding the first
       non-zero digit. */
-    if (decimal_length > 0 && *integral_start == '0') {
-      int decimal_leading_zeros = 0; int i;
-      for (i = 0; i < decimal_length; i++) {
-        if (*(decimal_start + i) != '0')
-          break;
-        decimal_leading_zeros++;
+    if (decimal_length > 0) {
+      int leading_zeros = 0;
+
+      if (*integral_start == '0') {
+        int i;
+        leading_zeros++;
+
+        for (i = 0; i < decimal_length; i++) {
+          if (decimal_start[i] != '0')
+            break;
+          leading_zeros++;
+        }
       }
 
-      if (number_length - decimal_leading_zeros - 1 > INT_MAXCHARS)
+      if (number_length - leading_zeros > INT_MAXCHARS)
         return Parse_Number_Overflow;
     }
 
