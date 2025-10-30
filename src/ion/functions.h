@@ -23,6 +23,7 @@
 #include "functions/print_failure.h"
 #include "functions/printl.h"
 #include "functions/str_compare.h"
+#include "functions/str_empty.h"
 #include "functions/str_equal.h"
 #include "functions/str_to_dec.h"
 #include "functions/str_to_int.h"

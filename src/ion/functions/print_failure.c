@@ -2,6 +2,8 @@ void print_failure (
     void
 )
 {
+  print(FMT_COLOR_RED);
+
   if (errno > 0) {
 #if platform(WINDOWS)
     char errno_buf[256] = { 0 };
@@ -17,4 +19,7 @@ void print_failure (
     print("%"fmt(CSTR)" (%"fmt(CSTR)":%"fmt(CSTR)")",
       failure.message, failure.file, failure.line);
   }
+
+  print(FMT_COLOR_NONE);
+  print("\n");
 }

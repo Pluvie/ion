@@ -19,6 +19,10 @@ CLANG_FLAGS="-std=$C_STANDARD -pedantic -Wall -Werror"
 
 APP=$1
 FILES=$(find app/$APP -name "*.c" -type f | tr '\n' ' ')
+INCLUDE="-I ./src"
+if [ -d "ion" ]; then
+  INCLUDE="$INCLUDE -I ./ion" 
+fi
 
 if    [[ $COMPILER == "gcc"   ]]; then
   FLAGS=$GCC_FLAGS
@@ -27,10 +31,9 @@ elif  [[ $COMPILER == "clang" ]]; then
 fi
 
 mkdir -p exe
-$COMPILER $FILES $FLAGS           \
+$COMPILER $FILES $FLAGS $INCLUDE  \
   -D PLATFORM=$PLATFORM           \
   -D ARCHITECTURE=$ARCHITECTURE   \
-  -I ./src                        \
   ${@:2}                          \
   -o exe/$APP
 
