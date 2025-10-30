@@ -35,7 +35,6 @@
     - `PARSE_NUMBER__DECIMAL`: if this constant is defined, the parsing shall
       return a decimal on the `result` local variable -- which must be a `dec`. */
 
-  char* cursor_begin = source->chars;
 #define cursor source->chars
 
 #ifdef PARSE_NUMBER__SAFE
@@ -47,7 +46,7 @@
   if (source_pos++ <= source->length) \
     source->chars++;                  \
   else                                \
-    return Parse_Number_Exhausted
+    return fail("exhausted string");
 
 #else
   /* When parsing for speed, assumes that there is always a valid character after the
@@ -189,15 +188,12 @@ parse_exponent:
 
 
 parse_failure:
-  if (source->chars == cursor_begin)
-    return Parse_Number_Empty;
-  else
-    return Parse_Number_Invalid;
+  return fail("invalid number");
 
 
 parse_success:
 #ifdef PARSE_NUMBER__DISCARD
-  return Parse_Number_Success;
+  return true;
 #endif
 
   if (number == 0)
@@ -242,7 +238,7 @@ convert_result:
 
   *result = result_dec;
 #endif
-  return Parse_Number_Success;
+  return true;
 
 #undef  PARSE_NUMBER__DISCARD
 #undef  PARSE_NUMBER__DECIMAL

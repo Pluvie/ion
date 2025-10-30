@@ -51,8 +51,8 @@
 
 /* Defines a function specification codepath success. */
 #define success() \
-  spec_print_verification_enabled = false;
-  /*memory_set(&failure, 0, sizeof(failure));*/
+  spec_print_verification_enabled = false; \
+  memory_set(&failure, 0, sizeof(failure));
 
 /* Ends a specification codepath. */
 #define end() \

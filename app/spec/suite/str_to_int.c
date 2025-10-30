@@ -3,7 +3,7 @@
 spec( str_to_int ) {
   argument(str* source);
   argument(int* result);
-  returns(enum parse_number_results parse_result);
+  returns(bool parse_result);
 
   precondition("a valid source string");
   precondition("a valid result integer pointer");
@@ -17,8 +17,8 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("not fail");
-      verify(parse_result == Parse_Number_Success);
+    must("return true");
+      verify(parse_result == true);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -34,8 +34,8 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("not fail");
-      verify(parse_result == Parse_Number_Success);
+    must("return true");
+      verify(parse_result == true);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -51,8 +51,8 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("not fail");
-      verify(parse_result == Parse_Number_Success);
+    must("return true");
+      verify(parse_result == true);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -68,8 +68,8 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("not fail");
-      verify(parse_result == Parse_Number_Success);
+    must("return true");
+      verify(parse_result == true);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -86,8 +86,8 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("not fail");
-      verify(parse_result == Parse_Number_Success);
+    must("return true");
+      verify(parse_result == true);
 
     must("consume the source until the first invalid char");
       verify(*source->chars == 'a');
@@ -104,8 +104,11 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("fail with a specific error");
-      verify(parse_result == Parse_Number_Overflow);
+    must("return false");
+      verify(parse_result == false);
+
+    must("set the failure message");
+      verify(cstr_equal(failure.message, "number overflow"));
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -118,8 +121,11 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("fail with a specific error");
-      verify(parse_result == Parse_Number_Overflow);
+    must("return false");
+      verify(parse_result == false);
+
+    must("set the failure message");
+      verify(cstr_equal(failure.message, "number overflow"));
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -132,8 +138,8 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("not fail");
-      verify(parse_result == Parse_Number_Success);
+    must("return true");
+      verify(parse_result == true);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -153,8 +159,11 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("fail with a specific error");
-      verify(parse_result == Parse_Number_Overflow);
+    must("return false");
+      verify(parse_result == false);
+
+    must("set the failure message");
+      verify(cstr_equal(failure.message, "number overflow"));
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -167,8 +176,8 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("not fail");
-      verify(parse_result == Parse_Number_Success);
+    must("return true");
+      verify(parse_result == true);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -189,8 +198,8 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("not fail");
-      verify(parse_result == Parse_Number_Success);
+    must("return true");
+      verify(parse_result == true);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -210,8 +219,11 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("fail with a specific error");
-      verify(parse_result == Parse_Number_Overflow_Exponent);
+    must("return false");
+      verify(parse_result == false);
+
+    must("set the failure message");
+      verify(cstr_equal(failure.message, "exponent overflow"));
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -225,8 +237,11 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("fail with a specific error");
-      verify(parse_result == Parse_Number_Overflow);
+    must("return false");
+      verify(parse_result == false);
+
+    must("set the failure message");
+      verify(cstr_equal(failure.message, "number overflow"));
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -244,8 +259,11 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("fail with a specific error");
-      verify(parse_result == Parse_Number_Overflow);
+    must("return false");
+      verify(parse_result == false);
+
+    must("set the failure message");
+      verify(cstr_equal(failure.message, "number overflow"));
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -259,8 +277,11 @@ spec( str_to_int ) {
     apply(preconditions);
     parse_result = str_to_int(source, result);
 
-    must("fail with a specific error");
-      verify(parse_result == Parse_Number_Empty);
+    must("return false");
+      verify(parse_result == false);
+
+    must("set the failure message");
+      verify(cstr_equal(failure.message, "invalid number"));
 
     must("consume the source until the first valid char");
       verify(*source->chars == 'a');

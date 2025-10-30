@@ -1,4 +1,4 @@
-enum parse_number_results str_to_int (
+bool str_to_int (
     str* source,
     int* result
 )

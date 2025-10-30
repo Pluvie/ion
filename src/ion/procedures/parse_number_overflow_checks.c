@@ -7,7 +7,7 @@
       characters long. So if we end up having 11 or more chars, all of which
       representing an integral number with no decimal part, we have overflowed. */
     if (decimal_length == 0)
-      return Parse_Number_Overflow;
+      return fail("number overflow");
 
     /* If we have a decimal part, and the integral part is '0', we can parse as
       many extra digits as we have leading zeroes in the decimal part. For example,
@@ -30,7 +30,7 @@
       }
 
       if (number_length - leading_zeros > INT_MAXCHARS)
-        return Parse_Number_Overflow;
+        return fail("number overflow");
     }
 
   } else if (unlikely(number_length == INT_MAXCHARS)) {
@@ -47,19 +47,19 @@
       with the INT_MAXNUM constant, and if the comparison shows that at least one char
       is greater than the corresponding char in INT_MAXNUM, then we have an overflow. */
     if (memory_compare(integral_start, INT_MAXNUM, integral_length) > 0)
-      return Parse_Number_Overflow;
+      return fail("number overflow");
 
     if (decimal_length > 0) {
       cstr integral_maxnum = INT_MAXNUM;
       cstr decimal_maxnum = integral_maxnum + integral_length;
       if (memory_compare(decimal_start, decimal_maxnum, decimal_length) > 0)
-        return Parse_Number_Overflow;
+        return fail("number overflow");
     }
   }
 
   /* If the exponent is greater than the maximum representable, it's another overflow. */
   if (unlikely(exponent_length > DEC_EXP_MAXCHARS || exponent > DEC_EXP_MAX))
-    return Parse_Number_Overflow_Exponent;
+    return fail("exponent overflow");
 
 #ifdef PARSE_NUMBER__INTEGER
   /* When parsing integers, we have to check that adding the zeros of the exponent
@@ -68,7 +68,7 @@
     which is 11 digits long and therefore higher than the 32-bit INT_MAXNUM
     (2147483647). */
   if (unlikely(integral_length + exponent_offset > INT_MAXCHARS)) {
-    return Parse_Number_Overflow;
+    return fail("number overflow");
 
   } else if (unlikely(integral_length + exponent_offset == INT_MAXCHARS)) {
     /* When the multiplication of the integer with the exponent results in exactly the
@@ -78,7 +78,7 @@
     memory_copy(multiplied_integral, integral_start, integral_length);
     memory_set(multiplied_integral + integral_length, '0', exponent_offset);
     if (memory_compare(multiplied_integral, INT_MAXNUM, INT_MAXCHARS) > 0)
-      return Parse_Number_Overflow;
+      return fail("number overflow");
   }
 #endif
 

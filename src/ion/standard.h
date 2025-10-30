@@ -20,6 +20,9 @@
   If you can however provide the required funcionalities by implementing them
   yourself on the platform, then ⚡️ION⚡️ should work just fine. */
 
+/* For the `errno` and related functions. */
+#include <errno.h>
+
 /* For variadic argument support, used in `fail` and `fatal` functions. */
 #include <stdarg.h>
 

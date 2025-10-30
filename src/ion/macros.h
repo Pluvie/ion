@@ -5,4 +5,6 @@
 #include "macros/next_pow2.h"
 #include "macros/nullptr.h"
 #include "macros/str.h"
+#include "macros/stringize.h"
+#include "macros/thread_local.h"
 #include "macros/unlikely.h"
