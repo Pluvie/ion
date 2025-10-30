@@ -20,7 +20,7 @@ uint container_function(N, add) (
   if (position != set_pos_invalid)
     return position;
 
-  fatal("add: stack allocated set is full");
+  fatal("set_add: stack allocated set is full");
   return set_pos_invalid;
 
 
@@ -33,7 +33,7 @@ add:
     /* NOTE(Pluvie): this is dead code, a program should never reach this point due
      to how the load limit behaves. Nevertheless, a failing guard is placed just
      in case someone breaks this implementation. */
-    fatal("add: load limit behavior not respected");
+    fatal("set_add: load limit behavior not respected");
     return set_pos_invalid;
   }
 

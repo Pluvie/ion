@@ -12,12 +12,13 @@ fi
 COMPILER="gcc"
 PLATFORM="LINUX"
 ARCHITECTURE="X64"
+C_STANDARD="c89"
+
+GCC_FLAGS="-std=$C_STANDARD -pedantic -Wall -Werror"
+CLANG_FLAGS="-std=$C_STANDARD -pedantic -Wall -Werror"
 
 APP=$1
 FILES=$(find app/$APP -name "*.c" -type f | tr '\n' ' ')
-
-GCC_FLAGS="-std=c89 -pedantic -Wall -Werror"
-CLANG_FLAGS="-std=c89 -pedantic -Wall -Werror"
 
 if    [[ $COMPILER == "gcc"   ]]; then
   FLAGS=$GCC_FLAGS

@@ -1,3 +1,4 @@
+#include "macros/countof.h"
 #include "macros/fmt.h"
 #include "macros/likely.h"
 #include "macros/log2.h"

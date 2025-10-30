@@ -72,8 +72,8 @@
   int number_length = 0;
 
   char* integral_start = cursor;
-  char* decimal_start = cursor;
-  char* exponent_start = cursor;
+  char* decimal_start = nullptr;
+  char* exponent_start = nullptr;
 
 #if   defined(PARSE_NUMBER__INTEGER)
   int result_int = 0;

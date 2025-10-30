@@ -1,5 +1,6 @@
 #include "functions/map_each.c"
 #include "functions/map_init.c"
+#include "functions/map_literal.c"
 #include "functions/map_set.c"
 
 struct N container_function(N, alloc) (
@@ -51,31 +52,3 @@ bool container_function(N, has) (
 {
   return container_function(S, has)(&map->keys, key);
 }
-
-/*
-struct N container_function(N, literal) (
-    uint capacity,
-    K* keys,
-    V* values,
-    uint* hashes,
-    void* pairs
-)
-{
-  struct { K key; V value; }* key_value_pairs = pairs;
-
-  for (uint i = 0; i < capacity; i++) {
-    K key = key_value_pairs[i].key;
-    V value = key_value_pairs[i].value;
-    keys[i] = key;
-    values[i] = value;
-  }
-
-  struct N map = {
-    .keys = container_function(S, literal)(capacity, keys, hashes),
-    .values = values,
-    .length = capacity,
-  };
-
-  return map;
-}
-*/

@@ -1,13 +1,10 @@
 bool container_function(N, each) (
     struct N* map,
-    struct iterator* iter
-#if standard(== C89)
-  , K** key_ptr,
+    struct iterator* iter,
+    K** key_ptr,
     V** value_ptr
-#endif
 )
 {
-#if standard(== C89)
   if (iter->initialized) {
     iter->position++;
   } else {
@@ -17,20 +14,16 @@ bool container_function(N, each) (
     iter->index = (uint) -1;
     iter->initialized = true;
   }
-#else
-  iter->gate = ~0;
-#endif
 
-  for (; iter->position < map->keys.capacity; iter->position++)
-    if (set_pos_is_occupied(&map->keys, iter->position)) {
-      #if standard(== C89)
-        iter->index++;
-        *key_ptr = map->keys.data + iter->position;
-        *value_ptr = map->values + iter->position;
-      #endif
-      return true;
-    }
+  for (; iter->position < map->keys.capacity; iter->position++) {
+    if (set_pos_is_free(&map->keys, iter->position))
+      continue;
+
+    iter->index++;
+    *key_ptr = map->keys.data + iter->position;
+    *value_ptr = map->values + iter->position;
+    return true;
+  }
 
   return false;
 }
-

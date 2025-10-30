@@ -34,6 +34,19 @@ elif  [[ $MODE == "valgrind" ]]; then
     exe/$APP
   echo
 
+elif  [[ $MODE == "analyze" ]]; then
+  FILES=$(find app/$APP -name "*.c" -type f | tr '\n' ' ')
+  clang                       \
+    -std=c89 -pedantic        \
+    -Wall -Werror             \
+    -D PLATFORM=LINUX         \
+    -D ARCHITECTURE=X64       \
+    -I ./src                  \
+    --analyze                 \
+    -Xanalyzer                \
+    -analyzer-output=text     \
+    $FILES
+  echo
 
 elif  [[ $MODE == "drmemory" ]]; then
   bin/compile $APP -g3

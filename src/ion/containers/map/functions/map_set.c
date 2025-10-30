@@ -7,7 +7,7 @@ uint container_function(N, set) (
   uint capacity = map->keys.capacity;
   uint position = container_function(S, add)(&map->keys, key);
   if (position == set_pos_invalid) {
-    fatal("set: stack allocated map is full");
+    fatal("map_set: stack allocated map is full");
     return set_pos_invalid;
   }
 

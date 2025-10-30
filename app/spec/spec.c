@@ -13,6 +13,7 @@ spec( bit_count_leading_zeros );
 spec( cstr_compare );
 spec( cstr_equal );
 spec( map_each );
+spec( map_literal );
 spec( map_set );
 spec( memory_acquire );
 spec( memory_acquire_aligned );
@@ -22,8 +23,10 @@ spec( memory_equal );
 spec( memory_release );
 spec( memory_release_aligned );
 spec( memory_set );
-spec( str_to_int );
+spec( str_compare );
+spec( str_equal );
 spec( str_to_dec );
+spec( str_to_int );
 
 int_t main (
     int_t argc,
@@ -39,6 +42,7 @@ int_t main (
   spec_add( cstr_compare );
   spec_add( cstr_equal );
   spec_add( map_each );
+  spec_add( map_literal );
   spec_add( map_set );
   spec_add( memory_acquire );
   spec_add( memory_acquire_aligned );
@@ -48,8 +52,10 @@ int_t main (
   spec_add( memory_release );
   spec_add( memory_release_aligned );
   spec_add( memory_set );
-  spec_add( str_to_int );
+  spec_add( str_compare );
+  spec_add( str_equal );
   spec_add( str_to_dec );
+  spec_add( str_to_int );
 
   specs_run();
 

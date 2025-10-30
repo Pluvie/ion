@@ -29,7 +29,7 @@ T* container_function(N, at) (
   if (position < list->length)
     return list->data + position;
 
-  /*fatal(f(position), ": overbound list position");*/
+  fatal("list_at: %"fmt(UINT)" overbound list position", position);
   return nullptr;
 }
 
@@ -39,23 +39,26 @@ uint container_function(N, del) (
     T element
 )
 {
-  T previous = { 0 };
+  if (unlikely(list->length == 0))
+    return 0;
 
-  for(int i = list->length - 1; i >= 0; i--) {
-    if (container_equalizer(element, list->data[i])) {
-      memory_copy(list->data + i, &previous, sizeof(T));
-      list->length--;
-      return (uint) i;
-    }
+  uint last_position = list->length - 1;
+  T* last_element = list->data + last_position;
 
-    T temp = { 0 };
-    memory_copy(&temp, list->data + i, sizeof(T));
-    memory_copy(list->data + i, &previous, sizeof(T));
-    memory_copy(&previous, &temp, sizeof(T));
+  for(int i = last_position; i >= 0; i--) {
+    if (!(container_equalizer(element, list->data[i])))
+      continue;
+
+    if (i != last_position)
+      memory_copy(list->data + i, last_element, sizeof(T));
+
+    list->length--;
+    return (uint) i;
   }
 
   return (uint) -1;
 }
+
 bool container_function(N, each) (
     struct N* list,
     struct iterator* iter

@@ -23,6 +23,11 @@
 /* For variadic argument support, used in `fail` and `fatal` functions. */
 #include <stdarg.h>
 
+/* For the `stdc_*` bit manipulation functions. */
+#if standard(>= C23)
+#include <stdbit.h>
+#endif
+
 /* For the `offsetof` macro. */
 #include <stddef.h>
 

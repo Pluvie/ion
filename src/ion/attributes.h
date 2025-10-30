@@ -4,7 +4,7 @@
 /* `no_discard` attribute: the function return value must always be checked. */
 #if standard(>= C23)
 #define Attribute__No_Discard \
-  [[no_discard]]
+  [[nodiscard]]
 #else
 
 #if compiler(GCC) || compiler(CLANG)

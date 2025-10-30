@@ -112,7 +112,7 @@ spec( map_set ) {
         cstr_int_map_set(map, key, value);
 
         must("fatally fail with a specific message");
-          verify(cstr_equal(sim.fatal, "set: stack allocated map is full"));
+          verify(cstr_equal(sim.fatal, "map_set: stack allocated map is full"));
 
         success();
       } end();
