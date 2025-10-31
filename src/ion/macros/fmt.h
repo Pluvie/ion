@@ -2,7 +2,7 @@
 
 #define fmt(type) fmt_concat(type, _FORMAT)
 #define fmt_concat(type, format) type ## format
-#define str_fmt(string) (int_t) string.length, string.chars
+#define str_fmt(string) (int_t) (string).length, (string).chars
 
 /* Defines some standard formats to print the most common types. */
 #define CSTR_FORMAT         "s"

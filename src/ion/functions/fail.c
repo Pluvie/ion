@@ -1,4 +1,4 @@
-bool fail (
+int fail (
     const cstr message,
     const cstr file,
     const cstr line
@@ -7,7 +7,7 @@ bool fail (
   failure.message = message;
   failure.file = file;
   failure.line = line;
-  return false;
+  return FAILURE;
 }
 
 /* Wraps the `fail` function with a macro to conveniently automatically provide file

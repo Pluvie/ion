@@ -1,3 +1,3 @@
 void print_failure (
-    void
+    const cstr message
 );

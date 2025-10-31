@@ -1,8 +1,10 @@
 void print_failure (
-    void
+    const cstr message
 )
 {
   print(FMT_COLOR_RED);
+  if (message != nullptr)
+    print("%s. ", message);
 
   if (errno > 0) {
 #if platform(WINDOWS)

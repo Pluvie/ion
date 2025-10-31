@@ -1,4 +1,4 @@
-bool fail (
+int fail (
     const cstr message,
     const cstr file,
     const cstr line

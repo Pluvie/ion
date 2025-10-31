@@ -15,3 +15,6 @@ typedef unsigned int        widest_uint_t;    /* 32 bit */
 #else
 #error "ION: Unsupported architecture for Linux platform."
 #endif
+
+/* Taps into the full capabilities of the GNU Linux implementation. */
+#define _GNU_SOURCE

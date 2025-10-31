@@ -19,8 +19,8 @@ typedef unsigned int        widest_uint_t;    /* 32 bit */
 #endif
 
 /* For _aligned_malloc and other Windows internals. */
-#define BOOL  BOOL_WIN
-#define INT   INT_WIN
+#define BOOL  BOOL_TYPE_WIN32
+#define INT   INT_TYPE_WIN32
 #include <windows.h>
 #undef  BOOL
 #undef  INT
