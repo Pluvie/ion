@@ -26,6 +26,11 @@ refactors.
 See [here for a feature technical overview](doc/README.md) and [here for a
 full API documentation](doc/API.md).
 
+## Benchmarks
+
+See [here](prf/README.md) for a benchmark of ⚡️ION⚡️ features against other languages
+or implementations.
+
 ## Ecosystem
 
 ⚡️ION⚡️ comes with an ecosystem of libraries, which are built using its technology and
