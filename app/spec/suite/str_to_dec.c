@@ -3,7 +3,7 @@
 spec( str_to_dec ) {
   argument(str* source);
   argument(dec* result);
-  returns(bool parse_result);
+  returns(enum result parse_result);
 
   precondition("a valid source string");
   precondition("a valid result decimal pointer");
@@ -17,8 +17,8 @@ spec( str_to_dec ) {
     apply(preconditions);
     parse_result = str_to_dec(source, result);
 
-    must("return true");
-      verify(parse_result == true);
+    must("successfully parse the source string");
+      verify(parse_result == Success);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -34,8 +34,8 @@ spec( str_to_dec ) {
     apply(preconditions);
     parse_result = str_to_dec(source, result);
 
-    must("return true");
-      verify(parse_result == true);
+    must("successfully parse the source string");
+      verify(parse_result == Success);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -51,8 +51,8 @@ spec( str_to_dec ) {
     apply(preconditions);
     parse_result = str_to_dec(source, result);
 
-    must("return true");
-      verify(parse_result == true);
+    must("successfully parse the source string");
+      verify(parse_result == Success);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -68,8 +68,8 @@ spec( str_to_dec ) {
     apply(preconditions);
     parse_result = str_to_dec(source, result);
 
-    must("return true");
-      verify(parse_result == true);
+    must("successfully parse the source string");
+      verify(parse_result == Success);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -85,8 +85,8 @@ spec( str_to_dec ) {
     apply(preconditions);
     parse_result = str_to_dec(source, result);
 
-    must("return true");
-      verify(parse_result == true);
+    must("successfully parse the source string");
+      verify(parse_result == Success);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -102,8 +102,8 @@ spec( str_to_dec ) {
     apply(preconditions);
     parse_result = str_to_dec(source, result);
 
-    must("return true");
-      verify(parse_result == true);
+    must("successfully parse the source string");
+      verify(parse_result == Success);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -120,8 +120,8 @@ spec( str_to_dec ) {
     apply(preconditions);
     parse_result = str_to_dec(source, result);
 
-    must("return true");
-      verify(parse_result == true);
+    must("successfully parse the source string");
+      verify(parse_result == Success);
 
     must("consume the source until the first invalid char");
       verify(*source->chars == 'a');
@@ -138,8 +138,8 @@ spec( str_to_dec ) {
     apply(preconditions);
     parse_result = str_to_dec(source, result);
 
-    must("return false");
-      verify(parse_result == false);
+    must("fail to parse the source string");
+      verify(parse_result == Failure);
 
     must("set the failure message");
       verify(cstr_equal(failure.message, "number overflow"));
@@ -155,8 +155,8 @@ spec( str_to_dec ) {
     apply(preconditions);
     parse_result = str_to_dec(source, result);
 
-    must("return false");
-      verify(parse_result == false);
+    must("fail to parse the source string");
+      verify(parse_result == Failure);
 
     must("set the failure message");
       verify(cstr_equal(failure.message, "number overflow"));
@@ -172,8 +172,8 @@ spec( str_to_dec ) {
     apply(preconditions);
     parse_result = str_to_dec(source, result);
 
-    must("return false");
-      verify(parse_result == false);
+    must("fail to parse the source string");
+      verify(parse_result == Failure);
 
     must("set the failure message");
       verify(cstr_equal(failure.message, "exponent overflow"));
@@ -190,8 +190,8 @@ spec( str_to_dec ) {
     apply(preconditions);
     parse_result = str_to_dec(source, result);
 
-    must("return false");
-      verify(parse_result == false);
+    must("fail to parse the source string");
+      verify(parse_result == Failure);
 
     must("set the failure message");
       verify(cstr_equal(failure.message, "invalid number"));

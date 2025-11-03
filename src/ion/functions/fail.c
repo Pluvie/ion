@@ -1,4 +1,4 @@
-int fail (
+enum result fail (
     const cstr message,
     const cstr file,
     const cstr line
@@ -7,7 +7,7 @@ int fail (
   failure.message = message;
   failure.file = file;
   failure.line = line;
-  return FAILURE;
+  return Failure;
 }
 
 /* Wraps the `fail` function with a macro to conveniently automatically provide file

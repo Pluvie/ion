@@ -4,7 +4,6 @@
 #include "macros/log2.h"
 #include "macros/next_pow2.h"
 #include "macros/nullptr.h"
-#include "macros/results.h"
 #include "macros/str.h"
 #include "macros/stringize.h"
 #include "macros/thread_local.h"

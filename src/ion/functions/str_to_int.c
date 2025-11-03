@@ -1,4 +1,4 @@
-bool str_to_int (
+enum result str_to_int (
     str* source,
     int* result
 )

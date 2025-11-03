@@ -1,4 +1,4 @@
-bool str_to_dec (
+enum result str_to_dec (
     str* source,
     dec* result
 )
