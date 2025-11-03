@@ -3,6 +3,7 @@ struct allocator allocator_init (
 )
 {
   struct allocator result = { 0 };
-  result.capacity = next_pow2(capacity);
+  result.arena.capacity = next_pow2(capacity);
+  result.line.capacity = next_pow2(capacity);
   return result;
 }

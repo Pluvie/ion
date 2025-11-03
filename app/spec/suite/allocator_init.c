@@ -9,7 +9,8 @@ spec( allocator_init ) {
     result = allocator_init(capacity);
 
     must("return an allocator with capacity equal to the next power of two");
-      verify(result.capacity == next_pow2(capacity));
+      verify(result.arena.capacity == next_pow2(capacity));
+      verify(result.line.capacity == next_pow2(capacity));
 
     success();
   } end();
@@ -19,7 +20,8 @@ spec( allocator_init ) {
     result = allocator_init(capacity);
 
     must("return an allocator with the specified capacity");
-      verify(result.capacity == capacity);
+      verify(result.arena.capacity == capacity);
+      verify(result.line.capacity == capacity);
 
     success();
   } end();

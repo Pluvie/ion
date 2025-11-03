@@ -2,7 +2,7 @@
 
 static struct {
   int count;
-  void* released[5];
+  void* released[6];
 } sim;
 
 static struct allocator initialized_allocator;

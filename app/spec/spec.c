@@ -8,6 +8,7 @@ spec( allocator_init );
 spec( allocator_pop );
 spec( allocator_push );
 spec( allocator_release );
+spec( allocator_stretch );
 spec( bit_count_leading_ones );
 spec( bit_count_leading_zeros );
 spec( cstr_compare );
@@ -43,6 +44,7 @@ int_t main (
   spec_add( allocator_pop );
   spec_add( allocator_push );
   spec_add( allocator_release );
+  spec_add( allocator_stretch );
   spec_add( bit_count_leading_ones );
   spec_add( bit_count_leading_zeros );
   spec_add( cstr_compare );
@@ -62,7 +64,7 @@ int_t main (
   spec_add( memory_release );
   spec_add( memory_release_aligned );
   spec_add( memory_set );
-  spec_focus( str_append );
+  spec_add( str_append );
   spec_add( str_compare );
   spec_add( str_empty );
   spec_add( str_equal );
