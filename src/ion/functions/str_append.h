@@ -1,4 +1,4 @@
-void str_append (
+uint str_append (
     str* source,
     str target
 );

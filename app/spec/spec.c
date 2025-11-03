@@ -28,6 +28,7 @@ spec( memory_release );
 spec( memory_release_aligned );
 spec( memory_set );
 spec( str_compare );
+spec( str_append );
 spec( str_empty );
 spec( str_equal );
 spec( str_to_dec );
@@ -61,6 +62,7 @@ int_t main (
   spec_add( memory_release );
   spec_add( memory_release_aligned );
   spec_add( memory_set );
+  spec_focus( str_append );
   spec_add( str_compare );
   spec_add( str_empty );
   spec_add( str_equal );
