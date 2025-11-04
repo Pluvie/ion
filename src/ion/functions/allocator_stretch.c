@@ -19,9 +19,13 @@ empty_line:
     line->capacity = next_pow2(amount);
 
   line->data = memory_acquire(line->capacity);
+  address = line->data;
+  line->position += amount;
   goto terminate;
 
 extendable_line:
+  address = line->data + line->position;
+  line->position += amount;
   goto terminate;
 
 reallocate_line:
@@ -32,9 +36,10 @@ reallocate_line:
   line->data = memory_resize(line->data, new_capacity);
   line->capacity = new_capacity;
 
-terminate:
-  line->position += amount;
   address = line->data + line->position;
+  line->position += amount;
+
+terminate:
   allocator->allocations.size += amount;
   allocator->allocations.count++;
   return address;

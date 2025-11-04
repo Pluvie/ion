@@ -1,4 +1,4 @@
-enum result str_to_dec (
+struct result str_to_dec (
     str* source,
     dec* result
 )

@@ -1,13 +1,14 @@
-enum result fail (
+struct result fail (
     const cstr message,
     const cstr file,
     const cstr line
 )
 {
+  struct result failure = { false, true, 0 };
   failure.message = message;
   failure.file = file;
   failure.line = line;
-  return Failure;
+  return failure;
 }
 
 /* Wraps the `fail` function with a macro to conveniently automatically provide file

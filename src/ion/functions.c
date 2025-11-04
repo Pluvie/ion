@@ -2,6 +2,7 @@
 #include "functions/allocator_pop.c"
 #include "functions/allocator_push.c"
 #include "functions/allocator_release.c"
+#include "functions/allocator_stretch.c"
 #include "functions/bit_count_leading_ones.c"
 #include "functions/bit_count_leading_zeros.c"
 #include "functions/cstr_compare.c"
@@ -29,3 +30,4 @@
 #include "functions/str_equal.c"
 #include "functions/str_to_dec.c"
 #include "functions/str_to_int.c"
+#include "functions/succeed.c"

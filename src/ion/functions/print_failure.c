@@ -1,12 +1,13 @@
 void print_failure (
-    const cstr message
+    const cstr description,
+    struct result* failure
 )
 {
   print(FMT_COLOR_RED);
-  if (message != nullptr)
-    print("%"fmt(CSTR)". ", message);
+  if (description != nullptr)
+    print("%"fmt(CSTR)". ", description);
 
-  if (failure.message != nullptr)
+  if (failure->message != nullptr)
     print("%"fmt(CSTR)": ");
 
   if (errno > 0) {
@@ -14,15 +15,15 @@ void print_failure (
     char errno_buf[256] = { 0 };
     strerror_s(errno_buf, sizeof(errno_buf), errno);
     print("%"fmt(CSTR)" (%"fmt(CSTR)":%"fmt(CSTR)")",
-      errno_buf, failure.file, failure.line);
+      errno_buf, failure->file, failure->line);
 #else
     print("%"fmt(CSTR)" (%"fmt(CSTR)":%"fmt(CSTR)")",
-      strerror(errno), failure.file, failure.line);
+      strerror(errno), failure->file, failure->line);
 #endif
 
   } else {
     print("%"fmt(CSTR)" (%"fmt(CSTR)":%"fmt(CSTR)")",
-      failure.message, failure.file, failure.line);
+      failure->message, failure->file, failure->line);
   }
 
   print(FMT_COLOR_NONE);

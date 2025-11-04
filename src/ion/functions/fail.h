@@ -1,4 +1,4 @@
-enum result fail (
+struct result fail (
     const cstr message,
     const cstr file,
     const cstr line

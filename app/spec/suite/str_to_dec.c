@@ -3,7 +3,7 @@
 spec( str_to_dec ) {
   argument(str* source);
   argument(dec* result);
-  returns(enum result parse_result);
+  returns(struct result parse_result);
 
   precondition("a valid source string");
   precondition("a valid result decimal pointer");
@@ -18,7 +18,7 @@ spec( str_to_dec ) {
     parse_result = str_to_dec(source, result);
 
     must("successfully parse the source string");
-      verify(parse_result == Success);
+      verify(parse_result.success);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -35,7 +35,7 @@ spec( str_to_dec ) {
     parse_result = str_to_dec(source, result);
 
     must("successfully parse the source string");
-      verify(parse_result == Success);
+      verify(parse_result.success);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -52,7 +52,7 @@ spec( str_to_dec ) {
     parse_result = str_to_dec(source, result);
 
     must("successfully parse the source string");
-      verify(parse_result == Success);
+      verify(parse_result.success);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -69,7 +69,7 @@ spec( str_to_dec ) {
     parse_result = str_to_dec(source, result);
 
     must("successfully parse the source string");
-      verify(parse_result == Success);
+      verify(parse_result.success);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -86,7 +86,7 @@ spec( str_to_dec ) {
     parse_result = str_to_dec(source, result);
 
     must("successfully parse the source string");
-      verify(parse_result == Success);
+      verify(parse_result.success);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -103,7 +103,7 @@ spec( str_to_dec ) {
     parse_result = str_to_dec(source, result);
 
     must("successfully parse the source string");
-      verify(parse_result == Success);
+      verify(parse_result.success);
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -121,7 +121,7 @@ spec( str_to_dec ) {
     parse_result = str_to_dec(source, result);
 
     must("successfully parse the source string");
-      verify(parse_result == Success);
+      verify(parse_result.success);
 
     must("consume the source until the first invalid char");
       verify(*source->chars == 'a');
@@ -139,10 +139,10 @@ spec( str_to_dec ) {
     parse_result = str_to_dec(source, result);
 
     must("fail to parse the source string");
-      verify(parse_result == Failure);
+      verify(parse_result.failure);
 
     must("set the failure message");
-      verify(cstr_equal(failure.message, "number overflow"));
+      verify(cstr_equal(parse_result.message, "number overflow"));
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -156,10 +156,10 @@ spec( str_to_dec ) {
     parse_result = str_to_dec(source, result);
 
     must("fail to parse the source string");
-      verify(parse_result == Failure);
+      verify(parse_result.failure);
 
     must("set the failure message");
-      verify(cstr_equal(failure.message, "number overflow"));
+      verify(cstr_equal(parse_result.message, "number overflow"));
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -173,10 +173,10 @@ spec( str_to_dec ) {
     parse_result = str_to_dec(source, result);
 
     must("fail to parse the source string");
-      verify(parse_result == Failure);
+      verify(parse_result.failure);
 
     must("set the failure message");
-      verify(cstr_equal(failure.message, "exponent overflow"));
+      verify(cstr_equal(parse_result.message, "exponent overflow"));
 
     must("consume the source");
       verify(*source->chars == 0);
@@ -191,10 +191,10 @@ spec( str_to_dec ) {
     parse_result = str_to_dec(source, result);
 
     must("fail to parse the source string");
-      verify(parse_result == Failure);
+      verify(parse_result.failure);
 
     must("set the failure message");
-      verify(cstr_equal(failure.message, "invalid number"));
+      verify(cstr_equal(parse_result.message, "invalid number"));
 
     must("consume the source until the first valid char");
       verify(*source->chars == 'a');

@@ -193,7 +193,7 @@ parse_failure:
 
 parse_success:
 #ifdef PARSE_NUMBER__DISCARD
-  return Success;
+  return succeed();
 #endif
 
   if (number == 0)
@@ -238,7 +238,7 @@ convert_result:
 
   *result = result_dec;
 #endif
-  return Success;
+  return succeed();
 
 #undef  PARSE_NUMBER__DISCARD
 #undef  PARSE_NUMBER__DECIMAL

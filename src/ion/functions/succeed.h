@@ -1,0 +1,3 @@
+struct result succeed (
+    void
+);

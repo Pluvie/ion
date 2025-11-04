@@ -1,3 +1,4 @@
 void print_failure (
-    const cstr message
+    const cstr description,
+    struct result* failure
 );
