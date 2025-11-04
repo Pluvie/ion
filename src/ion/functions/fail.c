@@ -1,4 +1,5 @@
-struct result fail (
+struct result fail_internal (
+    bool with_errno,
     const cstr message,
     const cstr file,
     const cstr line
@@ -11,7 +12,13 @@ struct result fail (
   return failure;
 }
 
-/* Wraps the `fail` function with a macro to conveniently automatically provide file
-  name and line number. */
+/* Wraps the `fail_internal` function with a macro to conveniently automatically provide
+  file name and line number. */
 #define fail(message) \
-  fail(message, __FILE__, stringize(__LINE__))
+  fail_internal(false, message, __FILE__, stringize(__LINE__))
+
+/* Wraps the `fail_internal` function with a macro to conveniently automatically provide
+  file name and line number and also an indicator that the `errno` global variable
+  contains useful information about the failure. */
+#define fail_with_errno(message) \
+  fail_internal(true, message, __FILE__, stringize(__LINE__))
