@@ -32,6 +32,7 @@ spec( str_compare );
 spec( str_append );
 spec( str_empty );
 spec( str_equal );
+spec( str_strip );
 spec( str_to_dec );
 spec( str_to_int );
 
@@ -68,6 +69,7 @@ int_t main (
   spec_add( str_compare );
   spec_add( str_empty );
   spec_add( str_equal );
+  spec_add( str_strip );
   spec_add( str_to_dec );
   spec_add( str_to_int );
 

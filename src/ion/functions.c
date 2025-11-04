@@ -28,6 +28,7 @@
 #include "functions/str_compare.c"
 #include "functions/str_empty.c"
 #include "functions/str_equal.c"
+#include "functions/str_strip.c"
 #include "functions/str_to_dec.c"
 #include "functions/str_to_int.c"
 #include "functions/succeed.c"
