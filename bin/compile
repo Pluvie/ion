@@ -34,8 +34,7 @@ mkdir -p exe
 $COMPILER $FILES $FLAGS $INCLUDE  \
   -D PLATFORM=$PLATFORM           \
   -D ARCHITECTURE=$ARCHITECTURE   \
-  ${@:2}                          \
-  -o exe/$APP
+  ${@:2}
 
 
 # To compile ⚡️ION⚡️ as a shared library run:

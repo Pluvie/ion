@@ -13,7 +13,10 @@ APP=$1
 MODE=$2
 
 if    [[ $MODE == "release" ]]; then
-  bin/compile $APP -O3 -march=native
+  bin/compile $APP      \
+    -O3 -march=native   \
+    -o exe/$APP
+
   if [ $? -ne 0 ]; then
     exit 1
   fi
@@ -22,7 +25,9 @@ if    [[ $MODE == "release" ]]; then
   echo
 
 elif  [[ $MODE == "valgrind" ]]; then
-  bin/compile $APP -g3
+  bin/compile $APP -g3  \
+    -o exe/$APP
+
   if [ $? -ne 0 ]; then
     exit 1
   fi
@@ -49,7 +54,9 @@ elif  [[ $MODE == "analyze" ]]; then
   echo
 
 elif  [[ $MODE == "drmemory" ]]; then
-  bin/compile $APP -g3
+  bin/compile $APP -g3  \
+    -o exe/$APP
+
   if [ $? -ne 0 ]; then
     exit 1
   fi
@@ -58,13 +65,23 @@ elif  [[ $MODE == "drmemory" ]]; then
   echo
 
 elif  [[ $MODE == "debug" ]]; then
-  bin/compile $APP -g3
+  bin/compile $APP -g3  \
+    -o exe/$APP
+
   if [ $? -ne 0 ]; then
     exit 1
   fi
 
   gdb exe/$APP
   echo
+
+
+elif  [[ $MODE == "prep" ]]; then
+  mkdir -p tmp
+  bin/compile $APP -E   \
+    > tmp/$APP.prep.c
+
+  exit $?
 
 else
   echo "Usage: bin/run [app] [release|valgrind|debug]"
