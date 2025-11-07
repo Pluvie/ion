@@ -39,8 +39,8 @@
 
 #ifdef PARSE_NUMBER__SAFE
   /* When parsing safely, each advancement is checked against the source length. If,
-    at any point, this is length is surpassed, the parsing shall return the error code
-    `Parse_Number_Exhausted` and the result shall be undefined. */
+    at any point, this is length is surpassed, the parsing shall fail and the result
+    shall be undefined. */
   uint source_pos = 0;
 #define cursor_advance                \
   if (source_pos++ <= source->length) \
@@ -49,9 +49,9 @@
     return fail("exhausted string");
 
 #else
-  /* When parsing for speed, assumes that there is always a valid character after the
-    number which is *not* a valid part of the number. This character, when encountered,
-    shall terminate the parsing. */
+  /* When parsing for speed, assumes that there is always an addressable character
+    after the number which is *not* a valid part of the number. This character, when
+    encountered, shall terminate the parsing. */
 #define cursor_advance \
   source->chars++
 #endif
@@ -91,6 +91,8 @@
 
     if (*cursor == '.')
       goto parse_decimal;
+    else if (*cursor == 'x' || *cursor == 'X')
+      goto parse_integral_hex;
     else if (*cursor >= '1' && *cursor <= '9')
       goto parse_integral;
     else
@@ -128,6 +130,27 @@ parse_integral:
   number = accumulator;
 #endif
   goto parse_success;
+
+parse_integral_hex:
+  cursor_advance; /* Advances over the 'x' or 'X'. */
+  integral_start = cursor;
+
+  if (!((*cursor >= '0' && *cursor <= '9') ||
+        (*cursor >= 'A' && *cursor <= 'F') ||
+        (*cursor >= 'a' && *cursor <= 'f')))
+    goto parse_failure;
+
+  #include "parse_digit_hex.c"
+
+#ifndef PARSE_NUMBER__DISCARD
+  integral_length = cursor - integral_start;
+  number_length = integral_length;
+
+  #include "parse_number_overflow_checks_hex.c"
+
+  *result = accumulator;
+#endif
+  return succeed();
 
 
 parse_decimal:

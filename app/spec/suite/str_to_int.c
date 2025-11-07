@@ -29,6 +29,23 @@ spec( str_to_int ) {
     success();
   } end();
 
+  when("the source string contains a valid hex number") {
+    str source_string = str("0xAaBbCc");
+    apply(preconditions);
+    parse_result = str_to_int(source, result);
+
+    must("successfully parse the source string");
+      verify(parse_result.success);
+
+    must("consume the source");
+      verify(*source->chars == 0);
+
+    must("return its integer equivalent");
+      verify((int) 11189196 == *result);
+
+    success();
+  } end();
+
   when("the source string contains a valid number with a decimal part") {
     str source_string = str("17788.44");
     apply(preconditions);
@@ -102,6 +119,27 @@ spec( str_to_int ) {
   when("the source string contains an overflowing number") {
     str source_string = str("9" INT_MAXNUM);
     apply(preconditions);
+    parse_result = str_to_int(source, result);
+
+    must("fail to parse the source string");
+      verify(parse_result.failure);
+
+    must("set the failure message");
+      verify(cstr_equal(parse_result.message, "number overflow"));
+
+    must("consume the source");
+      verify(*source->chars == 0);
+
+    success();
+  } end();
+
+  when("the source string contains an overflowing hex number") {
+    char hex_overflow[(INT_BITSIZE / 4) + 3] = { '0', 'X', '8' };
+    str source_string;
+    apply(preconditions);
+    source_string.chars = hex_overflow;
+    source_string.length = sizeof(hex_overflow) - 1;
+    memory_set(source_string.chars + 3, '0', source_string.length - 3);
     parse_result = str_to_int(source, result);
 
     must("fail to parse the source string");
