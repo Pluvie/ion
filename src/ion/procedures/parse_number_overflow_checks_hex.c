@@ -1,4 +1,3 @@
-  printl("len: %"fmt(INT)" | %"fmt(UINT), number_length, (INT_BITSIZE / 4));
 
   if (unlikely(number_length > (INT_BITSIZE / 4)))
     /* A single hexadecimal digit can represent up to 4 bits -- 0 > 0000 to F > 1111,
