@@ -3,12 +3,10 @@ void* allocator_pop (
     uint amount
 )
 {
-  struct allocator_arena* arena = &(allocator->arena);
-
-  if (amount > arena->position)
-    arena->position = 0;
+  if (amount > allocator->position)
+    allocator->position = 0;
   else
-    arena->position -= amount;
+    allocator->position -= amount;
 
-  return arena->data + arena->position;
+  return allocator->data + allocator->position;
 }

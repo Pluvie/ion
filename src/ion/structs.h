@@ -1,4 +1,5 @@
 #include "structs/allocator.h"
+#include "structs/buffer.h"
 #include "structs/iterator.h"
 #include "structs/reflection.h"
 #include "structs/result.h"

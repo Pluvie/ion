@@ -1,8 +1,8 @@
-struct allocator allocator_init (
+struct buffer buffer_init (
     uint capacity
 )
 {
-  struct allocator result = { 0 };
+  struct buffer result = { 0 };
   result.capacity = capacity;
   return result;
 }
