@@ -3,9 +3,6 @@ int str_compare (
     str u
 )
 {
-  uint index;
-  int comparison;
-
   if (v.chars == nullptr && u.chars == nullptr)
     return 0;
 
@@ -21,11 +18,5 @@ int str_compare (
   if (v.length < u.length)
     return -1;
 
-  for (index = 0; index < v.length; index++) {
-    comparison = v.chars[index] - u.chars[index];
-    if (comparison != 0)
-      return comparison;
-  }
-
-  return 0;
+  return memory_compare(v.chars, u.chars, v.length);
 }

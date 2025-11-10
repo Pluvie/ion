@@ -27,5 +27,5 @@
 /* For memory allocation with `malloc`, `realloc` and `free`. */
 #include <stdlib.h>
 
-/* For the `strcmp`, `memcmp` and `memcpy` functions. */
+/* For the `memcpy`, `memmove`, `strcmp` and `strerror` functions. */
 #include <string.h>
