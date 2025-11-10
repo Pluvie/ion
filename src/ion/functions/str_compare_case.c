@@ -1,4 +1,4 @@
-int str_compare (
+int str_compare_case (
     str v,
     str u
 )
@@ -23,6 +23,10 @@ int str_compare (
 
   for (index = 0; index < v.length; index++) {
     comparison = v.chars[index] - u.chars[index];
+    if (comparison == 32 && v.chars[index] >= 'a' && v.chars[index] <= 'z')
+      continue;
+    if (comparison == -32 && v.chars[index] >= 'A' && v.chars[index] <= 'Z')
+      continue;
     if (comparison != 0)
       return comparison;
   }

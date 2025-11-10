@@ -5,6 +5,7 @@
 #define str_fmt(string) (int_t) (string).length, (string).chars
 
 /* Defines some standard formats to print the most common types. */
+#define CHAR_FORMAT         "c"
 #define CSTR_FORMAT         "s"
 #define STR_FORMAT          ".*s"
 #define ENUM_FORMAT         "u"

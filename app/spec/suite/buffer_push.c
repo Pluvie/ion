@@ -100,8 +100,8 @@ spec( buffer_push ) {
         previous_buffer_position = buffer->position;
         result = buffer_push(buffer, amount);
 
-        must("increase the line capacity to the amount");
-          verify(buffer->capacity == amount);
+        must("increase the line capacity to the amount plus the position");
+          verify(buffer->capacity == amount + previous_buffer_position);
         must("increase the line position");
           verify(buffer->position == previous_buffer_position + amount);
         must("return a valid memory address");

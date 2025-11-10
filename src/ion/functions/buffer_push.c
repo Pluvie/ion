@@ -23,8 +23,8 @@ allocate_buffer:
 
 reallocate_buffer:
   new_capacity = 2*buffer->capacity;
-  if (amount > new_capacity)
-    new_capacity = amount;
+  if (amount + buffer->position > new_capacity)
+    new_capacity = amount + buffer->position;
 
   buffer->data = memory_resize(buffer->data, new_capacity);
   buffer->capacity = new_capacity;
