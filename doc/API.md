@@ -12,6 +12,11 @@ Allocator
   - [allocator_push](#allocator-push)
   - [allocator_release](#allocator-release)
 
+Buffer
+
+  - [buffer_address](#buffer-address)
+  - [buffer_address_at](#buffer-address-at)
+
 ### allocator init
 
 ```c
