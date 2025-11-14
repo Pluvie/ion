@@ -62,8 +62,12 @@ guarantees that all returned pointers shall remain always valid.
 
 When the user is done using the allocator, he may release all its memory at once by
 calling the function [allocator_release](#allocator-release). After this call, all
-objects, as well as their addresses -- that were stored in the allocator, are no longer
-valid.
+objects that were stored in the allocator are no longer valid, and therefore each
+address that refers to them must be discarded.
+
+A `struct allocator` is inherently **non thread-safe** due to the fact that allocating
+memory is not an atomic operation. It must not be used to share memory across threads
+unless using a mutex to control the [allocator_push](#allocator-push) calls.
 
 ---
 
@@ -214,7 +218,27 @@ This function never fails.
 
 ### buffer
 
-TODO: describe the buffer.
+A `struct buffer` is a memory allocator and tracker. It is used to when a program
+requires a contiguous and dynamic amount of memory.
+
+Imagine parsing a chunked HTTP response: you do not know how long the full response
+will be; instead you receive it in chunks. Each chunk starts with a number that
+indicates how many bytes will the chunk content be. You also want the final received
+response to be contiguous in memory so that it is easy to pass it around to other
+functions -- which may, for example, parse it as JSON, or something like that.
+
+This is the perfect case for a `struct buffer`. The `struct allocator`, instead, is
+not good for this case because of its memory fragmentation. Each call to allocate memory
+returns an always valid address, but it may not be contiguous to the previous
+allocations. The `struct buffer`, instead, guarantees that every call to [buffer_push](
+#buffer-push) produces contiguous addresses. However, in order to do so, it must
+invalidate all previously returned addresses. Therefore, in order to keep track of
+memory allocated in a `struct buffer`, one must use its `position`, which is guaranteed
+to be always valid.
+
+A `struct buffer` is inherently **non thread-safe** due to the fact that allocating
+memory is not an atomic operation. It must not be used to share memory across threads
+unless using a mutex to control the [buffer_push](#buffer-push) calls.
 
 ---
 
