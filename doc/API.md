@@ -6,10 +6,11 @@
 ## API
 
 [allocator_init](#allocator-init)
+[allocator_pop](#allocator-pop)
 
-### Allocator
+## Allocator
 
-#### allocator init
+### allocator init
 
 ```c
 struct allocator allocator_init (
@@ -37,6 +38,8 @@ struct allocator {
   } allocations;
 };
 ```
+
+#### Description
 
 An allocator is used to group code objects that share the same lifetime across the
 program. Imagine a web request, a videogame frame or a UI screen: all these entities
@@ -67,3 +70,49 @@ The `struct allocator` follows the arena memory management approach: everything 
 loaded on a specific allocator, which automatically grows the required memory in order
 to satisfy the program needs. When the allocated objects are not needed anymore, a
 single release call to the allocator is sufficient to release them all.
+
+#### Return Value
+
+A `struct allocator` with the given *capacity*. No allocation is performed, but the
+returned allocator is ready to allocate memory using [allocator_push](#allocator-push).
+
+#### Errors
+
+This function never fails.
+
+### allocator-pop
+
+void* allocator_pop (
+    struct allocator* allocator,
+    uint amount
+);
+
+This function releases a given *amount* of memory from the given *allocator*.
+
+The primary usage of a `struct allocator` is to allocate memory in chunks -- using
+[allocator_push](#allocator-push) and then massively release it in one shot using
+[allocator_release](#allocator-release). This is consistent with the arena memory
+management principle.
+
+However there may be some cases where some memory is not needed anymore and can be
+safely released from the allocator. This function does exactly this. Note that
+memory is not actually given back to the operating system, but only made available
+inside the allocator.
+
+#### Return Value
+
+A pointer to the first available address in the *allocator* memory, after having made
+enough space for it. If the *amount* is greater than the *allocator* memory, then all of
+it shall be discarded and it shall be returned the beginning address of the allocator
+memory.
+
+#### Errors
+
+This function never fails.
+
+### allocator-push
+
+void* allocator_push (
+    struct allocator* allocator,
+    uint amount
+);

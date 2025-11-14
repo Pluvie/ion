@@ -23,6 +23,8 @@ struct allocator {
 };
 ```
 
+#### Description
+
 An allocator is used to group code objects that share the same lifetime across the
 program. Imagine a web request, a videogame frame or a UI screen: all these entities
 require many objects to be readily accessible from memory in order for the program to
@@ -52,4 +54,13 @@ The `struct allocator` follows the arena memory management approach: everything 
 loaded on a specific allocator, which automatically grows the required memory in order
 to satisfy the program needs. When the allocated objects are not needed anymore, a
 single release call to the allocator is sufficient to release them all.
+
+#### Return Value
+
+A `struct allocator` with the given *capacity*. No allocation is performed, but the
+returned allocator is ready to allocate memory using [allocator_push](#allocator-push).
+
+#### Errors
+
+This function never fails.
 */
