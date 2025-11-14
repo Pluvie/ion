@@ -13,6 +13,8 @@ uint bit_count_leading_zeros (
 
 #else
 #if compiler(GCC) || compiler(CLANG)
+  /* GCC and clang compilers support the `__builtin_clz` builtin to count the leading
+    zeros of an integer. This builtin is specific on the integer byte size. */
   if (value == 0)
     return INT_BITSIZE;
 

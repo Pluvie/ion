@@ -1,4 +1,9 @@
-/* ⚡️ION⚡️ compilers mapping.  */
+/* ⚡️ION⚡️ compilers mapping.
+
+  The `compiler` macro can be used as a preprocessor directive to check if a given
+  compiler is being used. This can help to safely introduce compiler specific builtins
+  or other compiler specific features. An example can be found in the
+  `src/ion/functions/bit_count_leading_zeros.c` file. */
 
 #define GCC     0
 #define CLANG   1
