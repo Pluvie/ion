@@ -20,8 +20,8 @@
 
 ### allocator
 
-A `struct allocator` is a memory allocator and tracker. It is used to group code objects
-that share the same lifetime across a program.
+A `struct allocator` is a memory allocator and tracker. It is used to group together
+code objects that share the same **lifetime** across a program.
 
 Imagine a web request, a videogame frame or a UI screen: all these situations require
 many objects to be readily accessible from memory in order for the program to work
@@ -44,14 +44,12 @@ every time, one must not treat memory with its primitive functions but rather cr
 something akin to a log library would do for logging: this is what the
 `struct allocator` does.
 
-For more information and in-depth study of C memory management we strongly encourage to
-read [Ryan's article](https://www.rfleury.com/p/untangling-lifetimes-the-arena-allocator)
-as we feel that none has done a better job than he to explain in great detail this topic.
-
-The `struct allocator` follows the arena memory management approach: everything is
-loaded on a specific allocator, which automatically grows the required memory in order
-to satisfy the program needs. When the allocated objects are not needed anymore, a
-single release call to the allocator is sufficient to release them all.
+The `struct allocator` follows the arena memory management approach. Read this [article
+by Ryan Fleury](https://www.rfleury.com/p/untangling-lifetimes-the-arena-allocator) for
+a very nice and in-depth explanation of the arena. The core concept here is: everything
+is loaded into a specific `struct allocator`, which automatically grows the required
+memory in order to satisfy the program needs. When the allocated objects are not needed
+anymore, a single release call to the allocator is sufficient to release them all.
 
 In order to use a `struct allocator`, it must be initialized to a given capacity with
 the [allocator_init](#allocator-init) function. The returned object can then be passed
