@@ -10,8 +10,7 @@ Allocator
   - [allocator_init](#allocator-init)
   - [allocator_pop](#allocator-pop)
   - [allocator_push](#allocator-push)
-
-## Allocator
+  - [allocator_release](#allocator-release)
 
 ### allocator init
 
@@ -118,16 +117,70 @@ This function allocates a given *amount* of bytes on the given *allocator*.
 
 If the allocator has reached its capacity, or if the allocator did not yet perform any
 allocations, then the required memory to accomodate this call is requested to the
-operating system. This memory shall be added to -- and managed by -- the allocator.
+operating system. This memory shall be then added to -- and managed by -- the allocator.
 
 #### Return Value
 
 A pointer to the first available address in the *allocator* memory, after having made
-enough space for it.
+enough space for it. This pointer is guaranteed to be safe and always valid throughout
+all the life of the allocator. All pointers returned by this function shall be
+invalidated by the [allocator_release](#allocator-release) call.
 
 #### Errors
 
 This function never fails. If, in order to accomodate this request, the allocator must
 perform a request for more memory to the operating system, and the hardware is out of
 memory, then this function shall [abort](
-https://www.man7.org/linux/man-pages/man3/abort.3.html)
+https://www.man7.org/linux/man-pages/man3/abort.3.html).
+
+---
+
+### allocator-release
+
+```c
+void allocator_release (
+    struct allocator* allocator
+);
+```
+
+#### Description
+
+This function shall release all the memory allocated by the given *allocator*. The
+memory is returned to the operating system. All pointers returned by the
+[allocator_push](#allocator-push) function shall be invalidated.
+
+#### Return Value
+
+None.
+
+#### Errors
+
+This function never fails.
+
+---
+
+### buffer-address
+
+```c
+void* buffer_address (
+    struct buffer* buffer
+);
+```
+
+#### Description
+
+This function returns the address of the first available space in the given *buffer*.
+This pointer **is not** guaranteed to be always valid: it should be discarded as soon
+as a call to [buffer_push](#buffer-push) is made.
+
+This is consistent with the linear memory management approach, where memory is
+guaranteed to be contiguous, but intermediate addresses returned by each [buffer_push](
+#buffer-push) call might lose validity due to the internal reallocations.
+
+#### Return Value
+
+A pointer to the first available space in the buffer memory.
+
+#### Errors
+
+This function never fails.
