@@ -23,32 +23,14 @@ struct allocator allocator_init (
 
 This function initializes a `struct allocator` with the given *capacity*.
 
-A `struct allocator` is a memory allocator and tracker. It is defined as:
-
-```c
-struct allocator {
-  byte* data;
-  uint capacity;
-  uint position;
-  struct {
-    void** addresses;
-    uint capacity;
-    uint count;
-  } regions;
-  struct {
-    uint count;
-    uint size;
-  } allocations;
-};
-```
-
-An allocator is used to group code objects that share the same lifetime across the
-program. Imagine a web request, a videogame frame or a UI screen: all these entities
-require many objects to be readily accessible from memory in order for the program to
-work correctly. But these same objects may well not be required anymore when the entity
-has done its job: in case of the the web request because it is completed and the
-connection is closed, the videogame frame because the player has changed area, or the UI
-screen because a user interaction has changed the view.
+A `struct allocator` is a memory allocator and tracker. It is used to group code objects
+that share the same lifetime across the program. Imagine a web request, a videogame
+frame or a UI screen: all these entities require many objects to be readily accessible
+from memory in order for the program to work correctly. But these same objects may well
+not be required anymore when the entity has done its job: in case of the the web request
+because it is completed and the connection is closed, the videogame frame because the
+player has changed area, or the UI screen because a user interaction has changed the
+view.
 
 The standard approach of C programmers, and what it is still unfortunately taught in
 academia, is to use the `malloc` and `free` APIs to allocate, and eventually release,
