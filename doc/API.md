@@ -92,7 +92,7 @@ inside the allocator.
 
 A pointer to the first available address in the *allocator* memory, after having made
 enough space for it. If the *amount* is greater than the *allocator* memory, then all of
-it shall be discarded and it shall be returned the beginning address of the allocator
+it shall be discarded, and it shall be returned the beginning address of the allocator
 memory.
 
 #### Errors
@@ -109,3 +109,23 @@ void* allocator_push (
     uint amount
 );
 ```
+
+#### Description
+
+This function allocates a given *amount* of bytes on the given *allocator*.
+
+If the allocator has reached its capacity, or if the allocator did not yet perform any
+allocations, then the required memory to accomodate this call is requested to the
+operating system. This memory shall be added to -- and managed by -- the allocator.
+
+#### Return Value
+
+A pointer to the first available address in the *allocator* memory, after having made
+enough space for it.
+
+#### Errors
+
+This function never fails. If, in order to accomodate this request, the allocator must
+perform a request for more memory to the operating system, and the hardware is out of
+memory, then this function shall [abort](
+https://www.man7.org/linux/man-pages/man3/abort.3.html)

@@ -5,7 +5,7 @@ void* allocator_pop (
 /*
 #### Description
 
-This function releases a given *amount* of memory from the given *allocator*.
+This function releases a given *amount* of bytes from the given *allocator*.
 
 The primary usage of a `struct allocator` is to allocate memory in chunks -- using
 [allocator_push](#allocator-push) and then massively release it in one shot using
@@ -21,7 +21,7 @@ inside the allocator.
 
 A pointer to the first available address in the *allocator* memory, after having made
 enough space for it. If the *amount* is greater than the *allocator* memory, then all of
-it shall be discarded and it shall be returned the beginning address of the allocator
+it shall be discarded, and it shall be returned the beginning address of the allocator
 memory.
 
 #### Errors
