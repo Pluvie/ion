@@ -21,16 +21,17 @@
 ### allocator
 
 A `struct allocator` is a memory allocator and tracker. It is used to group code objects
-that share the same lifetime across a program. Imagine a web request, a videogame
-frame or a UI screen: all these workflows require many objects to be readily accessible
-from memory in order for the program to work correctly. However, these same objects may
-well not be required anymore when the workflow has done its job: in case of the the web
-request because it is completed -- or the connection is closed, the videogame frame
-because the player has changed area, or the UI screen because a user interaction has
-changed the view.
+that share the same lifetime across a program.
 
-So how can we manage all these objects and the required memory? The standard approach of
-C programmers, and what it is still unfortunately taught in academia, is to use the
+Imagine a web request, a videogame frame or a UI screen: all these situations require
+many objects to be readily accessible from memory in order for the program to work
+correctly. However, these same objects may well not be required anymore when the
+situation changes: in case of the the web request because it is completed -- or
+the connection is closed, the videogame frame because the player has changed area, or
+the UI screen because a user interaction has changed the view.
+
+So how can we manage all these objects and their required memory? The standard approach
+of C programmers, and what it is still unfortunately taught in academia, is to use the
 `malloc` and `free` APIs to allocate, and eventually release, these objects. This
 requires the programmer to individually keep track of each object and remember when
 their lifetime ends. This has created, over the years, the false belief that "*memory
