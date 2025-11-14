@@ -31,7 +31,7 @@ frame because the player has changed area, or the UI screen because a user inter
 has changed the view.
 
 So, how can we manage all these objects and their required memory? The standard approach
-of C programmers, and what it is still unfortunately taught in academia, is to use the
+of C programmers, and what it is unfortunately still taught in academia, is to use the
 `malloc` and `free` APIs to allocate, and eventually release, these objects. This
 requires the programmer to individually keep track of each object and remember when
 their lifetime ends. This has created, over the years, the false belief that "*memory
@@ -48,8 +48,8 @@ The `struct allocator` follows the arena memory management approach. Read this [
 by Ryan Fleury](https://www.rfleury.com/p/untangling-lifetimes-the-arena-allocator) for
 a very nice and in-depth explanation of the arena. The core concept here is: everything
 is loaded into a specific `struct allocator`, which automatically grows the required
-memory in order to satisfy the program needs. When the allocated objects are not needed
-anymore, a single release call to the allocator is sufficient to release them all.
+memory in order to satisfy the program needs. When the allocated objects are no longer
+needed, a single release call to the allocator is sufficient to release them all.
 
 In order to use a `struct allocator`, it must be initialized to a given capacity with
 the [allocator_init](#allocator-init) function. The returned object can then be passed
@@ -66,8 +66,8 @@ objects that were stored in the allocator are no longer valid, and therefore eac
 address that refers to them must be discarded.
 
 A `struct allocator` is inherently **non thread-safe** due to the fact that allocating
-memory is not an atomic operation. It must not be used to share memory across threads
-unless using a mutex to control the [allocator_push](#allocator-push) calls.
+memory is not an atomic operation. It must not be used to share memory across threads,
+unless you are using a mutex to synchronize the [allocator_push](#allocator-push) calls.
 
 ---
 
@@ -223,22 +223,22 @@ requires a contiguous and dynamic amount of memory.
 
 Imagine parsing a chunked HTTP response: you do not know how long the full response
 will be; instead you receive it in chunks. Each chunk starts with a number that
-indicates how many bytes the chunk content will be. You also want the final received
-response to be contiguous in memory so that it is easy to pass it around to other
-functions -- which may, for example, parse it as HTML, JSON, or something like that.
+indicates how many bytes the chunk content will be. You also want the final response
+data to be contiguous in memory so that it is accessable by just a pointer and therefore
+easy to pass it around to other functions which may, for example, parse it as HTML,
+JSON, or something like that.
 
-This is the perfect case for a `struct buffer`. The `struct allocator`, instead, is
-not good for this case because of its memory fragmentation. Each call to allocate memory
-returns an always valid address, but it may not be contiguous to the previous
-allocations. The `struct buffer`, instead, guarantees that every call to [buffer_push](
-#buffer-push) produces contiguous addresses. However, in order to do so, it must
-invalidate all previously returned addresses. Therefore, in order to keep track of
-memory allocated in a `struct buffer`, one must use its `position`, which is guaranteed
-to be always valid.
+This is not a good case for the `struct allocator` because of its memory fragmentation.
+Each call to allocate memory returns an always valid address, but it may not be
+contiguous to the previous allocations. Instead, this is the perfect case for a
+`struct buffer`, because it guarantees that every call to [buffer_push](#buffer-push)
+produces contiguous addresses. However, in order to do so, it must invalidate all
+previously returned addresses. Therefore, in order to keep track of memory allocated in
+a `struct buffer`, one must use its `position`, which is guaranteed to be always valid.
 
 A `struct buffer` is inherently **non thread-safe** due to the fact that allocating
-memory is not an atomic operation. It must not be used to share memory across threads
-unless using a mutex to control the [buffer_push](#buffer-push) calls.
+memory is not an atomic operation. It must not be used to share memory across threads,
+unless you are using a mutex to synchronize the [buffer_push](#buffer-push) calls.
 
 ---
 
