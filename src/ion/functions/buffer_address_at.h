@@ -16,8 +16,7 @@ guaranteed to be contiguous, but intermediate addresses returned by each [buffer
 
 #### Return Value
 
-A pointer to the available space in the buffer memory after an amount of bytes equal
-to *position*.
+A pointer to the buffer memory with a byte offset equal to *position*.
 
 #### Errors
 

@@ -5,29 +5,20 @@
 
 ## API
 
-Allocator
+[Allocator](#allocator)
 
   - [allocator_init](#allocator-init)
   - [allocator_pop](#allocator-pop)
   - [allocator_push](#allocator-push)
   - [allocator_release](#allocator-release)
 
-Buffer
+[Buffer](#buffer)
 
   - [buffer_address](#buffer-address)
   - [buffer_address_at](#buffer-address-at)
+  - [buffer_init](#buffer-init)
 
-### allocator init
-
-```c
-struct allocator allocator_init (
-    uint capacity
-);
-```
-
-#### Description
-
-This function initializes a `struct allocator` with the given *capacity*.
+### allocator
 
 A `struct allocator` is a memory allocator and tracker. It is used to group code objects
 that share the same lifetime across the program. Imagine a web request, a videogame
@@ -60,10 +51,39 @@ loaded on a specific allocator, which automatically grows the required memory in
 to satisfy the program needs. When the allocated objects are not needed anymore, a
 single release call to the allocator is sufficient to release them all.
 
+In order to use a `struct allocator`, it must be initialized to a given capacity with
+the [allocator_init](#allocator-init) function. The returned object can then be passed
+to the [allocator_push](#allocator-push) function to do the actual memory allocation.
+This shall reserve some space in the allocator and consequently reduce the remaining
+capacity. When a call to [allocator_push](#allocator-push) requires more memory than the
+remaining capacity, then the allocator shall automatically extend it in order to
+accomodate the request. The extension is transparent to the caller, and the allocator
+guarantees that all returned pointers shall remain always valid.
+
+When the user is done using the allocator, he may release all its memory at once by
+calling the function [allocator_release](#allocator-release). After this call, all
+objects, as well as their addresses -- that were stored in the allocator, are no longer
+valid.
+
+---
+
+### allocator init
+
+```c
+struct allocator allocator_init (
+    uint capacity
+);
+```
+
+#### Description
+
+This function initializes a `struct allocator` with the given *capacity*. It does not
+perform any allocation, but the returned allocator is ready to allocate memory using
+[allocator_push](#allocator-push).
+
 #### Return Value
 
-A `struct allocator` with the given *capacity*. No allocation is performed, but the
-returned allocator is ready to allocate memory using [allocator_push](#allocator-push).
+A `struct allocator` with the given *capacity*.
 
 #### Errors
 
@@ -192,6 +212,12 @@ This function never fails.
 
 ---
 
+### buffer
+
+TODO: describe the buffer.
+
+---
+
 ### buffer-address-at
 
 ```c
@@ -214,11 +240,42 @@ guaranteed to be contiguous, but intermediate addresses returned by each [buffer
 
 #### Return Value
 
-A pointer to the available space in the buffer memory after an amount of bytes equal
-to *position*.
+A pointer to the buffer memory with a byte offset equal to *position*.
 
 #### Errors
 
 This function never fails. If the *position* is greater than the buffer current
 position, this function shall [abort](
 https://www.man7.org/linux/man-pages/man3/abort.3.html).
+
+---
+
+### buffer-init
+
+```c
+struct buffer buffer_init (
+    uint capacity
+);
+```
+
+#### Description
+
+This function initializes a `struct buffer`.
+
+A `struct buffer` is a linear memory allocator. The buffer is useful when a contiguous
+dynamic amount of memory is required. It can be seen as an infinite stack, where each
+allocation is done with [buffer_push](#buffer-push). If the buffer requires more memory
+to accomodate the call, it shall request it to the operating system. Also, in order to
+maintain memory contiguity, a full reallocation of the buffer may be performed. For this
+reason, pointers returned by buffer allocations **are not** guaranteed to be always
+valid.
+
+#### Return Value
+
+A `struct buffer` with the given *capacity*. No allocation is performed, but the
+returned buffer is ready to allocate memory using [buffer_push](#buffer-push).
+ready to allocate.
+
+#### Errors
+
+This function never fails.
