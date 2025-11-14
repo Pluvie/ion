@@ -23,14 +23,14 @@
 A `struct allocator` is a memory allocator and tracker. It is used to group together
 code objects that share the same **lifetime** across a program.
 
-Imagine a web request, a videogame frame or a UI screen: all these situations require
+Imagine a web request, a videogame frame, or a UI screen: all these situations require
 many objects to be readily accessible from memory in order for the program to work
 correctly. However, these same objects may well not be required anymore when the
-situation changes: in case of the the web request because it is completed -- or
-the connection is closed, the videogame frame because the player has changed area, or
-the UI screen because a user interaction has changed the view.
+situation changes: in case of the the web request because it is completed, the videogame
+frame because the player has changed area, or the UI screen because a user interaction
+has changed the view.
 
-So how can we manage all these objects and their required memory? The standard approach
+So, how can we manage all these objects and their required memory? The standard approach
 of C programmers, and what it is still unfortunately taught in academia, is to use the
 `malloc` and `free` APIs to allocate, and eventually release, these objects. This
 requires the programmer to individually keep track of each object and remember when
@@ -40,7 +40,7 @@ this, we cannot do anything but agree. Fortunately, this is not something intrin
 tied to C itself, but rather to its misuse of the basic memory management APIs. C is a
 simple language, and offers barebone constructs which you can use to build increasingly
 complex applications. As much as no one would do logging by explicitly calling `fprintf`
-every time, one must not treat memory with its primitive functions but rather create
+every time, one must not treat memory with its primitive functions, but rather create
 something akin to a log library would do for logging: this is what the
 `struct allocator` does.
 
@@ -223,9 +223,9 @@ requires a contiguous and dynamic amount of memory.
 
 Imagine parsing a chunked HTTP response: you do not know how long the full response
 will be; instead you receive it in chunks. Each chunk starts with a number that
-indicates how many bytes will the chunk content be. You also want the final received
+indicates how many bytes the chunk content will be. You also want the final received
 response to be contiguous in memory so that it is easy to pass it around to other
-functions -- which may, for example, parse it as JSON, or something like that.
+functions -- which may, for example, parse it as HTML, JSON, or something like that.
 
 This is the perfect case for a `struct buffer`. The `struct allocator`, instead, is
 not good for this case because of its memory fragmentation. Each call to allocate memory
