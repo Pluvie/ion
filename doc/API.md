@@ -5,8 +5,9 @@
 
 ## API
 
-[allocator_init](#allocator-init)
-[allocator_pop](#allocator-pop)
+  - Allocator
+  - [allocator_init](#allocator-init)
+  - [allocator_pop](#allocator-pop)
 
 ## Allocator
 
@@ -82,10 +83,12 @@ This function never fails.
 
 ### allocator-pop
 
+```c
 void* allocator_pop (
     struct allocator* allocator,
     uint amount
 );
+```
 
 This function releases a given *amount* of memory from the given *allocator*.
 
@@ -112,7 +115,9 @@ This function never fails.
 
 ### allocator-push
 
+```c
 void* allocator_push (
     struct allocator* allocator,
     uint amount
 );
+```
