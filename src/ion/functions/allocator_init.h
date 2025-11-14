@@ -2,6 +2,8 @@ struct allocator allocator_init (
     uint capacity
 );
 /*
+#### Description
+
 This function initializes a `struct allocator` with the given *capacity*.
 
 A `struct allocator` is a memory allocator and tracker. It is defined as:
@@ -22,8 +24,6 @@ struct allocator {
   } allocations;
 };
 ```
-
-#### Description
 
 An allocator is used to group code objects that share the same lifetime across the
 program. Imagine a web request, a videogame frame or a UI screen: all these entities

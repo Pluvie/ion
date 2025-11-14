@@ -5,7 +5,7 @@
 
 ## API
 
-  - Allocator
+Allocator
   - [allocator_init](#allocator-init)
   - [allocator_pop](#allocator-pop)
 
@@ -81,7 +81,7 @@ returned allocator is ready to allocate memory using [allocator_push](#allocator
 
 This function never fails.
 
-### allocator-pop
+### allocator pop
 
 ```c
 void* allocator_pop (
@@ -89,6 +89,8 @@ void* allocator_pop (
     uint amount
 );
 ```
+
+#### Description
 
 This function releases a given *amount* of memory from the given *allocator*.
 

@@ -3,6 +3,8 @@ void* allocator_pop (
     uint amount
 );
 /*
+#### Description
+
 This function releases a given *amount* of memory from the given *allocator*.
 
 The primary usage of a `struct allocator` is to allocate memory in chunks -- using
