@@ -6,8 +6,10 @@
 ## API
 
 Allocator
+
   - [allocator_init](#allocator-init)
   - [allocator_pop](#allocator-pop)
+  - [allocator_push](#allocator-push)
 
 ## Allocator
 
