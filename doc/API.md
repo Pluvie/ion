@@ -6,7 +6,7 @@
 ## API
 
 [Allocator](#allocator)
-A regional memory allocator.
+Regional memory allocator.
 
   - [allocator_init](#allocator-init)
   - [allocator_pop](#allocator-pop)
@@ -14,20 +14,20 @@ A regional memory allocator.
   - [allocator_release](#allocator-release)
 
 [Buffer](#buffer)
-A linear memory allocator.
+Linear memory allocator.
 
   - [buffer_address](#buffer-address)
   - [buffer_address_at](#buffer-address-at)
   - [buffer_init](#buffer-init)
 
 [Cstr](#cstr)
-A null-terminated string, aka `char*`.
+String, null-terminated.
 
   - [cstr_compare](#cstr-compare)
   - [cstr_equal](#cstr-equal)
 
 [Str](#str)
-A string with incorporated length.
+String, with incorporated length.
 
   - [str_append](#str-append)
   - [str_compare](#str-compare)
