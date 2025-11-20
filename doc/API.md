@@ -6,36 +6,50 @@
 ## API
 
 ```c
-struct arena
+struct arena    /* Regional memory allocator. */
 ```
-regional memory [allocator](#arena)
+Type:
+  - [arena](#arena)
 
+API:
   - [arena_create](#arena-create)
   - [arena_destroy](#arena-destroy)
   - [arena_push](#arena-push)
 
-```c
-struct buffer
-```
-linear memory [allocator](#buffer)
+---
 
+```c
+struct buffer   /* Linear memory allocator. */
+```
+Type:
+  - [buffer](#buffer)
+
+API:
   - [buffer_address](#buffer-address)
   - [buffer_address_at](#buffer-address-at)
   - [buffer_init](#buffer-init)
 
-```c
-cstr
-```
-[string](#str), always null terminated
+---
 
+```c
+cstr            /* String, always null terminated. */
+```
+Type:
+  - [cstr](#cstr)
+
+API:
   - [cstr_compare](#cstr-compare)
   - [cstr_equal](#cstr-equal)
 
-```c
-str
-```
-[string](#str), with incorporated length, may be not null terminated
+---
 
+```c
+str             /* String, with incorporated length, may be not null terminated. */
+```
+Type:
+  - [str](#str)
+
+API:
   - [str_append](#str-append)
   - [str_compare](#str-compare)
   - [str_compare_case](#str-compare-case)
