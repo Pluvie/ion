@@ -10,5 +10,5 @@ static struct {
 
 /* Creates a spec-specific copy of the function so that the linker does not find
   multiple definitions of this function with the same name. */
-#define memory_resize   specced__memory_resize
+#define memory_resize specced__memory_resize
 #include <ion/functions/memory_resize.c>

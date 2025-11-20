@@ -122,7 +122,7 @@ spec( map_set ) {
 
   when("the map is allocated") {
     #define allocated_map_condition \
-      map = allocator_push(spec_allocator, sizeof(*map)); \
+      map = arena_push(spec_allocator, sizeof(*map)); \
       *map = cstr_int_map_alloc(16, spec_allocator); \
 
     uint original_map_length;

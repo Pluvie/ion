@@ -21,7 +21,7 @@ static struct {
 
 /* Creates a spec-specific copy of the function so that the linker does not find
   multiple definitions of this function with the same name. */
-#define memory_acquire_aligned  specced__memory_acquire_aligned
+#define memory_acquire_aligned specced__memory_acquire_aligned
 #include <ion/functions/memory_acquire_aligned.c>
 
 /* Restore the original memory set behaviour. */

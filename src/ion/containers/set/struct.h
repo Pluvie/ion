@@ -4,5 +4,5 @@ struct N {
   uint capacity;
   uint load_limit;
   uint* hashes;
-  struct allocator* allocator;
+  struct arena* allocator;
 };

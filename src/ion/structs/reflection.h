@@ -9,7 +9,7 @@ struct reflection {
   void (*validator)(void*, struct reflection*);
   int  (*enumerator)(str);
   struct {
-    void (*creator)(void*, uint, struct allocator*);
+    void (*creator)(void*, uint, struct arena*);
     void (*adder)(void*, void*);
   } container;
 };

@@ -5,29 +5,36 @@
 
 ## API
 
-[Allocator](#allocator)
-Regional memory allocator.
+```c
+struct arena
+```
+regional memory [allocator](#arena)
 
-  - [allocator_init](#allocator-init)
-  - [allocator_pop](#allocator-pop)
-  - [allocator_push](#allocator-push)
-  - [allocator_release](#allocator-release)
+  - [arena_create](#arena-create)
+  - [arena_destroy](#arena-destroy)
+  - [arena_push](#arena-push)
 
-[Buffer](#buffer)
-Linear memory allocator.
+```c
+struct buffer
+```
+linear memory [allocator](#buffer)
 
   - [buffer_address](#buffer-address)
   - [buffer_address_at](#buffer-address-at)
   - [buffer_init](#buffer-init)
 
-[Cstr](#cstr)
-String, null-terminated.
+```c
+cstr
+```
+[string](#str), always null terminated
 
   - [cstr_compare](#cstr-compare)
   - [cstr_equal](#cstr-equal)
 
-[Str](#str)
-String, with incorporated length.
+```c
+str
+```
+[string](#str), with incorporated length, may be not null terminated
 
   - [str_append](#str-append)
   - [str_compare](#str-compare)
@@ -41,56 +48,60 @@ String, with incorporated length.
 
 ---
 
-### allocator
+### arena
 
-A `struct allocator` is a memory allocator and tracker. It is used to group together
-code objects that share the same **lifetime** across a program.
+```c
+struct arena
+```
+is a memory allocator. It is used to group together pointers that share the same
+**lifetime** across a program.
 
 Imagine a web request, a videogame frame, or a UI screen: all these situations require
-many objects to be readily accessible from memory in order for the program to work
-correctly. However, these same objects may well not be required anymore when the
-situation changes: in case of the the web request because it is completed, the videogame
-frame because the player has changed area, or the UI screen because a user interaction
-has changed the view.
+a lot of data to be readily accessible from memory in order for the program to work
+correctly. However, the same data may well not be required anymore when the situation
+changes: in case of the the web request because it is completed, the videogame frame
+because the player has changed area, or the UI screen because a user interaction has
+changed the view.
 
-So, how can we manage all these objects and their required memory? The standard approach
-of C programmers, and what it is unfortunately still taught in academia, is to use the
-`malloc` and `free` APIs to allocate, and eventually release, these objects. This
-requires the programmer to individually keep track of each object and remember when
-their lifetime ends. This has created, over the years, the false belief that "*memory
+So, how can we manage all this data and its required memory? The standard approach of C
+programmers, and what it is unfortunately still taught in academia, is to use the
+`malloc` and `free` APIs to allocate, and eventually release, these pointers. This
+requires the programmer to individually keep track of each pointer and remember when
+its lifetime ends. This has created, over the years, the false belief that "*memory
 management in C is hard to do and very error prone*". Well, if it's indeed done like
 this, we cannot do anything but agree. Fortunately, this is not something intrinsically
 tied to C itself, but rather to its misuse of the basic memory management APIs. C is a
 simple language, and offers barebone constructs which you can use to build increasingly
 complex applications. As much as no one would do logging by explicitly calling `fprintf`
-every time, one must not treat memory with its primitive functions, but rather create
-something akin to a log library would do for logging: this is what the
-`struct allocator` does.
+every time, one must not treat memory with only its primitive functions, but rather
+create something akin to what a log library would do for logging: this is what the
+`struct arena` does.
 
-The `struct allocator` follows the arena memory management approach. Read this [article
+The `struct arena` follows the arena memory management approach. Read this [article
 by Ryan Fleury](https://www.rfleury.com/p/untangling-lifetimes-the-arena-allocator) for
 a very nice and in-depth explanation of the arena. The core concept here is: everything
-is loaded into a specific `struct allocator`, which automatically grows the required
-memory in order to satisfy the program needs. When the allocated objects are no longer
-needed, a single release call to the allocator is sufficient to release them all.
+is loaded into a specific arena allocator, which automatically grows the required
+memory in order to satisfy the program needs. When the allocated data is no longer
+needed, a single release call to the allocator is sufficient to release it all.
 
-In order to use a `struct allocator`, it must be initialized to a given capacity with
-the [allocator_init](#allocator-init) function. The returned object can then be passed
-to the [allocator_push](#allocator-push) function to do the actual memory allocation.
-This shall reserve some space in the allocator and consequently reduce the remaining
-capacity. When a call to [allocator_push](#allocator-push) requires more memory than the
-remaining capacity, then the allocator shall automatically extend it in order to
+In order to use a `struct arena` allocator, it must be created and initialized to a
+given capacity with the [arena_create](#arena-init) function. The returned allocator can
+then be passed to the [arena_push](#arena-push) function to do the actual memory
+allocation. This shall reserve some space in the allocator and consequently reduce the
+remaining capacity. When a call to [arena_push](#arena-push) requires more memory than
+the remaining capacity, then the allocator shall automatically extend it in order to
 accomodate the request. The extension is transparent to the caller, and the allocator
 guarantees that all returned pointers shall remain always valid.
 
 When the user is done using the allocator, he may release all its memory at once by
-calling the function [allocator_release](#allocator-release). After this call, all
-objects that were stored in the allocator are no longer valid, and therefore each
-address that refers to them must be discarded.
+calling the function [arena_destroy](#arena-destroy). After this call, all data that
+was stored in the allocator, and all pointers returned by the [arena_push](#arena-push)
+calls, are no longer valid.
 
-A `struct allocator` is inherently **non thread-safe** due to the fact that allocating
-memory is not an atomic operation. It must not be used to share memory across threads,
-unless you are using a mutex to synchronize the [allocator_push](#allocator-push) calls.
+A `struct arena` is inherently **non thread-safe** due to the fact that allocating
+memory is not an atomic operation. To be safely used in a multi threaded scenario,
+you must use a mutex to synchronize the [arena_push](#arena-push) calls so that only
+one thread can complete this call at once.
 
 ---
 
@@ -211,6 +222,36 @@ This function never fails.
 
 ---
 
+### buffer
+
+A `struct buffer` is a memory allocator. It is used to when a program requires a
+contiguous amount of memory which can be dynamically increased.
+
+Imagine parsing a chunked HTTP response: you do not know how long the full response
+will be; instead you receive it in chunks. Each chunk starts with a number that
+indicates how many bytes the chunk content will be. You also want the final response
+data to be contiguous in memory so that it is addressable by just a pointer and
+therefore easy to pass it around to other functions which may, for example, parse it as
+HTML, JSON, or something like that.
+
+This is not a good case for the `struct arena` because of its memory fragmentation.
+Even though each call to [arena_push](#arena-push) is guaranteed to return an always
+valid address, it may not be adjacent to addresses returned by previous calls to the
+same function. This is by design.
+
+Instead, a `struct buffer`, guarantees that every call to [buffer_push](#buffer-push)
+produces contiguous addresses. However, in order to do so, it must invalidate all
+previously returned addresses. Therefore, in order to keep track of memory allocated in
+a `struct buffer`, one must use its position, which is guaranteed to be always valid,
+using [buffer_position_get](#buffer-position-get).
+
+A `struct buffer` is inherently **non thread-safe** due to the fact that allocating
+memory is not an atomic operation. To be safely used in a multi threaded scenario,
+you must use a mutex to synchronize the [buffer_push](#buffer-push) calls so that only
+one thread can complete this call at once.
+
+---
+
 ### buffer-address
 
 ```c
@@ -236,32 +277,6 @@ A pointer to the first available space in the buffer memory.
 #### Errors
 
 This function never fails.
-
----
-
-### buffer
-
-A `struct buffer` is a memory allocator and tracker. It is used to when a program
-requires a contiguous and dynamic amount of memory.
-
-Imagine parsing a chunked HTTP response: you do not know how long the full response
-will be; instead you receive it in chunks. Each chunk starts with a number that
-indicates how many bytes the chunk content will be. You also want the final response
-data to be contiguous in memory so that it is accessable by just a pointer and therefore
-easy to pass it around to other functions which may, for example, parse it as HTML,
-JSON, or something like that.
-
-This is not a good case for the `struct allocator` because of its memory fragmentation.
-Each call to allocate memory returns an always valid address, but it may not be
-contiguous to the previous allocations. Instead, this is the perfect case for a
-`struct buffer`, because it guarantees that every call to [buffer_push](#buffer-push)
-produces contiguous addresses. However, in order to do so, it must invalidate all
-previously returned addresses. Therefore, in order to keep track of memory allocated in
-a `struct buffer`, one must use its `position`, which is guaranteed to be always valid.
-
-A `struct buffer` is inherently **non thread-safe** due to the fact that allocating
-memory is not an atomic operation. It must not be used to share memory across threads,
-unless you are using a mutex to synchronize the [buffer_push](#buffer-push) calls.
 
 ---
 

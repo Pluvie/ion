@@ -2,7 +2,7 @@
 
 spec( map_alloc ) {
   argument(int capacity);
-  argument(struct allocator* allocator);
+  argument(struct arena* allocator);
   returns(struct cstr_int_map map);
 
   precondition("a valid allocator")

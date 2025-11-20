@@ -4,20 +4,18 @@
 #include <ion.c>
 #include <ion/spec.c>
 
-spec( allocator_init );
-spec( allocator_pop );
-spec( allocator_push );
-spec( allocator_release );
+spec( arena_create );
+spec( arena_destroy );
+spec( arena_push );
 spec( bit_count_leading_ones );
 spec( bit_count_leading_zeros );
-spec( buffer_address );
-spec( buffer_address_at );
-spec( buffer_init );
-spec( buffer_pop );
+spec( buffer_create );
+spec( buffer_destroy );
+spec( buffer_pointer );
+spec( buffer_pointer_at );
 spec( buffer_position_get );
 spec( buffer_position_set );
 spec( buffer_push );
-spec( buffer_release );
 spec( cstr_compare );
 spec( cstr_equal );
 spec( map_alloc );
@@ -50,20 +48,17 @@ int_t main (
     cstr* argv
 )
 {
-  spec_add( allocator_init );
-  spec_add( allocator_pop );
-  spec_add( allocator_push );
-  spec_add( allocator_release );
+  spec_add( arena_create );
+  spec_add( arena_destroy );
+  spec_add( arena_push );
   spec_add( bit_count_leading_ones );
   spec_add( bit_count_leading_zeros );
-  spec_add( buffer_address );
-  spec_add( buffer_address_at );
-  spec_add( buffer_init );
-  spec_add( buffer_pop );
+  spec_add( buffer_create );
+  spec_add( buffer_destroy );
+  spec_add( buffer_pointer );
+  spec_add( buffer_pointer_at );
   spec_add( buffer_position_get );
   spec_add( buffer_position_set );
-  spec_add( buffer_push );
-  spec_add( buffer_release );
   spec_add( cstr_compare );
   spec_add( cstr_equal );
   spec_add( map_alloc );

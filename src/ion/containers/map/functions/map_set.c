@@ -12,7 +12,7 @@ uint container_function(N, set) (
   }
 
   if (map->keys.capacity > capacity) {
-    V* new_values = allocator_push(map->keys.allocator, map->keys.capacity * sizeof(V));
+    V* new_values = arena_push(map->keys.allocator, map->keys.capacity * sizeof(V));
     memory_set(new_values, 0, map->keys.capacity * sizeof(V));
     memory_copy(new_values, map->values, capacity);
     map->values = new_values;

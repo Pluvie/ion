@@ -2,5 +2,5 @@
 
 /* Creates a spec-specific copy of the function so that the linker does not find
   multiple definitions of this function with the same name. */
-#define memory_copy   specced__memory_copy
+#define memory_copy specced__memory_copy
 #include <ion/functions/memory_copy.c>

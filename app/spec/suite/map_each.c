@@ -12,9 +12,9 @@ spec( map_each ) {
   precondition("a valid key pointer");
   precondition("a valid value pointer");
     #define preconditions \
-      iter = allocator_push(spec_allocator, sizeof(*iter)); \
+      iter = arena_push(spec_allocator, sizeof(*iter)); \
       memory_set(iter, 0, sizeof(*iter)); \
-      map = allocator_push(spec_allocator, sizeof(*map)); \
+      map = arena_push(spec_allocator, sizeof(*map)); \
       *map = cstr_int_map_init(8, keys, values, hashes); \
       cstr_int_map_set(map, "a", 1); \
       cstr_int_map_set(map, "b", 2); \

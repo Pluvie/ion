@@ -11,5 +11,5 @@ static struct {
 
 /* Creates a spec-specific copy of the function so that the linker does not find
   multiple definitions of this function with the same name. */
-#define memory_acquire    specced__memory_acquire
+#define memory_acquire specced__memory_acquire
 #include <ion/functions/memory_acquire.c>

@@ -12,7 +12,7 @@ int spec_indentation = 0;
 bool spec_print_verification_enabled = false;
 
 /* Global variable that helps allocating temporary data for specs. */
-struct allocator* spec_allocator;
+struct arena* spec_allocator;
 
 /* Global variable that stores registered specs to be run. */
 int added_specs_count = 0;
@@ -76,7 +76,7 @@ void specs_run (
   int i;
 
   spec_allocator = memory_acquire(sizeof(*spec_allocator));
-  *spec_allocator = allocator_init(0);
+  *spec_allocator = arena_create(0);
 
   if (focused_specs[0] == nullptr) {
     #if platform(WINDOWS)
@@ -92,7 +92,7 @@ void specs_run (
       fflush(stderr);
       spec_indentation = 1;
       added_specs[i]();
-      allocator_release(spec_allocator);
+      arena_destroy(spec_allocator);
       /*memory_set(&failure, 0, sizeof(failure));*/
     }
   } else {
@@ -104,7 +104,7 @@ void specs_run (
       fprintf(stderr, FMT_COLOR_NONE);
       fflush(stderr);
       focused_specs[i]();
-      allocator_release(spec_allocator);
+      arena_destroy(spec_allocator);
       /*memory_set(&failure, 0, sizeof(failure));*/
     }
   }
@@ -129,7 +129,7 @@ void specs_run (
     fprintf(stderr, FMT_COLOR_NONE);
   }
 
-  allocator_release(spec_allocator);
+  arena_destroy(spec_allocator);
   memory_release(spec_allocator);
 
   fclose(stderr);

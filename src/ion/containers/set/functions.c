@@ -4,7 +4,7 @@
 
 struct N container_function(N, alloc) (
     uint initial_capacity,
-    struct allocator* allocator
+    struct arena* allocator
 )
 {
   struct N set = { 0 };
@@ -17,8 +17,8 @@ struct N container_function(N, alloc) (
 
   set.capacity = capacity;
   set.allocator = allocator;
-  set.data = allocator_push(allocator, capacity * sizeof(T));
-  set.hashes = allocator_push(allocator, capacity * sizeof(uint));
+  set.data = arena_push(allocator, capacity * sizeof(T));
+  set.hashes = arena_push(allocator, capacity * sizeof(uint));
   set.load_limit = set_load_limit(&set);
 
   memory_set(set.data, 0, capacity * sizeof(T));
@@ -112,8 +112,8 @@ void container_function(N, rehash) (
   uint new_capacity = set->capacity * 2;
 
   rehashed_set.capacity = new_capacity;
-  rehashed_set.data = allocator_push(set->allocator, new_capacity * sizeof(T));
-  rehashed_set.hashes = allocator_push(set->allocator, new_capacity * sizeof(uint));
+  rehashed_set.data = arena_push(set->allocator, new_capacity * sizeof(T));
+  rehashed_set.hashes = arena_push(set->allocator, new_capacity * sizeof(uint));
   rehashed_set.load_limit = set_load_limit(&rehashed_set);
 
   memory_set(rehashed_set.data, 0, new_capacity * sizeof(T));

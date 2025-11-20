@@ -1,4 +1,4 @@
 void* buffer_stretch (
-    struct buffer* buffer,
+    struct buffer* allocator,
     uint amount
 );

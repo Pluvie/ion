@@ -10,9 +10,9 @@ spec( str_append ) {
     #define preconditions \
       str target_literal = str("HEY"); \
       target = target_literal; \
-      source = allocator_push(spec_allocator, sizeof(*source)); \
+      source = arena_push(spec_allocator, sizeof(*source)); \
       source->length = 32; \
-      source->chars = allocator_push(spec_allocator, source->length); \
+      source->chars = arena_push(spec_allocator, source->length); \
       memory_set(source->chars, 0, source->length);
 
   when("the source string has 0 length") {

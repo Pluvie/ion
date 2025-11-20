@@ -1,38 +1,36 @@
 void* buffer_push (
-    struct buffer* buffer,
+    struct buffer* allocator,
     uint amount
 )
 {
   byte* address;
   uint new_capacity;
 
-  if (buffer->data == nullptr)
+  if (allocator->data == nullptr)
     goto allocate_buffer;
-  else if (buffer->position + amount <= buffer->capacity)
+  else if (allocator->position + amount <= allocator->capacity)
     goto extend_buffer;
   else
     goto reallocate_buffer;
 
 allocate_buffer:
-  if (amount > buffer->capacity)
-    buffer->capacity = amount;
+  if (amount > allocator->capacity)
+    allocator->capacity = amount;
 
-  buffer->position = 0;
-  buffer->data = memory_acquire(buffer->capacity);
+  allocator->position = 0;
+  allocator->data = memory_acquire(allocator->capacity);
   goto extend_buffer;
 
 reallocate_buffer:
-  new_capacity = 2*buffer->capacity;
-  if (amount + buffer->position > new_capacity)
-    new_capacity = amount + buffer->position;
+  new_capacity = 2*allocator->capacity;
+  if (amount + allocator->position > new_capacity)
+    new_capacity = amount + allocator->position;
 
-  buffer->data = memory_resize(buffer->data, new_capacity);
-  buffer->capacity = new_capacity;
+  allocator->data = memory_resize(allocator->data, new_capacity);
+  allocator->capacity = new_capacity;
 
 extend_buffer:
-  address = buffer_address(buffer);
-  buffer->position += amount;
-  buffer->allocations.size += amount;
-  buffer->allocations.count++;
+  address = buffer_pointer(allocator);
+  allocator->position += amount;
   return address;
 }

@@ -79,7 +79,7 @@ extern int spec_indentation;
 extern bool spec_print_verification_enabled;
 
 /* Global variable that helps allocating temporary data for specs. */
-extern struct allocator* spec_allocator;
+extern struct arena* spec_allocator;
 
 /* Global variable that stores registered specs to be run. */
 extern int added_specs_count;

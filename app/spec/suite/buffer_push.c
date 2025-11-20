@@ -1,52 +1,52 @@
 #include "buffer_push.h"
 
 spec( buffer_push ) {
-  argument(struct buffer* buffer);
+  argument(struct buffer* allocator);
   argument(uint amount);
   returns(byte* result);
 
-  precondition("a valid, previously initialized buffer");
+  precondition("a valid, previously initialized buffer allocator");
   #define preconditions \
-    initialized_buffer = buffer_init(32); \
-    buffer = &initialized_buffer;
+    initialized_allocator = buffer_create(32); \
+    allocator = &initialized_allocator;
 
   when("the line has no previous data") {
     when("the amount is not greater than the line capacity") {
       amount = 16;
       apply(preconditions);
-      result = buffer_push(buffer, amount);
+      result = buffer_push(allocator, amount);
 
       must("increase the line position by the requested amount");
-        verify(buffer->position == amount);
+        verify(allocator->position == amount);
       must("return a valid memory address");
-        verify(result >= buffer->data);
-        verify(result <= buffer->data + buffer->capacity);
+        verify(result >= allocator->data);
+        verify(result <= allocator->data + allocator->capacity);
 
       success();
-        buffer_release(buffer);
+        buffer_destroy(allocator);
     } end();
 
     when("the amount is greater than the line capacity") {
       amount = 50;
       apply(preconditions);
-      result = buffer_push(buffer, amount);
+      result = buffer_push(allocator, amount);
 
       must("increase the line capacity to the amount");
-        verify(buffer->capacity == amount);
+        verify(allocator->capacity == amount);
       must("increase the line position");
-        verify(buffer->position == amount);
+        verify(allocator->position == amount);
       must("return a valid memory address");
-        verify(result >= buffer->data);
-        verify(result <= buffer->data + buffer->capacity);
+        verify(result >= allocator->data);
+        verify(result <= allocator->data + allocator->capacity);
 
       success();
-        buffer_release(buffer);
+        buffer_destroy(allocator);
     } end();
   } end();
 
   when("the line has previous data") {
     #define previous_data_condition \
-      buffer_push(buffer, 16);
+      buffer_push(allocator, 16);
     int previous_buffer_capacity;
     int previous_buffer_position;
 
@@ -55,17 +55,17 @@ spec( buffer_push ) {
       apply(preconditions);
       apply(previous_data_condition);
 
-      previous_buffer_position = buffer->position;
-      result = buffer_push(buffer, amount);
+      previous_buffer_position = allocator->position;
+      result = buffer_push(allocator, amount);
 
       must("increase the line position by the requested amount");
-        verify(buffer->position == previous_buffer_position + amount);
+        verify(allocator->position == previous_buffer_position + amount);
       must("return a valid memory address");
-        verify(result >= buffer->data);
-        verify(result <= buffer->data + buffer->capacity);
+        verify(result >= allocator->data);
+        verify(result <= allocator->data + allocator->capacity);
 
       success();
-        buffer_release(buffer);
+        buffer_destroy(allocator);
     } end();
 
     when("the amount is greater than the line remaining space") {
@@ -75,20 +75,20 @@ spec( buffer_push ) {
         apply(preconditions);
         apply(previous_data_condition);
 
-        previous_buffer_capacity = buffer->capacity;
-        previous_buffer_position = buffer->position;
-        result = buffer_push(buffer, amount);
+        previous_buffer_capacity = allocator->capacity;
+        previous_buffer_position = allocator->position;
+        result = buffer_push(allocator, amount);
 
         must("double the line capacity");
-          verify(buffer->capacity == 2*previous_buffer_capacity);
+          verify(allocator->capacity == 2*previous_buffer_capacity);
         must("increase the line position");
-          verify(buffer->position == previous_buffer_position + amount);
+          verify(allocator->position == previous_buffer_position + amount);
         must("return a valid memory address");
-          verify(result >= buffer->data);
-          verify(result <= buffer->data + buffer->capacity);
+          verify(result >= allocator->data);
+          verify(result <= allocator->data + allocator->capacity);
 
         success();
-          buffer_release(buffer);
+          buffer_destroy(allocator);
       } end();
 
       when("the amount is greater than two times the current line capacity") {
@@ -97,19 +97,19 @@ spec( buffer_push ) {
         apply(preconditions);
         apply(previous_data_condition);
 
-        previous_buffer_position = buffer->position;
-        result = buffer_push(buffer, amount);
+        previous_buffer_position = allocator->position;
+        result = buffer_push(allocator, amount);
 
         must("increase the line capacity to the amount plus the position");
-          verify(buffer->capacity == amount + previous_buffer_position);
+          verify(allocator->capacity == amount + previous_buffer_position);
         must("increase the line position");
-          verify(buffer->position == previous_buffer_position + amount);
+          verify(allocator->position == previous_buffer_position + amount);
         must("return a valid memory address");
-          verify(result >= buffer->data);
-          verify(result <= buffer->data + buffer->capacity);
+          verify(result >= allocator->data);
+          verify(result <= allocator->data + allocator->capacity);
 
         success();
-          buffer_release(buffer);
+          buffer_destroy(allocator);
       } end();
 
     } end();

@@ -1,8 +1,0 @@
-struct allocator allocator_init (
-    uint capacity
-)
-{
-  struct allocator result = { 0 };
-  result.capacity = capacity;
-  return result;
-}
