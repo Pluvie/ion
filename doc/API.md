@@ -199,16 +199,17 @@ enough space for it.
 
 This function never fails.
 
-If, in order to accomodate this request, the allocator must request memory to the
-operating system, and the system cannot fulfill the request, then this function shall
-[abort](https://www.man7.org/linux/man-pages/man3/abort.3.html) the entire program.
+In order to accomodate this call, the allocator may request memory to the operating
+system. If the system is out of memory, or is either way unable to fulfill the
+request, then this function shall [abort](
+https://www.man7.org/linux/man-pages/man3/abort.3.html) the entire program.
 
 ---
 
 ### buffer
 
-A `struct buffer` is a memory allocator. It is used to when a program requires a
-contiguous amount of memory which can be dynamically increased.
+A `struct buffer` is a memory allocator. It is best used to when a program requires a
+contiguous amount of memory, which can also be dynamically increased.
 
 Imagine parsing a chunked HTTP response: you do not know how long the full response
 will be; instead you receive it in chunks. Each chunk starts with a number that
@@ -220,7 +221,7 @@ HTML, JSON, or something like that.
 This is not a good case for the `struct arena` because of its memory fragmentation.
 Even though each call to [arena_push](#arena-push) is guaranteed to return an always
 valid address, it may not be adjacent to addresses returned by previous calls to the
-same function. This is by design.
+same function.
 
 Instead, a `struct buffer`, guarantees that every call to [buffer_push](#buffer-push)
 produces contiguous addresses. However, in order to do so, it must invalidate all
@@ -269,6 +270,36 @@ void buffer_destroy (
 
 ---
 
+### buffer pointer
+
+```c
+void* buffer_pointer (
+    struct buffer* allocator
+);
+```
+
+#### Description
+
+This function returns the address of the first available space in the given
+`struct buffer` *allocator*.
+
+This pointer **is not** guaranteed to be always valid: it should be discarded as soon
+as another call to [buffer_push](#buffer-push) is made.
+
+This is due to the design of the linear memory management, where memory is guaranteed to
+be contiguous, but intermediate addresses returned by each [buffer_push](#buffer-push)
+call might lose validity due to the internal reallocations.
+
+#### Return Value
+
+A pointer to the first available space in the buffer memory.
+
+#### Errors
+
+This function never fails.
+
+---
+
 ### buffer pointer at
 
 ```c
@@ -287,9 +318,9 @@ The *position* value is assumed to be in bytes. The returned address **is not**
 guaranteed to be always valid: it should be discarded as soon as another call to
 [buffer_push](#buffer-push) is made.
 
-This is by design of the linear memory management, where memory is guaranteed to be
-contiguous, but intermediate addresses returned by each [buffer_push](#buffer-push) call
-might lose validity due to the internal reallocations.
+This is due to the design of the linear memory management, where memory is guaranteed to
+be contiguous, but intermediate addresses returned by each [buffer_push](#buffer-push)
+call might lose validity due to the internal reallocations.
 
 #### Return Value
 

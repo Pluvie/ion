@@ -4,8 +4,8 @@ struct buffer {
   uint position;
 };
 /*
-A `struct buffer` is a memory allocator. It is used to when a program requires a
-contiguous amount of memory which can be dynamically increased.
+A `struct buffer` is a memory allocator. It is best used to when a program requires a
+contiguous amount of memory, which can also be dynamically increased.
 
 Imagine parsing a chunked HTTP response: you do not know how long the full response
 will be; instead you receive it in chunks. Each chunk starts with a number that
@@ -17,7 +17,7 @@ HTML, JSON, or something like that.
 This is not a good case for the `struct arena` because of its memory fragmentation.
 Even though each call to [arena_push](#arena-push) is guaranteed to return an always
 valid address, it may not be adjacent to addresses returned by previous calls to the
-same function. This is by design.
+same function.
 
 Instead, a `struct buffer`, guarantees that every call to [buffer_push](#buffer-push)
 produces contiguous addresses. However, in order to do so, it must invalidate all

@@ -22,7 +22,8 @@ enough space for it.
 
 This function never fails.
 
-If, in order to accomodate this request, the allocator must request memory to the
-operating system, and the system cannot fulfill the request, then this function shall
-[abort](https://www.man7.org/linux/man-pages/man3/abort.3.html) the entire program.
+In order to accomodate this call, the allocator may request memory to the operating
+system. If the system is out of memory, or is either way unable to fulfill the
+request, then this function shall [abort](
+https://www.man7.org/linux/man-pages/man3/abort.3.html) the entire program.
 */

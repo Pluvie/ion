@@ -12,9 +12,9 @@ The *position* value is assumed to be in bytes. The returned address **is not**
 guaranteed to be always valid: it should be discarded as soon as another call to
 [buffer_push](#buffer-push) is made.
 
-This is by design of the linear memory management, where memory is guaranteed to be
-contiguous, but intermediate addresses returned by each [buffer_push](#buffer-push) call
-might lose validity due to the internal reallocations.
+This is due to the design of the linear memory management, where memory is guaranteed to
+be contiguous, but intermediate addresses returned by each [buffer_push](#buffer-push)
+call might lose validity due to the internal reallocations.
 
 #### Return Value
 
