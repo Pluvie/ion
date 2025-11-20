@@ -67,8 +67,8 @@ API:
 ```c
 struct arena
 ```
-is a memory allocator. It is used to group together pointers that share the same
-**lifetime** across a program.
+The `struct arena` is a memory allocator. It is used to group together pointers that
+share the same **lifetime** across a program.
 
 Imagine a web request, a videogame frame, or a UI screen: all these situations require
 a lot of data to be readily accessible from memory in order for the program to work
@@ -119,112 +119,43 @@ one thread can complete this call at once.
 
 ---
 
-### allocator init
+### arena init
 
 ```c
-struct allocator allocator_init (
+struct arena arena_create (
     uint capacity
 );
 ```
 
 #### Description
 
-This function initializes a `struct allocator` with the given *capacity*. It does not
-perform any allocation, but the returned allocator is ready to allocate memory using
-[allocator_push](#allocator-push).
+This function creates a `struct arena` with the given *capacity*. It does not perform
+any allocation yet, but the returned arena is ready to allocate memory using
+[arena_push](#arena-push).
 
 #### Return Value
 
-A `struct allocator` with the given *capacity*.
-
-#### Errors
-
-This function never fails.
+A `struct arena` with the given *capacity*.
 
 ---
 
-### allocator pop
+### arena destroy
 
 ```c
-void* allocator_pop (
-    struct allocator* allocator,
-    uint amount
+void arena_destroy (
+    struct arena* allocator
 );
 ```
 
 #### Description
 
-This function releases a given *amount* of memory from the given *allocator*.
+This function shall release to the operating system all the memory allocated by the
+given `struct arena` *allocator*, and shall zero out the entire struct. All pointers
+that were returned by calls to the [arena_push](#arena-push) function on this allocator
+shall be invalidated.
 
-The primary usage of a `struct allocator` is to allocate memory in chunks -- using
-[allocator_push](#allocator-push) and then massively release it in one shot using
-[allocator_release](#allocator-release). This is consistent with the arena memory
-management principle.
-
-However there may be some cases where some memory is not needed anymore and can be
-safely released from the allocator. This function does exactly this. Note that
-memory is not actually given back to the operating system, but only made available
-inside the allocator.
-
-#### Return Value
-
-A pointer to the first available address in the *allocator* memory, after having made
-enough space for it. If the *amount* is greater than the *allocator* memory, then all of
-it shall be discarded, and it shall be returned the beginning address of the allocator
-memory.
-
-#### Errors
-
-This function never fails.
-
----
-
-### allocator-push
-
-```c
-void* allocator_push (
-    struct allocator* allocator,
-    uint amount
-);
-```
-
-#### Description
-
-This function allocates a given *amount* of bytes on the given *allocator*.
-
-If the allocator has reached its capacity, or if the allocator did not yet perform any
-allocations, then the required memory to accomodate this call is requested to the
-operating system. This memory shall be then added to -- and managed by -- the allocator.
-
-#### Return Value
-
-A pointer to the first available address in the *allocator* memory, after having made
-enough space for it. This pointer is guaranteed to be safe and always valid throughout
-all the life of the allocator. All pointers returned by this function shall be
-invalidated by the [allocator_release](#allocator-release) call.
-
-#### Errors
-
-This function never fails. If, in order to accomodate this request, the allocator must
-perform a request for more memory to the operating system, and the hardware is out of
-memory, then this function shall [abort](
-https://www.man7.org/linux/man-pages/man3/abort.3.html).
-
----
-
-### allocator-release
-
-```c
-void allocator_release (
-    struct allocator* allocator
-);
-```
-
-#### Description
-
-This function shall release all the memory allocated by the given *allocator*. The
-memory is returned to the operating system. All pointers returned by the
-[allocator_push](#allocator-push) function shall be invalidated.
+This function should be called when the lifetime of all pointers allocated on the arena
+is ended, and the memory is not needed anymore.
 
 #### Return Value
 
@@ -233,6 +164,45 @@ None.
 #### Errors
 
 This function never fails.
+
+---
+
+### arena push
+
+```c
+void* arena_push (
+    struct arena* allocator,
+    uint amount
+);
+```
+
+#### Description
+
+This function allocates a given `uint` *amount* of bytes on the given `struct arena`
+*allocator*.
+
+Memory is requested to the operating system only if the arena did not yet perform
+any allocation -- for example, it was just created with [arena_create](#arena-create) --
+of if the arena has indeed performed previous allocations that have now reached its
+capacity.
+
+For other cases, the allocated memory is retrieved within the arena own pool.
+
+#### Return Value
+
+A pointer to the first available address in the *allocator* memory, after having made
+enough space for it. This pointer is guaranteed to be safe and always valid throughout
+all the life of the allocator. All pointers returned by this function shall be
+invalidated by the [arena_destroy](#arena-destroy) call.
+
+#### Errors
+
+This function never fails.
+
+If, in order to accomodate this request, the allocator must perform a request for more
+memory to the operating system, and the system is out of memory, then this function
+shall [abort](https://www.man7.org/linux/man-pages/man3/abort.3.html) the entire
+program.
 
 ---
 
@@ -266,27 +236,23 @@ one thread can complete this call at once.
 
 ---
 
-### buffer-address
+### buffer create
 
 ```c
-void* buffer_address (
-    struct buffer* buffer
+struct buffer buffer_create (
+    uint capacity
 );
 ```
 
 #### Description
 
-This function returns the address of the first available space in the given *buffer*.
-This pointer **is not** guaranteed to be always valid: it should be discarded as soon
-as a call to [buffer_push](#buffer-push) is made.
-
-This is consistent with the linear memory management approach, where memory is
-guaranteed to be contiguous, but intermediate addresses returned by each [buffer_push](
-#buffer-push) call might lose validity due to the internal reallocations.
+This function creates a `struct buffer` with the given *capacity*. It does not perform
+any allocation yet, but the returned buffer is ready to allocate memory using
+[buffer_push](#buffer-push).
 
 #### Return Value
 
-A pointer to the first available space in the buffer memory.
+A `struct buffer` with the given *capacity*.
 
 #### Errors
 
@@ -294,25 +260,36 @@ This function never fails.
 
 ---
 
-### buffer-address-at
+### buffer destroy
+
+void buffer_destroy (
+    struct buffer* buffer
+);
+-address
+
+---
+
+### buffer pointer at
 
 ```c
-void* buffer_address_at (
-    struct buffer* buffer,
+void* buffer_pointer_at (
+    struct buffer* allocator,
     uint position
 );
 ```
 
 #### Description
 
-This function returns the address of the given *buffer* space at the given *position*.
+This function returns the address of the given `struct buffer` *allocator* at the
+given *position*.
+
 The *position* value is assumed to be in bytes. The returned address **is not**
-guaranteed to be always valid: it should be discarded as soon as a call to
+guaranteed to be always valid: it should be discarded as soon as another call to
 [buffer_push](#buffer-push) is made.
 
-This is consistent with the linear memory management approach, where memory is
-guaranteed to be contiguous, but intermediate addresses returned by each [buffer_push](
-#buffer-push) call might lose validity due to the internal reallocations.
+This is by design of the linear memory management, where memory is guaranteed to be
+contiguous, but intermediate addresses returned by each [buffer_push](#buffer-push) call
+might lose validity due to the internal reallocations.
 
 #### Return Value
 
@@ -320,38 +297,39 @@ A pointer to the buffer memory with a byte offset equal to *position*.
 
 #### Errors
 
-This function never fails. If the *position* is greater than the buffer current
-position, this function shall [abort](
-https://www.man7.org/linux/man-pages/man3/abort.3.html).
+This function never fails.
+
+If the *position* is greater than the buffer current position, this function shall
+[abort](https://www.man7.org/linux/man-pages/man3/abort.3.html) the program.
 
 ---
 
-### buffer-init
+### buffer position get
 
 ```c
-struct buffer buffer_init (
-    uint capacity
+uint buffer_position_get (
+    struct buffer* buffer
 );
 ```
 
-#### Description
+---
 
-This function initializes a `struct buffer`.
+### buffer position set
 
-A `struct buffer` is a linear memory allocator. The buffer is useful when a contiguous
-dynamic amount of memory is required. It can be seen as an infinite stack, where each
-allocation is done with [buffer_push](#buffer-push). If the buffer requires more memory
-to accomodate the call, it shall request it to the operating system. Also, in order to
-maintain memory contiguity, a full reallocation of the buffer may be performed. For this
-reason, pointers returned by buffer allocations **are not** guaranteed to be always
-valid.
+```c
+void buffer_position_set (
+    struct buffer* buffer,
+    uint position
+);
+```
 
-#### Return Value
+---
 
-A `struct buffer` with the given *capacity*. No allocation is performed, but the
-returned buffer is ready to allocate memory using [buffer_push](#buffer-push).
-ready to allocate.
+### buffer push
 
-#### Errors
-
-This function never fails.
+```c
+void* buffer_push (
+    struct buffer* allocator,
+    uint amount
+);
+```

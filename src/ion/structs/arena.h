@@ -9,8 +9,8 @@ struct arena {
   } regions;
 };
 /*
-A `struct arena` is a memory allocator. It is used to group together pointers that share
-the same **lifetime** across a program.
+The `struct arena` is a memory allocator. It is used to group together pointers that
+share the same **lifetime** across a program.
 
 Imagine a web request, a videogame frame, or a UI screen: all these situations require
 a lot of data to be readily accessible from memory in order for the program to work
